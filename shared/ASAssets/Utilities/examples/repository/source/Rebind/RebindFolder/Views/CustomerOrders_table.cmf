@@ -1,0 +1,238 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="CustomerOrders" path="/shared/ASAssets/Utilities/examples/repository/source/Rebind/RebindFolder/Views/CustomerOrders" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>
+    (c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+
+</annotation>
+  <columns>
+    <column name="CustomerID1" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="OrderID" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="OrderDate" nullable="true">
+      <datatype type="DATE"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="PurchaseOrderNumber" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CompanyName1" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ContactFirstName1" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ContactLastName1" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="BillingAddress1" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="City1" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="StateOrProvince1" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="PostalCode1" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CountryRegion1" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ContactTitle1" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="PhoneNumber1" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="FaxNumber1" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/examples/repository/source/ds_orders/tutorial/customers" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="customerid" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="companyname">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="contactfirstname">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="contactlastname">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="billingaddress">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="city">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="stateorprovince">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="postalcode">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="countryregion">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="contacttitle">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="phonenumber">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="faxnumber">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/examples/repository/source/ds_orders/tutorial/orders" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="orderid" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="customerid">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="employeeid">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="orderdate">
+        <datatype type="DATE"/>
+      </element>
+      <element name="purchaseordernumber">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="shipname">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="shipaddress">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="shipcity">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="shipstateorprovince">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="shippostalcode">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="shipcountry">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="shipphonenumber">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="shipdate">
+        <datatype type="DATE"/>
+      </element>
+      <element name="shippingmethodid">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="freightcharge">
+        <datatype type="DECIMAL" maxDigits="12" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT  
+    customers.CustomerID CustomerID1, 
+    orders.OrderID, 
+    orders.OrderDate, 
+    orders.PurchaseOrderNumber, 
+    customers.CompanyName CompanyName1, 
+    customers.ContactFirstName ContactFirstName1, 
+    customers.ContactLastName ContactLastName1, 
+    customers.BillingAddress BillingAddress1, 
+    customers.City City1, 
+    customers.StateOrProvince StateOrProvince1, 
+    customers.PostalCode PostalCode1, 
+    customers.CountryRegion CountryRegion1, 
+    customers.ContactTitle ContactTitle1, 
+    customers.PhoneNumber PhoneNumber1, 
+    customers.FaxNumber FaxNumber1
+FROM      
+    /shared/ASAssets/Utilities/examples/repository/source/ds_orders/tutorial/customers customers LEFT OUTER JOIN 
+        /shared/ASAssets/Utilities/examples/repository/source/ds_orders/tutorial/orders orders
+    ON customers.customerid = orders.customerid</attribute>
+  <attribute name="creationDate" type="LONG">1382029188103</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1558582071132</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+</metadata>

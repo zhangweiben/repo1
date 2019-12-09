@@ -1,0 +1,489 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="All_Promotions" path="/shared/Common/Business/Logical/Promotions/All_Promotions" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="PROMO_NO" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_TITLE" nullable="true">
+      <datatype type="STRING" minLength="50" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_DESC" nullable="true">
+      <datatype type="STRING"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_STRT_DT" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_END_DT" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="STATUS" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_ORIGIN_CORP_CD" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_ORIGIN_USERID" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_OBJ_CD" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_OBJ_TXT" nullable="true">
+      <datatype type="STRING"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFFILIATE_NAME" nullable="true">
+      <datatype type="STRING" minLength="30" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="EMAIL_NAME" nullable="true">
+      <datatype type="STRING" minLength="50" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_CREATE_DT" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CANCL_DT" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CANCL_DESC" nullable="true">
+      <datatype type="STRING" minLength="255" maxLength="255"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_TXT" nullable="true">
+      <datatype type="STRING"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PRELM_TXT" nullable="true">
+      <datatype type="STRING"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PLAN_TXT" nullable="true">
+      <datatype type="STRING"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="APPV_TXT" nullable="true">
+      <datatype type="STRING"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="POST_ANLYS_TXT" nullable="true">
+      <datatype type="STRING"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_PREPK_CD" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="WSL_CD" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_PRICE_STRAT_CD" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PREM_INCL_CD" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_COST_CD" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_COST_AMT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_COST_TXT" nullable="true">
+      <datatype type="STRING"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="UPD_DT" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="UPD_USER_ID" nullable="true">
+      <datatype type="STRING" minLength="8" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ANLYS_DESC" nullable="true">
+      <datatype type="STRING"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CURR_REV" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DELETE_DT" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RVIEW_DT_120" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="EMAIL_NM_OTH" nullable="true">
+      <datatype type="STRING" maxLength="500"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PV_CHNG_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="BV_CHNG_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DCOST_CHNG_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SIGNIFICANT" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RGN_NM" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DATE_DIFF" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/Forecasting/Fft101_Corp" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="corp_nm">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="corp_abbv_cd">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="rgn_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="launc_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="dmand_yr4">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="dmand_mo">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="wkly_days_qty">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="iso_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="corp_altrn_nm">
+        <datatype type="STRING" minLength="30" maxLength="30"/>
+      </element>
+      <element name="cntry_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/Promotions/Fft00005_Promo_Stat_Cd" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="promo_stat_cd">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="promo_stat_cd_desc">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/Promotions/Fft00075_Promo" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="promo_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="promo_title_nm">
+        <datatype type="STRING" minLength="50" maxLength="50"/>
+      </element>
+      <element name="promo_desc_txt">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="promo_strt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="promo_end_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="promo_stat_cd">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="promo_origin_corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="promo_origin_userid">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="promo_obj_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="promo_obj_txt">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="aff_nm">
+        <datatype type="STRING" minLength="30" maxLength="30"/>
+      </element>
+      <element name="email_nm">
+        <datatype type="STRING" minLength="50" maxLength="50"/>
+      </element>
+      <element name="promo_creat_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="cancl_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="cancl_desc">
+        <datatype type="STRING" minLength="255" maxLength="255"/>
+      </element>
+      <element name="aff_txt">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="prelm_txt">
+        <datatype type="STRING" maxLength="500"/>
+      </element>
+      <element name="plan_txt">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="appv_txt">
+        <datatype type="STRING" maxLength="1000"/>
+      </element>
+      <element name="post_anlys_txt">
+        <datatype type="STRING" maxLength="1000"/>
+      </element>
+      <element name="promo_prepk_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="wsl_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="promo_price_strat_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="prem_incl_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="promo_cost_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="promo_cost_amt">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      </element>
+      <element name="promo_cost_txt">
+        <datatype type="STRING" maxLength="500"/>
+      </element>
+      <element name="upd_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="upd_user_id">
+        <datatype type="STRING" minLength="8" maxLength="8"/>
+      </element>
+      <element name="anlys_desc">
+        <datatype type="STRING" minLength="75" maxLength="75"/>
+      </element>
+      <element name="curr_rev">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="delete_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="rview_dt_120">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="email_nm_oth">
+        <datatype type="STRING" maxLength="500"/>
+      </element>
+      <element name="pv_chng_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="bv_chng_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="dcost_chng_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="significant">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/Promotions/Fft102_Region" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="rgn_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="rgn_nm">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="rgn_abbv_cd">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    p.PROMO_NO AS PROMO_NO,
+    p.PROMO_TITLE_NM AS PROMO_TITLE,
+    REGEXP_REPLACE(p.PROMO_DESC_TXT, &apos;\r\n&apos;, &apos; &apos;) AS PROMO_DESC,
+    p.PROMO_STRT_DT AS PROMO_STRT_DT,
+    p.PROMO_END_DT AS PROMO_END_DT,
+    s.PROMO_STAT_CD_DESC AS STATUS,
+    p.PROMO_ORIGIN_CORP_CD AS PROMO_ORIGIN_CORP_CD,
+    p.PROMO_ORIGIN_USERID AS PROMO_ORIGIN_USERID,
+    p.PROMO_OBJ_CD AS PROMO_OBJ_CD,
+    REGEXP_REPLACE(p.PROMO_OBJ_TXT, &apos;\r\n&apos;, &apos; &apos;) AS PROMO_OBJ_TXT,
+    p.AFF_NM AS AFFILIATE_NAME,
+    p.EMAIL_NM AS EMAIL_NAME,
+    p.PROMO_CREAT_DT AS PROMO_CREATE_DT,
+    p.CANCL_DT AS CANCL_DT,
+    p.CANCL_DESC AS CANCL_DESC,
+    REGEXP_REPLACE(p.AFF_TXT, &apos;\r\n&apos;, &apos; &apos;) AS AFF_TXT,
+    REGEXP_REPLACE(p.PRELM_TXT, &apos;\r\n&apos;, &apos; &apos;) AS PRELM_TXT,
+    REGEXP_REPLACE(p.PLAN_TXT, &apos;\r\n&apos;, &apos; &apos;) AS PLAN_TXT,
+    REGEXP_REPLACE(p.APPV_TXT, &apos;\r\n&apos;, &apos; &apos;) AS APPV_TXT,
+    REGEXP_REPLACE(p.POST_ANLYS_TXT, &apos;\r\n&apos;, &apos; &apos;) AS POST_ANLYS_TXT,
+    p.PROMO_PREPK_CD AS PROMO_PREPK_CD,
+    p.WSL_CD AS WSL_CD,
+    p.PROMO_PRICE_STRAT_CD AS PROMO_PRICE_STRAT_CD,
+    p.PREM_INCL_CD AS PREM_INCL_CD,
+    p.PROMO_COST_CD AS PROMO_COST_CD,
+    p.PROMO_COST_AMT AS PROMO_COST_AMT,
+    REGEXP_REPLACE(p.PROMO_COST_TXT, &apos;\r\n&apos;, &apos; &apos;) AS PROMO_COST_TXT,
+    p.UPD_DT AS UPD_DT,
+    p.UPD_USER_ID AS UPD_USER_ID,
+    REGEXP_REPLACE(p.ANLYS_DESC, &apos;\r\n&apos;, &apos; &apos;) AS ANLYS_DESC,
+    p.CURR_REV AS CURR_REV,
+    p.DELETE_DT AS DELETE_DT,
+    p.RVIEW_DT_120 AS RVIEW_DT_120,
+    p.EMAIL_NM_OTH AS EMAIL_NM_OTH,
+    p.PV_CHNG_PCT AS PV_CHNG_PCT,
+    p.BV_CHNG_PCT AS BV_CHNG_PCT,
+    p.DCOST_CHNG_PCT AS DCOST_CHNG_PCT,
+    p.SIGNIFICANT AS SIGNIFICANT,
+    r.RGN_NM AS RGN_NM,
+    DATEDIFF(&apos;D&apos;, p.PROMO_CREAT_DT, p.PROMO_STRT_DT) AS DATE_DIFF
+FROM /shared/Common/Physical/Formatting/Promotions/Fft00075_Promo p LEFT OUTER JOIN 
+        /shared/Common/Physical/Formatting/Forecasting/Fft101_Corp c
+    ON p.PROMO_ORIGIN_CORP_CD = c.CORP_CD LEFT OUTER JOIN 
+        /shared/Common/Physical/Formatting/Promotions/Fft102_Region r
+    ON c.RGN_CD = r.RGN_CD JOIN 
+        /shared/Common/Physical/Formatting/Promotions/Fft00005_Promo_Stat_Cd s
+    ON p.PROMO_STAT_CD = s.PROMO_STAT_CD</attribute>
+  <attribute name="creationDate" type="LONG">1565894815828</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1565894815828</attribute>
+</metadata>

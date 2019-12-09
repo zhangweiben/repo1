@@ -1,0 +1,169 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="formatLogIdFields" path="/shared/ASAssets/BestPractices_v81/Procedures/crudProcedures/formatLogIdFields" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="name1" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="value1" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="name2" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="value2" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="name3" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="value3" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="name4" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="value4" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="name5" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="value5" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="name6" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="value6" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="name7" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="value7" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="name8" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="value8" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="name9" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="value9" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="Script" type="STRING">/*
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE formatLogIdFields(
+	-- A series of name/value pair fields that can be used to identify a record in the log
+	IN  name1					VARCHAR, 
+	IN  value1					VARCHAR(4000),
+	IN  name2					VARCHAR, 
+	IN  value2					VARCHAR(4000),
+	IN  name3					VARCHAR, 
+	IN  value3					VARCHAR(4000),
+	IN  name4					VARCHAR, 
+	IN  value4					VARCHAR(4000),
+	IN  name5					VARCHAR, 
+	IN  value5					VARCHAR(4000),
+	IN  name6					VARCHAR, 
+	IN  value6					VARCHAR(4000),
+	IN  name7					VARCHAR, 
+	IN  value7					VARCHAR(4000),
+	IN  name8					VARCHAR, 
+	IN  value8					VARCHAR(4000),
+	IN  name9					VARCHAR, 
+	IN  value9					VARCHAR(4000),
+	OUT result					VARCHAR(4000)
+)
+BEGIN
+	SET result = &apos;&apos;;
+
+	IF (value1 IS NOT NULL AND LENGTH(&apos;|&apos;||value1||&apos;|&apos;) &gt; 2) THEN
+		set result = result || &apos;{&apos;||TRIM(NVL(name1,&apos;  &apos;))||&apos;=&apos;||TRIM(NVL(value1,&apos;  &apos;))||&apos;} &apos;;
+	END IF;
+	IF (value2 IS NOT NULL AND LENGTH(&apos;|&apos;||value2||&apos;|&apos;) &gt; 2) THEN
+		set result = result || &apos;{&apos;||TRIM(NVL(name2,&apos;  &apos;))||&apos;=&apos;||TRIM(NVL(value2,&apos;  &apos;))||&apos;} &apos;;
+	END IF;
+	IF (value3 IS NOT NULL AND LENGTH(&apos;|&apos;||value3||&apos;|&apos;) &gt; 2) THEN
+		set result = result || &apos;{&apos;||TRIM(NVL(name3,&apos;  &apos;))||&apos;=&apos;||TRIM(NVL(value3,&apos;  &apos;))||&apos;} &apos;;
+	END IF;
+	IF (value4 IS NOT NULL AND LENGTH(&apos;|&apos;||value4||&apos;|&apos;) &gt; 2) THEN
+		set result = result || &apos;{&apos;||TRIM(NVL(name4,&apos;  &apos;))||&apos;=&apos;||TRIM(NVL(value4,&apos;  &apos;))||&apos;} &apos;;
+	END IF;
+	IF (value5 IS NOT NULL AND LENGTH(&apos;|&apos;||value5||&apos;|&apos;) &gt; 2) THEN
+		set result = result || &apos;{&apos;||TRIM(NVL(name5,&apos;  &apos;))||&apos;=&apos;||TRIM(NVL(value5,&apos;  &apos;))||&apos;} &apos;;
+	END IF;
+	IF (value6 IS NOT NULL AND LENGTH(&apos;|&apos;||value6||&apos;|&apos;) &gt; 2) THEN
+		set result = result || &apos;{&apos;||TRIM(NVL(name6,&apos;  &apos;))||&apos;=&apos;||TRIM(NVL(value6,&apos;  &apos;))||&apos;} &apos;;
+	END IF;
+	IF (value7 IS NOT NULL AND LENGTH(&apos;|&apos;||value7||&apos;|&apos;) &gt; 2) THEN
+		set result = result || &apos;{&apos;||TRIM(NVL(name7,&apos;  &apos;))||&apos;=&apos;||TRIM(NVL(value7,&apos;  &apos;))||&apos;} &apos;;
+	END IF;
+	IF (value8 IS NOT NULL AND LENGTH(&apos;|&apos;||value8||&apos;|&apos;) &gt; 2) THEN
+		set result = result || &apos;{&apos;||TRIM(NVL(name8,&apos;  &apos;))||&apos;=&apos;||TRIM(NVL(value8,&apos;  &apos;))||&apos;} &apos;;
+	END IF;
+	IF (value9 IS NOT NULL AND LENGTH(&apos;|&apos;||value9||&apos;|&apos;) &gt; 2) THEN
+		set result = result || &apos;{&apos;||TRIM(NVL(name9,&apos;  &apos;))||&apos;=&apos;||TRIM(NVL(value9,&apos;  &apos;))||&apos;} &apos;;
+	END IF;
+
+	IF (result IS NOT NULL AND LENGTH(&apos;|&apos;||result||&apos;|&apos;) &gt; 2) THEN
+		set result = &apos;LOG ID::&apos;|| result || &apos;:: &apos;;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1554521261586</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

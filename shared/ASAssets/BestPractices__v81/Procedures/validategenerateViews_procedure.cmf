@@ -1,0 +1,720 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="validategenerateViews" path="/shared/ASAssets/BestPractices_v81/Procedures/validategenerateViews" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="sourceFolderPath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="targetFolderPath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="resourceNameFilter" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="generateViewsWrapper" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="statusMode" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="compareMode" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="validategenerateViewsType" type="TABLE" refId="1">
+        <element name="status">
+          <datatype name="VARCHAR" type="STRING" maxLength="20"/>
+        </element>
+        <element name="resourceType">
+          <datatype name="VARCHAR" type="STRING" maxLength="10"/>
+        </element>
+        <element name="sourceResourcePath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="taregetResourcePath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/validategenerateViews" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="sourceFolderPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="targetFolderPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceNameFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="generateViewsWrapper" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="statusMode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="compareMode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="status">
+            <datatype type="STRING" maxLength="20"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="10"/>
+          </element>
+          <element name="sourceResourcePath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="taregetResourcePath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor_PROCEDURE_CURSOR" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cursorNum" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="4096"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnType">
+            <datatype type="STRING" maxLength="4096"/>
+          </element>
+          <element name="columnBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="dataType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="paramDirection">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="proprietaryModel">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceListRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creationDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="creationDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="creatorUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creatorUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="lastModifiedDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="lastModifiedUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getScriptText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inSubType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="scriptText" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseInputText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseOutput" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="trimText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="includeDelimiter" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="object">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* validategenerateViews:
+	This procedure is used to compare resources between a source folder and a mirror copy target folder.  This is useful when evaluating if the view generation
+	is working correctly across a large number of views in different folders.  
+
+	This works best when performing the following &quot;round trip&quot; scenario:
+		1. A spreadsheet of physical to logical mappings has been established
+		2. Generate the Formatting layer views					generateFormattingViews(1, 2, 1, 0, null, null, null, null, null, null)
+		3. Make a copy of the Formatting layer views			Target=/shared/&lt;project_path&gt;/Physical/Formatting_Copy_1
+		4. Generate the Formatting layer to a CSV file			generateDatasourceListCSV(C:\temp\test.csv, 1000, 1, 1, R, null, null, null, null, null, null, null,  FV, null)
+		5. Copy test.csv to Common_Model_v3_file1.xlsx			Excel: C:\CompositeSoftware\BestPractices\BestPractices_v80\Common_Model_v3_file1.xlsx
+				a. Open Common_Model_v3_file1.xlsx in Excel
+				b. Open test.csv in Excel
+				c. Select cell A2 and use the keystrokes: Ctrl-Shift-End (this will select Columns A-L and all rows except the header row
+				d. Do a Ctrl-C (copy)
+				e. Switch to Common_Model_v3_file1.xlsx
+				f. Make sure there is no data in columns A-L and all of the rows.  If there is, then either delete it or pick a different spreadsheet: Common_Model_v3_file[1-3].xlsx
+				g. Place your cursor in cell A2
+				h. Do a Ctrl-V (Paste)
+				i. Save the spreadsheet
+		6. Refresh the cache of the spreadsheets: Common_Model_v3_file[1-3].xlsx
+				a. Switch to Studio, Manager tab
+				b. Select &quot;Cached Resources&quot;
+				c. Select &quot;common_model&quot;
+				d. Click Refresh Cache
+		7. Remove the views in the Formatting layer except the &quot;/Transformations&quot; folder which is considered a source folder for transormation procedures.
+		8. Generate the Formattin glayer views					generateFormattingViews(1, 2, 1, 0, null, null, null, null, null, null)
+		9. Validate the view generation process					generateViewsValidate(/shared/&lt;project_path&gt;/Physical/Formatting, /shared/&lt;project_path&gt;/Physical/Formatting_Copy_1, null, 1, N, C, N)
+
+	The output cursor provides a status as follows:
+		EQUAL				source resource path			target resource path		-- the source and target resources are equal
+		NOT EQUAL			source resource path			target resource path		-- the source and target resources are not equal
+		TARGET NOT FOUND	source resource path			target resource path		-- the target resource was not found when doing a compare
+
+	Input:
+			-- The source folder to begin recursing through to discover TABLE or PROCEDURE resources
+		sourceFolderPath	LONGVARCHAR, 
+
+			-- The target (mirror copy of source) which is used to compare each resource with the source to determine if it is equal or not.
+		targetFolderPath	LONGVARCHAR,
+
+			-- Pass in a resource name to filter on from the source folder.  This can be a comma separated list.  
+			-- The column name may not contain commas.  Do not place double quotes around the name.
+		resourceNameFilter	VARCHAR,		
+
+			-- 0           print the output to the cursor result window.  The cursor is bound by Composite Studio &quot;Fetch Row Size&quot; and &quot;Cursor Fetch Limit&quot;
+			--               The cursor stops producing output when it hits those limits.  The limits are configured in Composite Studio
+			--                  AdministrationConfigurationStudioDataFetch Rows Size and Cursor Fetch Limit.  
+			--                  Modify the Cursor Fetch Limit to an arbitrary number such as 500
+			-- 1 (default) - print TABLE only information to console window.  Do not print to the cursor result window.  The aforementioned limits do not apply.
+		generateViewsWrapper
+
+			-- status mode: A=output All status, E=output Equal status only, N=output Not equal status only
+		statusMode			CHAR(1),
+
+			-- compare mode: S=compare SqlText, C=compare Columns and types
+		compareMode			CHAR(1),
+
+			-- Y=debug is on, N=do not debug, will print out source and target sql script when the resources are not equal.
+		debug				CHAR(1),
+
+	Output:
+		result				PIPE
+		PUBLIC TYPE	generateViewsValidateType ROW(
+			status					VARCHAR(20),	-- &quot;SKIPPED&quot;, &quot;EQUAL&quot;, &quot;NOT EQUAL&quot;, &quot;TARGET NOT FOUND&quot;
+			resourceType			VARCHAR(10),	-- TABLE or PROCEDURE
+			sourceResourcePath		LONGVARCHAR,
+			taregetResourcePath 	LONGVARCHAR
+		);
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	11/07/2013		Mike Tinius			6.2.0			Created new
+	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	03/02/2018		Mike Tinius			7.0.5			Replaced RegexSplit with extractDelimitedText
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE validategenerateViews(
+		-- The source folder to begin recursing through to discover TABLE or PROCEDURE resources
+	IN	sourceFolderPath		LONGVARCHAR,-- /shared/BestPracticesTest/Physical/Formatting
+
+		-- The target (mirror copy of source) which is used to compare each resource with the source to determine if it is equal or not.
+	IN	targetFolderPath		LONGVARCHAR,-- /shared/BestPracticesTest/Physical/Formatting_Copy_1
+
+		-- Pass in a resource name to filter on from the source folder.  This can be a comma separated list.  
+		-- The column name may not contain commas.  Do not place double quotes around the name.
+	IN	resourceNameFilter		VARCHAR,
+
+		-- 0           - print the output to the cursor.  The cursor is bound by Composite Studio &quot;Fetch Row Size&quot; and &quot;Cursor Fetch Limit&quot;
+		--               The cursor stops producing output when it hits those limits.  The limits are configured in Composite Studio
+		--                  AdministrationConfigurationStudioDataFetch Rows Size and Cursor Fetch Limit.  
+		--                  Modify the Cursor Fetch Limit to an arbitrary number such as 500
+		-- 1 (default) - print TABLE only information to console window.  Do not print to the cursor result window.  The aforementioned limits do not apply.
+	IN  generateViewsWrapper	INTEGER,
+
+		-- status mode: A=output All status, E=output Equal status only, N=output Not equal status only
+	IN 	statusMode				CHAR(1),
+
+		-- compare mode: S=compare SqlText, C=compare Columns and types
+	IN  compareMode				CHAR(1),
+
+		-- Y=debug is on, N=do not debug, will print out source and target sql script when the resources are not equal.
+	IN 	debug					CHAR(1),
+
+	OUT	result					PIPE /shared/ASAssets/BestPractices_v81/Procedures/validategenerateViews.validategenerateViewsType
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;validategenerateViews&apos;;
+	DECLARE statusMode_				CHAR(1) DEFAULT statusMode;
+	DECLARE PUBLIC TYPE	validategenerateViewsType ROW(
+		status					VARCHAR(20),	-- &quot;SKIPPED&quot;, &quot;EQUAL&quot;, &quot;NOT EQUAL&quot;, &quot;TARGET NOT FOUND&quot;
+		resourceType			VARCHAR(10),	-- TABLE or PROCEDURE
+		sourceResourcePath		LONGVARCHAR,
+		taregetResourcePath 	LONGVARCHAR
+	);
+	DECLARE status					VARCHAR;
+	DECLARE targetResourcePath		LONGVARCHAR;
+	DECLARE sourceSqlScript			LONGVARCHAR;
+	DECLARE targetSqlScript			LONGVARCHAR;
+	DECLARE sourceColumnListStr		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE targetColumnListStr		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE processResource			BOOLEAN;
+	DECLARE cntTotal				INTEGER DEFAULT 0;
+	DECLARE cntSkipped				INTEGER DEFAULT 0;
+	DECLARE cntNotEqual				INTEGER DEFAULT 0;
+	DECLARE cntEqual				INTEGER DEFAULT 0;
+	DECLARE cntNotFound				INTEGER DEFAULT 0;
+	DECLARE resourceExists 			BOOLEAN;
+
+	if (statusMode_ is null) then
+		set statusMode_ = &apos;A&apos;;
+	end if;
+	if (debug = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;statusMode=&apos;||NVL(statusMode_,&apos;null&apos;)||&apos;  compareMode=&apos;||NVL(compareMode,&apos;null&apos;));
+	end if;
+
+	FOR r AS SELECT name, resPath, resType, subType FROM /shared/ASAssets/Utilities/repository/getResourceListRecursive(sourceFolderPath, &apos;CONTAINER&apos;) DO
+		if (r.resType = &apos;TABLE&apos; or r.resType = &apos;PROCEDURE&apos;) then
+			set cntTotal = cntTotal + 1;
+
+			-- Set the status
+			set status = &apos;UNKNOWN&apos;;
+
+			-- Apply the filter to determine whether to process the resource or not
+			set processResource = true;
+		  	if (resourceNameFilter is not null and LENGTH(resourceNameFilter) &gt; 0) then
+				filterLoop:
+				for f as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(resourceNameFilter, &apos;,&apos;,0,0,0,0,0) do
+					set processResource = false;
+					if (POSITION(f.object IN r.name) &gt; 0) then -- apply the resource filter
+						set processResource = true;
+						set status = &apos;UNKNOWN&apos;;
+						leave filterLoop;
+					else
+						set status = &apos;SKIPPED&apos;;
+						set cntSkipped = cntSkipped + 1;
+					end if;
+				end for;
+			end if;
+
+			-- Replace the source folder name with the target folder within the current resource being analyzed
+ 			set targetResourcePath = REPLACE(r.resPath, sourceFolderPath, targetFolderPath);
+
+			if (processResource) then 
+
+				-- Compare Mode: compare sqlText
+				if (UPPER(compareMode) = &apos;S&apos;) then
+					-- Get the source resource script text
+					call /shared/ASAssets/Utilities/repository/getScriptText(r.resPath, r.resType, r.subtype, sourceSqlScript);
+
+					call /lib/resource/ResourceExists(targetResourcePath, r.resType, null, resourceExists);
+					if (resourceExists) then
+						-- Get the corresponding target resource in the folder that is the copy of the original
+						call /shared/ASAssets/Utilities/repository/getScriptText(targetResourcePath, r.resType, r.subtype, targetSqlScript);
+
+						-- The transformation procedures will produce views that point back into the Formatting/Transformations folder.  
+						-- When a copy is created, the folder name is rebound in the view so that it points to the copy.  To do a fair comparison,
+						-- The Folder Copy resource path needs to be replaced with the original base folder before the comparison is taken.
+						if (POSITION(targetFolderPath in targetSqlScript) &gt; 0) then
+							set targetSqlScript = TRIM(REPLACE(targetSqlScript, targetFolderPath, sourceFolderPath));
+						end if;
+
+						-- Perform the comparison of the source folder and the target folder (copy of the source folder)
+						if (sourceSqlScript = targetSqlScript) then
+							set status = &apos;EQUAL&apos;;
+							set cntEqual = cntEqual + 1;
+							if (statusMode_ = &apos;A&apos; or statusMode_ = &apos;E&apos;) then
+								if (generateViewsWrapper = 0) then
+									INSERT INTO result VALUES(status, r.resType, r.resPath, targetResourcePath);
+								else
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;STATUS=&apos;||RPAD(status,16,&apos;_&apos;)||&apos;  TYPE=&apos;||RPAD(r.resType,9,&apos;_&apos;)||&apos; SOURCE=&apos;||r.resPath||&apos;    TARGET=&apos;||targetResourcePath);
+								end if;
+							end if;
+						else
+							set status = &apos;NOT EQUAL&apos;;
+							set cntNotEqual = cntNotEqual + 1;
+							if (statusMode_ = &apos;A&apos; or statusMode_ = &apos;N&apos;) then
+								if (generateViewsWrapper = 0) then
+									INSERT INTO result VALUES(status, r.resType, r.resPath, targetResourcePath);
+									if (debug = &apos;Y&apos;) then
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;STATUS=&apos;||RPAD(status,16,&apos;_&apos;)||&apos;  TYPE=&apos;||RPAD(r.resType,9,&apos;_&apos;)||&apos; SOURCE=&apos;||r.resPath||&apos;    TARGET=&apos;||targetResourcePath);
+									end if;
+								else
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;STATUS=&apos;||RPAD(status,16,&apos;_&apos;)||&apos;  TYPE=&apos;||RPAD(r.resType,9,&apos;_&apos;)||&apos; SOURCE=&apos;||r.resPath||&apos;    TARGET=&apos;||targetResourcePath);
+								end if;
+								if (debug = &apos;Y&apos;) then
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;sourceSqlScript=&apos;||sourceSqlScript);
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;&apos;);
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;targetSqlScript=&apos;||targetSqlScript);
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;&apos;);
+								end if;
+							end if; -- if (sourceSqlScript = targetSqlScript) then
+						end if; -- if (sourceSqlScript = targetSqlScript) then
+					else
+						set status = &apos;TARGET NOT FOUND&apos;;
+						set cntNotFound = cntNotFound + 1;
+						if (generateViewsWrapper = 0) then
+							INSERT INTO result VALUES(status, r.resType, r.resPath, targetResourcePath);
+						else
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;STATUS=&apos;||RPAD(status,16,&apos;_&apos;)||&apos;  TYPE=&apos;||RPAD(r.resType,9,&apos;_&apos;)||&apos; SOURCE=&apos;||r.resPath||&apos;    TARGET=&apos;||targetResourcePath);
+						end if;
+					end if; -- if (resourceExists(targetResourcePath, r.resType) = 1) then
+				end if; -- if (UPPER(compareMode) = &apos;S&apos;) then
+
+				-- Compare Mode: compare Columns and types
+				if (UPPER(compareMode) = &apos;C&apos;) then
+					set sourceColumnListStr = &apos;&apos;;
+					set targetColumnListStr = &apos;&apos;;
+
+					-- Get the source resource column list for a TABLE
+					IF (r.resType = &apos;TABLE&apos;) THEN
+						FOR c AS SELECT resourceName, resourcePath, resourceType, columnName, columnType, annotation
+							FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE(r.resPath, r.resType)
+						DO
+							IF (c.columnName is not null) THEN
+								SET sourceColumnListStr = sourceColumnListStr || c.columnName || &apos; &apos; || c.columnType || &apos;|&apos;;
+							END IF;
+						END FOR;
+					END IF;
+
+					-- Get the source resource column list for a procedure.  The procedure must return a cursor and it must be the first cursor only
+					IF (r.resType = &apos;PROCEDURE&apos;) THEN
+						FOR c AS SELECT resourceName, resourcePath, resourceType, columnName, columnType, annotation
+							FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_PROCEDURE_CURSOR(r.resPath, r.resType, 1) WHERE paramDirection = &apos;OUT&apos; 
+						DO
+							IF (c.columnName is not null) THEN
+								SET sourceColumnListStr = sourceColumnListStr || c.columnName || &apos; &apos;|| c.columnType || &apos;|&apos;;
+							END IF;
+						END FOR;
+					END IF;
+
+					call /lib/resource/ResourceExists(targetResourcePath, r.resType, null, resourceExists);
+					if (resourceExists) then
+						-- Get the target resource column list for a TABLE
+						IF (r.resType = &apos;TABLE&apos;) THEN
+							FOR c AS SELECT resourceName, resourcePath, resourceType, columnName, columnType, annotation
+								FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE(targetResourcePath, r.resType)
+							DO
+								if (c.columnName is not null) then
+									set targetColumnListStr = targetColumnListStr || c.columnName || &apos; &apos; || NVL(c.columnType,&apos;null&apos;) || &apos;|&apos;;
+								end if;
+							END FOR;
+						END IF;
+
+						-- Get the target resource column list for a PROCEDURE.  The procedure must return a cursor and it must be the first cursor only
+						IF (r.resType = &apos;PROCEDURE&apos;) THEN
+							FOR c AS SELECT resourceName, resourcePath, resourceType, columnName, columnType, annotation
+								FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_PROCEDURE_CURSOR(targetResourcePath, r.resType, 1) WHERE paramDirection = &apos;OUT&apos; 
+							DO
+								if (c.columnName is not null) then
+									set targetColumnListStr = targetColumnListStr || c.columnName || &apos; &apos;|| NVL(c.columnType,&apos;null&apos;) || &apos;|&apos;;
+								end if;
+							END FOR;
+						END IF;
+
+						-- Perform the comparison of the source and target columns
+						if (sourceColumnListStr = targetColumnListStr) then
+							set status = &apos;EQUAL&apos;;
+							set cntEqual = cntEqual + 1;
+							if (statusMode_ = &apos;A&apos; or statusMode_ = &apos;E&apos;) then
+								if (generateViewsWrapper = 0) then
+									INSERT INTO result VALUES(status, r.resType, r.resPath, targetResourcePath);
+								else
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;STATUS=&apos;||RPAD(status,16,&apos;_&apos;)||&apos;  TYPE=&apos;||RPAD(r.resType,9,&apos;_&apos;)||&apos; SOURCE=&apos;||r.resPath||&apos;    TARGET=&apos;||targetResourcePath);
+								end if;
+							end if;
+						else
+							set status = &apos;NOT EQUAL&apos;;
+							set cntNotEqual = cntNotEqual + 1;
+							if (statusMode_ = &apos;A&apos; or statusMode_ = &apos;N&apos;) then
+								if (generateViewsWrapper = 0) then
+									INSERT INTO result VALUES(status, r.resType, r.resPath, targetResourcePath);
+									if (debug = &apos;Y&apos;) then
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;STATUS=&apos;||RPAD(status,16,&apos;_&apos;)||&apos;  TYPE=&apos;||RPAD(r.resType,9,&apos;_&apos;)||&apos; SOURCE=&apos;||r.resPath||&apos;    TARGET=&apos;||targetResourcePath);
+									end if;
+								else
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;STATUS=&apos;||RPAD(status,16,&apos;_&apos;)||&apos;  TYPE=&apos;||RPAD(r.resType,9,&apos;_&apos;)||&apos; SOURCE=&apos;||r.resPath||&apos;    TARGET=&apos;||targetResourcePath);
+								end if;
+								if (debug = &apos;Y&apos;) then
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;sourceColumnListStr=&apos;||sourceColumnListStr);
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;targetColumnListStr=&apos;||targetColumnListStr);
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;&apos;);
+								end if;
+							end if;
+						end if;
+					else
+						set status = &apos;TARGET NOT FOUND&apos;;
+						set cntNotFound = cntNotFound + 1;
+						if (generateViewsWrapper = 0) then
+							INSERT INTO result VALUES(status, r.resType, r.resPath, targetResourcePath);
+						else
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;STATUS=&apos;||RPAD(status,16,&apos;_&apos;)||&apos;  TYPE=&apos;||RPAD(r.resType,9,&apos;_&apos;)||&apos; SOURCE=&apos;||r.resPath||&apos;    TARGET=&apos;||targetResourcePath);
+						end if;
+					end if; -- if (resourceExists(targetResourcePath, r.resType) = 1) then
+				end if; -- if (UPPER(compareMode) = &apos;C&apos;) then
+/* bypass outputting the status of &quot;SKIPPED&quot;
+			else
+				if (generateViewsWrapper = 0) then
+					INSERT INTO result VALUES(status, r.resType, r.resPath, targetResourcePath);
+				else
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;STATUS=&apos;||RPAD(status,16,&apos;_&apos;)||&apos;  TYPE=&apos;||RPAD(r.resType,9,&apos;_&apos;)||&apos; SOURCE=&apos;||r.resPath||&apos;    TARGET=&apos;||targetResourcePath);
+				end if;
+*/
+			end if; -- if (processResource) then 
+		end if; -- if (r.resType = &apos;TABLE&apos; or r.resType = &apos;PROCEDURE&apos;) then
+	END FOR;
+
+	CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;    count Total=&apos;||LPAD(cntTotal,16,&apos; &apos;));
+	CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;  count Skipped=&apos;||LPAD(cntSkipped,16,&apos; &apos;));
+	CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;count Not Equal=&apos;||LPAD(cntNotEqual,16,&apos; &apos;));
+	CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;    count Equal=&apos;||LPAD(cntEqual,16,&apos; &apos;));
+	CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;count Not Found=&apos;||LPAD(cntNotFound,16,&apos; &apos;));
+END</attribute>
+  <attribute name="creationDate" type="LONG">1383393161626</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="impactLevel" type="INTEGER">0</attribute>
+  <attribute name="impactMessage" type="NULL"/>
+  <attribute name="lastModifiedDate" type="LONG">1564600041997</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="public_types" type="MAP">
+    <item>
+      <key type="STRING">validategenerateViewsType</key>
+      <value type="BYTE_ARRAY">EB8GAgAZAHYAYQBsAGkAZABhAHQAZQBnAGUAbgBlAHIAYQB0AGUAVgBpAGUAdwBzAFQAeQBwAGUGKQBDAC8AcwBoAGEAcgBlAGQALwBBAFMAQQBzAHMAZQB0AHMALwBCAGUAcwB0AFAAcgBhAGMAdABpAGMAZQBzAF8AdgA4ADEALwBQAHIAbwBjAGUAZAB1AHIAZQBzAC8AdgBhAGwAaQBkAGEAdABlAGcAZQBuAGUAcgBhAHQAZQBWAGkAZQB3AHMGKgAZAHYAYQBsAGkAZABhAHQAZQBnAGUAbgBlAHIAYQB0AGUAVgBpAGUAdwBzAFQAeQBwAGUDEgAAAAEDEgAAAAEBEwEJFAAAAAQQIQYVAAYAcwB0AGEAdAB1AHMDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAbBgIABwBWAEEAUgBDAEgAQQBSAxIAAAACBAQAAAAAAAAAFAETAf////8QIQYVAAwAcgBlAHMAbwB1AHIAYwBlAFQAeQBwAGUDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAbBgIABwBWAEEAUgBDAEgAQQBSAxIAAAADBAQAAAAAAAAACgETAf////8QIQYVABIAcwBvAHUAcgBjAGUAUgBlAHMAbwB1AHIAYwBlAFAAYQB0AGgDLwAAAAEDFgAAAAADGgAAAAEDGwAAAAEDIP////8DIgAAAAAIGRAbBgIACwBMAE8ATgBHAFYAQQBSAEMASABBAFIDEgAAAAQEBAAAAAB/////ARMB/////xAhBhUAEwB0AGEAcgBlAGcAZQB0AFIAZQBzAG8AdQByAGMAZQBQAGEAdABoAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAAAxIAAAAE/////w==</value>
+    </item>
+  </attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

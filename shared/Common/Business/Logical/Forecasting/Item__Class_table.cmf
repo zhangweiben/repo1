@@ -1,0 +1,333 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Item_Class" path="/shared/Common/Business/Logical/Forecasting/Item_Class" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_no" nullable="true">
+      <datatype type="STRING" minLength="12" maxLength="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_desc_nm" nullable="true">
+      <datatype type="STRING" minLength="30" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="class_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="class_desc_nm" nullable="true">
+      <datatype type="STRING" minLength="25" maxLength="25"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/Forecasting/Fft004_Fcast_Item" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="item_desc_nm">
+        <datatype type="STRING" minLength="30" maxLength="30"/>
+      </element>
+      <element name="anlys_desc_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="anlys_2desc_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="intro_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="anlys_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="dcost_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="bv_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="nbv_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="mab_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="mad_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="pv_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="stat_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="prt_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="price_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="mtd_dmand_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="mtd_dmand_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="perm_yr4">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="perm_mo">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="perm_fcast_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="each_pct">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="each_dcost_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="fcast_hold_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="fcast_prev_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="dmand_hold_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_fcast_hold">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_fcast_1bom">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_fcast_1eom">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_fcast_2bom">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_fcast_2eom">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="gains_mdl_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="gains_prev_mdl_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="gains_rview_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="gains_prev_rview">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="gains_mad_qty">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="1"/>
+      </element>
+      <element name="gains_prev_mad_qty">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="1"/>
+      </element>
+      <element name="gains_fcast_mad">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="1"/>
+      </element>
+      <element name="gains_rer_qty">
+        <datatype type="DECIMAL" maxDigits="4" maxFractionalDigits="2"/>
+      </element>
+      <element name="gains_lead_fcast">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="gains_recom_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="last_updt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="wgt_qty">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="3"/>
+      </element>
+      <element name="cs_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="daily_dmand_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="cmab_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="cmab_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="cmad_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="cmad_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="amab_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="amab_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="amad_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="amad_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="bv_bdgt_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="mtd_promo_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="fcast_xpr_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="mtd_ebiz_dmand_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_item_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="stats_fcast_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ebiz_hold_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="promo_item_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="dcont_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="inact_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="stat_act_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="add_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="trnsfr_to_item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="trnsfr_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="rplac_item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="prev_item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="sugg_rtail_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="ltu_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="rebate_price_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="mtd_xplod_dmand_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="new_imprv_flg">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="where_fcast_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/Forecasting/Fft008_Class" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="class_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/Forecasting/Fft009_Class_Desc" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="class_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="class_desc_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="help_xcept_nm">
+        <datatype type="STRING" minLength="50" maxLength="50"/>
+      </element>
+      <element name="slect_defa_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="bus_ln_summ_cd">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="class_abbv_nm">
+        <datatype type="STRING" minLength="10" maxLength="10"/>
+      </element>
+      <element name="grp_nm_id">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    Fft008_Class.corp_cd, 
+    Fft008_Class.item_no, 
+    Fft004_Fcast_Item.item_desc_nm, 
+    Fft008_Class.class_cd, 
+    Fft009_Class_Desc.class_desc_nm
+FROM      
+    /shared/Common/Physical/Formatting/Forecasting/Fft004_Fcast_Item Fft004_Fcast_Item INNER JOIN 
+        /shared/Common/Physical/Formatting/Forecasting/Fft008_Class Fft008_Class INNER JOIN 
+            /shared/Common/Physical/Formatting/Forecasting/Fft009_Class_Desc Fft009_Class_Desc
+        ON Fft008_Class.class_cd = Fft009_Class_Desc.class_cd
+    ON Fft008_Class.item_no = Fft004_Fcast_Item.item_no AND 
+        Fft008_Class.corp_cd = Fft004_Fcast_Item.corp_cd</attribute>
+  <attribute name="creationDate" type="LONG">1554945448140</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="BYTE_ARRAY">EIEJBAAAAAUQUQYBABEARgBmAHQAMAAwADQAXwBGAGMAYQBzAHQAXwBJAHQAZQBtBgIAEQBGAGYAdAAwADAANABfAEYAYwBhAHMAdABfAEkAdABlAG0DC/////8DCv////8DDP////8LEQAGAAYAcwBoAGEAcgBlAGQABgBDAG8AbQBtAG8AbgAIAFAAaAB5AHMAaQBjAGEAbAAKAEYAbwByAG0AYQB0AHQAaQBuAGcACwBGAG8AcgBlAGMAYQBzAHQAaQBuAGcAEQBGAGYAdAAwADAANABfAEYAYwBhAHMAdABfAEkAdABlAG3//xBRBgEAEQBGAGYAdAAwADAAOQBfAEMAbABhAHMAcwBfAEQAZQBzAGMGAgARAEYAZgB0ADAAMAA5AF8AQwBsAGEAcwBzAF8ARABlAHMAYwML/////wMK/////wMM/////wsRAAYABgBzAGgAYQByAGUAZAAGAEMAbwBtAG0AbwBuAAgAUABoAHkAcwBpAGMAYQBsAAoARgBvAHIAbQBhAHQAdABpAG4AZwALAEYAbwByAGUAYwBhAHMAdABpAG4AZwARAEYAZgB0ADAAMAA5AF8AQwBsAGEAcwBzAF8ARABlAHMAY///EFEGAQAMAEYAZgB0ADAAMAA4AF8AQwBsAGEAcwBzBgIADABGAGYAdAAwADAAOABfAEMAbABhAHMAcwML/////wMK/////wMM/////wsRAAYABgBzAGgAYQByAGUAZAAGAEMAbwBtAG0AbwBuAAgAUABoAHkAcwBpAGMAYQBsAAoARgBvAHIAbQBhAHQAdABpAG4AZwALAEYAbwByAGUAYwBhAHMAdABpAG4AZwAMAEYAZgB0ADAAMAA4AF8AQwBsAGEAcwBz//8QUwYJAAUASQBOAE4ARQBSAw0AAAACAw4AAAABCA8QYgYHAAEAPQEFAAgDEEEGAQAIAGMAbABhAHMAcwBfAGMAZAYCAAAGA///BgT//wMK/////wMLAAAAAv//CAQQQQYBAAgAYwBsAGEAcwBzAF8AYwBkBgIAAAYD//8GBP//Awr/////AwsAAAAB////////EFMGCQAFAEkATgBOAEUAUgMNAAAAAAMOAAAAAwgPEGEBBQABBgAIARBiBgcAAQA9AQUACAMQQQYBAAcAaQB0AGUAbQBfAG4AbwYCAAAGA///BgT//wMK/////wMLAAAAAv//CAQQQQYBAAcAaQB0AGUAbQBfAG4AbwYCAAAGA///BgT//wMK/////wMLAAAAAP////8IAhBiBgcAAQA9AQUACAMQQQYBAAcAYwBvAHIAcABfAGMAZAYCAAAGA///BgT//wMK/////wMLAAAAAv//CAQQQQYBAAcAYwBvAHIAcABfAGMAZAYCAAAGA///BgT//wMK/////wMLAAAAAP//////////AwUAAAACCAIQMQYB//8BAgEBBgABAwABBAABBQADBwAAAAAHCQAAAAEAAAAECQoAAAAFEEEGAQAHAGMAbwByAHAAXwBjAGQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAwQEAAAAAAAAAAMBEwH//wMLAAAAAv//EEEGAQAHAGkAdABlAG0AXwBuAG8GAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAADAQEAAAAAAAAAAwBEwH//wMLAAAAAv//EEEGAQAMAGkAdABlAG0AXwBkAGUAcwBjAF8AbgBtBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAB4EBAAAAAAAAAAeARMB//8DCwAAAAD//xBBBgEACABjAGwAYQBzAHMAXwBjAGQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAwQEAAAAAAAAAAMBEwH//wMLAAAAAv//EEEGAQANAGMAbABhAHMAcwBfAGQAZQBzAGMAXwBuAG0GAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAGQQEAAAAAAAAABkBEwH//wMLAAAAAf////8JBgAAAAUQggMKAAABeAMLAAAAKQMMAAAAyAMNAAAAyP//EIIDCgAAAYEDCwAAARUDDAAAAMgDDQAAAKj//xCCAwoAAABeAwsAAACHAwwAAADIAw0AAABg//8QggMK/////wML/////wMM/////wMN////////EIIDCv////8DC/////8DDP////8DDf///////wgDEHEDAQAAAAsDAgAAADIJAwAAAiYQdAMGAAAAAP//EHIGBP////8QcwMFAAAAAv//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAB//8QcgYE/////xBzAwUAAAAC//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAL//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAA///EHIGBP////8QcwMFAAAAAv//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAE//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv///////w==</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1554945448140</attribute>
+</metadata>

@@ -1,0 +1,579 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateCRUD_TypeDefinitionsXML" path="/shared/ASAssets/BestPractices_v81/Procedures/generateCRUD_TypeDefinitionsXML" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="overwrite" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="copyPrivilegeMode" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="startingFolderXML" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="inConfigParamsXML" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="inProjectFolderName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="generateViewsRow" type="TABLE" refId="1">
+        <element name="datasourceName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="projectFolderName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="greatGrandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="grandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="parentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="containerName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="containerType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="columnName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="logicalColumnName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="logicalColumnType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="logicalStatus">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="containerPath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="duration">
+          <datatype name="IntervalDay" type="INTERVAL_DAY" intervalMode="INTERVAL_HOUR_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/crudProcedures/generateCRUD_TypeDefinitionsXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="overwrite" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="sourceResource" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="startingFolderXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="crudVector" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="crudGenType" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="crudGenType" type="TREE" refId="2">
+              <element name="crudPath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="procedurePath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="procedureName">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="viewname">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="viewpath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="constantspath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="typedefprocpath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="typedefprocname">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="customcreatepath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="customupdatepath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="genUniqueIDPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="pkList">
+                <datatype name="pkList" type="ARRAY" maxLength="0">
+                  <itemDatatype>
+                    <datatype name="crudGenColumnType" type="TREE" refId="3">
+                      <element name="colName">
+                        <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                      </element>
+                      <element name="colType">
+                        <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                      </element>
+                    </datatype>
+                  </itemDatatype>
+                </datatype>
+              </element>
+              <element name="columnList">
+                <datatype name="columnList" type="ARRAY" maxLength="0">
+                  <itemDatatype>
+                    <reference refId="3"/>
+                  </itemDatatype>
+                </datatype>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="inConfigParamsXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="status" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/getDefaultValuesXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="scriptsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="defaultValuesXML" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="tagName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inXMLDoc" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resultValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/xmlUpdateNodeValue" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="tagName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="updateValue" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inXMLDoc" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outXMLDoc" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/copyResourcesPrivilegesV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="updatePrivilegesRecursively" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="copyPrivilegeMode" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inCopyPrivilegeEntries" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/createAllFoldersPrivileges" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inSourceFolderPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="updatePrivilegesRecursively" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="copyPrivilegeMode" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="folderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="folderPath" direction="OUT">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/numOccurrences" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="searchString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="stringToSearch" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="num" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/xml/extractXMLOccurrence" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inContentXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inTagName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOccurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inIncludeDelimiter" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inTrimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inCaseSensitive" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="status" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	generateCRUD_TypeDefinitionsXML:
+	-- Data Virtualization Best Practices --
+
+	This procedure generates the Type Definition script text
+ 
+	Input:
+		Environmnet Variables set by invoking generate...Views procedures:
+			This is an alternative approach to setting variables without modiffying the signature of a procedure.
+
+			Local Variable			Environment Variable				Desscription
+			-----------------------	---------------------------			----------------------------------------
+			copyPrivilegeMode		best.practices.copyPrivilegeMode	determine the type of copy: 0=OVERWRITE_APPEND, 1=SET_EXACTLY
+
+			-- 0=&quot;FAIL_IF_EXISTS&quot;=do not overwrite the resource.  If the resource exists, raise an exception.
+			-- 1=&quot;SKIP_IF_EXISTS&quot;=skip the resource if it exists and continue processing
+			-- 2=&quot;OVERWRITE_IF_EXISTS&quot;=do overwrite the resource if it exists.
+		overwrite - allows user to decide whether they want to overwrite an existing view or not.
+
+			-- flag indicating the mode in which to copy privileges.  Privileges are only copied from the parent when creating new resources including folders.
+			-- null (default) - do not set any privileges at all
+			-- 0 - set mode to &quot;OVERWRITE_APPEND&quot; - merges and does not update privileges for users or groups not mentioned.
+			-- 1 - set the mode to &quot;SET_EXACTLY&quot; - makes privileges look exactly like those provided in the call.
+		copyPrivilegeMode
+
+			-- The XML of starting folders including source, target and derived filter path
+		startingFolderXML 
+
+			-- The XML of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+		ConfigParamsXML 
+
+			-- the name of the project folder (defaultValue.basePath)(projectName)
+		inProjectFolderName
+
+	Output:
+		success	- 1=success, 0=not successful
+		scripttext - the Type Definition procedure script text
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	06/15/2010		Mike Tinius			5.2.0			Created new
+	05/22/2013		Mike Tinius			6.0.0			Modified for Best Practices 7.1
+	10/28/2013		Mike Tinius			6.2.2			B.P. 8.0: Added inProjectFolderName to the input parameters
+	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	03/14/2019		Mike Tinius			7.0.8			B.P. 2019.102: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Modified call from copyResourcesPrivileges to copyResourcesPrivilegesV2 to remove VECTOR usage
+	06/12/2019		Mike Tinius			7.0.8			B.P. 2019.200: Derived the new generateCRUD_TypeDefinitionsXML from generateCRUD_TypeDefinitions to eliminate vector usage.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE generateCRUD_TypeDefinitionsXML(
+		-- 0=&quot;FAIL_IF_EXISTS&quot;=do not overwrite the resource.  If the resource exists, raise an exception.
+		-- 1=&quot;SKIP_IF_EXISTS&quot;=skip the resource if it exists and continue processing
+		-- 2=&quot;OVERWRITE_IF_EXISTS&quot;=do overwrite the resource if it exists.
+	IN overwrite				INTEGER,
+
+		-- flag indicating the mode in which to copy privileges.  Privileges are only copied from the parent when creating new resources including folders.
+		-- null (default) - do not set any privileges at all
+		-- 0 - set mode to &quot;OVERWRITE_APPEND&quot; - merges and does not update privileges for users or groups not mentioned.
+		-- 1 - set the mode to &quot;SET_EXACTLY&quot; - makes privileges look exactly like those provided in the call.
+	IN copyPrivilegeMode		BIT,
+
+		-- The XML of starting folders including source, target and derived filter path
+	IN startingFolderXML		LONGVARCHAR,
+
+		-- The XML of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+	IN inConfigParamsXML		LONGVARCHAR,
+
+		-- the name of the project folder (defaultValue.basePath)(projectName)
+	IN inProjectFolderName 		VARCHAR,
+
+    OUT result PIPE 			/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.generateViewsRow
+/*  INSERT INTO result VALUES(&apos;&apos;, &apos;&apos;, &apos;&apos;, &apos;&apos;, typeDefProcName, &apos;PROCEDURE&apos;, &apos;GENERATED&apos;, resourcePath);
+	-- CRUD Generation results
+	DECLARE PUBLIC TYPE generateCRUDRow ROW (
+		datasourceName			VARCHAR(255), 
+		greatGrandParentName	VARCHAR(255), 
+		grandParentName			VARCHAR(255), 
+		parentName				VARCHAR(255),
+        containerName 			VARCHAR(255), 
+        containerType 			VARCHAR(255), 
+        name	 				VARCHAR(255), 
+        logicalName 			VARCHAR(255), 
+        logicalType 			VARCHAR(255), 
+        logicalStatus 			VARCHAR(255), 
+        containerPath 			TypeDefinitions.pathType
+	);
+*/
+) 
+BEGIN 
+	DECLARE moduleName					VARCHAR DEFAULT &apos;  &apos;||&apos;generateCRUD_TypeDefinitionsXML&apos;;
+	DECLARE debug2						CHAR(1);
+	DECLARE debug3						CHAR(1);
+	DECLARE ConfigParamsXML				LONGVARCHAR DEFAULT inConfigParamsXML;
+	DECLARE scriptsPath					LONGVARCHAR;
+	DECLARE defaultValuesXML			LONGVARCHAR;
+	DECLARE defaultValuesRec			/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.defaultValuesType;
+	DECLARE i							INTEGER DEFAULT 1;
+	DECLARE faultResponse				XML;
+	DECLARE success						INTEGER;
+	DECLARE crudVector					VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.crudGenType) DEFAULT VECTOR[(null)];
+	DECLARE crudOutput					/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.generateViewsRow;
+	DECLARE parentPath					VARCHAR(4000);
+	DECLARE resourceName				VARCHAR(255);
+	DECLARE status						VARCHAR;
+	DECLARE resultNode					LONGVARCHAR;
+	DECLARE numStartingFolders			INTEGER;
+	DECLARE singleStartingFolderXML		LONGVARCHAR;
+	DECLARE startingFolderExtendedRec /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.startingFolderExtendedType;
+	DECLARE copyPrivilegeEntry			LONGVARCHAR;
+	DECLARE updatePrivilegesRecursively	BIT DEFAULT 1;
+	DECLARE ex							EXCEPTION;
+	DECLARE resourceExists				BOOLEAN;
+
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;debug2&apos;, ConfigParamsXML, debug2);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;debug3&apos;, ConfigParamsXML, debug3);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;scriptsPath&apos;, ConfigParamsXML, scriptsPath);
+
+	-- Default the use alias rule to 0 which means do not apply aliases
+	CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlUpdateNodeValue(&apos;useAliasRule&apos;, &apos;0&apos;, ConfigParamsXML, ConfigParamsXML);
+
+	if (debug2 = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2,&apos;BEGIN: ============================================&apos;);
+ 	end if;
+
+	call /shared/ASAssets/BestPractices_v81/Procedures/getDefaultValuesXML(scriptsPath, defaultValuesXML);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;genUniqueIDPath&apos;, defaultValuesXML, defaultValuesRec.genUniqueIDPath);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;constantsScriptsPath&apos;, defaultValuesXML, defaultValuesRec.constantsScriptsPath);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;typeDefinitionPath&apos;, defaultValuesXML, defaultValuesRec.typeDefinitionPath);
+
+	set crudOutput.projectFolderName = inProjectFolderName;
+	
+	CALL /shared/ASAssets/Utilities/string/numOccurrences(&apos;&lt;startingFolderExtendedType&gt;&apos;, startingFolderXML, numStartingFolders);
+	WHILE (i &lt;= numStartingFolders) DO
+		CALL /shared/ASAssets/Utilities/&quot;xml&quot;/extractXMLOccurrence(startingFolderXML, &apos;startingFolderExtendedType&apos;, i, 0, 0, 0, status, resultNode);
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;sourceFolderPath&apos;, resultNode, startingFolderExtendedRec.sourceFolderPath);
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;targetFolderPath&apos;, resultNode, startingFolderExtendedRec.targetFolderPath);
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;typeDefProcName&apos;, resultNode, startingFolderExtendedRec.typeDefProcName);
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;typeDefProcPath&apos;, resultNode, startingFolderExtendedRec.typeDefProcPath);
+		SET singleStartingFolderXML = &apos;&lt;startingFolderExtendedType&gt;&apos;||resultNode||&apos;&lt;/startingFolderExtendedType&gt;&apos;;
+
+		-- If the Type Definition path does not exist then create it.
+		call /lib/resource/ResourceExists(startingFolderExtendedRec.typeDefProcPath,&apos;CONTAINER&apos;,null,resourceExists);
+		if (not resourceExists) then
+			if (debug2 = &apos;Y&apos;) then
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2,&apos;create resource=&apos;||startingFolderExtendedRec.typeDefProcPath|| &apos;   typeDefProcName=&apos;||startingFolderExtendedRec.typeDefProcName);
+			end if;
+			CALL /shared/ASAssets/Utilities/repository/createAllFoldersPrivileges(startingFolderExtendedRec.typeDefProcPath, updatePrivilegesRecursively, copyPrivilegeMode, success, faultResponse); -- Generate all necessary folders
+		end if;
+
+		-- Setup the CRUD vector to pass into the &quot;generateCRUD_TypeDefinitions&quot; procedure
+		set crudVector[1].crudPath = startingFolderExtendedRec.targetFolderPath;
+		set crudVector[1].constantspath = defaultValuesRec.constantsScriptsPath;
+		set crudVector[1].typedefprocname = startingFolderExtendedRec.typeDefProcName;
+		set crudVector[1].typedefprocpath = startingFolderExtendedRec.typeDefProcPath;
+
+		-- Generate the Type Definitions
+		set crudOutput.logicalColumnName = startingFolderExtendedRec.typeDefProcName;
+		set crudOutput.logicalColumnType = &apos;PROCEDURE&apos;;
+		set crudOutput.containerPath = startingFolderExtendedRec.typeDefProcPath || &apos;/&apos; || startingFolderExtendedRec.typeDefProcName;
+
+		-- Perform a cross-over of sourceFolderPath and TargetFolderPath for the purposes of executing generateDatasourceList
+		-- The reason is that generateDatasourceList uses the target folder to generate from instead of the source folder
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlUpdateNodeValue(&apos;sourceFolderPath&apos;, startingFolderExtendedRec.targetFolderPath, singleStartingFolderXML, singleStartingFolderXML);
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlUpdateNodeValue(&apos;targetFolderPath&apos;, startingFolderExtendedRec.sourceFolderPath, singleStartingFolderXML, singleStartingFolderXML);
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;targetFolderPath&apos;, singleStartingFolderXML, startingFolderExtendedRec.targetFolderPath);
+
+		-- Invoke the generate CRUD Type Definitions with a subsequent call to generateDatasourceList to get the list of views in the &quot;targetFolderPath&quot;
+		call /shared/ASAssets/BestPractices_v81/Procedures/crudProcedures/generateCRUD_TypeDefinitionsXML(debug3, overwrite, startingFolderExtendedRec.targetFolderPath, singleStartingFolderXML, crudVector, ConfigParamsXML, crudOutput.logicalStatus);
+		INSERT INTO result VALUES(crudOutput);
+
+		/*******************************************************
+		 * Update the privileges for the type definition procedure
+		 *******************************************************/
+		-- Get the parent path for the CRUD path
+		call /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(startingFolderExtendedRec.typeDefProcPath, &apos;E&apos;, resourceName, parentPath);
+
+		-- Setup the copyPrivilegeEntry for the main directories that exist under the crudPath
+		set copyPrivilegeEntry = 
+			&apos;  &lt;resource:copyPrivilegeEntry&gt;&apos;||CHR(10)||
+			&apos;    &lt;resource:srcResource&gt;&apos;||CHR(10)||
+			&apos;      &lt;resource:path&gt;&apos; || CAST(XMLTEXT(parentPath) AS LONGVARCHAR) || &apos;&lt;/resource:path&gt;&apos;||CHR(10)||
+			&apos;      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;&apos;||CHR(10)||
+			&apos;    &lt;/resource:srcResource&gt;&apos;||CHR(10)||
+			&apos;    &lt;resource:dstResource&gt;&apos;||CHR(10)||
+			&apos;      &lt;resource:path&gt;&apos; || CAST(XMLTEXT(startingFolderExtendedRec.typeDefProcPath) AS LONGVARCHAR) || &apos;&lt;/resource:path&gt;&apos;||CHR(10)||
+			&apos;      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;&apos;||CHR(10)||
+			&apos;    &lt;/resource:dstResource&gt;&apos;||CHR(10)||
+			&apos;  &lt;/resource:copyPrivilegeEntry&gt;&apos;||CHR(10)||
+			&apos;&apos;;
+
+		-- Update the privileges
+		if (updatePrivilegesRecursively is not null and copyPrivilegeMode is not null and copyPrivilegeMode = 1) then
+			call /shared/ASAssets/Utilities/repository/copyResourcesPrivilegesV2(updatePrivilegesRecursively, copyPrivilegeMode, copyPrivilegeEntry, success, faultResponse);
+			if (faultResponse is not null) then
+				raise ex value CAST(faultResponse as LONGVARCHAR);
+			end if;
+		end if;
+
+		set i = i + 1;
+	END WHILE;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564598987542</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:0:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:3:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:4:Customized" type="STRING">datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

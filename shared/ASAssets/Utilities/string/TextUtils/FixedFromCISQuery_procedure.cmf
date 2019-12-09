@@ -1,0 +1,78 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="FixedFromCISQuery" path="/shared/ASAssets/Utilities/string/TextUtils/FixedFromCISQuery" type="PROCEDURE" subtype="CUSTOM_PROCEDURE" changeToken="0" isFunction="true">
+  <annotation>FixedFromCISQuery:
+  Function to execute a CIS query and convert the result set to a Fixed length string with variable column widths.
+
+Inputs:
+  query_string    - The query to execute. If NULL is passed as input a NULL will be returned.
+    values: Any valid CIS query.
+
+  format_string   - A string of pipe separated sizes (widths) for each column.  
+  	format: col1_Size|col2_Size|...|coln_Size
+    values: 4|3|10|18
+
+  create_column_headers - Indicates whether to create a column headers row as the first row of the output.
+    values: Any boolean value (such as &quot;true&quot; or &quot;false&quot;.)
+
+  total_columns    - Total number of columns to produce.  This is a validation against the number of fields queried
+    values: Any integer value
+    
+
+Output:
+  result           - The result set converted to a Fixed length string.
+    values: A Fixed length string.
+
+
+Exceptions:
+  CustomProcedureException - Thrown when illegal arguments are passed.
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2011.4		08/01/2011		Kevin O&apos;Brien		5.2.0			Created new
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="query_string" direction="IN" nullable="true">
+      <datatype name="VARCHAR" subType="DATASOURCE_TYPE" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="format_string" direction="IN" nullable="true">
+      <datatype name="VARCHAR" subType="DATASOURCE_TYPE" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="create_column_headers" direction="IN" nullable="true">
+      <datatype name="VARCHAR" subType="DATASOURCE_TYPE" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="total_columns" direction="IN" nullable="true">
+      <datatype name="INTEGER" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" subType="DATASOURCE_TYPE" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="className" type="STRING">com.tibco.ps.utils.text.FixedFromCISQuery</attribute>
+  <attribute name="creationDate" type="LONG">1383622340769</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564685634183</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="selectionState" type="INTEGER">2</attribute>
+</metadata>

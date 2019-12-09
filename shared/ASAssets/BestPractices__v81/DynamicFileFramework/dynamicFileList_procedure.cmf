@@ -1,0 +1,730 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="dynamicFileList" path="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/dynamicFileList" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>dynamicFileList:
+
+    A custom script to list the dynamic files and associated published tables.
+	Assumption: Publish area (Virtual database, Catalog and Schema) and Datasources are already created.
+
+ 	Input:
+		debug:					- N=do not debug, Y=debug
+		datasourcePath:			- The full datasource path
+	Output:
+		Cursor with columns: 
+            status              - status messages:
+									&apos;PUBLISHED&apos;
+									&apos;NOT PUBLISHED&apos;
+									&apos;FILE NOT SUPPORTED&apos;
+            fileName 			- file name from the file system
+			userEmail			- user email associated with this file
+            fileTimestamp 		- timestamp when file was created
+            fileSize 			- size of the file in bytes
+            publishedTableName 	- name of the published file associated with the file 
+            publishedTablePath 	- SQL URL of the published table
+	    	publishedDatabase	- published database name
+            metadataTableName	- the CIS metadata datasource table name
+            metadataTablePath	- the CIS metadata datasource table path
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/12/2016		Mike Tinius			7.0.2			Created new
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="datasourcePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="status">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="fileName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="userEmail">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="fileTimestamp">
+          <datatype name="TIMESTAMP" type="DATETIME"/>
+        </element>
+        <element name="fileSize">
+          <datatype name="BIGINT" type="INTEGER"/>
+        </element>
+        <element name="publishedTableName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="publishedTablePath">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="publishedDatabase">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="metadataTableName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="metadataTablePath">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceDefs" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/Helper/emailGetUser" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="userName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="userEmail" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="EXECUTE_DDL_PACKAGE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="DATASOURCE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="CATALOG_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SCHEMA_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_SEQ" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_QUEUE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="TABLESPACE_FILEGROUP" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="PROCESS_WAIT_TIME_SECONDS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_RETENTION_POLICY_DAYS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CSV_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="EXCEL_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/file/FileProcessingCJP/getFileInfo" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="directoryPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="includeDirs" direction="IN">
+        <datatype type="STRING" minLength="255" maxLength="255"/>
+      </element>
+      <element name="FileInfo" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="filePath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="fileName">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="fileTimestamp">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="fileSize">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="isFile">
+            <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+          </element>
+          <element name="isDir">
+            <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="path">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="changeid">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="version">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="introspectState">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactMessage">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="scriptText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="childCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="dataSourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getDataSourceRootPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="dsPath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="fileRootPath" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getDependentResourcesDirectRecurseCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="includeInitialPath" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="inLineageResourceIdList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="4096"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="40"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="40"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactMessage">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceListRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creationDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="creationDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="creatorUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creatorUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="lastModifiedDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="lastModifiedUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* dynamicFileList:
+
+    A custom script to list the dynamic files and associated published tables.
+	Assumption: Publish area (Virtual database, Catalog and Schema) and Datasources are already created.
+
+ 	Input:
+		debug:					- N=do not debug, Y=debug
+		datasourcePath:			- The full datasource path
+	Output:
+		Cursor with columns: 
+            status              - status messages:
+									&apos;PUBLISHED&apos;
+									&apos;NOT PUBLISHED&apos;
+									&apos;FILE NOT SUPPORTED&apos;
+            fileName 			- file name from the file system
+			userEmail			- user email associated with this file
+            fileTimestamp 		- timestamp when file was created
+            fileSize 			- size of the file in bytes
+            publishedTableName 	- name of the published file associated with the file 
+            publishedTablePath 	- SQL URL of the published table
+	    	publishedDatabase	- published database name
+            metadataTableName	- the CIS metadata datasource table name
+            metadataTablePath	- the CIS metadata datasource table path
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/12/2016		Mike Tinius			7.0.2			Created new
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE dynamicFileList(
+	IN  debug					CHAR(1),		-- N=do not debug, Y=debug
+	IN	datasourcePath			VARCHAR(4000),	-- e.g. /shared/Project/BusinessArea/SubjectArea/Physical/Metadata/Dynamic/DynamicTempFiles_Excel
+    OUT result PIPE (
+		status				VARCHAR(4000),
+        fileName 			VARCHAR(255),
+		userEmail			LONGVARCHAR,
+        fileTimestamp 		TIMESTAMP, 
+        fileSize 			BIGINT,
+        publishedTableName 	VARCHAR(255), 
+        publishedTablePath 	VARCHAR(4000),
+		publishedDatabase	VARCHAR(255),
+		metadataTableName	VARCHAR(255),
+		metadataTablePath	VARCHAR(4000)
+        )
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;dynamicFileList&apos;;
+	DECLARE	globalConstantsPath		VARCHAR(4000) DEFAULT /shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants.globalConstantsPath;
+	DECLARE dataSourceType 			VARCHAR(255);
+	DECLARE supportedFileExt		VARCHAR;
+	DECLARE supportedFileExtCSV		VARCHAR;
+	DECLARE supportedFileExtXLS		VARCHAR;
+	DECLARE fileRootPath			/lib/resource/ResourceDefs.ResourcePath;
+	DECLARE resExists				BOOLEAN;
+	DECLARE fileExtension			VARCHAR;
+	DECLARE fileUsername			VARCHAR;
+	DECLARE userEmail				LONGVARCHAR;
+	DECLARE listUsernameEmail		LONGVARCHAR DEFAULT &apos;  &apos;;
+	DECLARE metadataResPath			LONGVARCHAR;
+	DECLARE metadataResName			VARCHAR;
+	DECLARE publishedResPath		LONGVARCHAR;
+	DECLARE publishedTableName		VARCHAR;
+	DECLARE publishedTablePath		LONGVARCHAR;
+	DECLARE publishedDatabase		VARCHAR;
+	DECLARE i						INTEGER;
+	DECLARE numFiles				INTEGER;
+	DECLARE resourceList			LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE pos1, pos2, pos3, pos4	INTEGER;
+
+	IF (debug = &apos;Y&apos;) THEN 
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;METADATA DATASOURCE PATH=[&apos;||NVL(datasourcePath,&apos;null&apos;)||&apos;]&apos;);
+	END IF;
+	-- The procedure is usable for File-Delimited and Microsoft Excel (non-ODBC) datasources only
+	-- Check if the datasource is supported
+	SELECT dataSourceType INTO dataSourceType FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor(datasourcePath, &apos;DATA_SOURCE&apos;);
+	IF (dataSourceType = &apos;File-Delimited&apos;) OR (dataSourceType = &apos;Microsoft Excel (non-ODBC)&apos;) THEN
+		CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;CSV_SUPPORTED_FILE_EXTENSIONS&apos;, 1, supportedFileExtCSV);
+		CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;EXCEL_SUPPORTED_FILE_EXTENSIONS&apos;, 1, supportedFileExtXLS);
+
+		IF (dataSourceType = &apos;File-Delimited&apos;) THEN
+			SET supportedFileExt = supportedFileExtCSV;
+			IF (debug = &apos;Y&apos;) THEN 
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;dataSourceType=[&apos;||NVL(dataSourceType,&apos;null&apos;)||&apos;]&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;supportedFileExt=[&apos;||NVL(supportedFileExt,&apos;null&apos;)||&apos;]&apos;);
+			END IF;
+		ELSE
+			SET supportedFileExt = supportedFileExtXLS;
+			IF (debug = &apos;Y&apos;) THEN 
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;dataSourceType=[&apos;||NVL(dataSourceType,&apos;null&apos;)||&apos;]&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;supportedFileExt=[&apos;||NVL(supportedFileExt,&apos;null&apos;)||&apos;]&apos;);
+			END IF;
+		END IF;
+
+		IF (debug = &apos;Y&apos;) THEN 
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;SUPPORT FILE EXTENSIONS=[&apos;||NVL(supportedFileExt,&apos;null&apos;)||&apos;]&apos;);
+		END IF;
+
+		CALL /lib/resource/ResourceExists(datasourcePath, &apos;DATA_SOURCE&apos;, null, resExists);
+		IF (resExists) THEN
+			-- Get the actual file system path by determining if the root path is the actual path or a file system security token name
+			CALL /shared/ASAssets/Utilities/repository/getDataSourceRootPath(datasourcePath, debug, fileRootPath);		
+
+			-- File root path is resolved so proceed with removal
+			IF (fileRootPath IS NOT NULL) THEN
+				SET numFiles = 0;
+				FOR f AS 
+					SELECT * FROM /shared/ASAssets/Utilities/file/FileProcessingCJP/getFileInfo(fileRootPath, &apos;Y&apos;)
+					WHERE isFile = 1
+				DO
+					SET numFiles = numFiles + 1;
+					-- The first time through the loop only, construct a lookup variable containing the metadata table path and dependent published link path pairing.
+					-- 		The &quot;resourceList&quot; is a LONGVARCHAR = VARCHAR(2,147,483,647) or 2 billion characters
+					IF (numFiles = 1) THEN
+						IF (debug = &apos;Y&apos;) THEN 
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;RESOURCE LIST:  CONSTRUCT ONE TIME FOR METADATA PATH=[&apos;||NVL(datasourcePath,&apos;null&apos;)||&apos;]&apos;);
+						END IF;
+						-- Get a list of datasource children
+						SET i = 0;
+						FOR p AS 
+							SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceListRecursive(datasourcePath, &apos;DATA_SOURCE&apos;) 
+							WHERE resType = &apos;TABLE&apos;
+						DO
+							SET i = i + 1;
+							SET publishedResPath = &apos;&apos;;
+							FOR dep AS 
+								SELECT * FROM /shared/ASAssets/Utilities/repository/getDependentResourcesDirectRecurseCursor(p.resPath, p.resType, 0, null) 
+								WHERE resourceType = &apos;LINK&apos;
+							DO
+								SET publishedResPath = dep.resourcePath;
+							END FOR;
+							-- Add the CIS metadata table path and published link path to the list
+							SET resourceList = resourceList || &apos;[&apos;||p.resPath||&apos;||&apos;||publishedResPath||&apos;]&apos;;
+						END FOR;
+						IF (debug = &apos;Y&apos;) THEN 
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;RESOURCE LIST:  NUM RESOURCES=[&apos;||i||&apos;]  resourceList string size=[&apos;||cast(LENGTH(resourceList) as varchar)||&apos;]&apos;);
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;RESOURCE LIST:  resourceList=&apos;||SUBSTRING(resourceList,1,30000));
+						END IF;
+					END IF;
+
+					-- Get the file extension
+					IF (INSTR(f.fileName, &apos;.&apos;) &gt; 0) THEN
+						SET pos1 = INSTR(f.fileName, &apos;.&apos;, -1, 1);
+						IF (pos1 &gt; 0) THEN
+							SET fileExtension = SUBSTRING(f.fileName, pos1+1);
+						END IF;
+					END IF;
+					SET fileExtension = &apos;.&apos;||lower(fileExtension);
+					-- Determine if the file is supported
+					IF (INSTR(supportedFileExt, fileExtension) &gt; 0) THEN
+						IF (debug = &apos;Y&apos;) THEN 
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;FILE SYSTEM FILES.  f.fileName=[&apos;||NVL(f.fileName,&apos;null&apos;)||&apos;]&apos;);
+						END IF;
+
+						-- Get the file username
+						SET fileUsername = null;
+						SET pos1 = INSTR(f.fileName, &apos;-&apos;);
+						IF (pos1 &gt; 0) THEN
+							SET fileUsername = SUBSTRING(f.fileName, 1, pos1-1);
+						END IF;
+						-- Check for an existing username/user email in the list
+						SET pos1 = INSTR(listUsernameEmail, &apos;[&apos;||fileUsername||&apos;|&apos;);
+						IF (fileUsername IS NOT NULL AND pos1 IS NOT NULL AND pos1 &gt; 0) THEN
+							SET pos2 = INSTR(listUsernameEmail, &apos;|&apos;, pos1);
+							SET pos3 = INSTR(listUsernameEmail, &apos;]&apos;, pos2);
+							SET userEmail = SUBSTRING(listUsernameEmail, pos2+1, pos3-pos2-1);
+						ELSE
+							-- Get the user email
+							CALL /shared/ASAssets/BestPractices_v81/DynamicFileFramework/Helper/emailGetUser(debug, fileUsername, userEmail);
+							-- Add the username/email to the list
+							IF (userEmail IS NOT NULL) THEN
+								IF (INSTR(listUsernameEmail, &apos;[&apos;||fileUsername||&apos;|&apos;) = 0) THEN
+									SET listUsernameEmail = listUsernameEmail || &apos;[&apos;||fileUsername||&apos;|&apos;||userEmail||&apos;]&apos;;
+								END IF;
+							END IF;
+						END IF;
+
+						-- if the parent path is found in the datasource name + filename then this is a match.  Find the name of the published view which is of type &apos;LINK&apos;.
+						-- resourceList format:  [metadata_table_path||published_link_path][metadata_table_path||published_link_path]...repeat n times
+						IF (supportedFileExt = supportedFileExtCSV) THEN
+							-- Get path position if CSV or TXT file
+							SET pos1 = INSTR(resourceList, &apos;[&apos;||datasourcePath||&apos;/&apos;||f.fileName);
+						ELSE
+							-- Get path position if Excel file
+							SET pos1 = INSTR(resourceList, &apos;[&apos;||datasourcePath||&apos;/&apos;||f.fileName||&apos;/&apos;);
+						END IF;
+						IF (pos1 &gt; 0) THEN
+							WHILE (pos1 &gt; 0) DO
+								SET pos2 = INSTR(resourceList, &apos;||&apos;, pos1);	-- separator between metadata table path and published link path
+								SET pos3 = INSTR(resourceList, &apos;]&apos;, pos1); -- end of this resource list pair
+								SET metadataResPath = SUBSTRING(resourceList,pos1+1,pos2-pos1-1);
+								SET pos4 = INSTR(metadataResPath, &apos;/&apos;, -1, 1);
+								SET metadataResName = SUBSTRING(metadataResPath, pos4+1);
+								IF (debug = &apos;Y&apos;) THEN 
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    FOUND IN &quot;resourceList&quot; CIS METADATA PATH=[&apos;||datasourcePath||&apos;/&apos;||f.fileName);
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    metadataResPath=&apos;||NVL(metadataResPath,&apos;null&apos;));
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    metadataResName=&apos;||NVL(metadataResName,&apos;null&apos;));
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    pos1=&apos;||pos1||&apos;  pos2=&apos;||pos2||&apos;  pos3=&apos;||pos3);
+								END IF;
+								SET publishedResPath = null;
+								SET publishedDatabase = null;
+								SET publishedTableName = null;
+								SET publishedTablePath = null;
+
+								-- Continue if there is a published link resources associated with this metadata table path
+								IF (pos3-2 &gt; pos2) THEN
+									SET publishedResPath = SUBSTRING(resourceList,pos2+2,pos3-pos2-2);
+									IF (LENGTH(TRIM(publishedResPath)) &gt; 0) THEN
+										SET pos4 = INSTR(publishedResPath, &apos;/&apos;, -1, 1);
+										SET publishedTableName = SUBSTRING(publishedResPath, pos4+1);
+										SET publishedTablePath = REPLACE(publishedResPath, &apos;/services/databases/&apos;, &apos;&apos;);
+										SET pos4 = INSTR(publishedTablePath, &apos;/&apos;, 1, 1);
+										SET publishedDatabase = SUBSTRING(publishedTablePath, 1, pos4-1);
+										SET publishedTablePath = REPLACE(publishedTablePath, publishedDatabase||&apos;/&apos;, &apos;&apos;);
+										CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(publishedTableName,null,publishedTableName);
+										CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(publishedTablePath,null,publishedTablePath);
+										SET publishedTablePath = REPLACE(publishedTablePath, &apos;/&apos;, &apos;.&apos;);
+									END IF;
+									INSERT INTO result VALUES(&apos;PUBLISHED&apos;, f.fileName, userEmail, f.fileTimestamp, f.fileSize, publishedTableName, publishedTablePath, publishedDatabase, metadataResName, metadataResPath);
+								ELSE
+									INSERT INTO result VALUES(&apos;NOT PUBLISHED&apos;, f.fileName, userEmail, f.fileTimestamp, f.fileSize, publishedTableName, publishedTablePath, publishedDatabase, metadataResName, metadataResPath);
+								END IF;
+								IF (supportedFileExt = supportedFileExtCSV) THEN
+									-- Get the next path position if CSV or TXT file
+									SET pos1 = INSTR(resourceList, &apos;[&apos;||datasourcePath||&apos;/&apos;||f.fileName, pos1+1);
+								ELSE
+									-- Get the next path position if Excel file
+									SET pos1 = INSTR(resourceList, &apos;[&apos;||datasourcePath||&apos;/&apos;||f.fileName||&apos;/&apos;, pos1+1);
+								END IF;
+							END WHILE;
+							IF (debug = &apos;Y&apos;) THEN 
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    publishedResPath=&apos;||NVL(publishedResPath,&apos;null&apos;));
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    publishedDatabase=&apos;||NVL(publishedDatabase,&apos;null&apos;));
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    publishedTablePath=&apos;||NVL(publishedTablePath,&apos;null&apos;));
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    publishedTableName=&apos;||NVL(publishedTableName,&apos;null&apos;));
+							END IF;
+						ELSE
+							INSERT INTO result VALUES(&apos;NOT PUBLISHED&apos;, f.fileName, userEmail, f.fileTimestamp, f.fileSize, null, null, null, null, null);
+						END IF;
+					ELSE
+						IF (INSTR(supportedFileExtCSV, fileExtension) = 0 AND INSTR(supportedFileExtXLS, fileExtension) = 0) THEN
+							INSERT INTO result VALUES(&apos;FILE NOT SUPPORTED&apos;, f.fileName, userEmail, f.fileTimestamp, f.fileSize, null, null, null, null, null);
+						END IF;
+					END IF;
+				END FOR;
+			END IF;
+		ELSE
+			IF (debug = &apos;Y&apos;) THEN 
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;DATASOURCE PATH DOES NOT EXIST.  datasourcePath=[&apos;||NVL(datasourcePath,&apos;null&apos;)||&apos;]&apos;);
+			END IF;		
+		END IF;
+	ELSE
+		INSERT INTO result(status) VALUES (&apos;ERROR: Data source type not supported: &apos; || dataSourceType);
+		IF (debug = &apos;Y&apos;) THEN 
+			CALL print(moduleName||&apos;ERROR: Data source type not supported: &apos; || dataSourceType);
+		END IF;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1455278310259</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap_im</attribute>
+  <attribute name="creatorUserId" type="INTEGER">1505</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564410931006</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">1505</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">9/269</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1455278310259</attribute>
+</metadata>

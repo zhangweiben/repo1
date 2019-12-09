@@ -1,0 +1,141 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Warehouse_Master" path="/shared/Common/Physical/Formatting/India_Coupon/Warehouse_Master" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="whse_code" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="location" nullable="true">
+      <datatype type="STRING" maxLength="35"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="state" nullable="true">
+      <datatype type="STRING" maxLength="17"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="region" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ofc_type" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="state_code" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="state2" nullable="true">
+      <datatype type="STRING" maxLength="17"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="state new code" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="region2" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="map" nullable="true">
+      <datatype type="STRING" maxLength="17"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/AWS/PostgreSQL_TDV_work/india_coupon/Master_Database_xlsx" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="Whse Code">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="Location">
+        <datatype type="STRING" maxLength="35"/>
+      </element>
+      <element name="State">
+        <datatype type="STRING" maxLength="17"/>
+      </element>
+      <element name="Region">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="Ofc Type">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="State Code">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="State2">
+        <datatype type="STRING" maxLength="17"/>
+      </element>
+      <element name="State new code">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="Region2">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="MAP">
+        <datatype type="STRING" maxLength="17"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	Master_Database_xlsx.&quot;Whse Code&quot; AS &quot;whse_code&quot;,
+	CAST(Master_Database_xlsx.&quot;Location&quot; AS VARCHAR(35)) AS &quot;location&quot;,
+	CAST(Master_Database_xlsx.State AS VARCHAR(17)) AS state,
+	CAST(Master_Database_xlsx.Region AS CHAR(1)) AS region,
+	CAST(Master_Database_xlsx.&quot;Ofc Type&quot; AS CHAR(4)) AS &quot;ofc_type&quot;,
+	CAST(Master_Database_xlsx.&quot;State Code&quot; AS CHAR(2)) AS &quot;state_code&quot;,
+	CAST(Master_Database_xlsx.State2 AS VARCHAR(17)) AS state2,
+	CAST(Master_Database_xlsx.&quot;State new code&quot; AS CHAR(4)) AS &quot;state new code&quot;,
+	CAST(Master_Database_xlsx.Region2 AS CHAR(1)) AS region2,
+	CAST(Master_Database_xlsx.MAP AS VARCHAR(17)) AS map 
+FROM
+	/shared/Common/Physical/Metadata/AWS/PostgreSQL_TDV_work/india_coupon/Master_Database_xlsx Master_Database_xlsx</attribute>
+  <attribute name="creationDate" type="LONG">1566315701722</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30105</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1567652075476</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30105</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1566315701722</attribute>
+</metadata>

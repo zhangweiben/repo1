@@ -1,0 +1,130 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Wwv03140_Bns_Per_Mst" path="/shared/Common/Application/Published/DE/Data_Quality/PG_EAP_Magic_Bonus/Wwv03140_Bns_Per_Mst" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="bns_per_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="yr_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mo_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="globl_bns_per_act_flg" nullable="true">
+      <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_creat_dtm" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_creat_user_nm" nullable="true">
+      <datatype type="STRING" minLength="10" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_chng_dtm" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_chng_user_nm" nullable="true">
+      <datatype type="STRING" minLength="10" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_chng_modul_nm" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/PostgreSQL_EAP/Magic_Bonus/Wwv03140_Bns_Per_Mst" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="bns_per_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="yr_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="mo_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="globl_bns_per_act_flg">
+        <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      </element>
+      <element name="audit_creat_dtm">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="audit_creat_user_nm">
+        <datatype type="STRING" minLength="10" maxLength="10"/>
+      </element>
+      <element name="audit_chng_dtm">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="audit_chng_user_nm">
+        <datatype type="STRING" minLength="10" maxLength="10"/>
+      </element>
+      <element name="audit_chng_modul_nm">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(Wwv03140_Bns_Per_Mst.bns_per_no AS DOUBLE) AS bns_per_no,
+	CAST(Wwv03140_Bns_Per_Mst.yr_no AS DOUBLE) AS yr_no,
+	CAST(Wwv03140_Bns_Per_Mst.mo_no AS DOUBLE) AS mo_no,
+	CAST(Wwv03140_Bns_Per_Mst.globl_bns_per_act_flg AS DECIMAL(1,0)) AS globl_bns_per_act_flg,
+	CAST(Wwv03140_Bns_Per_Mst.audit_creat_dtm AS TIMESTAMP) AS audit_creat_dtm,
+	CAST(Wwv03140_Bns_Per_Mst.audit_creat_user_nm AS CHAR(10)) AS audit_creat_user_nm,
+	CAST(Wwv03140_Bns_Per_Mst.audit_chng_dtm AS TIMESTAMP) AS audit_chng_dtm,
+	CAST(Wwv03140_Bns_Per_Mst.audit_chng_user_nm AS CHAR(10)) AS audit_chng_user_nm,
+	CAST(Wwv03140_Bns_Per_Mst.audit_chng_modul_nm AS VARCHAR(30)) AS audit_chng_modul_nm 
+FROM
+	/shared/Common/Physical/Formatting/PostgreSQL_EAP/Magic_Bonus/Wwv03140_Bns_Per_Mst Wwv03140_Bns_Per_Mst</attribute>
+  <attribute name="creationDate" type="LONG">1569986675577</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569987565583</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1569986675577</attribute>
+</metadata>

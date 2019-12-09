@@ -1,0 +1,369 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Gpt065_Cosmetic_Master" path="/shared/Common/Physical/Formatting/Appraise/Gpt065_Cosmetic_Master" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amway_sku_pfx" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amway_sku_base" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amway_sku_sfx" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cosmetic_sku_pfx" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cosmetic_sku_base" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cosmetic_sku_sfx" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sku_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="unit_forecast" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="unit_forecast_lnr" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bdgt_unit_forecast" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bdgt_unit_forecast_lnr" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="factory_cost" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bdgt_factory_cost" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sku_desc" nullable="true">
+      <datatype type="STRING" minLength="40" maxLength="40"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="added_who" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="added_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="forecast_sum" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="changed_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="changed_who" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="pend_wgtd_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bdgt_forecast_sum" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bdgt_prod_forecast" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="export_price" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="std_cost_src_cd" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="hybrd_cost_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ada_mrgn_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="meas_cr_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes>
+    <index name="GPI065_CORP_CD_PRM" type="CLUSTERED" unique="true">
+      <indexColumn name="corp_cd" sortOrder="ASCENDING"/>
+      <indexColumn name="amway_sku_pfx" sortOrder="ASCENDING"/>
+      <indexColumn name="amway_sku_base" sortOrder="ASCENDING"/>
+      <indexColumn name="amway_sku_sfx" sortOrder="ASCENDING"/>
+      <indexColumn name="cosmetic_sku_pfx" sortOrder="ASCENDING"/>
+      <indexColumn name="cosmetic_sku_base" sortOrder="ASCENDING"/>
+      <indexColumn name="cosmetic_sku_sfx" sortOrder="ASCENDING"/>
+      <indexColumn name="sku_cd" sortOrder="ASCENDING"/>
+    </index>
+    <index name="GPI065_COSMETIC_SKU_PFX_STD" type="OTHER" unique="true">
+      <indexColumn name="corp_cd" sortOrder="ASCENDING"/>
+      <indexColumn name="cosmetic_sku_pfx" sortOrder="ASCENDING"/>
+      <indexColumn name="cosmetic_sku_base" sortOrder="ASCENDING"/>
+      <indexColumn name="cosmetic_sku_sfx" sortOrder="ASCENDING"/>
+      <indexColumn name="sku_cd" sortOrder="ASCENDING"/>
+    </index>
+    <index name="GPI065_AMWAY_SKU_PFX_STD" type="OTHER" unique="false">
+      <indexColumn name="corp_cd" sortOrder="ASCENDING"/>
+      <indexColumn name="amway_sku_pfx" sortOrder="ASCENDING"/>
+      <indexColumn name="amway_sku_base" sortOrder="ASCENDING"/>
+      <indexColumn name="amway_sku_sfx" sortOrder="ASCENDING"/>
+      <indexColumn name="sku_cd" sortOrder="ASCENDING"/>
+    </index>
+    <index name="GPI065_COSMETIC_SKU_BASE_STD" type="OTHER" unique="false">
+      <indexColumn name="cosmetic_sku_pfx" sortOrder="ASCENDING"/>
+      <indexColumn name="cosmetic_sku_base" sortOrder="ASCENDING"/>
+      <indexColumn name="cosmetic_sku_sfx" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/OnPremises/SQLServer_Appraise/GPB110/dbo/GPT065_COSMETIC_MASTER" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="CORP_CD" nullable="false">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_PFX" nullable="false">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_BASE" nullable="false">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="AMWAY_SKU_SFX" nullable="false">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="COSMETIC_SKU_PFX" nullable="false">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="COSMETIC_SKU_BASE" nullable="false">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="COSMETIC_SKU_SFX" nullable="false">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="SKU_CD" nullable="false">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="UNIT_FORECAST" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="UNIT_FORECAST_LNR">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="BDGT_UNIT_FORECAST" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="BDGT_UNIT_FORECAST_LNR" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="FACTORY_COST" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="BDGT_FACTORY_COST" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="SKU_DESC" nullable="false">
+        <datatype type="STRING" minLength="40" maxLength="40"/>
+      </element>
+      <element name="ADDED_WHO" nullable="false">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="ADDED_DT" nullable="false">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="FORECAST_SUM">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="CHANGED_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="CHANGED_WHO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="PEND_WGTD_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="BDGT_FORECAST_SUM">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="BDGT_PROD_FORECAST">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="EXPORT_PRICE" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="STD_COST_SRC_CD">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="HYBRD_COST_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="ADA_MRGN_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="MEAS_CR_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	GPT065_COSMETIC_MASTER.CORP_CD corp_cd,
+	GPT065_COSMETIC_MASTER.AMWAY_SKU_PFX amway_sku_pfx,
+	GPT065_COSMETIC_MASTER.AMWAY_SKU_BASE amway_sku_base,
+	GPT065_COSMETIC_MASTER.AMWAY_SKU_SFX amway_sku_sfx,
+	GPT065_COSMETIC_MASTER.COSMETIC_SKU_PFX cosmetic_sku_pfx,
+	GPT065_COSMETIC_MASTER.COSMETIC_SKU_BASE cosmetic_sku_base,
+	GPT065_COSMETIC_MASTER.COSMETIC_SKU_SFX cosmetic_sku_sfx,
+	GPT065_COSMETIC_MASTER.SKU_CD sku_cd,
+	CAST(GPT065_COSMETIC_MASTER.UNIT_FORECAST AS INTEGER) AS unit_forecast,
+	CAST(GPT065_COSMETIC_MASTER.UNIT_FORECAST_LNR AS INTEGER) AS unit_forecast_lnr,
+	CAST(GPT065_COSMETIC_MASTER.BDGT_UNIT_FORECAST AS INTEGER) AS bdgt_unit_forecast,
+	CAST(GPT065_COSMETIC_MASTER.BDGT_UNIT_FORECAST_LNR AS INTEGER) AS bdgt_unit_forecast_lnr,
+	CAST(GPT065_COSMETIC_MASTER.FACTORY_COST AS DECIMAL(18,4)) AS factory_cost,
+	CAST(GPT065_COSMETIC_MASTER.BDGT_FACTORY_COST AS DECIMAL(18,4)) AS bdgt_factory_cost,
+	CAST(GPT065_COSMETIC_MASTER.SKU_DESC AS CHAR(40)) AS sku_desc,
+	CAST(GPT065_COSMETIC_MASTER.ADDED_WHO AS VARCHAR(30)) AS added_who,
+	CAST(GPT065_COSMETIC_MASTER.ADDED_DT AS TIMESTAMP) AS added_dt,
+	CAST(GPT065_COSMETIC_MASTER.FORECAST_SUM AS INTEGER) AS forecast_sum,
+	CAST(GPT065_COSMETIC_MASTER.CHANGED_DT AS TIMESTAMP) AS changed_dt,
+	CAST(GPT065_COSMETIC_MASTER.CHANGED_WHO AS VARCHAR(30)) AS changed_who,
+	CAST(GPT065_COSMETIC_MASTER.PEND_WGTD_FLAG AS CHAR(1)) AS pend_wgtd_flag,
+	CAST(GPT065_COSMETIC_MASTER.BDGT_FORECAST_SUM AS INTEGER) AS bdgt_forecast_sum,
+	CAST(GPT065_COSMETIC_MASTER.BDGT_PROD_FORECAST AS INTEGER) AS bdgt_prod_forecast,
+	CAST(GPT065_COSMETIC_MASTER.EXPORT_PRICE AS DECIMAL(18,4)) AS export_price,
+	CAST(GPT065_COSMETIC_MASTER.STD_COST_SRC_CD AS CHAR(5)) AS std_cost_src_cd,
+	CAST(GPT065_COSMETIC_MASTER.HYBRD_COST_AMT AS DECIMAL(18,4)) AS hybrd_cost_amt,
+	CAST(GPT065_COSMETIC_MASTER.ADA_MRGN_AMT AS DECIMAL(18,4)) AS ada_mrgn_amt,
+	CAST(GPT065_COSMETIC_MASTER.MEAS_CR_AMT AS DECIMAL(18,4)) AS meas_cr_amt 
+FROM
+	/shared/Common/Physical/Metadata/OnPremises/SQLServer_Appraise/GPB110/dbo/GPT065_COSMETIC_MASTER GPT065_COSMETIC_MASTER</attribute>
+  <attribute name="creationDate" type="LONG">1552592169424</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1552592169424</attribute>
+</metadata>

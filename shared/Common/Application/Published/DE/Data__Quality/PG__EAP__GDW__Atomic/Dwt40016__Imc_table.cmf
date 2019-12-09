@@ -1,0 +1,812 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Dwt40016_Imc" path="/shared/Common/Application/Published/DE/Data_Quality/PG_EAP_GDW_Atomic/Dwt40016_Imc" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="intgrt_msg_create_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_uniq_id" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_act_cd" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_aff_cd" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_orgnl_source_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_source_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_targt_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_name" nullable="true">
+      <datatype type="STRING" maxLength="360"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_type" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_number" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="address_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="party_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="party_site_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="pin_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="loa_los_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="auto_renewal_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_info_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="organization_profile_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="status" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="inactivation_reason_code" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sponsor_no" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="class" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="back_order_allowed" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="application_refund_given" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="previous_award_level" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="registration_type" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="signed_form_received_flag" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="signed_form_received_date" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="communication_preference" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="legal_entity_type" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="application_date" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sales_plan_affiliate" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="loa" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="loa_imc_no" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="refund_imc_number" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="app_int_sponsor" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="app_int_sponsor_country" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="primary_business_number" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="primary_business_country" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="should_be_sponsor_1" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="should_be_sponsor_2" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="should_be_sponsor_1_name" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="should_be_sponsor_2_name" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="auto_renewal" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="auto_renewal_payment_method" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="auto_renewal_start_date" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="auto_renewal_end_date" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="pin_no" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ship_method" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="staging_attribute1" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="staging_attribute2" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="staging_attribute3" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="staging_attribute4" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="staging_attribute5" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="interface_type" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="request_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="control_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="account_name" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="application_sponsor" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sponsor_name" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="authorized_payment_method" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="group_payment_type" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="available_for_publication" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="preferred_delivery_method" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="create_date" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="oper_unit" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="home_country" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="application_sponsor_name" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="etl_insert_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/PostgreSQL_EAP/GDW_Atomic/Dwt40016_Imc" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="intgrt_msg_create_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="intgrt_uniq_id">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="intgrt_act_cd">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="intgrt_aff_cd">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="intgrt_orgnl_source_sys_id">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="intgrt_source_sys_id">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="intgrt_targt_sys_id">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="imc_name">
+        <datatype type="STRING" maxLength="360"/>
+      </element>
+      <element name="imc_type">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="imc_number">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="imc_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="address_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="party_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="party_site_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="pin_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="loa_los_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="auto_renewal_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="imc_info_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="organization_profile_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="status">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="inactivation_reason_code">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="sponsor_no">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="class">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="back_order_allowed">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="application_refund_given">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="previous_award_level">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="registration_type">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="signed_form_received_flag">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="signed_form_received_date">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="communication_preference">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="legal_entity_type">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="application_date">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="sales_plan_affiliate">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="loa">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="loa_imc_no">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="refund_imc_number">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="app_int_sponsor">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="app_int_sponsor_country">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="primary_business_number">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="primary_business_country">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="should_be_sponsor_1">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="should_be_sponsor_2">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="should_be_sponsor_1_name">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="should_be_sponsor_2_name">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="auto_renewal">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="auto_renewal_payment_method">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="auto_renewal_start_date">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="auto_renewal_end_date">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="pin_no">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="ship_method">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="staging_attribute1">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="staging_attribute2">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="staging_attribute3">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="staging_attribute4">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="staging_attribute5">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="interface_type">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="request_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="control_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="account_name">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="application_sponsor">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="sponsor_name">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="authorized_payment_method">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="group_payment_type">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="available_for_publication">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="preferred_delivery_method">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="create_date">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="oper_unit">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="home_country">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="application_sponsor_name">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="etl_insert_dt">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(Dwt40016_Imc.intgrt_msg_create_dt AS TIMESTAMP) AS intgrt_msg_create_dt,
+	CAST(Dwt40016_Imc.intgrt_uniq_id AS VARCHAR(240)) AS intgrt_uniq_id,
+	CAST(Dwt40016_Imc.intgrt_act_cd AS VARCHAR(30)) AS intgrt_act_cd,
+	CAST(Dwt40016_Imc.intgrt_aff_cd AS VARCHAR(240)) AS intgrt_aff_cd,
+	CAST(Dwt40016_Imc.intgrt_orgnl_source_sys_id AS VARCHAR(240)) AS intgrt_orgnl_source_sys_id,
+	CAST(Dwt40016_Imc.intgrt_source_sys_id AS VARCHAR(240)) AS intgrt_source_sys_id,
+	CAST(Dwt40016_Imc.intgrt_targt_sys_id AS VARCHAR(240)) AS intgrt_targt_sys_id,
+	CAST(Dwt40016_Imc.&quot;id&quot; AS DOUBLE) AS &quot;id&quot;,
+	CAST(Dwt40016_Imc.imc_name AS VARCHAR(360)) AS imc_name,
+	CAST(Dwt40016_Imc.imc_type AS VARCHAR(150)) AS imc_type,
+	CAST(Dwt40016_Imc.imc_number AS VARCHAR(30)) AS imc_number,
+	CAST(Dwt40016_Imc.imc_id AS DOUBLE) AS imc_id,
+	CAST(Dwt40016_Imc.address_id AS DOUBLE) AS address_id,
+	CAST(Dwt40016_Imc.party_id AS DOUBLE) AS party_id,
+	CAST(Dwt40016_Imc.party_site_id AS DOUBLE) AS party_site_id,
+	CAST(Dwt40016_Imc.pin_id AS DOUBLE) AS pin_id,
+	CAST(Dwt40016_Imc.loa_los_id AS DOUBLE) AS loa_los_id,
+	CAST(Dwt40016_Imc.auto_renewal_id AS DOUBLE) AS auto_renewal_id,
+	CAST(Dwt40016_Imc.imc_info_id AS DOUBLE) AS imc_info_id,
+	CAST(Dwt40016_Imc.organization_profile_id AS DOUBLE) AS organization_profile_id,
+	CAST(Dwt40016_Imc.status AS VARCHAR(150)) AS status,
+	CAST(Dwt40016_Imc.inactivation_reason_code AS VARCHAR(150)) AS inactivation_reason_code,
+	CAST(Dwt40016_Imc.sponsor_no AS VARCHAR(150)) AS sponsor_no,
+	CAST(Dwt40016_Imc.class AS VARCHAR(150)) AS class,
+	CAST(Dwt40016_Imc.back_order_allowed AS VARCHAR(150)) AS back_order_allowed,
+	CAST(Dwt40016_Imc.application_refund_given AS VARCHAR(150)) AS application_refund_given,
+	CAST(Dwt40016_Imc.previous_award_level AS VARCHAR(150)) AS previous_award_level,
+	CAST(Dwt40016_Imc.registration_type AS VARCHAR(150)) AS registration_type,
+	CAST(Dwt40016_Imc.signed_form_received_flag AS VARCHAR(150)) AS signed_form_received_flag,
+	CAST(Dwt40016_Imc.signed_form_received_date AS VARCHAR(150)) AS signed_form_received_date,
+	CAST(Dwt40016_Imc.communication_preference AS VARCHAR(150)) AS communication_preference,
+	CAST(Dwt40016_Imc.legal_entity_type AS VARCHAR(150)) AS legal_entity_type,
+	CAST(Dwt40016_Imc.application_date AS VARCHAR(150)) AS application_date,
+	CAST(Dwt40016_Imc.sales_plan_affiliate AS VARCHAR(150)) AS sales_plan_affiliate,
+	CAST(Dwt40016_Imc.loa AS VARCHAR(150)) AS loa,
+	CAST(Dwt40016_Imc.loa_imc_no AS VARCHAR(30)) AS loa_imc_no,
+	CAST(Dwt40016_Imc.refund_imc_number AS VARCHAR(150)) AS refund_imc_number,
+	CAST(Dwt40016_Imc.app_int_sponsor AS VARCHAR(150)) AS app_int_sponsor,
+	CAST(Dwt40016_Imc.app_int_sponsor_country AS VARCHAR(150)) AS app_int_sponsor_country,
+	CAST(Dwt40016_Imc.primary_business_number AS VARCHAR(150)) AS primary_business_number,
+	CAST(Dwt40016_Imc.primary_business_country AS VARCHAR(150)) AS primary_business_country,
+	CAST(Dwt40016_Imc.should_be_sponsor_1 AS VARCHAR(150)) AS should_be_sponsor_1,
+	CAST(Dwt40016_Imc.should_be_sponsor_2 AS VARCHAR(150)) AS should_be_sponsor_2,
+	CAST(Dwt40016_Imc.should_be_sponsor_1_name AS VARCHAR(150)) AS should_be_sponsor_1_name,
+	CAST(Dwt40016_Imc.should_be_sponsor_2_name AS VARCHAR(150)) AS should_be_sponsor_2_name,
+	CAST(Dwt40016_Imc.auto_renewal AS VARCHAR(1)) AS auto_renewal,
+	CAST(Dwt40016_Imc.auto_renewal_payment_method AS VARCHAR(150)) AS auto_renewal_payment_method,
+	CAST(Dwt40016_Imc.auto_renewal_start_date AS VARCHAR(150)) AS auto_renewal_start_date,
+	CAST(Dwt40016_Imc.auto_renewal_end_date AS VARCHAR(150)) AS auto_renewal_end_date,
+	CAST(Dwt40016_Imc.pin_no AS VARCHAR(150)) AS pin_no,
+	CAST(Dwt40016_Imc.ship_method AS VARCHAR(150)) AS ship_method,
+	CAST(Dwt40016_Imc.staging_attribute1 AS VARCHAR(150)) AS staging_attribute1,
+	CAST(Dwt40016_Imc.staging_attribute2 AS VARCHAR(150)) AS staging_attribute2,
+	CAST(Dwt40016_Imc.staging_attribute3 AS VARCHAR(150)) AS staging_attribute3,
+	CAST(Dwt40016_Imc.staging_attribute4 AS VARCHAR(150)) AS staging_attribute4,
+	CAST(Dwt40016_Imc.staging_attribute5 AS VARCHAR(150)) AS staging_attribute5,
+	CAST(Dwt40016_Imc.interface_type AS VARCHAR(30)) AS interface_type,
+	CAST(Dwt40016_Imc.request_id AS DOUBLE) AS request_id,
+	CAST(Dwt40016_Imc.control_id AS DOUBLE) AS control_id,
+	CAST(Dwt40016_Imc.account_name AS VARCHAR(240)) AS account_name,
+	CAST(Dwt40016_Imc.application_sponsor AS VARCHAR(150)) AS application_sponsor,
+	CAST(Dwt40016_Imc.sponsor_name AS VARCHAR(150)) AS sponsor_name,
+	CAST(Dwt40016_Imc.authorized_payment_method AS VARCHAR(150)) AS authorized_payment_method,
+	CAST(Dwt40016_Imc.group_payment_type AS VARCHAR(150)) AS group_payment_type,
+	CAST(Dwt40016_Imc.available_for_publication AS VARCHAR(150)) AS available_for_publication,
+	CAST(Dwt40016_Imc.preferred_delivery_method AS VARCHAR(150)) AS preferred_delivery_method,
+	CAST(Dwt40016_Imc.create_date AS TIMESTAMP) AS create_date,
+	CAST(Dwt40016_Imc.oper_unit AS VARCHAR(10)) AS oper_unit,
+	CAST(Dwt40016_Imc.home_country AS VARCHAR(60)) AS home_country,
+	CAST(Dwt40016_Imc.application_sponsor_name AS VARCHAR(150)) AS application_sponsor_name,
+	CAST(Dwt40016_Imc.etl_insert_dt AS TIMESTAMP) AS etl_insert_dt 
+FROM
+	/shared/Common/Physical/Formatting/PostgreSQL_EAP/GDW_Atomic/Dwt40016_Imc Dwt40016_Imc</attribute>
+  <attribute name="creationDate" type="LONG">1572631180722</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">292776</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1572631251508</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">292776</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1572631180722</attribute>
+</metadata>

@@ -1,0 +1,558 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="retrieveColumnList" path="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/retrieveColumnList" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="inColumnExpression" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="fromClauseVector" direction="IN" nullable="true">
+      <datatype name="fromClauseVector" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="FromClause_Type" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/TypeDefinitions" referenceType="FromClause_Type" type="TREE" refId="1">
+            <element name="resourcePath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="resourceType">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="resourceAlias">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="resourceName">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="codingListColumns" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="columnExpression">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inCodingType" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inEncodingActions" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="codingList" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inModuleNameInvoking" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inDebug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inStringName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/isComment" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="keyword" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="isComment" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/returnOccurrence" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="trimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="remainderText" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resultText" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inWord" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor_PROCEDURE_CURSOR" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cursorNum" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="4096"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnType">
+            <datatype type="STRING" maxLength="4096"/>
+          </element>
+          <element name="columnBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="dataType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="paramDirection">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="proprietaryModel">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/TextUtils/RegexReplace" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="Input Text" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Regular Expression" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Replacement Text" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	retrieveColumnList - Retrieve the complete column list for the sql projection.
+
+	  Handle the following use cases:
+		1. select *
+		2. select table1.*
+		3. select table1.    * -- remove the spaces first
+		otherwise just return the expression as is with no processing.
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	11/11/2011		Mike Tinius			5.2.0			Created new
+	03/15/2013		Mike Tinius			5.2.0			Modifications for Best Practices 7.0
+	06/24/2013		Mike Tinius			6.0.0			7.2: Multiple instances of Best Practices supported
+	12/18/2013		Mike Tinius			6.2.0			8.1: Fixed issue with quoting reserved words around the column expression using applyReservedListToWord().
+	03/28/2014		Mike Tinius			6.2.0			8.1.1: Added ability to parse PROCEDURE types and return the column list.
+	11/20/2014		Mike Tinius			6.2.6			8.1.5: Added &apos;D S&apos; to the getCodedString(&apos;D&apos;, &apos;D S&apos;, ...) invocation because of a change to getCodedString.
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE retrieveColumnList(
+	IN inColumnExpression	LONGVARCHAR,
+	IN fromClauseVector		VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/TypeDefinitions.FromClause_Type),
+	IN codingListColumns	VARCHAR(4000),
+	OUT result 				PIPE(columnExpression LONGVARCHAR)
+)
+BEGIN
+	DECLARE moduleName			VARCHAR DEFAULT &apos;retrieveColumnList&apos;;
+	DECLARE debug				CHAR(1)DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.debugSqlParser3;
+	DECLARE columnExpression 	LONGVARCHAR DEFAULT inColumnExpression;
+	DECLARE columnExpressionTmp	LONGVARCHAR;
+	DECLARE remainder			VARCHAR;
+	DECLARE i					INTEGER DEFAULT 1;
+	DECLARE sourceAlias			VARCHAR;
+	DECLARE fromResourcePath	LONGVARCHAR;
+	DECLARE fromResourceType	VARCHAR;
+	DECLARE padNum				INTEGER DEFAULT 80;
+	DECLARE regexPattern		VARCHAR DEFAULT &apos;(?&lt;=\*)\s* |\s(?=\*)|\s*(?=\*)|(?&lt;=\.)&apos;;
+	DECLARE isComment			INTEGER;
+	DECLARE debugTime			CHAR(1) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.debugTime;
+	DECLARE startTime			TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+	DECLARE duration			INTERVAL MINUTE TO SECOND;
+	DECLARE seconds				DECIMAL(32,3);
+	DECLARE columnName			VARCHAR;
+
+	-- Remove the space between . and * (TABLE.   *) using a regex pattern.
+	call /shared/ASAssets/Utilities/string/TextUtils/RegexReplace(inColumnExpression, regexPattern, &apos;&apos;, 0, columnExpressionTmp);
+	set columnExpressionTmp = TRIM(columnExpressionTmp);
+	if (debug = &apos;Y&apos;) then
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;RegexReplace columnExpression=&apos;||columnExpressionTmp);
+	end if;
+
+	-- Skip column expressions that are comments.
+	call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/isComment(columnExpressionTmp, isComment);
+	if (isComment = 0) then
+		-- Look for SQL wildcard projection: select * from...
+		if (POSITION(&apos;*&apos; in columnExpressionTmp) &gt; 0) then
+	--		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;  vector resourceAlias=&apos;||fromClauseVector[1].resourceAlias);
+	--		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;  vector resourcePath=&apos;||fromClauseVector[1].resourcePath);
+	--		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;  vector resourceType=&apos;||fromClauseVector[1].resourceType);
+			-- Use case 1: [select *] - this is a single asterisk &quot;*&quot; by itself with no other column projections.
+			if (columnExpressionTmp = &apos;*&apos;) then
+				set fromResourcePath = fromClauseVector[1].resourcePath;
+				set fromResourceType = fromClauseVector[1].resourceType;
+				if (fromResourceType = &apos;TABLE&apos;) then
+					for r as 
+						select * from /shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE(fromResourcePath,fromResourceType)
+					do
+						if (r.columnName is not null) then
+							set columnName = r.columnName;
+
+							-- Make sure any reserved words are quoted.   
+							-- 2014-11-21: mtinius 
+							--   Handle the unique situation where there is a double quote in the column name.  
+							--   In CIS there must be 2 double quotes present in the view to escape a single double quote for the view to be valid.
+							if (INSTR(columnName, &apos;&quot;&apos;) &gt; 0) then
+								set columnName = REPLACE(columnName, &apos;&quot;&apos;, &apos;&quot;&quot;&apos;);
+								set columnName = &apos;&quot;&apos;||columnName||&apos;&quot;&apos;;
+							else
+								--Pattern:  COLUMN_NAME:[mycolumn]
+								call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(columnName, null, columnName);
+							end if;
+
+							set columnExpressionTmp = fromClauseVector[1].resourceAlias||&apos;.&apos;|| columnName;
+
+							-- Encode the column expression
+							call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;E&apos;, &apos;D S&apos;, codingListColumns, columnExpressionTmp, moduleName, debug, &apos;columnExpression&apos;, columnExpression);
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,RPAD(&apos;* column=&apos;||r.columnName,padNum,&apos; &apos;)||&apos;  columnExpression=&apos;||columnExpressionTmp||&apos;  columnExpressionEncoded=&apos;||columnExpression);
+							end if;
+
+							insert into result values(columnExpression);
+						end if;
+					end for;
+				end if;
+				if (fromResourceType = &apos;PROCEDURE&apos;) then
+					for r as 
+						select * from /shared/ASAssets/Utilities/repository/getBasicResourceCursor_PROCEDURE_CURSOR(fromResourcePath,fromResourceType, 1) WHERE columnType != &apos;CURSOR&apos; 
+					do
+						if (r.columnName is not null) then
+							set columnName = r.columnName;
+
+							-- Make sure any reserved words are quoted.   
+							-- 2014-11-21: mtinius 
+							--   Handle the unique situation where there is a double quote in the column name.  
+							--   In CIS there must be 2 double quotes present in the view to escape a single double quote for the view to be valid.
+							if (INSTR(columnName, &apos;&quot;&apos;) &gt; 0) then
+								set columnName = REPLACE(columnName, &apos;&quot;&apos;, &apos;&quot;&quot;&apos;);
+								set columnName = &apos;&quot;&apos;||columnName||&apos;&quot;&apos;;
+							else
+								--Pattern:  COLUMN_NAME:[mycolumn]
+								call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(columnName, null, columnName);
+							end if;
+
+							set columnExpressionTmp = fromClauseVector[1].resourceAlias||&apos;.&apos;|| columnName;
+
+							-- Encode the column expression
+							call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;E&apos;, &apos;D S&apos;, codingListColumns, columnExpressionTmp, moduleName, debug, &apos;columnExpression&apos;, columnExpression);
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,RPAD(&apos;* column=&apos;||r.columnName,padNum,&apos; &apos;)||&apos;  columnExpression=&apos;||columnExpressionTmp||&apos;  columnExpressionEncoded=&apos;||columnExpression);
+							end if;
+
+							insert into result values(columnExpression);
+						end if;
+					end for;
+				end if;
+			elseif (POSITION(&apos;.*&apos; in columnExpressionTmp) &gt; 0) then -- Use case 2: select table1.*
+				call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/returnOccurrence(columnExpressionTmp,&apos;B&apos;,&apos;.*&apos;,1,remainder,sourceAlias);
+
+				-- Replace the encoded commas with real commas
+				call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;D&apos;, &apos;D S&apos;, codingListColumns, sourceAlias, moduleName, debug, &apos;sourceAlias&apos;, sourceAlias);
+				if (debug = &apos;Y&apos;) then
+					call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;table.* remainder=&apos;||remainder||&apos;  sourceAlias=&apos;||sourceAlias);
+				end if;
+
+				WHILE (i &lt;= CARDINALITY(fromClauseVector)) DO
+					set fromResourcePath = fromClauseVector[i].resourcePath;
+					set fromResourceType = fromClauseVector[i].resourceType;
+					if (sourceAlias = fromClauseVector[i].resourceAlias) then
+						if (debug = &apos;Y&apos;) then
+							call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;table.* sourceAlias=&apos;||sourceAlias);
+							call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;vector resourceAlias=&apos;||fromClauseVector[i].resourceAlias);
+							call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;vector resourcePath=&apos;||fromClauseVector[i].resourcePath);
+							call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;vector resourceType=&apos;||fromClauseVector[i].resourceType);
+						end if;
+
+						if (fromResourceType = &apos;TABLE&apos;) then
+							for r as 
+								select * from /shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE(fromResourcePath, fromResourceType)
+							do
+								if (r.columnName is not null) then
+									set columnName = r.columnName;
+
+									-- Make sure any reserved words are quoted.   
+									-- 2014-11-21: mtinius 
+									--   Handle the unique situation where there is a double quote in the column name.  
+									--   In CIS there must be 2 double quotes present in the view to escape a single double quote for the view to be valid.
+									if (INSTR(columnName, &apos;&quot;&apos;) &gt; 0) then
+										set columnName = REPLACE(columnName, &apos;&quot;&apos;, &apos;&quot;&quot;&apos;);
+										set columnName = &apos;&quot;&apos;||columnName||&apos;&quot;&apos;;
+									else
+										--Pattern:  COLUMN_NAME:[mycolumn]
+										call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(columnName, null, columnName);
+									end if;
+
+									set columnExpressionTmp = fromClauseVector[i].resourceAlias ||&apos;.&apos;|| columnName;
+
+									-- Encode the column expression
+									call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;E&apos;, &apos;D S&apos;, codingListColumns, columnExpressionTmp, moduleName, debug, &apos;columnExpression&apos;, columnExpression);
+									if (debug = &apos;Y&apos;) then
+										call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,RPAD(&apos;table.* column=&apos;||r.columnName,padNum,&apos; &apos;)||&apos;  columnExpression=&apos;||columnExpressionTmp||&apos;  columnExpressionEncoded=&apos;||columnExpression);
+									end if;
+
+									insert into result values(columnExpression);
+								end if;
+							end for;
+						end if;
+						if (fromResourceType = &apos;PROCEDURE&apos;) then
+							for r as 
+								select * from /shared/ASAssets/Utilities/repository/getBasicResourceCursor_PROCEDURE_CURSOR(fromResourcePath,fromResourceType, 1) WHERE columnType != &apos;CURSOR&apos; 
+							do
+								if (r.columnName is not null) then
+									set columnName = r.columnName;
+
+									-- Make sure any reserved words are quoted.   
+									-- 2014-11-21: mtinius 
+									--   Handle the unique situation where there is a double quote in the column name.  
+									--   In CIS there must be 2 double quotes present in the view to escape a single double quote for the view to be valid.
+									if (INSTR(columnName, &apos;&quot;&apos;) &gt; 0) then
+										set columnName = REPLACE(columnName, &apos;&quot;&apos;, &apos;&quot;&quot;&apos;);
+										set columnName = &apos;&quot;&apos;||columnName||&apos;&quot;&apos;;
+									else
+										--Pattern:  COLUMN_NAME:[mycolumn]
+										call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(columnName, null, columnName);
+									end if;
+
+									set columnExpressionTmp = fromClauseVector[i].resourceAlias||&apos;.&apos;|| columnName;
+
+									-- Encode the column expression
+									call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;E&apos;, &apos;D S&apos;, codingListColumns, columnExpressionTmp, moduleName, debug, &apos;columnExpression&apos;, columnExpression);
+									if (debug = &apos;Y&apos;) then
+										call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,RPAD(&apos;table.* column=&apos;||r.columnName,padNum,&apos; &apos;)||&apos;  columnExpression=&apos;||columnExpressionTmp||&apos;  columnExpressionEncoded=&apos;||columnExpression);
+									end if;
+
+									insert into result values(columnExpression);
+								end if;
+							end for;
+						end if;
+					end if;
+					set i = i + 1;
+				END WHILE;
+			else -- regular column
+				if (debug = &apos;Y&apos;) then
+					call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;regular1 column=&apos;||columnExpression||&apos;  columnExpression=&apos;||columnExpression);
+				end if;
+
+				insert into result values(columnExpression);
+			end if;
+		else -- regular column
+			if (debug = &apos;Y&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;regular2 column=&apos;||columnExpression||&apos;  columnExpression=&apos;||columnExpression);
+			end if;
+
+			insert into result values(columnExpression);
+		end if;
+	else  -- regular commented column
+		if (debug = &apos;Y&apos;) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;commented column=&apos;||columnExpression||&apos;  columnExpression=&apos;||columnExpression);
+		end if;
+
+		insert into result values(columnExpression);
+	end if;
+	set duration = CURRENT_TIMESTAMP - startTime;
+	set seconds = EXTRACT(SECONDS FROM duration);
+	if (seconds &gt; .05 and debugTime = &apos;Y&apos;) then
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debugTime,&apos;duration=&apos;||cast(duration as varchar)||&apos;  columnExpression=&apos;||NVL(columnExpression,&apos;null&apos;));
+	end if;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:1:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

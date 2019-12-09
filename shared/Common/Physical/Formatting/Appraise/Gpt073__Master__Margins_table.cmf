@@ -1,0 +1,281 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Gpt073_Master_Margins" path="/shared/Common/Physical/Formatting/Appraise/Gpt073_Master_Margins" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amway_sku_pfx" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amway_sku_base" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amway_sku_sfx" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sku_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="royalty" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ada_margin" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amab" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amab_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amad" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amad_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cmab" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cmab_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cmad" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cmad_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="meas_cr_lc_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntrb_grs_prft_lc_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntrb_mab_lc_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntrb_mab_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntrb_mad_lc_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntrb_mad_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="changed_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes>
+    <index name="GPI073_CORP_CD_PRM" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="corp_cd" sortOrder="ASCENDING"/>
+      <indexColumn name="amway_sku_pfx" sortOrder="ASCENDING"/>
+      <indexColumn name="amway_sku_base" sortOrder="ASCENDING"/>
+      <indexColumn name="amway_sku_sfx" sortOrder="ASCENDING"/>
+      <indexColumn name="sku_cd" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/OnPremises/SQLServer_Appraise/GPB110/dbo/GPT073_MASTER_MARGINS" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="CORP_CD" nullable="false">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_PFX" nullable="false">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_BASE" nullable="false">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="AMWAY_SKU_SFX" nullable="false">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="SKU_CD" nullable="false">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ROYALTY" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="ADA_MARGIN" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAB" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAB_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="AMAD" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAD_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CMAB" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CMAB_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CMAD" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CMAD_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="MEAS_CR_LC_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_GRS_PRFT_LC_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_MAB_LC_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_MAB_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CNTRB_MAD_LC_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_MAD_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CHANGED_DT" nullable="false">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	GPT073_MASTER_MARGINS.CORP_CD corp_cd,
+	GPT073_MASTER_MARGINS.AMWAY_SKU_PFX amway_sku_pfx,
+	GPT073_MASTER_MARGINS.AMWAY_SKU_BASE amway_sku_base,
+	GPT073_MASTER_MARGINS.AMWAY_SKU_SFX amway_sku_sfx,
+	GPT073_MASTER_MARGINS.SKU_CD sku_cd,
+	CAST(GPT073_MASTER_MARGINS.ROYALTY AS DECIMAL(18,4)) AS royalty,
+	CAST(GPT073_MASTER_MARGINS.ADA_MARGIN AS DECIMAL(18,4)) AS ada_margin,
+	CAST(GPT073_MASTER_MARGINS.AMAB AS DECIMAL(18,4)) AS amab,
+	CAST(GPT073_MASTER_MARGINS.AMAB_PCT AS DECIMAL(14,6)) AS amab_pct,
+	CAST(GPT073_MASTER_MARGINS.AMAD AS DECIMAL(18,4)) AS amad,
+	CAST(GPT073_MASTER_MARGINS.AMAD_PCT AS DECIMAL(14,6)) AS amad_pct,
+	CAST(GPT073_MASTER_MARGINS.CMAB AS DECIMAL(18,4)) AS cmab,
+	CAST(GPT073_MASTER_MARGINS.CMAB_PCT AS DECIMAL(14,6)) AS cmab_pct,
+	CAST(GPT073_MASTER_MARGINS.CMAD AS DECIMAL(18,4)) AS cmad,
+	CAST(GPT073_MASTER_MARGINS.CMAD_PCT AS DECIMAL(14,6)) AS cmad_pct,
+	CAST(GPT073_MASTER_MARGINS.MEAS_CR_LC_AMT AS DECIMAL(18,4)) AS meas_cr_lc_amt,
+	CAST(GPT073_MASTER_MARGINS.CNTRB_GRS_PRFT_LC_AMT AS DECIMAL(18,4)) AS cntrb_grs_prft_lc_amt,
+	CAST(GPT073_MASTER_MARGINS.CNTRB_MAB_LC_AMT AS DECIMAL(18,4)) AS cntrb_mab_lc_amt,
+	CAST(GPT073_MASTER_MARGINS.CNTRB_MAB_PCT AS DECIMAL(14,6)) AS cntrb_mab_pct,
+	CAST(GPT073_MASTER_MARGINS.CNTRB_MAD_LC_AMT AS DECIMAL(18,4)) AS cntrb_mad_lc_amt,
+	CAST(GPT073_MASTER_MARGINS.CNTRB_MAD_PCT AS DECIMAL(14,6)) AS cntrb_mad_pct,
+	CAST(GPT073_MASTER_MARGINS.CHANGED_DT AS TIMESTAMP) AS changed_dt 
+FROM
+	/shared/Common/Physical/Metadata/OnPremises/SQLServer_Appraise/GPB110/dbo/GPT073_MASTER_MARGINS GPT073_MASTER_MARGINS</attribute>
+  <attribute name="creationDate" type="LONG">1552592173718</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1552592173718</attribute>
+</metadata>

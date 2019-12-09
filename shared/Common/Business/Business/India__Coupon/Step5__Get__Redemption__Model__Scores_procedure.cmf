@@ -1,0 +1,671 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Step5_Get_Redemption_Model_Scores" path="/shared/Common/Business/Business/India_Coupon/Step5_Get_Redemption_Model_Scores" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="waveYearMonth" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="batchSize" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/Transformations/India_Coupon/India_Redemption_Model_Scores_to_Cursors" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="rawdata" direction="IN" nullable="unknown">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="content-type" direction="IN" nullable="unknown">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outputs" direction="OUT" nullable="false">
+        <datatype type="TABLE" refId="2">
+          <element name="volume_imc">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="vol_imc_key_no">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="preds">
+            <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+          </element>
+          <element name="decile">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Metadata/AWS/PostgreSQL_TDV_work/india_coupon/India_Coupon_Model_Input" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="wave_year_month" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="volume_imc" nullable="false">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="vol_imc_key_no" nullable="false">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="two_timer">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="verified_flag">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="mobile">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="dmd">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="dd">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="upline">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_month_cnt">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="months_with_order">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="orders_per_order_month">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="median_spend">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="months_since_order">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="single_payment_flag_ever">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="group_payment_flag_ever">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="distinct_brand_codes">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="net_sales">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="tenure">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="u35_flag">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="direct_pc_flag">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="fpo_flag">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="order_no_count">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="email_present">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="discount_order_count">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="sum_discount_amount">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prop_orders_discount">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="purchased_brand_nutrilite">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_apsa80">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_artistry">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_attitude">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_bodysponge">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_carwash">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_dailycarebundle">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_deoderant">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_dishdrop">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_drive">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_dynamite">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_gh">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_glister">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_loc">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_natureshower">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_oliveoil">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_perfumes">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_persona">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_promo">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_pursue">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_queen">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_sa8">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_satinique">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_siliconglaze">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_xs">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="purchased_brand_zoomconc">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="qty_per_order">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="discount_prop_sales">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="sum_order_item_promo_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="usage_days_max_last">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="amount_lc_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="fpo_flag_last">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="group_payment_flag_last">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="combined_order_flag_last">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="discount_last">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="freeitem_last">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="promo_range_last">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="promo_sku_last">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="prop_artistry_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prop_b_other_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prop_catalog_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prop_air_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prop_cook_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prop_hc_other_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prop_nutrilite_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prop_oppbrand_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prop_other_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prop_pc_other_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prop_xs_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="upline_bonus_pct_last">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="grade_num">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="tier_num">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="mpv_num">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="means_num">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="consumption_num">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="awareness_num">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="mkt_support_num">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="dmd_cust_s3">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="dmd_cust_sales3">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="dmd_cust_val3">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="upline_cust_s3">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="upline_cust_sales3">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="upline_cust_val3">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Metadata/AWS/PostgreSQL_TDV_work/india_coupon/coupon_wave_master" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="year_month" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="aff_id" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="imc_no" nullable="false">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_key_no" nullable="false">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="masked_id">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="random1">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="random2">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="random3">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="random4">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="pred">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="decile">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="control_flag">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">PROCEDURE Step5_Get_Redemption_Model_Scores(
+	IN waveYearMonth INT,
+	IN batchSize INT
+    )
+    BEGIN
+		DECLARE inJSON LONGVARCHAR; 
+		DECLARE rowCount INTEGER;
+		DECLARE x CURSOR (rowCount INTEGER);
+		DECLARE crs CURSOR FOR 
+			SELECT
+				mi.* 
+			FROM
+				/shared/Common/Physical/Metadata/AWS/PostgreSQL_TDV_work/india_coupon/India_Coupon_Model_Input mi
+			LEFT JOIN
+				/shared/Common/Physical/Metadata/AWS/PostgreSQL_TDV_work/india_coupon/coupon_wave_master cw
+			ON
+				mi.wave_year_month = cw.year_month
+				AND mi.volume_imc = cw.imc_no 
+			WHERE wave_Year_Month = waveYearMonth and cw.imc_no is null;	
+		DECLARE totalCnt INTEGER;
+		DECLARE batchCnt INTEGER; 
+		DECLARE batchNo INTEGER;
+		DECLARE batchesNeeded INTEGER;
+		--DECLARE batchSize INTEGER;   
+		DECLARE r ROW (
+			wave_year_month INT,
+			volume_imc BIGINT,
+			vol_imc_key_no BIGINT,
+			two_timer INT,
+			verified_flag INT,
+			mobile VARCHAR(10),
+			dmd BIGINT,
+			dd BIGINT,
+			upline BIGINT,
+			ord_month_cnt INT,  
+			months_with_order INT,
+			orders_per_order_month INT,
+			median_spend DOUBLE,
+			months_since_order INT,
+			single_payment_flag_ever INT,
+			group_payment_flag_ever INT,	
+			distinct_brand_codes INT,	   
+			net_sales DOUBLE,
+			tenure INT,	
+			u35_flag INT,
+			direct_pc_flag INT,
+			fpo_flag INT,
+			order_no_count INT,
+			email_present INT,
+			discount_order_count INT,
+			sum_discount_amount DOUBLE,
+			prop_orders_discount DOUBLE,
+			purchased_brand_nutrilite INT,
+			purchased_brand_apsa80 INT,
+			purchased_brand_artistry INT,
+			purchased_brand_attitude INT,
+			purchased_brand_bodysponge INT,
+			purchased_brand_carwash INT,
+			purchased_brand_dailycarebundle INT,
+			purchased_brand_deoderant INT,
+			purchased_brand_dishdrop INT,
+			purchased_brand_drive INT,
+			purchased_brand_dynamite INT,
+			purchased_brand_gh INT,
+			purchased_brand_glister INT,
+			purchased_brand_loc INT,
+			purchased_brand_natureshower INT,
+			purchased_brand_oliveoil INT,
+			purchased_brand_perfumes INT,
+			purchased_brand_persona INT,
+			purchased_brand_promo INT,
+			purchased_brand_pursue INT,
+			purchased_brand_queen INT,
+			purchased_brand_sa8 INT,
+			purchased_brand_satinique INT,
+			purchased_brand_siliconglaze INT,
+			purchased_brand_xs INT,
+			purchased_brand_zoomconc INT ,
+			qty_per_order DOUBLE,
+			discount_prop_sales DOUBLE,
+			sum_order_item_promo_qty INT,
+			usage_days_max_last CHAR(5),
+			amount_lc_last DOUBLE,
+			fpo_flag_last INT,
+			group_payment_flag_last INT,
+			combined_order_flag_last INT,
+			discount_last INT,
+			freeitem_last INT,
+			promo_range_last INT,
+			promo_sku_last INT,
+			prop_artistry_last DOUBLE,
+			prop_b_other_last DOUBLE,
+			prop_catalog_last DOUBLE,
+			prop_air_last DOUBLE,
+			prop_cook_last DOUBLE,
+			prop_hc_other_last DOUBLE,
+			prop_nutrilite_last DOUBLE,
+			prop_oppbrand_last DOUBLE,
+			prop_other_last DOUBLE,
+			prop_pc_other_last DOUBLE,
+			prop_xs_last DOUBLE,
+			upline_bonus_pct_last DOUBLE,
+			grade_num INT,
+			tier_num INT,
+			mpv_num DOUBLE,
+			means_num DOUBLE,
+			consumption_num DOUBLE,
+			awareness_num DOUBLE,
+			mkt_support_num DOUBLE,
+			dmd_cust_s3 INTEGER,
+			dmd_cust_sales3 INTEGER,
+			dmd_cust_val3 INTEGER,
+			upline_cust_s3 INTEGER,
+			upline_cust_sales3 INTEGER,			
+			upline_cust_val3 INTEGER);
+
+    	CALL PRINT(&apos;Starting procedure&apos;);
+
+		OPEN x FOR 
+			SELECT
+				count(*) 
+			FROM
+				/shared/Common/Physical/Metadata/AWS/PostgreSQL_TDV_work/india_coupon/India_Coupon_Model_Input mi
+			LEFT JOIN
+				/shared/Common/Physical/Metadata/AWS/PostgreSQL_TDV_work/india_coupon/coupon_wave_master cw
+			ON
+				mi.wave_year_month = cw.year_month
+				AND mi.volume_imc = cw.imc_no 
+			WHERE wave_Year_Month = waveYearMonth and cw.imc_no is null;		
+    	FETCH x INTO rowCount;		
+
+		OPEN crs;
+		FETCH crs INTO r;
+		CALL PRINT(&apos;Opened cursor with &apos; || CAST(rowCount AS VARCHAR(10)) || &apos; records&apos;);  
+		SET totalCnt = 0;
+		SET batchesNeeded = CEILING(rowCount / batchSize);
+		CALL PRINT(CAST(batchesNeeded AS VARCHAR(10)) || &apos; batches needed&apos;);
+		--SET batchSize = 1;  
+		SET batchNo = 0;	   
+		REPEAT			   
+			SET inJSON = &apos;[&apos;;
+			SET batchCnt = 1;
+			SET batchNo = batchNo + 1;	
+			--CALL PRINT(&apos;Starting batch # &apos; || TO_CHAR(batchNo));	 	
+			WHILE batchCnt &lt;= batchSize AND crs.FOUND DO
+				IF batchCnt &gt; 1 THEN
+					SET inJSON = inJSON || &apos;, &apos;;				
+				END IF;			
+				SET inJSON = inJSON || &apos;{&quot;volume_imc&quot;:&apos; || r.volume_imc || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;vol_imc_key_no&quot;:&apos; || r.vol_imc_key_no || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;awareness_num&quot;:&apos; || r.awareness_num || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;consumption_num&quot;:&apos; || r.consumption_num || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;direct_pc_flag&quot;:&apos; || r.direct_pc_flag || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;discount_order_count&quot;:&apos; || r.discount_order_count || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;discount_prop_sales&quot;:&apos; || r.discount_prop_sales || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;email_present&quot;:&apos; || r.email_present || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;fpo_flag&quot;:&apos; || r.fpo_flag || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;grade_num&quot;:&apos; || r.grade_num || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;means_num&quot;:&apos; || r.means_num || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;median_spend&quot;:&apos; || r.median_spend || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;mkt_support_num&quot;:&apos; || r.mkt_support_num || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;months_with_order&quot;:&apos; || r.months_with_order || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;months_since_order&quot;:&apos; || r.months_since_order || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;mpv_num&quot;:&apos; || r.mpv_num || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;net_sales&quot;:&apos; || r.net_sales || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;ord_month_cnt&quot;:&apos; || r.ord_month_cnt || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;order_no_count&quot;:&apos; || r.order_no_count || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;orders_per_ordermonth&quot;:&apos; || r.orders_per_order_month || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_orders_discount&quot;:&apos; || r.prop_orders_discount || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_apsa80&quot;:&apos; || r.purchased_brand_apsa80 || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_artistry&quot;:&apos; || r.purchased_brand_artistry || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_attitude&quot;:&apos; || r.purchased_brand_attitude || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_bodysponge&quot;:&apos; || r.purchased_brand_bodysponge || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_carwash&quot;:&apos; || r.purchased_brand_carwash || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_dailycarebundle&quot;:&apos; || r.purchased_brand_dailycarebundle || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_deoderant&quot;:&apos; || r.purchased_brand_deoderant || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_dishdrop&quot;:&apos; || r.purchased_brand_dishdrop || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_drive&quot;:&apos; || r.purchased_brand_drive || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_dynamite&quot;:&apos; || r.purchased_brand_dynamite || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_gh&quot;:&apos; || r.purchased_brand_gh || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_glister&quot;:&apos; || r.purchased_brand_glister || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_loc&quot;:&apos; || r.purchased_brand_loc || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_natureshower&quot;:&apos; || r.purchased_brand_natureshower || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_nutrilite&quot;:&apos; || r.purchased_brand_nutrilite || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_oliveoil&quot;:&apos; || r.purchased_brand_oliveoil || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_perfumes&quot;:&apos; || r.purchased_brand_perfumes || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_persona&quot;:&apos; || r.purchased_brand_persona || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_promo&quot;:&apos; || r.purchased_brand_promo || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_pursue&quot;:&apos; || r.purchased_brand_pursue || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_queen&quot;:&apos; || r.purchased_brand_queen || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_sa8&quot;:&apos; || r.purchased_brand_sa8 || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_satinique&quot;:&apos; || r.purchased_brand_satinique || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_siliconglaze&quot;:&apos; || r.purchased_brand_siliconglaze || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_xs&quot;:&apos; || r.purchased_brand_xs || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;purchased_brand_zoomconc&quot;:&apos; || r.purchased_brand_zoomconc || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;qty_per_order&quot;:&apos; || r.qty_per_order || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;sum_discount_amount&quot;:&apos; || r.sum_discount_amount || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;sum_order_item_promo_qty&quot;:&apos; || r.sum_order_item_promo_qty || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;tenure&quot;:&apos; || r.tenure || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;tier_num&quot;:&apos; || r.tier_num || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;u35_flag&quot;:&apos; || r.u35_flag || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;group_payment_flag_ever&quot;:&apos; || r.group_payment_flag_ever || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;distinct_brand_codes&quot;:&apos; || r.distinct_brand_codes || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;upline_cust_s3&quot;:&apos; || r.upline_cust_s3 || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;upline_cust_sales3&quot;:&apos; || r.upline_cust_sales3 || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;upline_cust_val3&quot;:&apos; || r.upline_cust_val3 || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;dmd_cust_s3&quot;:&apos; || r.dmd_cust_s3 || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;dmd_cust_sales3&quot;:&apos; || r.dmd_cust_sales3 || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;dmd_cust_val3&quot;:&apos; || r.dmd_cust_val3 || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;usage_days_max_last&quot;:&apos; || r.usage_days_max_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;amount_lc_last&quot;:&apos; || r.amount_lc_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;fpo_flag_last&quot;:&apos; || r.fpo_flag_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;group_payment_flag_last&quot;:&apos; || r.group_payment_flag_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;combined_order_flag_last&quot;:&apos; || r.combined_order_flag_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;discount_last&quot;:&apos; || r.discount_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;freeitem_last&quot;:&apos; || r.freeitem_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;promo_range_last&quot;:&apos; || r.promo_range_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;promo_sku_last&quot;:&apos; || r.promo_sku_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_artistry_last&quot;:&apos; || r.prop_artistry_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_b_other_last&quot;:&apos; || r.prop_b_other_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_catalog_last&quot;:&apos; || r.prop_catalog_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_air_last&quot;:&apos; || r.prop_air_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_cook_last&quot;:&apos; || r.prop_cook_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_hc_other_last&quot;:&apos; || r.prop_hc_other_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_nutrilite_last&quot;:&apos; || r.prop_nutrilite_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_oppbrand_last&quot;:&apos; || r.prop_oppbrand_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_other_last&quot;:&apos; || r.prop_other_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_pc_other_last&quot;:&apos; || r.prop_pc_other_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;prop_xs_last&quot;:&apos; || r.prop_xs_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;upline_bonus_pct_last&quot;:&apos; || r.upline_bonus_pct_last || &apos;,&apos;;
+				SET inJSON = inJSON || &apos;&quot;two_timer&quot;:&apos; || r.two_timer || &apos;}&apos;;
+				SET totalCnt = totalCnt + 1;
+				SET batchCnt = batchCnt + 1;
+				FETCH crs INTO r;
+			END WHILE;	 				 
+			SET inJSON = inJSON || &apos;]&apos;;
+			--CALL PRINT(&apos;JSON = &apos; || inJSON);
+	        INSERT INTO /shared/Common/Physical/Metadata/AWS/PostgreSQL_TDV_work/india_coupon/coupon_wave_master 
+	        (year_month, aff_id, imc_no, imc_key_no, pred, decile) 
+			SELECT 
+				waveYearMonth,
+				430,
+				api.volume_imc,
+				api.vol_imc_key_no, 
+				api.preds,
+				api.decile
+			FROM      
+				/shared/Common/Physical/Formatting/Transformations/India_Coupon/India_Redemption_Model_Scores_to_Cursors(inJSON,&apos;application/json&apos;) api
+			;
+		CALL PRINT(&apos;Finished batch # &apos; || TO_CHAR(batchNo, &apos;999999&apos;) || &apos; - &apos; || TO_CHAR((CAST(batchNo AS DOUBLE) / CAST(batchesNeeded AS DOUBLE) * 100.00), &apos;990.999&apos;) || &apos;% complete&apos;); 
+		UNTIL totalCnt = rowCount
+		END REPEAT;
+		CALL PRINT(&apos;Procedure complete&apos;);
+    END</attribute>
+  <attribute name="creationDate" type="LONG">1567607174212</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30105</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573575313265</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30105</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">8/134</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/253</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/137</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/250</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/117</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1567607174212</attribute>
+</metadata>

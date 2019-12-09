@@ -1,0 +1,75 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Mdms_Abo_Distid_Ref" path="/shared/Common/Physical/Formatting/PostgreSQL_EAP/MDMS/Mdms_Abo_Distid_Ref" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="dist_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_no" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ibo_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="iso_cntry_cd" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_mdms_wwsdms01/mdms_abo_distid_ref" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="DIST_ID">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="AFF_NO">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="IBO_NO">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ISO_CNTRY_CD">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(mdms_abo_distid_ref.DIST_ID AS DOUBLE) AS dist_id,
+	CAST(mdms_abo_distid_ref.AFF_NO AS SMALLINT) AS aff_no,
+	CAST(mdms_abo_distid_ref.IBO_NO AS BIGINT) AS ibo_no,
+	CAST(mdms_abo_distid_ref.ISO_CNTRY_CD AS CHAR(2)) AS iso_cntry_cd 
+FROM
+	/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_mdms_wwsdms01/mdms_abo_distid_ref mdms_abo_distid_ref</attribute>
+  <attribute name="creationDate" type="LONG">1569986031006</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569986031006</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1569986031006</attribute>
+</metadata>

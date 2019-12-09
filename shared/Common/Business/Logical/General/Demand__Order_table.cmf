@@ -1,0 +1,2245 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Demand_Order" path="/shared/Common/Business/Logical/General/Demand_Order" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="rgn_desc" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sub_rgn_desc" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="aff_short_nm" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cntry_short_nm" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="aff_id" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="mo_yr_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_dt_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_dt_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_mo_yr_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_mo_yr_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="oper_cntry_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_cntry_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_ln_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_cd_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="reas_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="los_grp_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_imc_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_imc_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="vol_imc_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="whse_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pickup_cent_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_postl_cd_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="bns_mo_yr_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_item_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_eng_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="base_7_item_no" nullable="true">
+      <datatype type="STRING" maxLength="7"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_bus_ln_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_ctgry_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_sub_ctgry_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_brand_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_fmly_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_ind_cut_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_grp_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_base_item_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_base_item_no" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_no" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_item_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_item_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_item_eng_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_base_7_item_no" nullable="true">
+      <datatype type="STRING" maxLength="7"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_glbl_bus_ln_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_glbl_ctgry_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_glbl_sub_ctgry_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_glbl_brand_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_glbl_prdct_fmly_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_glbl_prdct_ind_cut_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_glbl_prdct_grp_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_glbl_base_item_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_glbl_base_item_no" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="promo_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_ln_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ref_ord_ln_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="uom_cd" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="freight_carrier_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ibo_price_lc_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ibo_price_budgt_usd_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="retail_price_lc_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="retail_price_budgt_usd_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="retail_mrgn_collect_lc_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="retail_mrgn_collect_budgt_usd_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tot_cost_lc_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tot_cost_budgt_usd_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="promo_lc_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="bv_lc_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pv_lc_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="charges_lc_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="charges_budgt_usd_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tax_lc_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tax_budgt_usd_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dlvry_fee_lc_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dlvry_fee_budgt_usd_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_qty" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_qty" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cancelled_qty" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="comb_ord_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="comb_ord_flg" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="adj_type_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="mo_yr_curcy_comb_key_no" nullable="true">
+      <datatype type="STRING" maxLength="80"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="mo_yr_ord_item_comb_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="mo_yr_shp_item_comb_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tm_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_whse_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ctc_imc_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_shp_postl_cd_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="insrt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="updt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="bv_ord_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="charges_ord_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dlvry_fee_ord_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ibo_price_ord_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="promo_ord_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pv_ord_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rtl_mrgn_col_ord_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="retail_price_ord_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tax_ord_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tot_cost_ord_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="bv_ord_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="charges_ord_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dlvry_fee_ord_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ibo_price_ord_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="promo_ord_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pv_ord_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rtl_mrgn_col_ord_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="retail_price_ord_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tax_ord_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tot_cost_ord_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="bv_shp_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="charges_shp_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dlvry_fee_shp_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ibo_price_shp_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="promo_shp_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pv_shp_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rtl_mrgn_col_shp_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="retail_price_shp_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tax_shp_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tot_cost_shp_bl_tot_lc_val" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_sales_chnl_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="promo_qty" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_exp_unit_qty" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="shp_exp_unit_qty" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="canc_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pay_req_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Business/Logical/General/Country_Affiliate" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="cntry_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_short_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="amway_cntry_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_adr_1_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_adr_2_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_adr_3_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_city_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_st_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_post_cd">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_aff_strt_bus_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_cntac_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="cntry_bns_cntac_phn_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_track_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="cntry_track_phn_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_modem_phn_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_fax_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_ilb_acct_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_rward_nm">
+        <datatype type="STRING" minLength="10" maxLength="10"/>
+      </element>
+      <element name="cntry_curcy_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_curcy_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_curcy_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="cntry_rpt_curcy_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_rpt_curcy_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_rpt_curcy_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="as400_srvr_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="dms_lib_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="ims_lib_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="oms_lib_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="system_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_trsr_cd">
+        <datatype type="STRING" minLength="6" maxLength="6"/>
+      </element>
+      <element name="cntry_iso_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="cntry_iso_3char_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="gdw_imc_dim_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="gdw_ord_fact_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="euromon_cntry_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="atlas_cntry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="oper_unit">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="aff_id">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_short_nm">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="aff_adr_1_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_adr_2_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_adr_3_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_city_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_st_cd">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_post_cd">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_beg_fytd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_end_fytd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_top_lvl_ibo_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_remit_mgmt_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_pers_vol_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_mrkt_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_mrkt_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="aff_renew_type_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_renew_type_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="aff_amway_of_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_amway_ispon_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="rgn_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="rgn_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="sub_rgn_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="sub_rgn_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="mrkt_clstr_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="mrkt_clstr_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="gen_mgr_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="top_lvl_imc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/General/Date_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="full_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="ldo_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lmo_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lqo_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lyr_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="calen_yr_dy_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="fiscl_yr_dy_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="wk_dy_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="wk_dy_nm">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="wrk_dy_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="calen_yr_wk_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="fiscl_yr_wk_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="mo_dy_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="mo_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="mo_yr_desc">
+        <datatype type="STRING" minLength="8" maxLength="8"/>
+      </element>
+      <element name="calen_yr_mo_desc">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="fiscl_yr_mo_desc">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="mo_full_nm">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="mo_abbr_nm">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="calen_mo_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="fiscl_mo_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="lmo_mo_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lqo_mo_yr_key_no">
+        <datatype type="STRING" minLength="10" maxLength="10"/>
+      </element>
+      <element name="lyr_mo_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="calen_qtr_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="fiscl_qtr_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="calen_qtr_yr_desc">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="fiscl_qtr_yr_desc">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="calen_qtr_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="fiscl_qtr_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="lqo_calen_qtr_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lqo_fiscl_qtr_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lyr_calen_qtr_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lyr_fiscl_qtr_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="calen_yr_key_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="fiscl_yr_key_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="calen_yr_desc">
+        <datatype type="STRING" maxLength="6"/>
+      </element>
+      <element name="fiscl_yr_desc">
+        <datatype type="STRING" maxLength="6"/>
+      </element>
+      <element name="lyr_calen_yr_key_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="lyr_fiscl_yr_key_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="cmpl_mnth_curr_cal_yr_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="cmpl_mnth_curr_perf_yr_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="curr_cal_yr_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="curr_perf_yr_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="curr_day_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="curr_mnth_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="last_cmpl_mnth_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/GDW/Dwv00710_Ord_Cd_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="ord_cd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_key_no">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="shp_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="canc_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="pay_term_cd">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="pay_term_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="ord_type_cd">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="ord_type_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="prepay_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="sale_chnl_cd">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="sale_chnl_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="pay_hold">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="ord_src">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="pay_req_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="shp_methd_cd">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="ord_use_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="ord_use_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="ord_mthod_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="ord_mthod_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+      <element name="ord_actv_type_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="ord_actv_type_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+      <element name="bo_rlse_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="comb_ord_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="comm_ord_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="cust_pay_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="updt_inven_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ord_vol_back_dt_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="pay_bns_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="handl_fee_rmove_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="vchr_req_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="drop_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="ord_reas_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="ord_reas_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="insrt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="updt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/GDW/Dwv03000_Item_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="cntry_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="corp_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="item_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="curcy_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="item_launc_dt_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="mo_yr_curcy_comb_key_no">
+        <datatype type="STRING" maxLength="80"/>
+      </element>
+      <element name="item_price_eff_dt_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="whse_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="item_no">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="act_type">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="base_7_item_no">
+        <datatype type="STRING" maxLength="7"/>
+      </element>
+      <element name="brand_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="bus_ln_cd">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="bus_ln_desc">
+        <datatype type="STRING" maxLength="45"/>
+      </element>
+      <element name="comm_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="ctlg_item_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="ctlg_item_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="item_buyer_cd">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="item_buyer_desc">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="item_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="item_eng_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="item_long_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="item_plnr_cd">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="item_plnr_desc">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="item_type_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="item_type_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="item_vend_cd">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="item_vend_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+      <element name="prm_um_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="stat_cd">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="stat_desc">
+        <datatype type="STRING" maxLength="45"/>
+      </element>
+      <element name="ctgry_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="ctgry_desc">
+        <datatype type="STRING" maxLength="45"/>
+      </element>
+      <element name="sub_ctgry_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="sub_ctgry_desc">
+        <datatype type="STRING" maxLength="45"/>
+      </element>
+      <element name="uom_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="uom_cd_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="bns_bv_pct">
+        <datatype type="DECIMAL" maxDigits="6" maxFractionalDigits="4"/>
+      </element>
+      <element name="aff_cost_of_sales_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="meas_cr_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="xfr_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ada_base_dist_exp_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="clt_cs_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="clt_ea_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ibo_cs_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ibo_ea_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="item_cs_bv_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="item_cs_pv_lc_amt">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="4"/>
+      </element>
+      <element name="item_ea_bv_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="item_ea_pv_lc_amt">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="4"/>
+      </element>
+      <element name="mbr_cs_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="mbr_ea_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="postg_cs_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="postg_ea_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rtail_cs_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rtail_ea_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="item_ship_qty">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="item_cs_qty">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="item_pall_qty">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="conv_to_ltu_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="local_src_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="logic_item_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="sale_kit_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="jde_brand_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_brand_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_bus_ln_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_bus_ln_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_ctgry_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_sub_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_sub_ctgry_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="jde_fn_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_fn_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_frmt_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_frmt_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_indst_cut_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_indst_cut_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_pkg_type_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_pkg_type_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_size_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_size_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_subln_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_subln_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_type_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_type_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="rec_type_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="item_marg_valid_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="l070_prod_cd">
+        <datatype type="STRING" maxLength="7"/>
+      </element>
+      <element name="l070_prod_cd_desc">
+        <datatype type="STRING" maxLength="35"/>
+      </element>
+      <element name="l070_prod_cd_cumm_pos_2">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="l070_prod_cd_cumm_pos_3">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="l070_prod_cd_cumm_pos_4">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="l070_prod_cd_cumm_pos_5">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="l070_prod_cd_cumm_pos_6">
+        <datatype type="STRING" maxLength="6"/>
+      </element>
+      <element name="item_assmbly_type">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="item_bv_flg">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="item_sales_ctgry_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="item_sales_ctgry_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+      <element name="item_sales_div_cd">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="item_sales_div_desc">
+        <datatype type="STRING" maxLength="35"/>
+      </element>
+      <element name="item_sales_sub_div_cd">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="item_sales_sub_div_cd_desc">
+        <datatype type="STRING" maxLength="45"/>
+      </element>
+      <element name="item_vds">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="item_vds_type">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="item_vmi_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="glbl_bus_ln_src">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="glbl_bus_ln_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_bus_ln_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_sub_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_sub_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_brand_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_sub_brand_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_sub_brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_prdct_fmly_cd">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="glbl_prdct_fmly_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="glbl_prdct_ind_cut_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_prdct_ind_cut_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="glbl_prdct_grp_cd">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="glbl_prdct_grp_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_base_item_no">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="glbl_base_item_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="item_harm_cd">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="item_food_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="lcl_brand_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="lcl_brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="lcl_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="lcl_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="lcl_sub_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="lcl_sub_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="lcl_prdct_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="lcl_prdct_eng_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="lcl_prdct_lcl_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="lc_unit_cost_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="lc_xfr_cost_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="lc_duty_rt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="insrt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="updt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="glbl_bus_ln_ovrride_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="glbl_bus_ln_src_ori">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="glbl_gph_ovrride_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/GDW/Dwv05017_Mos_Exchg_Rt_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="comb_curcy_mo_yr_curcy_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="curcy_mo_yr_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="curcy_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="to_usd_budgt_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_usd_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_dop_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_cad_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_ars_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_aud_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_bnd_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_brl_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_chf_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_clp_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_cny_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_cop_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_crc_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_czk_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_dkk_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_eur_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_gdp_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_gtq_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_hkd_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_hnl_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_hrk_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_huf_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_idr_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_inr_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_jpy_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_krw_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_mxn_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_myr_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_nok_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_nzd_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_php_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_pln_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_ron_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_rub_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_sek_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_sgd_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_sit_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_skk_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_thb_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_try_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_twd_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_uah_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_uyu_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_vef_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_vnd_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="to_zar_mos_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+      <element name="pv_exchg_rt">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="19"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/GDW/Dwv10612_Dmand_Ord_Dtl_Fact_L" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="ord_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="shp_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_mo_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="shp_mo_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="oper_cntry_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="shp_cntry_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_ln_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_cd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="curcy_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="reas_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="los_grp_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_imc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="shp_imc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="vol_imc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="whse_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="pickup_cent_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="shp_postl_cd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="bns_mo_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_item_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="shp_item_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="promo_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_ln_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ref_ord_ln_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="uom_cd">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="freight_carrier_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ibo_price_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="retail_price_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="retail_mrgn_collect_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="tot_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="promo_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="bv_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="pv_lc_amt">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="4"/>
+      </element>
+      <element name="charges_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="tax_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="dlvry_fee_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ord_qty">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="shp_qty">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cancelled_qty">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="comb_ord_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="comb_ord_flg">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="adj_type_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="mo_yr_curcy_comb_key_no">
+        <datatype type="STRING" maxLength="80"/>
+      </element>
+      <element name="mo_yr_ord_item_comb_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="mo_yr_shp_item_comb_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="tm_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_whse_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ctc_imc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_shp_postl_cd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="insrt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="updt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="bv_ord_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="charges_ord_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="dlvry_fee_ord_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ibo_price_ord_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="promo_ord_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="pv_ord_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rtl_mrgn_col_ord_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="retail_price_ord_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="tax_ord_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="tot_cost_ord_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="bv_ord_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="charges_ord_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="dlvry_fee_ord_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ibo_price_ord_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="promo_ord_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="pv_ord_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rtl_mrgn_col_ord_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="retail_price_ord_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="tax_ord_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="tot_cost_ord_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="bv_shp_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="charges_shp_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="dlvry_fee_shp_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ibo_price_shp_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="promo_shp_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="pv_shp_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rtl_mrgn_col_shp_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="retail_price_shp_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="tax_shp_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="tot_cost_shp_bl_tot_lc_val">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="glbl_sales_chnl_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="promo_qty">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ord_exp_unit_qty">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="shp_exp_unit_qty">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rtl_comm_amt">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="4"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    Country_Affiliate.rgn_desc, 
+    Country_Affiliate.sub_rgn_desc, 
+    Country_Affiliate.aff_short_nm, 
+    Country_Affiliate.cntry_short_nm, 
+    Country_Affiliate.aff_id, 
+    Country_Affiliate.amway_cntry_cd corp_cd, 
+    Date_Dim.full_dt ord_dt,
+	Date_Dim.mo_yr_key_no mo_yr_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_dt_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.shp_dt_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_mo_yr_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.shp_mo_yr_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.oper_cntry_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.shp_cntry_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_ln_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_cd_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.reas_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.los_grp_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_imc_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.shp_imc_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.vol_imc_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.whse_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.pickup_cent_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.shp_postl_cd_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.bns_mo_yr_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_item_key_no, 
+    Ordered_Item.item_desc, 
+    Ordered_Item.item_eng_desc, 
+    Ordered_Item.base_7_item_no, 
+    Ordered_Item.glbl_bus_ln_desc, 
+    Ordered_Item.glbl_ctgry_desc, 
+    Ordered_Item.glbl_sub_ctgry_desc, 
+    Ordered_Item.glbl_brand_desc, 
+    Ordered_Item.glbl_prdct_fmly_desc, 
+    Ordered_Item.glbl_prdct_ind_cut_desc, 
+    Ordered_Item.glbl_prdct_grp_desc, 
+    Ordered_Item.glbl_base_item_desc, 
+    Ordered_Item.glbl_base_item_no,
+	Ordered_Item.item_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.shp_item_key_no, 
+    Shipped_item.item_desc shp_item_desc, 
+    Shipped_item.item_eng_desc shp_item_eng_desc, 
+    Shipped_item.base_7_item_no shp_base_7_item_no, 
+    Shipped_item.glbl_bus_ln_desc shp_glbl_bus_ln_desc, 
+    Shipped_item.glbl_ctgry_desc shp_glbl_ctgry_desc, 
+    Shipped_item.glbl_sub_ctgry_desc shp_glbl_sub_ctgry_desc, 
+    Shipped_item.glbl_brand_desc shp_glbl_brand_desc, 
+    Shipped_item.glbl_prdct_fmly_desc shp_glbl_prdct_fmly_desc, 
+    Shipped_item.glbl_prdct_ind_cut_desc shp_glbl_prdct_ind_cut_desc, 
+    Shipped_item.glbl_prdct_grp_desc shp_glbl_prdct_grp_desc, 
+    Shipped_item.glbl_base_item_desc shp_glbl_base_item_desc, 
+    Shipped_item.glbl_base_item_no shp_glbl_base_item_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.promo_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_ln_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ref_ord_ln_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.uom_cd, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.freight_carrier_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ibo_price_lc_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ibo_price_lc_amt * NVL(Dwv05017_Mos_Exchg_Rt_Dim.to_usd_budgt_exchg_rt, 1) ibo_price_budgt_usd_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.retail_price_lc_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.retail_price_lc_amt * NVL(Dwv05017_Mos_Exchg_Rt_Dim.to_usd_budgt_exchg_rt, 1) retail_price_budgt_usd_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.retail_mrgn_collect_lc_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.retail_mrgn_collect_lc_amt * NVL(Dwv05017_Mos_Exchg_Rt_Dim.to_usd_budgt_exchg_rt, 1) retail_mrgn_collect_budgt_usd_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.tot_cost_lc_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.tot_cost_lc_amt * NVL(Dwv05017_Mos_Exchg_Rt_Dim.to_usd_budgt_exchg_rt, 1) tot_cost_budgt_usd_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.promo_lc_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.bv_lc_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.pv_lc_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.charges_lc_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.charges_lc_amt * NVL(Dwv05017_Mos_Exchg_Rt_Dim.to_usd_budgt_exchg_rt, 1) charges_budgt_usd_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.tax_lc_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.tax_lc_amt * NVL(Dwv05017_Mos_Exchg_Rt_Dim.to_usd_budgt_exchg_rt, 1) tax_budgt_usd_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.dlvry_fee_lc_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.dlvry_fee_lc_amt * NVL(Dwv05017_Mos_Exchg_Rt_Dim.to_usd_budgt_exchg_rt, 1) dlvry_fee_budgt_usd_amt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_qty, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.shp_qty, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.cancelled_qty, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.comb_ord_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.comb_ord_flg, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.adj_type_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.mo_yr_curcy_comb_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.mo_yr_ord_item_comb_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.mo_yr_shp_item_comb_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.tm_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_whse_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ctc_imc_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_shp_postl_cd_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.insrt_dt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.updt_dt, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.bv_ord_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.charges_ord_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.dlvry_fee_ord_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ibo_price_ord_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.promo_ord_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.pv_ord_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.rtl_mrgn_col_ord_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.retail_price_ord_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.tax_ord_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.tot_cost_ord_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.bv_ord_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.charges_ord_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.dlvry_fee_ord_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ibo_price_ord_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.promo_ord_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.pv_ord_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.rtl_mrgn_col_ord_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.retail_price_ord_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.tax_ord_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.tot_cost_ord_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.bv_shp_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.charges_shp_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.dlvry_fee_shp_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ibo_price_shp_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.promo_shp_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.pv_shp_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.rtl_mrgn_col_shp_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.retail_price_shp_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.tax_shp_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.tot_cost_shp_bl_tot_lc_val, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.glbl_sales_chnl_key_no, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.promo_qty, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_exp_unit_qty, 
+    Dwv10612_Dmand_Ord_Dtl_Fact_L.shp_exp_unit_qty, 
+    Dwv00710_Ord_Cd_Dim.canc_flg, 
+    Dwv00710_Ord_Cd_Dim.pay_req_flg
+FROM      
+    /shared/Common/Physical/Formatting/GDW/Dwv00710_Ord_Cd_Dim Dwv00710_Ord_Cd_Dim INNER JOIN 
+        /shared/Common/Business/Logical/General/Country_Affiliate Country_Affiliate INNER JOIN 
+            /shared/Common/Business/Logical/General/Date_Dim Date_Dim INNER JOIN 
+                /shared/Common/Physical/Formatting/GDW/Dwv10612_Dmand_Ord_Dtl_Fact_L Dwv10612_Dmand_Ord_Dtl_Fact_L INNER JOIN 
+                    /shared/Common/Physical/Formatting/GDW/Dwv03000_Item_Dim Ordered_Item
+                ON Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_item_key_no = Ordered_Item.item_key_no INNER JOIN 
+                    /shared/Common/Physical/Formatting/GDW/Dwv03000_Item_Dim Shipped_item
+                ON Dwv10612_Dmand_Ord_Dtl_Fact_L.shp_item_key_no = Shipped_item.item_key_no INNER JOIN 
+                    /shared/Common/Physical/Formatting/GDW/Dwv05017_Mos_Exchg_Rt_Dim Dwv05017_Mos_Exchg_Rt_Dim
+                ON Dwv10612_Dmand_Ord_Dtl_Fact_L.curcy_key_no = Dwv05017_Mos_Exchg_Rt_Dim.curcy_key_no
+			       AND Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_mo_yr_key_no = Dwv05017_Mos_Exchg_Rt_Dim.curcy_mo_yr_key_no
+            ON Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_dt_key_no = Date_Dim.dt_key_no
+        ON Dwv10612_Dmand_Ord_Dtl_Fact_L.oper_cntry_key_no = Country_Affiliate.cntry_key_no
+    ON Dwv10612_Dmand_Ord_Dtl_Fact_L.ord_cd_key_no = Dwv00710_Ord_Cd_Dim.ord_cd_key_no</attribute>
+  <attribute name="creationDate" type="LONG">1554174210273</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1572901353009</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1554174210273</attribute>
+</metadata>

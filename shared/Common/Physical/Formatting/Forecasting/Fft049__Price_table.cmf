@@ -1,0 +1,247 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Fft049_Price" path="/shared/Common/Physical/Formatting/Forecasting/Fft049_Price" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="item_no" nullable="true">
+      <datatype type="STRING" minLength="12" maxLength="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="calen_yr4" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="calen_mo" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="dcost_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bv_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="nbv_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="pv_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cmab_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cmab_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cmad_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cmad_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amab_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amab_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amad_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amad_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="xport_cost_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sugg_rtail_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rebate_price_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes>
+    <index name="FFT049X1" type="CLUSTERED" unique="true">
+      <indexColumn name="corp_cd" sortOrder="ASCENDING"/>
+      <indexColumn name="item_no" sortOrder="ASCENDING"/>
+      <indexColumn name="calen_yr4" sortOrder="ASCENDING"/>
+      <indexColumn name="calen_mo" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/OnPremises/SQLServer_Forecasting/FFB001P1/dbo/FFT049_PRICE" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="CORP_CD" nullable="false">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="ITEM_NO" nullable="false">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="CALEN_YR4" nullable="false">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="CALEN_MO" nullable="false">
+        <datatype type="INTEGER" minValue="0" maxValue="255"/>
+      </element>
+      <element name="DCOST_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="BV_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="NBV_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="PV_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="CMAB_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="CMAB_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="CMAD_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="CMAD_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="AMAB_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAB_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="AMAD_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAD_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="XPORT_COST_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="SUGG_RTAIL_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="REBATE_PRICE_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	FFT049_PRICE.CORP_CD corp_cd,
+	FFT049_PRICE.ITEM_NO item_no,
+	FFT049_PRICE.CALEN_YR4 calen_yr4,
+	FFT049_PRICE.CALEN_MO calen_mo,
+	CAST(FFT049_PRICE.DCOST_AMT AS DECIMAL(13,2)) AS dcost_amt,
+	CAST(FFT049_PRICE.BV_AMT AS DECIMAL(13,2)) AS bv_amt,
+	CAST(FFT049_PRICE.NBV_AMT AS DECIMAL(13,2)) AS nbv_amt,
+	CAST(FFT049_PRICE.PV_AMT AS DECIMAL(13,2)) AS pv_amt,
+	CAST(FFT049_PRICE.CMAB_AMT AS DECIMAL(13,4)) AS cmab_amt,
+	CAST(FFT049_PRICE.CMAB_PCT AS DECIMAL(5,2)) AS cmab_pct,
+	CAST(FFT049_PRICE.CMAD_AMT AS DECIMAL(13,4)) AS cmad_amt,
+	CAST(FFT049_PRICE.CMAD_PCT AS DECIMAL(5,2)) AS cmad_pct,
+	CAST(FFT049_PRICE.AMAB_AMT AS DECIMAL(13,4)) AS amab_amt,
+	CAST(FFT049_PRICE.AMAB_PCT AS DECIMAL(5,2)) AS amab_pct,
+	CAST(FFT049_PRICE.AMAD_AMT AS DECIMAL(13,4)) AS amad_amt,
+	CAST(FFT049_PRICE.AMAD_PCT AS DECIMAL(5,2)) AS amad_pct,
+	CAST(FFT049_PRICE.XPORT_COST_AMT AS DECIMAL(13,4)) AS xport_cost_amt,
+	CAST(FFT049_PRICE.SUGG_RTAIL_AMT AS DECIMAL(13,2)) AS sugg_rtail_amt,
+	CAST(FFT049_PRICE.REBATE_PRICE_AMT AS DECIMAL(13,2)) AS rebate_price_amt 
+FROM
+	/shared/Common/Physical/Metadata/OnPremises/SQLServer_Forecasting/FFB001P1/dbo/FFT049_PRICE FFT049_PRICE</attribute>
+  <attribute name="creationDate" type="LONG">1552489656183</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1552489656183</attribute>
+</metadata>

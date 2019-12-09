@@ -1,0 +1,437 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateCRUD_CreateCustom" path="/shared/ASAssets/BestPractices_v81/Procedures/crudProcedures/generateCRUD_CreateCustom" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="inDebug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="overwrite" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="crudVector" direction="IN" nullable="true">
+      <datatype name="crudVector" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="crudGenType" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="crudGenType" type="TREE" refId="1">
+            <element name="crudPath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="procedurePath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="procedureName">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="viewname">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="viewpath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="constantspath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="typedefprocpath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="typedefprocname">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="customcreatepath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="customupdatepath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="genUniqueIDPath">
+              <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+            </element>
+            <element name="pkList">
+              <datatype name="pkList" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <datatype name="crudGenColumnType" type="TREE" refId="2">
+                    <element name="colName">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                    <element name="colType">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                  </datatype>
+                </itemDatatype>
+              </datatype>
+            </element>
+            <element name="columnList">
+              <datatype name="columnList" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <reference refId="2"/>
+                </itemDatatype>
+              </datatype>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="status" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/GetProperty" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="property" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyName" type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyValue" type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/createResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceSubType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateSqlScript" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="scripttext" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	Unless this is the initial creation, do not overwrite a resource that has been created before
+	because these resources will contain custom code.
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE generateCRUD_CreateCustom(
+	IN 	inDebug				CHAR(1),
+	IN overwrite			INTEGER,
+		-- 0=&quot;FAIL_IF_EXISTS&quot;=do not overwrite the resource.  If the resource exists, raise an exception.
+		-- 1=&quot;SKIP_IF_EXISTS&quot;=skip the resource if it exists and continue processing
+		-- 2=&quot;OVERWRITE_IF_EXISTS&quot;=do overwrite the resource if it exists.
+	IN 	crudVector			VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.crudGenType),
+	OUT status				VARCHAR
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;generateCRUD_CreateCustom()&apos;;
+	DECLARE debug					CHAR(1) DEFAULT inDebug;
+	DECLARE i						INTEGER DEFAULT 1;
+	DECLARE s						LONGVARCHAR;
+	DECLARE success					BIT;
+	DECLARE createResponse 			XML;
+	DECLARE faultResponse			XML;
+	DECLARE fullResourcePath		VARCHAR(4000);
+	DECLARE CSW_Version				VARCHAR;
+	DECLARE NEWLINE					VARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.newline;
+	DECLARE utilitiesRootPath		VARCHAR(4000) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.utilitiesRootPath;
+	DECLARE bestPracticesRootPath	VARCHAR(4000) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.bestPracticesRootPath;
+	DECLARE resourceExists			BOOLEAN DEFAULT false;
+	DECLARE ex						EXCEPTION;
+	DECLARE typedefprocname			VARCHAR(4000);
+	DECLARE typedefprocpath			VARCHAR(2048);
+
+	if (debug = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;BEGIN: ============================================&apos;);
+	end if;
+	-----------------------------------------------------------------------------------------
+	-- Template code for the &quot;create_$viewname SQL script
+	-----------------------------------------------------------------------------------------
+/*
+/* custom_Customers:
+	*** GENERATED PROCEDURE --- MODIFIABLE ***
+
+	This procedure only gets generated once.  The generation scripts will not overwrite if it exists.
+
+	Composite Software CRUD procedure for &quot;CUSTOM CREATE&quot;.   
+	The purpose of this procedure is to allow custom code to be executed when creating the view &quot;Customers&quot;.
+	The values of the inVector can be checked and modified prior to the create executing.
+
+	Input:
+		inVector - a single row of values to perform a create on the view &quot;Customers&quot;.
+	Output: 
+		outVector - a modified row of values to perform a create on the view &quot;Customers&quot;.
+
+	Exceptions:  defaultValues.ex
+		Always active.
+
+	Author:      Generated from Composite Best Practices generation scripts
+	Date:        2010-08-20
+	CSW Version: 5.1.0
+* /
+PROCEDURE custom_Customers(
+	IN inVector 		VECTOR (/shared/BestPractices/DataAbstractionSample/constants/TypeDefinitions.Customers_Type),
+	OUT outVector 		VECTOR (/shared/BestPractices/DataAbstractionSample/constants/TypeDefinitions.Customers_Type)
+)
+BEGIN
+    DECLARE moduleName		varchar(255) default &apos;custom_Customers&apos;;
+    DECLARE debug			CHAR(1) DEFAULT /shared/BestPractices/DataAbstractionSample/constants/defaultValues.debug;
+	DECLARE message			LONGVARCHAR;
+
+	set outVector = inVector;
+
+/*	Implement custom code here:
+
+	The parameter inVector is a vector containing a single row with the original column values.
+		Apply logic as needed to modify the values.
+		Always reference the as a single vector entry such as set outVector[1].columnName = &apos;value&apos;.
+* /
+
+-- HANDLE EXCEPTIONS ----------------------------------------------------   
+    EXCEPTION
+      ELSE
+		set message = &apos;&lt;&lt;&lt; CREATE CUSTOM: Customers&gt;&gt;&gt; &apos;||CURRENT_EXCEPTION.TRACE;
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,&apos;Y&apos;,message);
+		RAISE defaultValues.ex VALUE message;
+END
+*/
+	-----------------------------------------------------------------------------------------
+	-- Create the &quot;create_$viewname SQL procedure resource if it does not exist
+	-----------------------------------------------------------------------------------------
+	set fullResourcePath = REPLACE(crudVector[1].procedurePath ||&apos;/&apos;||crudVector[1].procedureName,&apos;//&apos;,&apos;/&apos;);
+	if (debug = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;fullResourcePath=&apos;||fullResourcePath);
+	end if;
+
+	set status = &apos;GENERATED&apos;;
+	call /lib/resource/ResourceExists(fullResourcePath,&apos;PROCEDURE&apos;,null,resourceExists);
+	if (not resourceExists) then
+		call /shared/ASAssets/Utilities/repository/createResource(crudVector[1].procedurePath,crudVector[1].procedureName,&apos;PROCEDURE&apos;,&apos;SQL_SCRIPT_PROCEDURE&apos;,success,createResponse,faultResponse);
+	else
+		set resourceExists = true;
+	end if;
+
+	-- Apply the reserved path to the procedure name
+	call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(crudVector[1].typedefprocname,null,typedefprocname);
+	call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(crudVector[1].typedefprocpath,null,typedefprocpath);
+
+	if ((not resourceExists) or (resourceExists and overwrite = 2)) then
+	-----------------------------------------------------------------------------------------
+	-- Build the &quot;create_$viewname SQL script
+	-----------------------------------------------------------------------------------------
+	set s = &apos;&apos;;
+	set s = s||&apos;/* custom_&apos;||crudVector[1].viewname||&apos;:&apos;||NEWLINE;
+	set s = s||&apos;	*** GENERATED PROCEDURE --- MODIFIABLE ***&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	This procedure only gets generated once.  The generation scripts will not overwrite if it exists.&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	Composite Software CRUD procedure for &quot;CUSTOM CREATE&quot;.   &apos;||NEWLINE;
+	set s = s||&apos;	The parameter inVector is a vector containing a single row with the original column of values.&apos;||NEWLINE;
+	set s = s||&apos;	The values of the inVector can be modified prior to the create executing the view.&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	Input:&apos;||NEWLINE;
+	set s = s||&apos;		inVector - a single row of values to modify prior to create_&apos;||crudVector[1].viewname||&apos;() executing.&apos;||NEWLINE;
+	set s = s||&apos;		LogIdentifier - A string used to uniquely idenitify a record when saved to the log for debugging purposes.  It should never be null.&apos;||NEWLINE;
+	set s = s||&apos;	Output: &apos;||NEWLINE;
+	set s = s||&apos;		outVector - a modified row of values that will be used by create_&apos;||crudVector[1].viewname||&apos;().&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	Exceptions:  defaultValues.ex&apos;||NEWLINE;
+	set s = s||&apos;		Always active.&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	Author:      Generated from Composite Best Practices generation scripts&apos;||NEWLINE;
+	set s = s||&apos;	Date:        &apos;||CURRENT_DATE||NEWLINE;
+	call /lib/util/GetProperty(&apos;SERVER_VERSION_NUMBER&apos;,CSW_Version);
+	set s = s||&apos;	CSW Version: &apos;||NVL(CSW_Version,&apos;null&apos;)||NEWLINE;
+	set s = s||&apos;*/&apos;||NEWLINE;
+	set s = s||&apos;PROCEDURE custom_&apos;||crudVector[1].viewname||&apos;(&apos;||NEWLINE;
+	set s = s||&apos;	IN inVector 		VECTOR (&apos;||typedefprocpath||&apos;/&apos;||typedefprocname||&apos;.&apos;||crudVector[1].viewname||&apos;_Type),&apos;||NEWLINE;
+	set s = s||&apos;	IN LogIdentifier	&apos;||bestPracticesRootPath||&apos;/Procedures/TypeDefinitions.LogIdentifierType,&apos;||NEWLINE;
+	set s = s||&apos;	OUT outVector 		VECTOR (&apos;||typedefprocpath||&apos;/&apos;||typedefprocname||&apos;.&apos;||crudVector[1].viewname||&apos;_Type)&apos;||NEWLINE;
+	set s = s||&apos;)&apos;||NEWLINE;
+	set s = s||&apos;BEGIN&apos;||NEWLINE;
+	set s = s||&apos;    DECLARE moduleName		varchar(255) default &apos;&apos;custom_&apos;||crudVector[1].viewname||&apos;&apos;&apos;;&apos;||NEWLINE;
+	set s = s||&apos;    DECLARE debug			CHAR(1) DEFAULT &apos;||crudVector[1].constantspath||&apos;/defaultValues.debug;&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE debugTime		CHAR(1) DEFAULT &apos;||crudVector[1].constantspath||&apos;/defaultValues.debugTime;&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE debugException	CHAR(1) DEFAULT &apos;||crudVector[1].constantspath||&apos;/defaultValues.debugException;&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE message			LONGVARCHAR;&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	set outVector = inVector;&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;/*	Implement custom code here:&apos;||NEWLINE||NEWLINE;
+	set s = s||&apos;	The parameter inVector is a vector containing a single row with the original column values.&apos;||NEWLINE;
+	set s = s||&apos;		Apply logic as needed to modify the values.&apos;||NEWLINE;
+	set s = s||&apos;		Always reference the vector as a single vector entry such as set outVector[1].columnName = &apos;&apos;value&apos;&apos;.&apos;||NEWLINE;
+	set s = s||&apos;*/&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;-- HANDLE EXCEPTIONS ----------------------------------------------------   &apos;||NEWLINE;
+	set s = s||&apos;    EXCEPTION&apos;||NEWLINE;
+	set s = s||&apos;      ELSE&apos;||NEWLINE;
+	set s = s||&apos;		set message = &apos;&apos;&lt;&lt;&lt; CREATE CUSTOM: &apos;||crudVector[1].viewname ||&apos;&gt;&gt;&gt; &apos;&apos;||CURRENT_EXCEPTION.TRACE;&apos;||NEWLINE;
+	set s = s||&apos;		CALL &apos;||utilitiesRootPath||&apos;/log/logDebugMessage(moduleName,debugException,message);&apos;||NEWLINE;
+	set s = s||&apos;		RAISE &apos;||crudVector[1].constantspath||&apos;/defaultValues.ex VALUE message;&apos;||NEWLINE;
+	set s = s||&apos;END&apos;||NEWLINE;
+	-----------------------------------------------------------------------------------------
+	-- Update the &quot;create_$viewname with the generated SQL script
+	-----------------------------------------------------------------------------------------
+		if (s IS NOT NULL AND LENGTH(&apos;|&apos;||s||&apos;|&apos;) &gt; 2) then  --notEmpty
+			call /shared/ASAssets/Utilities/repository/updateSqlScript(fullResourcePath,s,success,createResponse,faultResponse);
+		else
+			if (debug = &apos;Y&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Cannot update resource because the script text is empty.&apos;);
+			end if;
+			set status = &apos;ERROR&apos;;
+		end if;
+	else
+		if (overwrite = 0) then
+			raise ex value &apos;Cannot create resource because it already exists and overwrite=0.  path=&apos;||NVL(fullResourcePath,&apos;null&apos;);
+		end if;
+		if (overwrite = 1) then
+			if (debug = &apos;Y&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;SKIPPING:  Cannot create resource because it already exists.  path=&apos;||NVL(fullResourcePath,&apos;null&apos;));
+			end if;
+			set status = &apos;SKIPPED&apos;;
+		end if;
+	end if;
+
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:1:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:3:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

@@ -1,0 +1,90 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="testTRIGGER" path="/shared/ASAssets/Utilities/examples/repository/target/testTRIGGER" type="TRIGGER" subtype="NONE" changeToken="0">
+  <annotation>test annotation</annotation>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/examples/repository/target/proc1" type="PROCEDURE">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <attribute name="actionProperties" type="MAP">
+    <item>
+      <key type="STRING">PATH</key>
+      <value type="STRING">/shared/ASAssets/Utilities/examples/repository/target/proc1</value>
+    </item>
+    <item>
+      <key type="STRING">EXHAUST_CURSORS</key>
+      <value type="BOOLEAN">false</value>
+    </item>
+    <item>
+      <key type="STRING">PARAMETERS</key>
+      <value type="STRING">10</value>
+    </item>
+  </attribute>
+  <attribute name="actionType" type="STRING">PROCEDURE</attribute>
+  <attribute name="conditionProperties" type="MAP"></attribute>
+  <attribute name="conditionSchedule" type="MAP">
+    <item>
+      <key type="STRING">period</key>
+      <value type="INTEGER">0</value>
+    </item>
+    <item>
+      <key type="STRING">recurringDay</key>
+      <value type="INTEGER">127</value>
+    </item>
+    <item>
+      <key type="STRING">count</key>
+      <value type="INTEGER">0</value>
+    </item>
+    <item>
+      <key type="STRING">fromTimeInADay</key>
+      <value type="LONG">600</value>
+    </item>
+    <item>
+      <key type="STRING">mode</key>
+      <value type="STRING">INTERVAL</value>
+    </item>
+    <item>
+      <key type="STRING">lastRunTime</key>
+      <value type="LONG">1563899100028</value>
+    </item>
+    <item>
+      <key type="STRING">lastScheduledTime</key>
+      <value type="LONG">1563899100000</value>
+    </item>
+    <item>
+      <key type="STRING">endTimeInADay</key>
+      <value type="LONG">1320</value>
+    </item>
+    <item>
+      <key type="STRING">startTime</key>
+      <value type="LONG">1413604800000</value>
+    </item>
+    <item>
+      <key type="STRING">interval</key>
+      <value type="INTEGER">300</value>
+    </item>
+    <item>
+      <key type="STRING">endTime</key>
+      <value type="LONG">0</value>
+    </item>
+    <item>
+      <key type="STRING">isCluster</key>
+      <value type="BOOLEAN">true</value>
+    </item>
+  </attribute>
+  <attribute name="conditionType" type="STRING">TIMER</attribute>
+  <attribute name="creationDate" type="LONG">1559606221688</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="enabled" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1574783786453</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="maxEventsQueued" type="INTEGER">1</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1559606221688</attribute>
+</metadata>

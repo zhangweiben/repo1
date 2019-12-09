@@ -1,0 +1,207 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Model_Results_Bounce_Hindi1" path="/shared/Common/Physical/Formatting/India_Coupon/Model_Results_Bounce_Hindi1" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="message id" nullable="true">
+      <datatype type="STRING" minLength="32" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="response id" nullable="true">
+      <datatype type="STRING" minLength="31" maxLength="31"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="user name" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="received sender" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="request received time" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="actual sender" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="content type" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="request submit time" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="last update time" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mobile" nullable="true">
+      <datatype type="STRING" maxLength="10" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="message text" nullable="true">
+      <datatype type="STRING" maxLength="459"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="operator" nullable="true">
+      <datatype type="STRING" maxLength="11"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="circle" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sms count" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="description" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="status" nullable="true">
+      <datatype type="STRING" maxLength="49"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/AWS/PostgreSQL_TDV_work/india_coupon/model_results_Bounce_Hindi1_xlsx" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="Message ID">
+        <datatype type="STRING" minLength="32" maxLength="32"/>
+      </element>
+      <element name="Response ID">
+        <datatype type="STRING" minLength="31" maxLength="31"/>
+      </element>
+      <element name="User Name">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="Received Sender">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="Request Received Time">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="Actual Sender">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="Content Type">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="Request Submit Time">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="Last Update Time">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="Mobile">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="Message Text">
+        <datatype type="STRING" maxLength="459"/>
+      </element>
+      <element name="Operator">
+        <datatype type="STRING" maxLength="11"/>
+      </element>
+      <element name="Circle">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="SMS Count">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="Description">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="Status">
+        <datatype type="STRING" maxLength="49"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(model_results_Bounce_Hindi1_xlsx.&quot;Message ID&quot; AS CHAR(32)) AS &quot;message id&quot;,
+	CAST(model_results_Bounce_Hindi1_xlsx.&quot;Response ID&quot; AS CHAR(31)) AS &quot;response id&quot;,
+	CAST(model_results_Bounce_Hindi1_xlsx.&quot;User Name&quot; AS CHAR(5)) AS &quot;user name&quot;,
+	CAST(model_results_Bounce_Hindi1_xlsx.&quot;Received Sender&quot; AS DOUBLE) AS &quot;received sender&quot;,
+	CAST(model_results_Bounce_Hindi1_xlsx.&quot;Request Received Time&quot; AS TIMESTAMP) AS &quot;request received time&quot;,
+	CAST(model_results_Bounce_Hindi1_xlsx.&quot;Actual Sender&quot; AS DOUBLE) AS &quot;actual sender&quot;,
+	CAST(model_results_Bounce_Hindi1_xlsx.&quot;Content Type&quot; AS DOUBLE) AS &quot;content type&quot;,
+	CAST(model_results_Bounce_Hindi1_xlsx.&quot;Request Submit Time&quot; AS TIMESTAMP) AS &quot;request submit time&quot;,
+	CAST(model_results_Bounce_Hindi1_xlsx.&quot;Last Update Time&quot; AS TIMESTAMP) AS &quot;last update time&quot;,
+	CAST(model_results_Bounce_Hindi1_xlsx.Mobile AS VARCHAR(10)) AS mobile,
+	CAST(model_results_Bounce_Hindi1_xlsx.&quot;Message Text&quot; AS VARCHAR(459)) AS &quot;message text&quot;,
+	CAST(model_results_Bounce_Hindi1_xlsx.Operator AS VARCHAR(11)) AS operator,
+	CAST(model_results_Bounce_Hindi1_xlsx.Circle AS CHAR(5)) AS circle,
+	CAST(model_results_Bounce_Hindi1_xlsx.&quot;SMS Count&quot; AS DOUBLE) AS &quot;sms count&quot;,
+	CAST(model_results_Bounce_Hindi1_xlsx.Description AS CHAR(1)) AS description,
+	CAST(model_results_Bounce_Hindi1_xlsx.Status AS VARCHAR(49)) AS status 
+FROM
+	/shared/Common/Physical/Metadata/AWS/PostgreSQL_TDV_work/india_coupon/model_results_Bounce_Hindi1_xlsx model_results_Bounce_Hindi1_xlsx</attribute>
+  <attribute name="creationDate" type="LONG">1566315726949</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30105</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569993931258</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30105</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1566315726949</attribute>
+</metadata>

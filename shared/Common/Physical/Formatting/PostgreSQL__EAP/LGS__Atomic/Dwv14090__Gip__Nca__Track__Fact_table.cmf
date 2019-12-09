@@ -1,0 +1,174 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Dwv14090_Gip_Nca_Track_Fact" path="/shared/Common/Physical/Formatting/PostgreSQL_EAP/LGS_Atomic/Dwv14090_Gip_Nca_Track_Fact" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="aff_key_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_key_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="gip_nca_key_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bns_mo_yr_key_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="close_mo_yr_key_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="gip_nca_stat_key_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="val_lc_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="curcy_key_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="720"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_user_id" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="720"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/atomic_lgs_dwsgdw01/dwv14090_gip_nca_track_fact" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="aff_key_no">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="imc_key_no">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="gip_nca_key_no">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="bns_mo_yr_key_no">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="close_mo_yr_key_no">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="gip_nca_stat_key_no">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="val_lc_amt">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="curcy_key_no">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="insrt_proc_nm">
+        <datatype type="STRING" maxLength="720"/>
+      </element>
+      <element name="insrt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="updt_user_id">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="updt_proc_nm">
+        <datatype type="STRING" maxLength="720"/>
+      </element>
+      <element name="updt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(dwv14090_gip_nca_track_fact.aff_key_no AS NUMERIC(38,10)) AS aff_key_no,
+	CAST(dwv14090_gip_nca_track_fact.imc_key_no AS NUMERIC(38,10)) AS imc_key_no,
+	CAST(dwv14090_gip_nca_track_fact.gip_nca_key_no AS NUMERIC(38,10)) AS gip_nca_key_no,
+	CAST(dwv14090_gip_nca_track_fact.bns_mo_yr_key_no AS NUMERIC(38,10)) AS bns_mo_yr_key_no,
+	CAST(dwv14090_gip_nca_track_fact.close_mo_yr_key_no AS NUMERIC(38,10)) AS close_mo_yr_key_no,
+	CAST(dwv14090_gip_nca_track_fact.gip_nca_stat_key_no AS NUMERIC(38,10)) AS gip_nca_stat_key_no,
+	CAST(dwv14090_gip_nca_track_fact.val_lc_amt AS NUMERIC(38,10)) AS val_lc_amt,
+	CAST(dwv14090_gip_nca_track_fact.curcy_key_no AS NUMERIC(38,10)) AS curcy_key_no,
+	CAST(dwv14090_gip_nca_track_fact.insrt_proc_nm AS VARCHAR(720)) AS insrt_proc_nm,
+	CAST(dwv14090_gip_nca_track_fact.insrt_dt AS TIMESTAMP) AS insrt_dt,
+	CAST(dwv14090_gip_nca_track_fact.updt_user_id AS VARCHAR(150)) AS updt_user_id,
+	CAST(dwv14090_gip_nca_track_fact.updt_proc_nm AS VARCHAR(720)) AS updt_proc_nm,
+	CAST(dwv14090_gip_nca_track_fact.updt_dt AS TIMESTAMP) AS updt_dt 
+FROM
+	/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/atomic_lgs_dwsgdw01/dwv14090_gip_nca_track_fact dwv14090_gip_nca_track_fact</attribute>
+  <attribute name="creationDate" type="LONG">1569985984665</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569985984665</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1569985984665</attribute>
+</metadata>

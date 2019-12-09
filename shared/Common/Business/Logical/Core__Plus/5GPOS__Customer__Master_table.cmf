@@ -1,0 +1,992 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="5GPOS_Customer_Master" path="/shared/Common/Business/Logical/Core_Plus/5GPOS_Customer_Master" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="id" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="region_code" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pos_code" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="staff_number" nullable="true">
+      <datatype type="STRING" maxLength="16"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="distributor_number" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="distributor_type" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="distributor_pin_type" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="distributor_pin_level" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="distributor_class" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="attributive_shop_code" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sign_up_shop_code" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="replacement_code" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sponsor_number" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sponsor_region_code" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="interl_sponsor_number" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="interl_sponsor_region_code" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dd_number" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="up_liner_group_leader_number" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="join_date" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="expire_date" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="master_name" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="master_english_name" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="master_id" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="spouse_name" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="spouse_english_name" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="spouse_id" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="distributor_status" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="language" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rsvst1" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rsvst2" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rsvst3" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rsvst4" nullable="true">
+      <datatype type="STRING" maxLength="64"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rsvst5" nullable="true">
+      <datatype type="STRING" maxLength="128"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rsvdc1" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rsvdc2" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rsvdc3" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rsvdc4" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rsvdc5" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="transfer_status" nullable="true">
+      <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="created_timestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="modified_timestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="master_id_type" nullable="true">
+      <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="spouse_id_type" nullable="true">
+      <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="effective_date" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="approach_code" nullable="true">
+      <datatype type="STRING" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="service_name" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="expired_date_old" nullable="true">
+      <datatype type="STRING" maxLength="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="source_channel" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="work_address" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="place_holder_renew_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="international_sponsor_name" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="nationality" nullable="true">
+      <datatype type="STRING" maxLength="64"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="corporation_name" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="corporation_english_name" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="corporation_id_type" nullable="true">
+      <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="corporation_id" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="distributor_password" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="corporation_race_code" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="distributor_identi_code" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="temp_join_number" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="temp_total_purchase" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="temp_dist_status" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="temp_join_date" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tempjoin_ordertype" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tempjoin_nameflag" nullable="true">
+      <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="distributor_password_encrypt" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pref_type" nullable="true">
+      <datatype type="STRING" maxLength="16"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="tempcust_payment_status" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="signup_type" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="last_abo_date" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="off_line" nullable="true">
+      <datatype type="STRING" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/5GPOS/Hong_Kong/Mstb_Customer_Master" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="id">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="region_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="pos_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="staff_number">
+        <datatype type="STRING" maxLength="16"/>
+      </element>
+      <element name="distributor_number">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="distributor_type">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="distributor_pin_type">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="distributor_pin_level">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="distributor_class">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="attributive_shop_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="sign_up_shop_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="replacement_code">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="sponsor_number">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="sponsor_region_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="interl_sponsor_number">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="interl_sponsor_region_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="dd_number">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="up_liner_group_leader_number">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="join_date">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="expire_date">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="master_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="master_english_name">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="master_id">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="spouse_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="spouse_english_name">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="spouse_id">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="distributor_status">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="language">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="rsvst1">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="rsvst2">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="rsvst3">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="rsvst4">
+        <datatype type="STRING" maxLength="64"/>
+      </element>
+      <element name="rsvst5">
+        <datatype type="STRING" maxLength="128"/>
+      </element>
+      <element name="rsvdc1">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rsvdc2">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rsvdc3">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="rsvdc4">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="rsvdc5">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="transfer_status">
+        <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      </element>
+      <element name="created_timestamp">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="modified_timestamp">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="master_id_type">
+        <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      </element>
+      <element name="spouse_id_type">
+        <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      </element>
+      <element name="effective_date">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="approach_code">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="service_name">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="expired_date_old">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="source_channel">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="work_address">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="place_holder_renew_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="international_sponsor_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="nationality">
+        <datatype type="STRING" maxLength="64"/>
+      </element>
+      <element name="corporation_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="corporation_english_name">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="corporation_id_type">
+        <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      </element>
+      <element name="corporation_id">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="distributor_password">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="corporation_race_code">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="distributor_identi_code">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="signup_type">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="last_abo_date">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="off_line">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/5GPOS/Taiwan/Mstb_Customer_Master" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="id">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="region_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="pos_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="staff_number">
+        <datatype type="STRING" maxLength="16"/>
+      </element>
+      <element name="distributor_number">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="distributor_type">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="distributor_pin_type">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="distributor_pin_level">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="distributor_class">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="attributive_shop_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="sign_up_shop_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="replacement_code">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="sponsor_number">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="sponsor_region_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="interl_sponsor_number">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="interl_sponsor_region_code">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="dd_number">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="up_liner_group_leader_number">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="join_date">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="expire_date">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="master_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="master_english_name">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="master_id">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="spouse_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="spouse_english_name">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="spouse_id">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="distributor_status">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="language">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="rsvst1">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="rsvst2">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="rsvst3">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="rsvst4">
+        <datatype type="STRING" maxLength="64"/>
+      </element>
+      <element name="rsvst5">
+        <datatype type="STRING" maxLength="128"/>
+      </element>
+      <element name="rsvdc1">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rsvdc2">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rsvdc3">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="rsvdc4">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="rsvdc5">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="transfer_status">
+        <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      </element>
+      <element name="created_timestamp">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="modified_timestamp">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="master_id_type">
+        <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      </element>
+      <element name="spouse_id_type">
+        <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      </element>
+      <element name="effective_date">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="approach_code">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="service_name">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="expired_date_old">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="source_channel">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="work_address">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="international_sponsor_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="nationality">
+        <datatype type="STRING" maxLength="64"/>
+      </element>
+      <element name="corporation_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="corporation_english_name">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="corporation_id_type">
+        <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      </element>
+      <element name="corporation_id">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="distributor_password">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="corporation_race_code">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="distributor_identi_code">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="temp_join_number">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="temp_total_purchase">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="temp_dist_status">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="temp_join_date">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="tempjoin_ordertype">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="tempjoin_nameflag">
+        <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      </element>
+      <element name="distributor_password_encrypt">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="pref_type">
+        <datatype type="STRING" maxLength="16"/>
+      </element>
+      <element name="tempcust_payment_status">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    HK.&quot;id&quot;,
+    HK.region_code,
+    HK.pos_code,
+    HK.staff_number,
+    HK.distributor_number,
+    HK.distributor_type,
+    HK.distributor_pin_type,
+    HK.distributor_pin_level,
+    HK.distributor_class,
+    HK.attributive_shop_code,
+    HK.sign_up_shop_code,
+    HK.replacement_code,
+    HK.sponsor_number,
+    HK.sponsor_region_code,
+    HK.interl_sponsor_number,
+    HK.interl_sponsor_region_code,
+    HK.dd_number,
+    HK.up_liner_group_leader_number,
+    HK.join_date,
+    HK.expire_date,
+    HK.master_name,
+    HK.master_english_name,
+    HK.master_id,
+    HK.spouse_name,
+    HK.spouse_english_name,
+    HK.spouse_id,
+    HK.distributor_status,
+    HK.&quot;language&quot;,
+    HK.rsvst1,
+    HK.rsvst2,
+    HK.rsvst3,
+    HK.rsvst4,
+    HK.rsvst5,
+    HK.rsvdc1,
+    HK.rsvdc2,
+    HK.rsvdc3,
+    HK.rsvdc4,
+    HK.rsvdc5,
+    HK.transfer_status,
+    HK.created_timestamp,
+    HK.modified_timestamp,
+    HK.master_id_type,
+    HK.spouse_id_type,
+    HK.effective_date,
+    HK.approach_code,
+    HK.service_name,
+    HK.expired_date_old,
+    HK.source_channel,
+    HK.work_address,
+    HK.place_holder_renew_flag,
+    HK.international_sponsor_name,
+    HK.nationality,
+    HK.corporation_name,
+    HK.corporation_english_name,
+    HK.corporation_id_type,
+    HK.corporation_id,
+    HK.distributor_password,
+    HK.corporation_race_code,
+    HK.distributor_identi_code,
+    NULL AS temp_join_number,
+    NULL AS temp_total_purchase,
+    NULL AS temp_dist_status,
+    NULL AS temp_join_date,
+    NULL AS tempjoin_ordertype,
+    NULL AS tempjoin_nameflag,
+    NULL AS distributor_password_encrypt,
+    NULL AS pref_type,
+    NULL AS tempcust_payment_status,
+    HK.signup_type,
+    HK.last_abo_date,
+    HK.off_line
+FROM /shared/Common/Physical/Formatting/&quot;5GPOS&quot;/Hong_Kong/Mstb_Customer_Master HK
+UNION
+SELECT 
+    TW.&quot;id&quot;,
+    TW.region_code,
+    TW.pos_code,
+    TW.staff_number,
+    TW.distributor_number,
+    TW.distributor_type,
+    TW.distributor_pin_type,
+    TW.distributor_pin_level,
+    TW.distributor_class,
+    TW.attributive_shop_code,
+    TW.sign_up_shop_code,
+    TW.replacement_code,
+    TW.sponsor_number,
+    TW.sponsor_region_code,
+    TW.interl_sponsor_number,
+    TW.interl_sponsor_region_code,
+    TW.dd_number,
+    TW.up_liner_group_leader_number,
+    TW.join_date,
+    TW.expire_date,
+    TW.master_name,
+    TW.master_english_name,
+    TW.master_id,
+    TW.spouse_name,
+    TW.spouse_english_name,
+    TW.spouse_id,
+    TW.distributor_status,
+    TW.&quot;language&quot;,
+    TW.rsvst1,
+    TW.rsvst2,
+    TW.rsvst3,
+    TW.rsvst4,
+    TW.rsvst5,
+    TW.rsvdc1,
+    TW.rsvdc2,
+    TW.rsvdc3,
+    TW.rsvdc4,
+    TW.rsvdc5,
+    TW.transfer_status,
+    TW.created_timestamp,
+    TW.modified_timestamp,
+    TW.master_id_type,
+    TW.spouse_id_type,
+    TW.effective_date,
+    TW.approach_code,
+    TW.service_name,
+    TW.expired_date_old,
+    TW.source_channel,
+    TW.work_address,
+    NULL AS place_holder_renew_flag,
+    TW.international_sponsor_name,
+    TW.nationality,
+    TW.corporation_name,
+    TW.corporation_english_name,
+    TW.corporation_id_type,
+    TW.corporation_id,
+    TW.distributor_password,
+    TW.corporation_race_code,
+    TW.distributor_identi_code,
+    TW.temp_join_number,
+    TW.temp_total_purchase,
+    TW.temp_dist_status,
+    TW.temp_join_date,
+    TW.tempjoin_ordertype,
+    TW.tempjoin_nameflag,
+    TW.distributor_password_encrypt,
+    TW.pref_type,
+    TW.tempcust_payment_status,
+    NULL AS signup_type,
+    NULL AS last_abo_date,
+    NULL AS off_line
+FROM /shared/Common/Physical/Formatting/&quot;5GPOS&quot;/Taiwan/Mstb_Customer_Master TW</attribute>
+  <attribute name="cacheLastTracking" type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/cache_tracking</attribute>
+  <attribute name="creationDate" type="LONG">1569000706677</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569421227736</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1569000706677</attribute>
+</metadata>

@@ -1,0 +1,751 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateCRUD_Create" path="/shared/ASAssets/BestPractices_v81/Procedures/crudProcedures/generateCRUD_Create" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="overwrite" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="crudVector" direction="IN" nullable="true">
+      <datatype name="crudVector" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="crudGenType" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="crudGenType" type="TREE" refId="1">
+            <element name="crudPath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="procedurePath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="procedureName">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="viewname">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="viewpath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="constantspath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="typedefprocpath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="typedefprocname">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="customcreatepath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="customupdatepath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="genUniqueIDPath">
+              <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+            </element>
+            <element name="pkList">
+              <datatype name="pkList" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <datatype name="crudGenColumnType" type="TREE" refId="2">
+                    <element name="colName">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                    <element name="colType">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                  </datatype>
+                </itemDatatype>
+              </datatype>
+            </element>
+            <element name="columnList">
+              <datatype name="columnList" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <reference refId="2"/>
+                </itemDatatype>
+              </datatype>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="status" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/GetProperty" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="property" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyName" type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyValue" type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/crudProcedures/getDefaultTestValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="colType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="prefixVarcharValue" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="defaultValue" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/crudProcedures/isPrimaryKey" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="colName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="pkVector" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="crudGenColumnType" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="crudGenColumnType" type="TREE" refId="2">
+              <element name="colName">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="colType">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="pkFound" direction="OUT">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inWord" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/createResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceSubType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateSqlScript" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="scripttext" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	03/14/2019		Mike Tinius			7.0.8			Fixed viewpath using applyReservedListToPath(crudVector[1].viewpath,null,resourcePathReserved).
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE generateCRUD_Create(
+	IN 	debug				CHAR(1),
+	IN  overwrite			INTEGER,
+		-- 0=&quot;FAIL_IF_EXISTS&quot;=do not overwrite the resource.  If the resource exists, raise an exception.
+		-- 1=&quot;SKIP_IF_EXISTS&quot;=skip the resource if it exists and continue processing
+		-- 2=&quot;OVERWRITE_IF_EXISTS&quot;=do overwrite the resource if it exists.
+	IN 	crudVector			VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.crudGenType),
+	OUT status				VARCHAR
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;generateCRUD_Create()&apos;;
+	DECLARE	genDefaultData			BIT DEFAULT 0;
+	DECLARE i,j,len					INTEGER;
+	DECLARE s						LONGVARCHAR;
+	DECLARE s2						LONGVARCHAR;
+	DECLARE if_thenPK,pkString,outPK,setPK,setUniquePK VARCHAR(2000);
+	DECLARE pkList					VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.crudGenColumnType);
+	DECLARE columnList				VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.crudGenColumnType);
+	DECLARE pkFound					SMALLINT;
+	DECLARE success					BIT;
+	DECLARE createResponse 			XML;
+	DECLARE faultResponse			XML;
+	DECLARE fullResourcePath		VARCHAR(4000);
+	DECLARE CSW_Version				VARCHAR;
+	DECLARE NEWLINE					VARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.newline;
+	DECLARE utilitiesRootPath		VARCHAR(4096) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.utilitiesRootPath;
+	DECLARE bestPracticesRootPath	VARCHAR(4096) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.bestPracticesRootPath;
+	DECLARE word					VARCHAR;
+	DECLARE defaultTestValue		VARCHAR;
+	DECLARE resourceExists			BOOLEAN DEFAULT false;
+	DECLARE ex						EXCEPTION;
+	DECLARE typedefprocname			VARCHAR(4000);
+	DECLARE typedefprocpath			VARCHAR(4096);
+	DECLARE resourcePathReserved	VARCHAR(4096);
+
+/* -- For documentation purposes only:
+	DECLARE PUBLIC TYPE crudGenColumnType	ROW (
+		colName				VARCHAR,
+		colType				VARCHAR
+	);
+	DECLARE PUBLIC TYPE crudGenType 		ROW (
+		procedurePath		TypeDefinitions.pathType,
+		procedureName		VARCHAR(255),
+		viewname 			VARCHAR(255),
+		viewpath			TypeDefinitions.pathType,
+		constantspath		TypeDefinitions.pathType,
+		customupdatepath	TypeDefinitions.pathType,
+		pkList				VECTOR(crudGenColumnType),
+		columnList			VECTOR(crudGenColumnType)
+	);
+*/
+	CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;BEGIN: ============================================&apos;);
+	-----------------------------------------------------------------------------------------
+	-- Template code for the &quot;create_$viewname SQL script
+	-----------------------------------------------------------------------------------------
+/* TEMPLATE FOR CREATE SCRIPT:
+-- Determine procedure name
+PROCEDURE create_$viewname(
+-- Determine Type Definition
+   	IN inVector VECTOR ($constantspath/TypeDefinitions.$viewname_Type)
+)
+BEGIN
+-- Determine Path to Constants
+	PATH $constantspath;
+-- Determine Module Name
+	DECLARE moduleName		varchar(255) default &apos;create_$viewname&apos;;
+	DECLARE debug			CHAR(1) DEFAULT defaultValues.debug;
+	DECLARE i				INTEGER DEFAULT 1;
+	DECLARE pkString		VARCHAR(4000) DEFAULT &apos;&apos;;
+
+    WHILE (i &lt;= CARDINALITY(inVector)) DO
+-- Determine Insert statement
+		insert into $viewpath values(
+			$fieldlist    
+		);
+-- Determine view name and PK
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;&lt;&lt;&lt; CREATE: $viewname &gt;&gt;&gt; VECTOR=&apos;||i||&apos;,  PK=&apos;|| NVL(convertDoubleToInteger(inVector[1].$pk,&apos;null&apos;)) );
+		set i = i + 1;
+	END WHILE;
+
+-- HANDLE EXCEPTIONS ----------------------------------------------------   
+    EXCEPTION
+      ELSE 
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug, &apos;&lt;&lt;&lt; CREATE: $viewname &gt;&gt;&gt; &apos;||CURRENT_EXCEPTION.TRACE);
+		RAISE defaultValues.ex VALUE CURRENT_EXCEPTION.TRACE;
+END
+*/
+	-----------------------------------------------------------------------------------------
+	-- Create the &quot;create_$viewname SQL procedure resource if it does not exist
+	-----------------------------------------------------------------------------------------
+	set fullResourcePath = REPLACE(crudVector[1].procedurePath ||&apos;/&apos;||crudVector[1].procedureName,&apos;//&apos;,&apos;/&apos;);
+	if (debug = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;fullResourcePath=&apos;||fullResourcePath);
+	end if;
+
+	set status = &apos;GENERATED&apos;;
+	call /lib/resource/ResourceExists(fullResourcePath,&apos;PROCEDURE&apos;,null,resourceExists);
+	if (not resourceExists) then
+		call /shared/ASAssets/Utilities/repository/createResource(crudVector[1].procedurePath,crudVector[1].procedureName,&apos;PROCEDURE&apos;,&apos;SQL_SCRIPT_PROCEDURE&apos;,success,createResponse,faultResponse);
+	else
+		set resourceExists = true;
+	end if;
+
+	-- Apply the reserved path to the procedure name
+	call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(crudVector[1].typedefprocname,null,typedefprocname);
+	call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(crudVector[1].typedefprocpath,null,typedefprocpath);
+
+	if ((not resourceExists) or (resourceExists and overwrite = 2)) then
+	-----------------------------------------------------------------------------------------
+	-- Build the &quot;create_$viewname SQL script
+	-----------------------------------------------------------------------------------------
+	set pkList = crudVector[1].pkList;
+	set columnList = crudVector[1].columnList;
+--	call print(&apos;pkList size=&apos;||CARDINALITY(pkList));
+--	call print(&apos;columnList size=&apos;||CARDINALITY(columnList));
+
+	set if_thenPK = &apos;		IF( &apos;;
+	set pkString =  &apos;		SET pkString = &apos;;
+	set i = 1;
+	set len = CARDINALITY(pkList);
+	WHILE (i &lt;= len) DO
+		-- Create the IF-THEN check for primary keys
+		call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(pkList[i].colName, null, word);
+
+		set if_thenPK = if_thenPK||&apos;(inVector[i].&apos;||word||&apos; IS NOT NULL AND LENGTH(&apos;&apos;|&apos;&apos;||inVector[i].&apos;||word||&apos;||&apos;&apos;|&apos;&apos;) &gt; 2) &apos;;
+		IF (i &lt; len) THEN
+			set if_thenPK = if_thenPK||&apos; AND &apos;;
+		ELSE -- when last column, just add a closing THEN
+			set if_thenPK = if_thenPK||&apos; ) THEN&apos;;	
+		END IF;
+
+		-- Create the pkString
+		call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(pkList[i].colName, null, word);
+		set pkString = pkString||&apos;TRIM(NVL(CAST(inVector[i].&apos;||word||&apos; AS LONGVARCHAR),&apos;&apos;  &apos;&apos;))&apos;;
+		IF (i &lt; len) THEN
+			set pkString = pkString||&apos;||&apos;||&apos;&apos;&apos;, &apos;&apos;&apos;||&apos;||&apos;;
+		ELSE -- when last column, just add a semicolon and carriage return
+			set pkString = pkString||&apos;;&apos;;	
+		END IF;
+
+		set i = i + 1;
+	END WHILE;
+	-- Generate the script text
+	set s = &apos;&apos;;
+	set s = s||&apos;/* create_&apos;||crudVector[1].viewname||&apos;:&apos;||NEWLINE;
+	set s = s||&apos;	*** GENERATED PROCEDURE --- DO NOT MODIFY ***&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	Composite Software CRUD procedure for &quot;CREATE&quot;.   &apos;||NEWLINE;
+	set s = s||&apos;	The purpose of this procedure is to perform a create on the view &quot;&apos;||crudVector[1].viewname||&apos;&quot;.&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	Input:&apos;||NEWLINE;
+	set s = s||&apos;		inVector - an array of inserts to perform for the view &quot;&apos;||crudVector[1].viewname||&apos;&quot;.&apos;||NEWLINE;
+	set s = s||&apos;		LogIdentifier - A string used to uniquely idenitify a record when saved to the log for debugging purposes.  It should never be null.&apos;||NEWLINE;
+	set s = s||&apos;	Output: &apos;||NEWLINE;
+	set s = s||&apos;		msgVector - an array of message results.&apos;||NEWLINE;
+	set s = s||&apos;			errorCode - 0=succesful CRUD operation, &gt;0=unscuccessful CRUD operation.&apos;||NEWLINE;
+	set s = s||&apos;			messageType - type of message being returned: SUCCESS, WARNING, PK_VIOLATION, SYSTEM_EXCEPTION&apos;||NEWLINE;
+	set s = s||&apos;			message - error message text.&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	Exceptions:  defaultValues.ex&apos;||NEWLINE;
+	set s = s||&apos;		Only active if defaultValues.crudRaiseExceptions is set to true.&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	Author:      Generated from Composite Best Practices generation scripts&apos;||NEWLINE;
+	set s = s||&apos;	Date:        &apos;||CURRENT_DATE||NEWLINE;
+	call /lib/util/GetProperty(&apos;SERVER_VERSION_NUMBER&apos;,CSW_Version);
+	set s = s||&apos;	CSW Version: &apos;||NVL(CSW_Version,&apos;null&apos;)||NEWLINE;
+	set s = s||&apos;*/&apos;||NEWLINE;
+	set s = s||&apos;PROCEDURE create_&apos;||crudVector[1].viewname||&apos;(&apos;||NEWLINE;
+	set s = s||&apos;	IN inVector 		VECTOR (&apos;||typedefprocpath||&apos;/&apos;||typedefprocname||&apos;.&apos;||crudVector[1].viewname||&apos;_Type),&apos;||NEWLINE;
+	set s = s||&apos;	IN LogIdentifier	&apos;||bestPracticesRootPath||&apos;/Procedures/TypeDefinitions.LogIdentifierType,&apos;||NEWLINE;
+	set s = s||&apos;	OUT msgVector		VECTOR(&apos;||bestPracticesRootPath||&apos;/Procedures/TypeDefinitions.crudMessageType)&apos;||NEWLINE;
+	set s = s||&apos;)&apos;||NEWLINE;
+	set s = s||&apos;BEGIN&apos;||NEWLINE;
+	set s = s||&apos;    DECLARE moduleName		varchar(255) default &apos;&apos;create_&apos;||crudVector[1].viewname||&apos;&apos;&apos;;&apos;||NEWLINE;
+	set s = s||&apos;    DECLARE debug			CHAR(1) DEFAULT &apos;||crudVector[1].constantspath||&apos;/defaultValues.debug;&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE debugTime		CHAR(1) DEFAULT &apos;||crudVector[1].constantspath||&apos;/defaultValues.debugTime;&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE debugException	CHAR(1) DEFAULT &apos;||crudVector[1].constantspath||&apos;/defaultValues.debugException;&apos;||NEWLINE;
+	set s = s||&apos;    DECLARE i				INTEGER DEFAULT 1;&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE pkString		VARCHAR(4000);&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE inVectorRow		VECTOR (&apos;||typedefprocpath||&apos;/&apos;||typedefprocname||&apos;.&apos;||crudVector[1].viewname||&apos;_Type) DEFAULT VECTOR[(null)];&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE message			LONGVARCHAR;&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE raiseExceptions	BOOLEAN DEFAULT &apos;||crudVector[1].constantspath||&apos;/defaultValues.crudRaiseExceptions;&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	SET msgVector = VECTOR[(null)]; -- Init message vector&apos;||NEWLINE;
+	set s = s||&apos;	BEGIN -- BEGIN EXCEPTION BLOCK&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;    WHILE (i &lt;= CARDINALITY(inVector)) DO&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;		-- invoke the custom create procedure to apply any custom logic on the vector of values.&apos;||NEWLINE;
+	set s = s||&apos;		set inVectorRow[1] = inVector[i];&apos;||NEWLINE;
+	call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(crudVector[1].customcreatepath||&apos;/custom_&apos;||crudVector[1].viewname,null,resourcePathReserved);
+	set s = s||&apos;		call &apos;||resourcePathReserved||&apos;(inVectorRow,LogIdentifier,inVectorRow);&apos;||NEWLINE;
+	set s = s||&apos;		set inVector[i] = inVectorRow[1];&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||pkString||NEWLINE;
+	set s = s||&apos;			SET message = &apos;&apos;&lt;&lt;&lt; CREATE: &apos;||crudVector[1].viewname||&apos; &gt;&gt;&gt; VECTOR=&apos;&apos;||i||&apos;&apos;,  PK=&apos;&apos;|| pkString;&apos;||NEWLINE;
+	set s = s||&apos;			CALL &apos;||utilitiesRootPath||&apos;/log/logDebugMessage(moduleName,debug,LogIdentifier||&apos;&apos;::&apos;&apos;||message);&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||if_thenPK||NEWLINE;
+	call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(crudVector[1].viewpath,null,resourcePathReserved);
+	set s = s||&apos;			INSERT INTO &apos;||resourcePathReserved||&apos; VALUES(&apos;||NEWLINE;
+	-- Dynamically place the column list to be inserted
+	set i = 1;
+	WHILE (i &lt;= CARDINALITY(columnList)) DO
+		call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(columnList[i].colName, null, word);
+		set s = s||&apos;				inVector[i].&apos;||word;
+		-- if not the last column add a comma and carriage return to the end.
+		IF (i &lt; CARDINALITY(columnList)) THEN
+			set s = s||&apos;,&apos;||NEWLINE;
+		ELSE -- when last column, just add a carriage return and no comma
+			set s = s||NEWLINE;	
+		END IF;
+		set i = i + 1;
+	END WHILE;
+	set s = s||&apos;			);&apos;||NEWLINE;
+	set s = s||&apos;			SET msgVector[i].errorCode = 0;&apos;||NEWLINE;
+	set s = s||&apos;			SET msgVector[i].messageType = &apos;&apos;SUCCESS&apos;&apos;;&apos;||NEWLINE;
+	set s = s||&apos;			SET msgVector[i].message = message;&apos;||NEWLINE;
+	set s = s||&apos;		ELSE&apos;||NEWLINE;
+	set s = s||&apos;			SET message = &apos;&apos;&lt;&lt;&lt; CREATE: &apos;||crudVector[1].viewname||&apos; &gt;&gt;&gt; VECTOR=&apos;&apos;||i||&apos;&apos;,  PK=&apos;&apos;|| pkString || &apos;&apos;,  SQL STATEMENT=[NO PRIMARY KEY PROVIDED, THEREFORE NO INSERT STATEMENT EXECUTED.]&apos;&apos;;&apos;||NEWLINE;
+	set s = s||&apos;			CALL &apos;||utilitiesRootPath||&apos;/log/logDebugMessage(moduleName,debug,LogIdentifier||&apos;&apos;::&apos;&apos;||message);&apos;||NEWLINE;
+	set s = s||&apos;			SET msgVector[i].errorCode = 1;&apos;||NEWLINE;
+	set s = s||&apos;			SET msgVector[i].messageType = &apos;&apos;PK_VIOLATION&apos;&apos;;&apos;||NEWLINE;
+	set s = s||&apos;			SET msgVector[i].message = message;&apos;||NEWLINE;
+	set s = s||&apos;		END IF;&apos;||NEWLINE;
+	set s = s||&apos;		SET i = i + 1;&apos;||NEWLINE;
+	set s = s||&apos;		SET msgVector = EXTEND(msgVector,1);&apos;||NEWLINE;
+	set s = s||&apos;	END WHILE;&apos;||NEWLINE;
+	set s = s||&apos;	SET msgVector = TRUNCATE(msgVector,1);&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;-- HANDLE EXCEPTIONS ----------------------------------------------------   &apos;||NEWLINE;
+	set s = s||&apos;    EXCEPTION&apos;||NEWLINE;
+	set s = s||&apos;      ELSE&apos;||NEWLINE;
+	set s = s||&apos;		set message = &apos;&apos;&lt;&lt;&lt; CREATE: &apos;||crudVector[1].viewname ||&apos;&gt;&gt;&gt; &apos;&apos;||CURRENT_EXCEPTION.TRACE;&apos;||NEWLINE;
+	set s = s||&apos;		SET msgVector[i].errorCode = 1;&apos;||NEWLINE;
+	set s = s||&apos;		SET msgVector[i].messageType = &apos;&apos;SYSTEM_EXCEPTION&apos;&apos;;&apos;||NEWLINE;
+	set s = s||&apos;		SET msgVector[i].message = message;&apos;||NEWLINE;
+	set s = s||&apos;		SET msgVector[i].errorTrace = &apos;&apos;&lt;&lt;&lt; CREATE: &apos;||crudVector[1].viewname ||&apos;&gt;&gt;&gt; &apos;&apos;||CURRENT_EXCEPTION.TRACE;&apos;||NEWLINE;
+	set s = s||&apos;		CALL &apos;||utilitiesRootPath||&apos;/log/logDebugMessage(moduleName,debugException,LogIdentifier||&apos;&apos;::&apos;&apos;||msgVector[i].errorTrace);&apos;||NEWLINE;
+	set s = s||&apos;		IF (raiseExceptions) THEN&apos;||NEWLINE;
+	set s = s||&apos;			RAISE &apos;||crudVector[1].constantspath||&apos;/defaultValues.ex VALUE message;&apos;||NEWLINE;
+	set s = s||&apos;		END IF;&apos;||NEWLINE;
+	set s = s||&apos;	END; -- END EXCEPTION BLOCK&apos;||NEWLINE;
+	set s = s||&apos;END&apos;||NEWLINE;
+	-----------------------------------------------------------------------------------------
+	-- Update the &quot;create_$viewname with the generated SQL script
+	-----------------------------------------------------------------------------------------
+		if (s IS NOT NULL AND LENGTH(&apos;|&apos;||s||&apos;|&apos;) &gt; 2) then  --notEmpty
+			call /shared/ASAssets/Utilities/repository/updateSqlScript(fullResourcePath,s,success,createResponse,faultResponse);
+		else
+			if (debug = &apos;Y&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Cannot update resource because the script text is empty.&apos;);
+			end if;
+			set status = &apos;ERROR&apos;;
+		end if;
+	else
+		if (overwrite = 0) then
+			raise ex value &apos;Cannot create resource because it already exists and overwrite=0.  path=&apos;||NVL(fullResourcePath,&apos;null&apos;);
+		end if;
+		if (overwrite = 1) then
+			if (debug = &apos;Y&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;SKIPPING:  Cannot create resource because it already exists.  path=&apos;||NVL(fullResourcePath,&apos;null&apos;));
+			end if;
+			set status = &apos;SKIPPED&apos;;
+		end if;
+	end if;
+/****************************************************************************
+*
+*	Generate a test harness for the create procedure
+*
+*****************************************************************************/
+	-----------------------------------------------------------------------------------------
+	-- Template for the &quot;test_create_$viewname SQL script
+	-----------------------------------------------------------------------------------------
+/*
+PROCEDURE test_create_customers(
+)
+BEGIN
+	DECLARE inVector 	VECTOR (/shared/CUD_Prototype/constants/TypeDefinitions.customers_Type) DEFAULT VECTOR[(null)];
+	DECLARE msgVector	VECTOR(/shared/BestPractices/Procedures/TypeDefinitions.crudMessageType);
+	DECLARE i			INTEGER DEFAULT 1;
+	DECLARE pk1			DOUBLE;
+
+	DECLARE numInserts 	INTEGER DEFAULT 2; -- number of times through the loop to generate
+	DECLARE testNoPK	INTEGER DEFAULT 1; -- when the loop counter(i) reaches this number it will not assign a PK.  Test the message that is generated.
+
+	WHILE (i &lt;= numInserts) DO
+		IF (i = testNoPK) THEN
+			set pk1 = null;
+		ELSE
+			call /shared/CUD_Prototype/L4_Physical_Layer/L4_2_Physial_Metadata/Seq/getUniqueID(pk1);
+		END IF;
+		call print(&apos;pk1=&apos;||NVL(pk1,&apos;null&apos;));
+		set inVector[i].customerID = pk1;
+		set inVector[i].CompanyName = &apos;New Company&apos;||i;
+		set inVector[i].ContactFirstName = &apos;&apos;;
+		set inVector[i].ContactLastName = &apos;&apos;;
+		set inVector[i].BillingAddress = &apos;&apos;;
+		set inVector[i].City = &apos;&apos;;
+		set inVector[i].StateOrProvince = &apos;&apos;;
+		set inVector[i].PostalCode = &apos;&apos;;
+		set inVector[i].CountryRegion = &apos;&apos;;
+		set inVector[i].ContactTitle = &apos;&apos;;
+		set inVector[i].PhoneNumber = &apos;&apos;;
+		set inVector[i].FaxNumber = &apos;&apos;;
+		set inVector = EXTEND(inVector,1);
+		set i = i + 1;
+	END WHILE;
+	set inVector = TRUNCATE(inVector,1);
+	call /shared/CUD_Prototype/L1_Mapping_Layer/L1_1_Client_Services/CRUD/&quot;Create&quot;/create_customers(inVector,msgVector);
+
+	-- Process the message vector
+	set i = 1;
+	WHILE (i &lt;= CARDINALITY(msgVector)) DO
+		call print(&apos;RESULTS:  success=&apos;||msgVector[i].success||&apos;  type=&apos;||msgVector[i].messageType||&apos;  Message=&apos;||msgVector[i].message);
+		set i = i + 1;
+	END WHILE;
+END
+*/
+	-----------------------------------------------------------------------------------------
+	-- Create the &quot;test_create_$viewname SQL procedure resource if it does not exist
+	-----------------------------------------------------------------------------------------
+	set fullResourcePath = REPLACE(crudVector[1].procedurePath ||&apos;/test/test_&apos;||crudVector[1].procedureName,&apos;//&apos;,&apos;/&apos;);
+	if (debug = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;fullResourcePath=&apos;||fullResourcePath);
+	end if;
+	set resourceExists = false;
+	call /lib/resource/ResourceExists(fullResourcePath,&apos;PROCEDURE&apos;,null,resourceExists);
+	if (not resourceExists) then
+		call /shared/ASAssets/Utilities/repository/createResource(crudVector[1].procedurePath ||&apos;/test&apos;,&apos;test_&apos;||crudVector[1].procedureName,&apos;PROCEDURE&apos;,&apos;SQL_SCRIPT_PROCEDURE&apos;,success,createResponse,faultResponse);
+	else
+		set resourceExists = true;
+	end if;
+
+	if ((not resourceExists) or (resourceExists and overwrite = 2)) then
+	-----------------------------------------------------------------------------------------
+	-- Build the &quot;test_create_$viewname SQL script
+	-----------------------------------------------------------------------------------------
+	set outPK = &apos;&apos;;
+	set setPK =  &apos;&apos;;
+	set setUniquePK = &apos;&apos;;
+	set i = 1;
+	set len = CARDINALITY(pkList);
+	WHILE (i &lt;= len) DO
+		-- Create the OUT parameters
+		set outPK = outPK||&apos;	OUT pk&apos;||i||&apos;Vector	VECTOR(&apos;||pkList[i].colType||&apos;)&apos;;
+		IF (i &lt; len) THEN
+			set outPK = outPK||&apos;,&apos;||NEWLINE;
+		END IF;
+		-- Create the set PK
+		set setPK = setPK||&apos;			set pk&apos;||i||&apos;Vector[i] = null;&apos;||NEWLINE;
+		-- Create the set unique ID PK
+		set setUniquePK = setUniquePK||&apos;				call &apos;||crudVector[1].genUniqueIDPath||&apos;(pk&apos;||i||&apos;Vector[i]);&apos;||NEWLINE;
+		set i = i + 1;
+	END WHILE;
+
+	set s = &apos;&apos;;
+	set s = s||&apos;PROCEDURE test_create_&apos;||crudVector[1].viewname||&apos;(&apos;||NEWLINE;
+	set s = s||outPK;
+	set s = s||&apos;)&apos;||NEWLINE;
+	set s = s||&apos;BEGIN&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE inVector 		VECTOR (&apos;||typedefprocpath||&apos;/&apos;||typedefprocname||&apos;.&apos;||crudVector[1].viewname||&apos;_Type) DEFAULT VECTOR[(null)];&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE msgVector		VECTOR(&apos;||bestPracticesRootPath||&apos;/Procedures/TypeDefinitions.crudMessageType);&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE LogIdentifier	&apos;||bestPracticesRootPath||&apos;/Procedures/TypeDefinitions.LogIdentifierType;&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE i				INTEGER DEFAULT 1;&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE pk1				DOUBLE;&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	DECLARE numInserts 	INTEGER DEFAULT 1; -- number of times through the loop to generate&apos;||NEWLINE;
+	set s = s||&apos;	DECLARE testNoPK	INTEGER DEFAULT 0; -- when the loop counter(i) reaches this number it will not assign a PK.  Set to 0 to turn this off.  Test the message that is generated.&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	-- Test for multiple PK inserts.&apos;||NEWLINE;
+	set s = s||&apos;	set pk1Vector = VECTOR [null];&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	WHILE (i &lt;= numInserts) DO&apos;||NEWLINE;
+	set s = s||&apos;		IF (i = testNoPK) THEN&apos;||NEWLINE;
+	set s = s||setPK;
+	set s = s||&apos;		ELSE&apos;||NEWLINE;
+	set s = s||&apos;			if (pk1Vector[i] is null) then&apos;||NEWLINE;
+	set s = s||setUniquePK;
+	set s = s||&apos;			end if;&apos;||NEWLINE;
+	set s = s||&apos;		END IF;&apos;||NEWLINE;
+	set i = 1;
+	set j = 1;
+	WHILE (i &lt;= CARDINALITY(columnList)) DO
+		call /shared/ASAssets/BestPractices_v81/Procedures/crudProcedures/isPrimaryKey(columnList[i].colName,pkList,pkFound);
+		call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(columnList[i].colName, null, word);
+		-- Add formatting to retrieve by primary key
+ 		IF (pkFound = 1) THEN 	
+			set s = s||&apos;		call print(&apos;&apos;pk&apos;||j||&apos;Vector[i] =&apos;&apos;||TRIM(NVL(CAST(pk&apos;||j||&apos;Vector[i] AS LONGVARCHAR),&apos;&apos;  &apos;&apos;)));&apos;||NEWLINE;
+			set s = s||&apos;		set inVector[i].&apos;||word||&apos; = pk&apos;||j||&apos;Vector[i];&apos;||NEWLINE;
+			set j = j + 1;
+		ELSE -- Only add a format procedure when the column is not a primary key.
+			IF (genDefaultData = 1) THEN
+				call /shared/ASAssets/BestPractices_v81/Procedures/crudProcedures/getDefaultTestValues(columnList[i].colType,&apos;Create&apos;,defaultTestValue);
+				set s2 = &apos;		set inVector[i].&apos;||word||&apos; = &apos;||defaultTestValue||&apos;;&apos;||NEWLINE;
+			ELSE
+				set s2 = &apos;		set inVector[i].&apos;||word||&apos; = null;&apos;||NEWLINE;
+			END IF;
+--			call print(s2);
+			set s = s|| s2;
+		END IF;
+		set i = i + 1;
+	END WHILE;
+	set s = s||NEWLINE;
+	set s = s||&apos;		set inVector = EXTEND(inVector,1);&apos;||NEWLINE;
+	set s = s||&apos;		set pk1Vector = EXTEND(pk1Vector,1);&apos;||NEWLINE;
+	set s = s||&apos;		set i = i + 1;&apos;||NEWLINE;
+	set s = s||&apos;	END WHILE;&apos;||NEWLINE;
+	set s = s||&apos;	set inVector = TRUNCATE(inVector,1);&apos;||NEWLINE;
+	set s = s||&apos;	set pk1Vector = TRUNCATE(pk1Vector,1);&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	-- Format the Identifier fields for logging purposes.  9 potential (name,value) fields are available for use.&apos;||NEWLINE;
+	set s = s||&apos;	--    name=Enter a field tag in single quotes.  Value=use the varible name.  Cast to varhar(4000) for non-string type fields.&apos;||NEWLINE;
+	set s = s||&apos;	call &apos;||bestPracticesRootPath||&apos;/Procedures/crudProcedures/formatLogIdFields(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,LogIdentifier);&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(REPLACE(crudVector[1].procedurePath ||&apos;/&apos;||crudVector[1].procedureName,&apos;//&apos;,&apos;/&apos;),null,resourcePathReserved);
+	set s = s||&apos;	call &apos;||resourcePathReserved||&apos;(inVector,LogIdentifier,msgVector);&apos;||NEWLINE;
+	set s = s||NEWLINE;
+	set s = s||&apos;	-- Process the message vector&apos;||NEWLINE;
+	set s = s||&apos;	set i = 1;&apos;||NEWLINE;
+	set s = s||&apos;	WHILE (i &lt;= CARDINALITY(msgVector)) DO&apos;||NEWLINE;
+	set s = s||&apos;		call print(&apos;&apos;TEST RESULTS:  errorCode=&apos;&apos;||msgVector[i].errorCode||&apos;&apos;  type=&apos;&apos;||msgVector[i].messageType||&apos;&apos;  Message=&apos;&apos;||msgVector[i].message);&apos;||NEWLINE;
+	set s = s||&apos;		set i = i + 1;&apos;||NEWLINE;
+	set s = s||&apos;	END WHILE;&apos;||NEWLINE;
+	set s = s||&apos;END&apos;||NEWLINE;
+	-----------------------------------------------------------------------------------------
+	-- Update the &quot;test_create_$viewname with the generated SQL script
+	-----------------------------------------------------------------------------------------
+		if (s IS NOT NULL AND LENGTH(&apos;|&apos;||s||&apos;|&apos;) &gt; 2) then  --notEmpty
+			call /shared/ASAssets/Utilities/repository/updateSqlScript(fullResourcePath,s,success,createResponse,faultResponse);
+		else
+			if (debug = &apos;Y&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Cannot update resource because the script text is empty.&apos;);
+			end if;
+		end if;
+	else
+		if (overwrite = 0) then
+			raise ex value &apos;Cannot create resource because it already exists and overwrite=0.  path=&apos;||NVL(fullResourcePath,&apos;null&apos;);
+		end if;
+		if (overwrite = 1) then
+			if (debug = &apos;Y&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;SKIPPING:  Cannot create resource because it already exists.  path=&apos;||NVL(fullResourcePath,&apos;null&apos;));
+			end if;
+		end if;
+	end if;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:1:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:3:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

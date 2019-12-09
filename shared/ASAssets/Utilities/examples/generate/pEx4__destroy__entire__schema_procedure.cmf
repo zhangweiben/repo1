@@ -1,0 +1,239 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="pEx4_destroy_entire_schema" path="/shared/ASAssets/Utilities/examples/generate/pEx4_destroy_entire_schema" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="actionType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="seqNum">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="resourceDepth">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="treeType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="parentID">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="id">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="enabled">
+          <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+        </element>
+        <element name="resourceName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="resourcePath">
+          <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+        </element>
+        <element name="resourceType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="subtype">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="ownerDomain">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="ownerName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="impactLevel">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="impactMessage">
+          <datatype name="VARCHAR" type="STRING" maxLength="32768"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/examples/generate/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/generate/destroyUsedLineage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="destroyDatasourceResource" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="destroyEmptyParentFolder" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inDebug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="actionType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="seqNum">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="resourceDepth">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="treeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="parentID">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="4096"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactMessage">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	pEx4_destroy_entire_schema:
+
+	The procedure is an example of how to destroy all of the tables in the published database layer including
+		the entire lineage for all of the views.  It will also destroy empty parent folders.
+	Options:
+		destroyDatasourceResource=1		- 1=destroy the final data source table
+		destroyEmptyParentFolder=1		- 1=destroy empty parent folders
+
+	Input:
+		none
+	Output: 
+		OUT result  	     CURSOR (						-- response containing the resource metadata
+			actionType			VARCHAR(255),	-- &apos;removed&apos;, &apos;datasource table not removed&apos;, &apos;resource does not exist&apos;
+			seqNum 				INTEGER, 
+			resourceDepth 		INTEGER, 
+			treeType 			VARCHAR(255),
+			parentID 			INTEGER, 
+			id	 				INTEGER, 
+			enabled 			BIT,
+			resourceName 		VARCHAR(255), 
+			resourcePath 		VARCHAR(4096), 
+			resourceType 		VARCHAR(255), 
+			subtype 			VARCHAR(255),
+			ownerDomain 		VARCHAR(255), 
+			ownerName 			VARCHAR(255), 
+			impactLevel 		VARCHAR(255), 
+			impactMessage 		VARCHAR(32768)
+        )
+
+	Exception: may throw exceptions if input is not valid.
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2017.400	11/11/2017		Mike Tinius			7.0.5			Created new.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE pEx4_destroy_entire_schema(
+	OUT result  	     CURSOR (					-- response containing the resource metadata
+		actionType			VARCHAR(255),			-- &apos;removed&apos;, &apos;datasource table not removed&apos;, &apos;resource does not exist&apos;
+		seqNum 				INTEGER, 
+		resourceDepth 		INTEGER, 
+		treeType 			VARCHAR(255),
+		parentID 			INTEGER, 
+		id	 				INTEGER, 
+		enabled 			BIT,
+		resourceName 		VARCHAR(255), 
+		resourcePath 		VARCHAR(4096), 
+		resourceType 		VARCHAR(255), 
+		subtype 			VARCHAR(255),
+		ownerDomain 		VARCHAR(255), 
+		ownerName 			VARCHAR(255), 
+		impactLevel 		VARCHAR(255), 
+		impactMessage 		VARCHAR(32768)
+        )
+)
+BEGIN
+	DECLARE destroyDatasourceResource 		SMALLINT;		-- 0=do not destroy final datasource resource, 1=destroy the final datasource resource at the root folder level.
+	DECLARE	destroyEmptyParentFolder 		SMALLINT;		-- 0-do not destroy empty parent folder, 1=destroy the parent folder when the last resource has been deleted therefore it is empty.
+	DECLARE Published_DB_Layer_Path			LONGVARCHAR;	-- Full resource path which includes the path and the resource name  
+															--	Values: e.g. /services/databases/TEST/CAT1/SCH1/V_T1
+	DECLARE publishedDSPath					VARCHAR DEFAULT /shared/ASAssets/Utilities/examples/generate/defaultValues.publishedDSPath;
+	DECLARE publishedCatalog				VARCHAR DEFAULT /shared/ASAssets/Utilities/examples/generate/defaultValues.publishedCatalog;
+	DECLARE publishedSchema					VARCHAR DEFAULT /shared/ASAssets/Utilities/examples/generate/defaultValues.publishedSchema;
+	DECLARE prefix 							VARCHAR(255);	-- prefix for views.  It is recommended that no prefix be added even though the option exists.  Example: V_
+	DECLARE debug							CHAR(1) DEFAULT &apos;Y&apos;; -- Y=debug on, N=debug off, null=N
+
+	-- Path to the published schema folder
+	SET prefix 					= &apos;v_&apos;;																-- View prefix or null if not applicable
+	SET Published_DB_Layer_Path = publishedDSPath;													-- Construct the Published Layer Path
+	IF (publishedCatalog IS NOT NULL) THEN
+		SET Published_DB_Layer_Path = Published_DB_Layer_Path||&apos;/&apos;||publishedCatalog; 				-- Append the published catalog name
+	END IF;
+	SET Published_DB_Layer_Path = Published_DB_Layer_Path||&apos;/&apos;||publishedSchema; 					-- Append the published schema name
+	SET destroyDatasourceResource = 1;
+	SET destroyEmptyParentFolder = 1;
+
+	open result for select * from /shared/ASAssets/Utilities/generate/destroyUsedLineage(
+		destroyDatasourceResource,
+		destroyEmptyParentFolder,
+		Published_DB_Layer_Path,
+		debug
+	);
+END</attribute>
+  <attribute name="creationDate" type="LONG">1510413956294</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564748448855</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1510413956294</attribute>
+</metadata>

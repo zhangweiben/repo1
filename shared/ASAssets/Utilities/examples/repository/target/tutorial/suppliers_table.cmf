@@ -1,0 +1,140 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="suppliers" path="/shared/ASAssets/Utilities/examples/repository/target/tutorial/suppliers" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="supplierid" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="suppliername" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="contactname" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="contacttitle" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="address" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="city" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="postalcode" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="stateorprovince" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="countryregion" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="phonenumber" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="faxnumber" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/examples/repository/source/ds_inventory/tutorial/suppliers" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="supplierid" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="suppliername">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="contactname">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="contacttitle">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="address">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="city">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="postalcode">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="stateorprovince">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="countryregion">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="phonenumber">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="faxnumber">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    supplierid,
+    suppliername,
+    contactname,
+    contacttitle,
+    address,
+    city,
+    postalcode,
+    stateorprovince,
+    countryregion,
+    phonenumber,
+    faxnumber
+FROM
+    /shared/ASAssets/Utilities/examples/repository/&quot;source&quot;/ds_inventory/tutorial/suppliers</attribute>
+  <attribute name="creationDate" type="LONG">1559056823517</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1559056823563</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1559056823517</attribute>
+</metadata>

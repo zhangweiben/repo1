@@ -1,0 +1,317 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="5GPOS_Vcs_Order_Valid_Rcrd" path="/shared/Common/Application/Published/DE/Core_Plus/5GPOS/5GPOS_Vcs_Order_Valid_Rcrd" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="id" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="order_number" nullable="true">
+      <datatype type="STRING" maxLength="64"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sales_entity" nullable="true">
+      <datatype type="STRING" maxLength="64"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sales_account_type" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="local_id_verified_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="address_match_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="address_unique_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="impersonated_order_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="phone_unique_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="creditcard_nounique_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="creditcard_name_match_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="customer_verified_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="remark" nullable="true">
+      <datatype type="STRING" maxLength="1024"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvdc1" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvdc2" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvdc3" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvdc4" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvdc5" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvst1" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvst2" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvst3" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvst4" nullable="true">
+      <datatype type="STRING" maxLength="64"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvst5" nullable="true">
+      <datatype type="STRING" maxLength="128"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="created_timestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="modified_timestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="status" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Business/Logical/Core_Plus/5GPOS_Vcs_Order_Valid_Rcrd" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="id">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="order_number">
+        <datatype type="STRING" maxLength="64"/>
+      </element>
+      <element name="sales_entity">
+        <datatype type="STRING" maxLength="64"/>
+      </element>
+      <element name="sales_account_type">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="local_id_verified_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="address_match_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="address_unique_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="impersonated_order_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="phone_unique_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="creditcard_nounique_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="creditcard_name_match_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="customer_verified_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="remark">
+        <datatype type="STRING" maxLength="1024"/>
+      </element>
+      <element name="rsvdc1">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="rsvdc2">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="rsvdc3">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="rsvdc4">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="rsvdc5">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="rsvst1">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="rsvst2">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="rsvst3">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="rsvst4">
+        <datatype type="STRING" maxLength="64"/>
+      </element>
+      <element name="rsvst5">
+        <datatype type="STRING" maxLength="128"/>
+      </element>
+      <element name="created_timestamp">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="modified_timestamp">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="status">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.&quot;id&quot; AS BIGINT) AS &quot;id&quot;,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.order_number AS VARCHAR(64)) AS order_number,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.sales_entity AS VARCHAR(64)) AS sales_entity,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.sales_account_type AS VARCHAR(32)) AS sales_account_type,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.local_id_verified_flag AS CHAR(1)) AS local_id_verified_flag,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.address_match_flag AS CHAR(1)) AS address_match_flag,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.address_unique_flag AS CHAR(1)) AS address_unique_flag,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.impersonated_order_flag AS CHAR(1)) AS impersonated_order_flag,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.phone_unique_flag AS CHAR(1)) AS phone_unique_flag,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.creditcard_nounique_flag AS CHAR(1)) AS creditcard_nounique_flag,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.creditcard_name_match_flag AS CHAR(1)) AS creditcard_name_match_flag,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.customer_verified_flag AS CHAR(1)) AS customer_verified_flag,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.remark AS VARCHAR(1024)) AS remark,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.rsvdc1 AS BIGINT) AS rsvdc1,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.rsvdc2 AS BIGINT) AS rsvdc2,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.rsvdc3 AS DECIMAL(14,2)) AS rsvdc3,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.rsvdc4 AS DECIMAL(14,2)) AS rsvdc4,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.rsvdc5 AS DECIMAL(14,2)) AS rsvdc5,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.rsvst1 AS VARCHAR(32)) AS rsvst1,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.rsvst2 AS VARCHAR(32)) AS rsvst2,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.rsvst3 AS VARCHAR(32)) AS rsvst3,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.rsvst4 AS VARCHAR(64)) AS rsvst4,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.rsvst5 AS VARCHAR(128)) AS rsvst5,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.created_timestamp AS TIMESTAMP) AS created_timestamp,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.modified_timestamp AS TIMESTAMP) AS modified_timestamp,
+	CAST(&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;.status AS VARCHAR(8)) AS status 
+FROM
+	/shared/Common/Business/Logical/Core_Plus/&quot;5GPOS_Vcs_Order_Valid_Rcrd&quot; &quot;5GPOS_Vcs_Order_Valid_Rcrd&quot;</attribute>
+  <attribute name="creationDate" type="LONG">1569415343053</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569980882849</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1569415343053</attribute>
+</metadata>

@@ -1,0 +1,714 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="pEx4_create_entire_schema_all_layers_with_fk" path="/shared/ASAssets/Utilities/examples/generate/pEx4_create_entire_schema_all_layers_with_fk" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="errStatus" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="errMessage" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="introspectionResult" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="dataSourceType" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="dataSourceSubtype" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="numResourcesIntrospectAdd" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="numTablesIntrospectAdd" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="tablesIntrospectAdd" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="numResourcesIntrospectSkip" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="numTablesIntrospectSkip" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="tablesIntrospectSkip" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="generatedViewsCursor" direction="OUT" nullable="true">
+      <datatype name="generatedViewsCursor" type="TABLE" refId="1">
+        <element name="actionType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="layerType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="resName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="resPath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="resType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="subtype">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="parentLineageLayerType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="parentLineagePath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="metadataLineageName">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="metadataLineagePath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceDefs" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/examples/generate/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/generate/generateViews" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="datasourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="catalogName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="schemaName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="schemaTablePatterns" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="tableNames" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="schemaProcedurePatterns" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procedureNames" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="separator" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="formattingLayerPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="businessLayerPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="applicationLayerPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="publishedDBLayerPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="prefix" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="overwrite" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="copyAnnotation" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="copySqlIndexes" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="copyForeignKeys" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="inDebug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="errStatus" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="errMessage" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="introspectionResult" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="dataSourceType" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="dataSourceSubtype" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="numResourcesIntrospectAdd" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="numTablesIntrospectAdd" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="tablesIntrospectAdd" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="numResourcesIntrospectSkip" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="numTablesIntrospectSkip" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="tablesIntrospectSkip" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="generatedViewsCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="actionType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="layerType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="parentLineageLayerType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="parentLineagePath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="metadataLineageName">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="metadataLineagePath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/destroyResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateResourceAnnotationsV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="annotation" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inColumnAnnotations" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="updateResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateResourcesSqlTableV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inScripttext" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="annotation" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inColumnList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inSqlIndexList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inForeignKeyList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	pEx4_create_entire_schema_all_layers_with_fk:
+
+	The procedure is an example of how to invoke the generateViews() procedure to introspect and generate views
+		into all of the Data Abstraction Best Practices layers.
+	Ojbective: Generate all ds_inventory/tutorial views thoughout all layers.
+		prefix=null
+		Do not overwrite
+		Copy Annotations
+		Copy Indexes
+		Copy Foriegn Keys
+
+	Input:
+		none
+	Output: 
+		OUT errStatus 						VARCHAR,		-- SUCCESS or FAIL
+		OUT errMessage 						LONGVARCHAR,	-- Error message if errStatus=FAIL, otherwise null
+		OUT introspectionResult 			LONGVARCHAR		-- A line (CHR(10)) delimited string of results.  Use introspectResourcesResultCursor() to  return a cursor.
+		OUT dataSourceType					VARCHAR,		-- The type of data source that was introspected.
+		OUT dataSourceSubtype				VARCHAR,		-- The subtype of data source that was introspected.
+		OUT numResourcesIntrospectAdd		INTEGER,		-- Number of resources added during introspection.  Includes catalogs and schemas in the count.
+		OUT numTablesIntrospectAdd			INTEGER,		-- Number of tables added during introspection.  Only tables are counted.
+		OUT tablesIntrospectAdd				LONGVARCHAR,	-- List of tables added during introspection.  Excludes catalogs and schemas.
+		OUT numResourcesIntrospectSkip		INTEGER,		-- Number of resources skipped during introspection.  Includes catalogs and schemas in the count.
+		OUT numTablesIntrospectSkip			INTEGER,		-- Number of tables skipped during introspection.  Only tables are counted.
+		OUT tablesIntrospectSkip			LONGVARCHAR,	-- List of tables skipped during introspection.  Excludes catalogs and schemas.
+		OUT generatedViewsCursor			CURSOR (		-- A cursor of results for each row created or updated			
+			actionType						VARCHAR,		-- The action taken for this resource:  CREATED, OVERWRITTEN, SKIPPED [EXISTS].
+			layerType						VARCHAR,		-- The layer type that the view is being generated in:  METADATA, FORMATTING, BUSINESS, APPLICATION, PUBLISHED.
+			resName							VARCHAR,		-- The name of the resource.
+			resPath							LONGVARCHAR,	-- The full path to the resource.
+			resType							VARCHAR,		-- The type of the resource.
+			subtype							VARCHAR,		-- The subtype of the resource.
+			parentLineageLayerType			VARCHAR,		-- The layer type of the parent resource according to the lineage.
+			parentLineagePath				LONGVARCHAR,	-- The full path of the parent resource according to the lineage.
+			metadataLineageName				LONGVARCHAR,	-- Placeholder for generateViews - always null.
+			metadataLineagePath				LONGVARCHAR		-- Placeholder for generateViews - always null.
+		)
+
+	Exception: may throw exceptions if input is not valid.
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2017.400	11/11/2017		Mike Tinius			7.0.5			Created new.
+	2019.200	05/14/2019		Mike Tinius			7.0.8			Modified to remove VECTOR input and use LONGVARCHAR with formatted XML for updateResourcesSqlTableV2.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE pEx4_create_entire_schema_all_layers_with_fk(
+	OUT errStatus 						VARCHAR,		-- SUCCESS OR FAIL
+	OUT errMessage 						LONGVARCHAR,	-- Error message if errStatus=FAIL
+	OUT introspectionResult 			LONGVARCHAR,	-- A line (CHR(10)) delimited string of results.  Use introspectResourcesResultCursor() to  return a cursor.
+	OUT dataSourceType					VARCHAR,		-- The type of data source that was introspected.
+	OUT dataSourceSubtype				VARCHAR,		-- The subtype of data source that was introspected.
+	OUT numResourcesIntrospectAdd		INTEGER,		-- Number of resources added during introspection.  Includes catalogs and schemas in the count.
+	OUT numTablesIntrospectAdd			INTEGER,		-- Number of tables added during introspection.  Only tables are counted.
+	OUT tablesIntrospectAdd				LONGVARCHAR,	-- List of tables added during introspection.  Excludes catalogs and schemas.
+	OUT numResourcesIntrospectSkip		INTEGER,		-- Number of resources skipped during introspection.  Includes catalogs and schemas in the count.
+	OUT numTablesIntrospectSkip			INTEGER,		-- Number of tables skipped during introspection.  Only tables are counted.
+	OUT tablesIntrospectSkip			LONGVARCHAR,	-- List of tables skipped during introspection.  Excludes catalogs and schemas.
+	OUT generatedViewsCursor			CURSOR (		-- A cursor of results for each row created or updated			
+		actionType						VARCHAR,		-- The action taken for this resource:  CREATED, OVERWRITTEN, SKIPPED [EXISTS].
+		layerType						VARCHAR,		-- The layer type that the view is being generated in:  METADATA, FORMATTING, BUSINESS, APPLICATION, PUBLISHED.
+		resName							VARCHAR,		-- The name of the resource.
+		resPath							LONGVARCHAR,	-- The full path to the resource.
+		resType							VARCHAR,		-- The type of the resource.
+		subtype							VARCHAR,		-- The subtype of the resource.
+		parentLineageLayerType			VARCHAR,		-- The layer type of the parent resource according to the lineage.
+		parentLineagePath				LONGVARCHAR,	-- The full path of the parent resource according to the lineage.
+		metadataLineageName				LONGVARCHAR,	-- Placeholder for generateViews - always null.
+		metadataLineagePath				LONGVARCHAR		-- Placeholder for generateViews - always null.
+	)
+)
+BEGIN
+	DECLARE moduleName			VARCHAR DEFAULT &apos;pEx4_create_entire_schema_all_layers_with_fk&apos;;
+	DECLARE basePath						VARCHAR(32768);	-- Base path for the project
+	DECLARE  datasourcePath 				VARCHAR(4096);	-- mandatory.   Full path to datasource
+	DECLARE  	catalogName 				VARCHAR;		-- optional (null) - Database catalog Name if applicable
+	DECLARE  	schemaName 					VARCHAR;		-- mandatory.  Database schema name
+	DECLARE  	schemaTablePatterns			VARCHAR(4096);	-- comma separated list of patterns such as D%, E%, F%.    introspect all new tables starting with D, E and F.
+	DECLARE  	tableNames 					LONGVARCHAR;	-- optional.  NULL=no specified table list OR one or more comma separated tables to introspect.  When NULL, all tables for the schema are introspected.
+	DECLARE  	schemaProcedurePatterns		VARCHAR(4096);	-- comma separated list of patterns such as D%, E%, F%.    Introspect all new procedures starting with D, E and F.
+	DECLARE  	procedureNames 				LONGVARCHAR;	-- NULL=no specified procedure list OR 1 or more comma separated procedures to introspect.  When NULL, all procedures are introspected.
+	DECLARE	formattingLayerPath				VARCHAR(32768);	-- Path to target Formatting layer views.  Missing folders are automatically created.
+	DECLARE	businessLayerPath				VARCHAR(32768);	-- Path to target Business layer views.  Missing folders are automatically created.
+	DECLARE	applicationLayerPath			VARCHAR(32768);	-- Path to target Application layer views.  Missing folders are automatically created.
+	DECLARE	publishedDBLayerPath			VARCHAR(32768);	-- Path to target Published Database Schema layer views.  Datasource and schema &quot;must&quot; exist already
+	DECLARE prefix 							VARCHAR(255);	-- prefix for views.  It is recommended that no prefix be added even though the option exists.
+															--		Example: V_
+	DECLARE overwrite						SMALLINT;		-- 1=overwrite existing views, 0=do not overwrite existing views (throws exception if views exist)
+	DECLARE copyAnnotation					SMALLINT;		-- 1=copy table and column annotations. 0=do not copy
+	DECLARE copySqlIndexes					SMALLINT;		-- 1=copy SQL indexes from source to target.  0=do not copy 
+	DECLARE copyForeignKeys					SMALLINT;		-- 1=copy foreign keys from source to target.  0=do not copy
+	DECLARE debug							CHAR(1);		-- Y=debug on, N=debug off, null=N
+	DECLARE publishedDSPath					VARCHAR DEFAULT /shared/ASAssets/Utilities/examples/generate/defaultValues.publishedDSPath;
+	DECLARE publishedCatalog				VARCHAR DEFAULT /shared/ASAssets/Utilities/examples/generate/defaultValues.publishedCatalog;
+	DECLARE publishedSchema					VARCHAR DEFAULT /shared/ASAssets/Utilities/examples/generate/defaultValues.publishedSchema;
+	DECLARE separator						VARCHAR DEFAULT &apos;,&apos;;-- Default=,  The separator used to separate lists for the input parameters: tableNames and procedureNames
+	DECLARE success							BIT;
+	DECLARE createResponse 					XML;
+	DECLARE updateResponse 	 				XML;
+	DECLARE faultResponse					XML;
+	DECLARE resExists		 				BOOLEAN;
+    DECLARE resourcePath      				/lib/resource/ResourceDefs.ResourcePath;
+    DECLARE resourceType      				/lib/resource/ResourceDefs.ResourceType;
+	DECLARE sqlScript		  				LONGVARCHAR;
+    DECLARE annotation       				LONGVARCHAR;
+    DECLARE columnAnnotations 				LONGVARCHAR;
+	DECLARE sqlIndexList	 				LONGVARCHAR;
+	DECLARE foreignKeyList	 				LONGVARCHAR;
+
+
+	SET basePath 				= /shared/ASAssets/Utilities/examples/generate/defaultValues.basePath;-- Base path for the examples project
+	SET 	datasourcePath 		= basePath||&apos;/Physical/Metadata/postgres/ds_inventory&apos;;			-- Physical datasource path
+	SET		catalogName 		= null;															-- Physical datasource catalog name
+	SET		schemaName 			= &apos;tutorial&apos;;													-- Physical datasource schema name
+	SET		schemaTablePatterns = null;															-- Schema patterns used for introspection of new tables
+	SET		tableNames			= null; 														-- no list so all tables in schema will be introspected
+	SET		schemaProcedurePatterns = NULL;														-- Schema patterns used for introspectino of new procedures
+	SET		procedureNames		= NULL;															-- no list so all procedures in schema will be introspected
+	SET formattingLayerPath 	= basePath||&apos;/Physical/Formatting/tutorial&apos;; 					-- Generate into Formatting layer
+	SET businessLayerPath 		= basePath||&apos;/Business/Logical/tutorial&apos;;	 					-- Generate into Business Logical layer
+	SET applicationLayerPath 	= basePath||&apos;/Application/Views/tutorial&apos;;	 					-- Generate into Application Views layer
+	SET publishedDBLayerPath 	= publishedDSPath;												-- Construct the Published Layer Path
+	IF (publishedCatalog IS NOT NULL) THEN
+		SET publishedDBLayerPath = publishedDBLayerPath||&apos;/&apos;||publishedCatalog; 				-- Append the published catalog name
+	END IF;
+	SET publishedDBLayerPath = publishedDBLayerPath||&apos;/&apos;||publishedSchema; 						-- Append the published schema name
+	SET prefix 					= null;															-- View prefix or null if not applicable
+	SET overwrite 				= 0;															-- 0=Do not overwrite.  1=overwrite existing views.
+	SET copyAnnotation			= 1;															-- 0=do not copy.  1=copy table and column annotations. 
+	SET copySqlIndexes			= 1;															-- 0=do not copy.  1=copy SQL indexes from source to target.   
+	SET copyForeignKeys			= 1;															-- 0=do not copy.  1=copy foreign keys from source to target.  
+	SET debug 					= &apos;Y&apos;;															-- debug=Y or N
+
+	BEGIN INDEPENDENT TRANSACTION
+		-- Prior to generating the views, remove the logical, applicatin and published layers if they exist
+		CALL /lib/resource/ResourceExists(publishedDSPath||&apos;/&apos;||publishedCatalog||&apos;/&apos;||publishedSchema, &apos;CONTAINER&apos;, null, resExists);
+		IF (resExists) THEN
+			CALL print(moduleName||&apos; : Destroy resourcePath=&apos;||publishedDSPath||&apos;/&apos;||publishedCatalog||&apos;/&apos;||publishedSchema);
+			CALL /shared/ASAssets/Utilities/repository/destroyResource(publishedDSPath||&apos;/&apos;||publishedCatalog||&apos;/&apos;||publishedSchema, null, &apos;CONTAINER&apos;, success, createResponse, faultResponse);
+		END IF;
+		CALL /lib/resource/ResourceExists(businessLayerPath, &apos;CONTAINER&apos;, null, resExists);
+		IF (resExists) THEN
+			CALL print(moduleName||&apos; : Destroy resourcePath=&apos;||businessLayerPath);
+			CALL /shared/ASAssets/Utilities/repository/destroyResource(businessLayerPath, null, &apos;CONTAINER&apos;, success, createResponse, faultResponse);
+		END IF;
+		CALL /lib/resource/ResourceExists(applicationLayerPath, &apos;CONTAINER&apos;, null, resExists);
+		IF (resExists) THEN
+			CALL print(moduleName||&apos; : Destroy resourcePath=&apos;||applicationLayerPath);
+			CALL /shared/ASAssets/Utilities/repository/destroyResource(applicationLayerPath, null, &apos;CONTAINER&apos;, success, createResponse, faultResponse);
+		END IF;
+
+		-- Prior to generating the views, prepare the existing formatting layer views with table and column annotations and foriegn keys
+		SET resourcePath = basePath||&apos;/Physical/Formatting/tutorial/suppliers&apos;;
+		SET resourceType = &apos;TABLE&apos;;
+		SET annotation = &apos;supplier table&apos;;
+		SET columnAnnotations = 
+					&apos;        &lt;resource:column&gt;&apos;||CHR(10)||
+					&apos;            &lt;resource:name&gt;supplierid&lt;/resource:name&gt;&apos;||CHR(10)||
+					&apos;            &lt;resource:annotation&gt;supplier id&lt;/resource:annotation&gt;&apos;||CHR(10)||
+					&apos;        &lt;/resource:column&gt;&apos;||CHR(10)||
+					&apos;        &lt;resource:column&gt;&apos;||CHR(10)||
+					&apos;            &lt;resource:name&gt;suppliername&lt;/resource:name&gt;&apos;||CHR(10)||
+					&apos;            &lt;resource:annotation&gt;supplier name&lt;/resource:annotation&gt;&apos;||CHR(10)||
+					&apos;        &lt;/resource:column&gt;&apos;||CHR(10)||
+					&apos;        &lt;resource:column&gt;&apos;||CHR(10)||
+					&apos;            &lt;resource:name&gt;address&lt;/resource:name&gt;&apos;||CHR(10)||
+					&apos;            &lt;resource:annotation&gt;address&lt;/resource:annotation&gt;&apos;||CHR(10)||
+					&apos;        &lt;/resource:column&gt;&apos;||CHR(10)||
+					&apos;&apos;;
+
+		CALL /lib/resource/ResourceExists(resourcePath, resourceType, null, resExists);
+		IF (resExists) THEN
+			CALL /shared/ASAssets/Utilities/repository/updateResourceAnnotationsV2(resourcePath, resourceType, annotation, columnAnnotations, success, updateResponse, faultResponse);
+			CALL print(moduleName||&apos; : Update table and column annotations for resourcePath=&apos;||resourcePath);
+			CALL print(moduleName||&apos; : success=&apos;||success);
+			CALL print(moduleName||&apos; : updateResponse=&apos;||NVL(CAST(updateResponse AS LONGVARCHAR),&apos;null&apos;));
+			CALL print(moduleName||&apos; : faultResponse=&apos;||NVL(CAST(faultResponse AS LONGVARCHAR),&apos;null&apos;));
+		END IF;
+
+		SET resourcePath = basePath||&apos;/Physical/Formatting/tutorial/products&apos;;
+		SET resourceType = &apos;TABLE&apos;;
+		SET sqlScript = &apos;select * from &apos;||basePath||&apos;/Physical/Metadata/postgres/ds_inventory/tutorial/products&apos;;
+		SET annotation = &apos;products table&apos;;
+--		SET sqlIndexList = VECTOR[(&apos;products_pkey&apos;,&apos;PRIMARY_KEY&apos;,1,&apos;productid&apos;,&apos;ASCENDING&apos;)];
+		SET sqlIndexList =
+			&apos;    	&lt;resource:sqlIndexes&gt;&apos;||CHR(10)||
+			&apos;    		&lt;resource:index&gt;&apos;||CHR(10)||
+			&apos;                &lt;resource:name&gt;products_pkey&lt;/resource:name&gt;&apos;||CHR(10)||
+			&apos;                &lt;resource:type&gt;PRIMARY_KEY&lt;/resource:type&gt;&apos;||CHR(10)||
+			&apos;                &lt;resource:unique&gt;true&lt;/resource:unique&gt;&apos;||CHR(10)||
+			&apos;                &lt;resource:columns&gt;&apos;||CHR(10)||
+			&apos;                    &lt;column&gt;&apos;||CHR(10)||
+			&apos;                        &lt;resource:name&gt;productid&lt;/resource:name&gt;&apos;||CHR(10)||
+			&apos;                        &lt;resource:order&gt;ASCENDING&lt;/resource:order&gt;&apos;||CHR(10)||
+			&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+			&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+			&apos;    		&lt;/resource:index&gt;&apos;||CHR(10)||
+			&apos;    	&lt;/resource:sqlIndexes&gt;&apos;||CHR(10)||
+			&apos;&apos;;
+
+--		SET foreignKeyList = VECTOR[(&apos;fk_categoryid&apos;,&apos;categories_pkey&apos;,basePath||&apos;/Physical/Formatting/tutorial/categories&apos;,&apos;categoryid&apos;,&apos;categoryid&apos;)];
+		SET foreignKeyList =
+			&apos;    	&lt;resource:sqlForeignKeys&gt;&apos;||CHR(10)||
+			&apos;    		&lt;resource:foreignKey&gt;&apos;||CHR(10)||
+			&apos;                &lt;resource:name&gt;fk_categoryid&lt;/resource:name&gt;&apos;||CHR(10)||
+			&apos;                &lt;resource:primaryKeyName&gt;categories_pkey&lt;/resource:primaryKeyName&gt;&apos;||CHR(10)||
+			&apos;                &lt;resource:primaryKeyTable&gt;&apos;||CAST(XMLTEXT(basePath||&apos;/Physical/Formatting/tutorial/categories&apos;) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyTable&gt;&apos;||CHR(10)||
+			&apos;                &lt;resource:columns&gt;&apos;||CHR(10)||
+			&apos;                    &lt;column&gt;&apos;||CHR(10)||
+			&apos;                        &lt;resource:foreignKeyColumnName&gt;categoryid&lt;/resource:foreignKeyColumnName&gt;&apos;||CHR(10)||
+			&apos;                        &lt;resource:primaryKeyColumnName&gt;categoryid&lt;/resource:primaryKeyColumnName&gt;&apos;||CHR(10)||
+			&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+			&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+			&apos;    		&lt;/resource:foreignKey&gt;&apos;||CHR(10)||
+			&apos;    	&lt;/resource:sqlForeignKeys&gt;&apos;||CHR(10)||
+			&apos;&apos;;
+
+		CALL /lib/resource/ResourceExists(resourcePath, resourceType, null, resExists);
+		IF (resExists) THEN
+			CALL /shared/ASAssets/Utilities/repository/updateResourcesSqlTableV2(resourcePath, sqlScript, annotation, null, sqlIndexList, foreignKeyList, success, updateResponse, faultResponse);
+			CALL print(moduleName||&apos; : Update foreign keys for resourcePath=&apos;||resourcePath);
+			CALL print(moduleName||&apos; : success=&apos;||success);
+			CALL print(moduleName||&apos; : updateResponse=&apos;||NVL(CAST(updateResponse AS LONGVARCHAR),&apos;null&apos;));
+			CALL print(moduleName||&apos; : faultResponse=&apos;||NVL(CAST(faultResponse AS LONGVARCHAR),&apos;null&apos;));
+		END IF;
+	END;
+
+
+	-- Generate the remaining layers
+	CALL /shared/ASAssets/Utilities/generate/generateViews(
+		datasourcePath,				-- mandatory.   Full path to datasource
+			catalogName,			-- optional (null) - Database catalog Name if applicable
+			schemaName,				-- mandatory.  Database schema name
+			schemaTablePatterns,	-- comma separated list of patterns such as D%, E%, F%.   Introspect all new tables starting with D, E and F.
+			tableNames,				-- optional.  NULL=no specified table list OR one or more comma separated tables to introspect.
+			schemaProcedurePatterns,-- Schema patterns used for introspectino of new procedures 
+			procedureNames,			-- no list so all procedures in schema will be introspected
+			separator,				-- Default=,  The separator used to separate lists for the input parameters: tableNames and procedureNames
+		formattingLayerPath,		-- Path to target Formatting layer views.  Missing folders are automatically created.
+		businessLayerPath,			-- Path to target Business layer views.  Missing folders are automatically created.
+		applicationLayerPath,		-- Path to target Application layer views.  Missing folders are automatically created.
+		publishedDBLayerPath,		-- Path to target Published Database Schema layer views.  Datasource and schema &quot;must&quot; exist already
+		prefix,						-- prefix for views.  It is recommended that no prefix be added even though the option exists.  Example: V_
+		overwrite,					-- 1=overwrite existing views, 0=do not overwrite existing views (throws exception if views exist)
+		copyAnnotation,				-- 1=copy table and column annotations. 0=do not copy
+		copySqlIndexes,				-- 1=copy SQL indexes from source to target.  0=do not copy 
+		copyForeignKeys,			-- 1=copy foreign keys from source to target.  0=do not copy
+		debug,						-- Y=debug on, N=debug off, null=N
+
+		errStatus,
+		errMessage,
+		introspectionResult,
+		dataSourceType,
+		dataSourceSubtype,
+		numResourcesIntrospectAdd, 
+		numTablesIntrospectAdd, 
+		tablesIntrospectAdd, 
+		numResourcesIntrospectSkip,
+		numTablesIntrospectSkip,
+		tablesIntrospectSkip,
+		generatedViewsCursor
+	);
+END</attribute>
+  <attribute name="creationDate" type="LONG">1510413956294</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564748501684</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">9/164</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/240</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/154</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/159</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/238</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/237</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/191</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/190</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/239</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/193</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/192</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1510413956294</attribute>
+</metadata>

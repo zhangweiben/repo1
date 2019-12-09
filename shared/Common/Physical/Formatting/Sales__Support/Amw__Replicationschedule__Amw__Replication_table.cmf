@@ -1,0 +1,79 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Amw_Replicationschedule_Amw_Replication" path="/shared/Common/Physical/Formatting/Sales_Support/Amw_Replicationschedule_Amw_Replication" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="amw_replicationschedule_amw_replicationid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amw_replicationentityconfigurationid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amw_replicationscheduleid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="versionnumber" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes>
+    <index name="PK__amw_repl__4DEA3B8A168A48D5" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="amw_replicationschedule_amw_replicationid" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/Azure/SQLServer_Sales_Support/RMB07001_SALES_SPRT_PRD_DYNMC_APP/dbo/amw_replicationschedule_amw_replication" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="amw_replicationschedule_amw_replicationId" nullable="false">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="amw_replicationentityconfigurationid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="amw_replicationscheduleid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="VersionNumber">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	amw_replicationschedule_amw_replication.amw_replicationschedule_amw_replicationId amw_replicationschedule_amw_replicationid,
+	CAST(amw_replicationschedule_amw_replication.amw_replicationentityconfigurationid AS CHAR(36)) AS amw_replicationentityconfigurationid,
+	CAST(amw_replicationschedule_amw_replication.amw_replicationscheduleid AS CHAR(36)) AS amw_replicationscheduleid,
+	CAST(amw_replicationschedule_amw_replication.VersionNumber AS BIGINT) AS versionnumber 
+FROM
+	/shared/Common/Physical/Metadata/Azure/SQLServer_Sales_Support/RMB07001_SALES_SPRT_PRD_DYNMC_APP/dbo/amw_replicationschedule_amw_replication amw_replicationschedule_amw_replication</attribute>
+  <attribute name="creationDate" type="LONG">1567127045553</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1567127045553</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1567127045553</attribute>
+</metadata>

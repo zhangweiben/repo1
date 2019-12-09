@@ -1,0 +1,923 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Dwt42000_Ord_Hdr_Atlas" path="/shared/Common/Physical/Formatting/GDW_Atomic/Dwt42000_Ord_Hdr_Atlas" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="intgrt_msg_create_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_uniq_id" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_act_cd" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_aff_cd" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_orgnl_source_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_source_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_targt_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="oracle_hdr_id" nullable="true">
+      <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_stat" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_imc_no" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_imc_nm" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="vol_imc_no" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="vol_imc_nm" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_imc_no" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_imc_nm" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bill_imc_no" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bill_imc_nm" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="end_imc_no" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="end_imc_nm" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sale_chnl" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_type" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="curcy_cd" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="dlvr_fee" nullable="true">
+      <datatype type="DECIMAL" maxDigits="16" maxFractionalDigits="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="svc_chrg" nullable="true">
+      <datatype type="DECIMAL" maxDigits="16" maxFractionalDigits="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="pay_term" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="tot_tax" nullable="true">
+      <datatype type="DECIMAL" maxDigits="16" maxFractionalDigits="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amt_chrg" nullable="true">
+      <datatype type="DECIMAL" maxDigits="16" maxFractionalDigits="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_cd" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_mthod" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_adr_ln_1" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_adr_ln_2" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_adr_ln_3" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_adr_ln_4" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_city" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_state" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_postl_cd" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_cntry" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_contact" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_priority" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_inst" nullable="true">
+      <datatype type="STRING" maxLength="2000"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_src" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sop_nbr" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="shp_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="reqst_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_ref" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bns_per" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="pay_hold" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="next_dptch_dt_sop_ord" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="prepay" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="hdr_mod_desc" nullable="true">
+      <datatype type="STRING" maxLength="2000"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mod_nm" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mod_no" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mod_desc" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cred_card_opt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="price_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="dmand_class_cd" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="conv_rt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="conv_type_cd" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="conv_rt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="partl_shp_allow" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="freight_carrier_cd" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="fob_point_cd" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="freight_terms_cd" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cancelled_flg" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="open_flg" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="booked_flg" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="return_reason_code" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_ctgry_cd" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="booked_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_firm_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="oper_unit" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_user_id" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="interface_type" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="etl_insert_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes>
+    <index name="DWT42000_ORD_HDR_HDR_ID" type="OTHER" unique="true">
+      <indexColumn name="oracle_hdr_id" sortOrder="ASCENDING"/>
+    </index>
+    <index name="DWT42000_ORD_HDR_PK" type="OTHER" unique="true">
+      <indexColumn name="ord_no" sortOrder="ASCENDING"/>
+      <indexColumn name="oper_unit" sortOrder="ASCENDING"/>
+    </index>
+    <index name="DWI42000_ORD_HDR_PK" type="OTHER" unique="false">
+      <indexColumn name="intgrt_aff_cd" sortOrder="ASCENDING"/>
+      <indexColumn name="ord_no" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/OnPremises/Oracle_GDW_Atomic/DWSATM01/DWT42000_ORD_HDR_ATLAS" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="INTGRT_MSG_CREATE_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="INTGRT_UNIQ_ID">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="INTGRT_ACT_CD">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="INTGRT_AFF_CD" nullable="false">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="INTGRT_ORGNL_SOURCE_SYS_ID">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="INTGRT_SOURCE_SYS_ID">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="INTGRT_TARGT_SYS_ID">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="ORACLE_HDR_ID">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="0"/>
+      </element>
+      <element name="ORD_NO" nullable="false">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="0"/>
+      </element>
+      <element name="ORD_STAT">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="ORD_IMC_NO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="ORD_IMC_NM">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="VOL_IMC_NO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="VOL_IMC_NM">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SHP_IMC_NO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="SHP_IMC_NM">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="BILL_IMC_NO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="BILL_IMC_NM">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="END_IMC_NO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="END_IMC_NM">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SALE_CHNL">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="ORD_TYPE">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="CURCY_CD" nullable="false">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="DLVR_FEE">
+        <datatype type="DECIMAL" maxDigits="16" maxFractionalDigits="5"/>
+      </element>
+      <element name="SVC_CHRG">
+        <datatype type="DECIMAL" maxDigits="16" maxFractionalDigits="5"/>
+      </element>
+      <element name="PAY_TERM">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="TOT_TAX">
+        <datatype type="DECIMAL" maxDigits="16" maxFractionalDigits="5"/>
+      </element>
+      <element name="AMT_CHRG">
+        <datatype type="DECIMAL" maxDigits="16" maxFractionalDigits="5"/>
+      </element>
+      <element name="AFF_CD">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="SHP_MTHOD">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="SHP_ADR_LN_1">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="SHP_ADR_LN_2">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="SHP_ADR_LN_3">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="SHP_ADR_LN_4">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="SHP_CITY">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="SHP_STATE">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="SHP_POSTL_CD">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="SHP_CNTRY">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="SHP_CONTACT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SHP_PRIORITY">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="SHP_INST">
+        <datatype type="STRING" maxLength="2000"/>
+      </element>
+      <element name="ORD_SRC">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="SOP_NBR">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ORD_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="SHP_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="REQST_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="ORD_REF">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="BNS_PER">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="PAY_HOLD">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="NEXT_DPTCH_DT_SOP_ORD">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="PREPAY">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="HDR_MOD_DESC">
+        <datatype type="STRING" maxLength="2000"/>
+      </element>
+      <element name="MOD_NM">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="MOD_NO">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="MOD_DESC">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="CRED_CARD_OPT">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="PRICE_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="DMAND_CLASS_CD">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="CONV_RT">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="5"/>
+      </element>
+      <element name="CONV_TYPE_CD">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="CONV_RT_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="PARTL_SHP_ALLOW">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="FREIGHT_CARRIER_CD">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="FOB_POINT_CD">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="FREIGHT_TERMS_CD">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="CANCELLED_FLG">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="OPEN_FLG">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="BOOKED_FLG">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="RETURN_REASON_CODE">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="ORD_CTGRY_CD">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="BOOKED_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="ORD_FIRM_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="OPER_UNIT" nullable="false">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="INSRT_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="UPDT_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="INSRT_PROC_NM">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="UPDT_PROC_NM">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="UPDT_USER_ID">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="INTERFACE_TYPE">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="ETL_INSERT_DT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(DWT42000_ORD_HDR_ATLAS.INTGRT_MSG_CREATE_DT AS TIMESTAMP) AS intgrt_msg_create_dt,
+	CAST(DWT42000_ORD_HDR_ATLAS.INTGRT_UNIQ_ID AS VARCHAR(240)) AS intgrt_uniq_id,
+	CAST(DWT42000_ORD_HDR_ATLAS.INTGRT_ACT_CD AS VARCHAR(30)) AS intgrt_act_cd,
+	DWT42000_ORD_HDR_ATLAS.INTGRT_AFF_CD intgrt_aff_cd,
+	CAST(DWT42000_ORD_HDR_ATLAS.INTGRT_ORGNL_SOURCE_SYS_ID AS VARCHAR(240)) AS intgrt_orgnl_source_sys_id,
+	CAST(DWT42000_ORD_HDR_ATLAS.INTGRT_SOURCE_SYS_ID AS VARCHAR(240)) AS intgrt_source_sys_id,
+	CAST(DWT42000_ORD_HDR_ATLAS.INTGRT_TARGT_SYS_ID AS VARCHAR(240)) AS intgrt_targt_sys_id,
+	DWT42000_ORD_HDR_ATLAS.ORACLE_HDR_ID oracle_hdr_id,
+	DWT42000_ORD_HDR_ATLAS.ORD_NO ord_no,
+	CAST(DWT42000_ORD_HDR_ATLAS.ORD_STAT AS VARCHAR(30)) AS ord_stat,
+	CAST(DWT42000_ORD_HDR_ATLAS.ORD_IMC_NO AS VARCHAR(30)) AS ord_imc_no,
+	CAST(DWT42000_ORD_HDR_ATLAS.ORD_IMC_NM AS VARCHAR(255)) AS ord_imc_nm,
+	CAST(DWT42000_ORD_HDR_ATLAS.VOL_IMC_NO AS VARCHAR(30)) AS vol_imc_no,
+	CAST(DWT42000_ORD_HDR_ATLAS.VOL_IMC_NM AS VARCHAR(255)) AS vol_imc_nm,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_IMC_NO AS VARCHAR(30)) AS shp_imc_no,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_IMC_NM AS VARCHAR(255)) AS shp_imc_nm,
+	CAST(DWT42000_ORD_HDR_ATLAS.BILL_IMC_NO AS VARCHAR(30)) AS bill_imc_no,
+	CAST(DWT42000_ORD_HDR_ATLAS.BILL_IMC_NM AS VARCHAR(255)) AS bill_imc_nm,
+	CAST(DWT42000_ORD_HDR_ATLAS.END_IMC_NO AS VARCHAR(30)) AS end_imc_no,
+	CAST(DWT42000_ORD_HDR_ATLAS.END_IMC_NM AS VARCHAR(255)) AS end_imc_nm,
+	CAST(DWT42000_ORD_HDR_ATLAS.SALE_CHNL AS VARCHAR(30)) AS sale_chnl,
+	CAST(DWT42000_ORD_HDR_ATLAS.ORD_TYPE AS VARCHAR(30)) AS ord_type,
+	CAST(DWT42000_ORD_HDR_ATLAS.CURCY_CD AS VARCHAR(15)) AS curcy_cd,
+	CAST(DWT42000_ORD_HDR_ATLAS.DLVR_FEE AS DECIMAL(16,5)) AS dlvr_fee,
+	CAST(DWT42000_ORD_HDR_ATLAS.SVC_CHRG AS DECIMAL(16,5)) AS svc_chrg,
+	CAST(DWT42000_ORD_HDR_ATLAS.PAY_TERM AS VARCHAR(15)) AS pay_term,
+	CAST(DWT42000_ORD_HDR_ATLAS.TOT_TAX AS DECIMAL(16,5)) AS tot_tax,
+	CAST(DWT42000_ORD_HDR_ATLAS.AMT_CHRG AS DECIMAL(16,5)) AS amt_chrg,
+	CAST(DWT42000_ORD_HDR_ATLAS.AFF_CD AS VARCHAR(10)) AS aff_cd,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_MTHOD AS VARCHAR(30)) AS shp_mthod,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_ADR_LN_1 AS VARCHAR(240)) AS shp_adr_ln_1,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_ADR_LN_2 AS VARCHAR(240)) AS shp_adr_ln_2,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_ADR_LN_3 AS VARCHAR(240)) AS shp_adr_ln_3,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_ADR_LN_4 AS VARCHAR(240)) AS shp_adr_ln_4,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_CITY AS VARCHAR(60)) AS shp_city,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_STATE AS VARCHAR(60)) AS shp_state,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_POSTL_CD AS VARCHAR(60)) AS shp_postl_cd,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_CNTRY AS VARCHAR(60)) AS shp_cntry,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_CONTACT AS VARCHAR(255)) AS shp_contact,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_PRIORITY AS VARCHAR(30)) AS shp_priority,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_INST AS VARCHAR(2000)) AS shp_inst,
+	CAST(DWT42000_ORD_HDR_ATLAS.ORD_SRC AS VARCHAR(240)) AS ord_src,
+	CAST(DWT42000_ORD_HDR_ATLAS.SOP_NBR AS DOUBLE) AS sop_nbr,
+	CAST(DWT42000_ORD_HDR_ATLAS.ORD_DT AS TIMESTAMP) AS ord_dt,
+	CAST(DWT42000_ORD_HDR_ATLAS.SHP_DT AS TIMESTAMP) AS shp_dt,
+	CAST(DWT42000_ORD_HDR_ATLAS.REQST_DT AS TIMESTAMP) AS reqst_dt,
+	CAST(DWT42000_ORD_HDR_ATLAS.ORD_REF AS VARCHAR(50)) AS ord_ref,
+	CAST(DWT42000_ORD_HDR_ATLAS.BNS_PER AS DOUBLE) AS bns_per,
+	CAST(DWT42000_ORD_HDR_ATLAS.PAY_HOLD AS VARCHAR(30)) AS pay_hold,
+	CAST(DWT42000_ORD_HDR_ATLAS.NEXT_DPTCH_DT_SOP_ORD AS TIMESTAMP) AS next_dptch_dt_sop_ord,
+	CAST(DWT42000_ORD_HDR_ATLAS.PREPAY AS VARCHAR(3)) AS prepay,
+	CAST(DWT42000_ORD_HDR_ATLAS.HDR_MOD_DESC AS VARCHAR(2000)) AS hdr_mod_desc,
+	CAST(DWT42000_ORD_HDR_ATLAS.MOD_NM AS VARCHAR(50)) AS mod_nm,
+	CAST(DWT42000_ORD_HDR_ATLAS.MOD_NO AS VARCHAR(50)) AS mod_no,
+	CAST(DWT42000_ORD_HDR_ATLAS.MOD_DESC AS VARCHAR(50)) AS mod_desc,
+	CAST(DWT42000_ORD_HDR_ATLAS.CRED_CARD_OPT AS DOUBLE) AS cred_card_opt,
+	CAST(DWT42000_ORD_HDR_ATLAS.PRICE_DT AS TIMESTAMP) AS price_dt,
+	CAST(DWT42000_ORD_HDR_ATLAS.DMAND_CLASS_CD AS VARCHAR(150)) AS dmand_class_cd,
+	CAST(DWT42000_ORD_HDR_ATLAS.CONV_RT AS DECIMAL(19,5)) AS conv_rt,
+	CAST(DWT42000_ORD_HDR_ATLAS.CONV_TYPE_CD AS VARCHAR(150)) AS conv_type_cd,
+	CAST(DWT42000_ORD_HDR_ATLAS.CONV_RT_DT AS TIMESTAMP) AS conv_rt_dt,
+	CAST(DWT42000_ORD_HDR_ATLAS.PARTL_SHP_ALLOW AS VARCHAR(1)) AS partl_shp_allow,
+	CAST(DWT42000_ORD_HDR_ATLAS.FREIGHT_CARRIER_CD AS VARCHAR(150)) AS freight_carrier_cd,
+	CAST(DWT42000_ORD_HDR_ATLAS.FOB_POINT_CD AS VARCHAR(150)) AS fob_point_cd,
+	CAST(DWT42000_ORD_HDR_ATLAS.FREIGHT_TERMS_CD AS VARCHAR(100)) AS freight_terms_cd,
+	CAST(DWT42000_ORD_HDR_ATLAS.CANCELLED_FLG AS VARCHAR(1)) AS cancelled_flg,
+	CAST(DWT42000_ORD_HDR_ATLAS.OPEN_FLG AS VARCHAR(1)) AS open_flg,
+	CAST(DWT42000_ORD_HDR_ATLAS.BOOKED_FLG AS VARCHAR(1)) AS booked_flg,
+	CAST(DWT42000_ORD_HDR_ATLAS.RETURN_REASON_CODE AS VARCHAR(150)) AS return_reason_code,
+	CAST(DWT42000_ORD_HDR_ATLAS.ORD_CTGRY_CD AS VARCHAR(50)) AS ord_ctgry_cd,
+	CAST(DWT42000_ORD_HDR_ATLAS.BOOKED_DT AS TIMESTAMP) AS booked_dt,
+	CAST(DWT42000_ORD_HDR_ATLAS.ORD_FIRM_DT AS TIMESTAMP) AS ord_firm_dt,
+	DWT42000_ORD_HDR_ATLAS.OPER_UNIT oper_unit,
+	CAST(DWT42000_ORD_HDR_ATLAS.INSRT_DT AS TIMESTAMP) AS insrt_dt,
+	CAST(DWT42000_ORD_HDR_ATLAS.UPDT_DT AS TIMESTAMP) AS updt_dt,
+	CAST(DWT42000_ORD_HDR_ATLAS.INSRT_PROC_NM AS VARCHAR(240)) AS insrt_proc_nm,
+	CAST(DWT42000_ORD_HDR_ATLAS.UPDT_PROC_NM AS VARCHAR(240)) AS updt_proc_nm,
+	CAST(DWT42000_ORD_HDR_ATLAS.UPDT_USER_ID AS VARCHAR(50)) AS updt_user_id,
+	CAST(DWT42000_ORD_HDR_ATLAS.INTERFACE_TYPE AS VARCHAR(60)) AS interface_type,
+	CAST(DWT42000_ORD_HDR_ATLAS.ETL_INSERT_DT AS TIMESTAMP) AS etl_insert_dt 
+FROM
+	/shared/Common/Physical/Metadata/OnPremises/Oracle_GDW_Atomic/DWSATM01/DWT42000_ORD_HDR_ATLAS DWT42000_ORD_HDR_ATLAS</attribute>
+  <attribute name="creationDate" type="LONG">1570724561476</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1570724642126</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1570724561476</attribute>
+</metadata>

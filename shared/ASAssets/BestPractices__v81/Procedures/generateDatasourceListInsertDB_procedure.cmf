@@ -1,0 +1,516 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateDatasourceListInsertDB" path="/shared/ASAssets/BestPractices_v81/Procedures/generateDatasourceListInsertDB" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="performInsertUpdate" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="refreshCache" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="sourceResource" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="generateLogicalNames" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="layerType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inGroupIds" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="inDerivedFilterPath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="startingFolderVector" direction="IN" nullable="true">
+      <datatype name="startingFolderVector" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="startingFolderExtendedType" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="startingFolderExtendedType" type="TREE" refId="1">
+            <element name="groupId">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="process">
+              <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+            </element>
+            <element name="layerType">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="pathDerivation">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="sourceFolderPath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="targetFolderPath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="derivedFilterPath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="typeDefProcPath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="typeDefProcName">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+    </parameter>
+    <parameter name="ConfigParamsVector" direction="IN" nullable="true">
+      <datatype name="ConfigParamsVector" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="ConfigParamsType" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="ConfigParamsType" type="TREE" refId="1">
+            <element name="generateMode">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="outputMode">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="generateViews">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="resourceCaseRule">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="columnCaseRule">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="separator">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="useAliasRule">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="resourcePrefix">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="resourceSuffix">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="generateWithSourceColumn">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="generateCast">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="generateIndexes">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="debug">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="debug2">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="debug3">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="basePath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="scriptsPath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="padAmount">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="DataSource">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="ProjectFolderName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="GreatGrandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="GrandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="ParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="ContainerName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="PhysicalName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="NativeType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="LogicalName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="LogicalType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="LogicalTransformation">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="LogicalDefinition">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="LogicalPath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="Duration">
+          <datatype name="IntervalDay" type="INTERVAL_DAY" intervalMode="INTERVAL_HOUR_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/generateDatasourceListXMLInsertDB" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="performInsertUpdate" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="refreshCache" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="sourceResource" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="generateLogicalNames" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="layerType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inGroupIds" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inDerivedFilterPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="startingFolderXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="ConfigParamsXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="DataSource">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ProjectFolderName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="GreatGrandParentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="GrandParentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ParentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ContainerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="PhysicalName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="NativeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="LogicalName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="LogicalType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="LogicalTransformation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="LogicalDefinition">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="LogicalPath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="Duration">
+            <datatype type="INTERVAL_DAY" intervalMode="INTERVAL_HOUR_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* generateDatasourceListInsertDB:
+
+	This procedure generates the physcial to logical table and column mappings from the source datasource based on various input parameters such as 
+		table case, column case, and table prefix.
+	This procedure inserts the data into a table which gets used by the Best Practices Data Abstraction procedures to generate the views.
+		The table is called common_model_v3 and is resident in the postgres cache database that comes with DV.
+		Initially, it has to be created and the /shared/ASAssets/BestPractices_v81/DataSource/CommonModelCache data source has to be configured.
+	Lastly, the common_model view is synchronously cached.
+
+ 	Input:
+			-- Y=perform SQL operation.  N=do not perform SQL operation and only display results.
+		IN performInsertUpdate			CHAR(1),	
+
+			-- Y=perform SQL operation.  N=do not perform SQL operation and only display results.
+		IN refreshCache					CHAR(1),	
+
+			-- The source folder in CIS to begin searching for views to generate the view list or
+			-- a source view (exact path) to generate for.
+			-- If this is set it supercedes layerType, inGroupIDs and derivedFilterPath
+		IN sourceResource				LONGVARCHAR, 	
+
+			-- 0 (FALSE) - generate datasource list only with no logical names, 
+			-- 1 (TRUE) - generate datasource list with logical names
+		IN generateLogicalNames			BIT, 	
+
+		-- If sourceResource is blank, then layerType, inGroupIds must be set with derivedFilterPath being optional
+			-- PM=Physical Metadata - generateDatasourceList physical metadata tables
+			-- FV=Formatting Views 	- generateDatasourceList formatting views
+			-- BV=Business Views 	- generateDatasourceList business views (only single source)
+			-- LV=Logical Views 	- generateDatasourceList logical views (only single source)
+			-- CV=Client Views 		- generateDatasourceList client views (only single source)
+			-- CP=Client Published 	- generateDatasourceList client published views (only single source)
+		IN layerType					VARCHAR,
+
+			-- This is a comma separate list group ids to process from the configureStartingFolders.
+			-- Pass in null to select all groupIds.
+		IN inGroupIds					LONGVARCHAR, 
+
+			-- The list &quot;derivedFilterPath&quot; is a comma-separated list of resources and may be used with either generateToFolder (option 1) to groupId (option 2) 
+			-- The path is derived by concatenating the partial filter path with the source path of the designated layer type.
+			-- The layerType and the groupId are used to filter the rows from the configureStartingFolders.  The source path is
+			--    defined in configureStartingFolders per the layerType and groupId combination.
+			--   e.g. layerType=CP and sourceFolderPath=/shared/BestPractices/DataAbstractionSample/Application/Views
+			--        The derivedFilterPath list=Orders_Closed,/Orders/Customers,Orders/Product
+			--        Even though there are several other views in the /Orders folder under the Client_Views only the ones specified
+			--	      will be generated to the Client_Published.  Views directly under the source path do not require any qualifying path except the view name.
+			--        Lastly, a leading &apos;/&apos; is not required but may be present if desired.
+			-- Correlate the groupId position with the derivedFilterPath position
+			--		derivedFilterPath=&quot;customers,orders&quot;,shippingmethods
+			--                         |                     |
+			--                         v                     v
+			--		          groupId=ds_inventory.tutorial,ds_orders.tutorial
+			-- If null, generate views from all source folders as directed by the &quot;configure starting folders&quot; and the designated layer type.
+
+		IN inDerivedFilterPath			LONGVARCHAR, 
+
+			-- This is an alternative entry point for this method.  If this is set then layerType,inGroupIds and inDerivedFilterPath are ignored
+		IN 	startingFolderVector		VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.startingFolderExtendedType),
+
+			-- The vector of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+		IN ConfigParamsVector			VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.ConfigParamsType),
+
+	Output:
+		OUT result						PIPE /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.DataSourceRowV2Row
+			DataSource 					VARCHAR(255), -- The name of the data source in composite (data lineage-used resources)
+			ProjectFolderName			VARCHAR(255), -- The project folder name is the last name found in the defaultValues.basePath for a project.
+			--[NOT CURRENTLY IMPLEMENTED] Published	VARCHAR(255), -- Indicates whether this element is published in composite (data lineage-dependent resources)
+			GreatGrandParentName		VARCHAR(255), -- The name of the great grand parent container (data source name)
+			GrandParentName				VARCHAR(255), -- The name of the grand parent container (catalog name)
+			ParentName 					VARCHAR(255), -- The name of the parent container - (schema name)
+			ContainerName 				VARCHAR(255), -- The name of the container - parent to the resource (table name)
+			PhysicalName				VARCHAR(255), -- The physical column name (a.k.a. column name)
+			NativeType					VARCHAR(255), -- The native  type (a.k.a. table/view alias)
+			LogicalName					VARCHAR(255), -- The logical column name (a.k.a. table/view alias)
+			LogicalType 				VARCHAR(255), -- The logical column type
+			LogicalTransformation		LONGVARCHAR,  -- The logical column transformation excluding outer cast statement
+			LogicalDefinition			LONGVARCHAR,  -- The logical resource definition (a.k.a. view/table/column annotation)
+			LogicalPath					LONGVARCHAR,  -- The logical resource (view) path
+			Duration					INTERVAL HOUR TO SECOND -- The time it takes to process a view
+	
+	Modified Date:	Modified By:		DV Version:		Reason:
+	01/23/2019		Mike Tinius			8.0.0			Created new to generate physical to logical table and column mappings and insert into a table.
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE generateDatasourceListInsertDB(
+		-- Y=perform SQL operation.  N=do not perform SQL operation and only display results.
+	IN performInsertUpdate			CHAR(1),	
+
+		-- Y=perform SQL operation.  N=do not perform SQL operation and only display results.
+	IN refreshCache					CHAR(1),	
+
+		-- The source folder in CIS to begin searching for views to generate the view list or
+		-- a source view (exact path) to generate for.
+		-- If this is set it supercedes layerType, inGroupIDs and derivedFilterPath
+	IN sourceResource				LONGVARCHAR, 	
+
+		-- 0 (FALSE) - generate datasource list only with no logical names, 
+    	-- 1 (TRUE) - generate datasource list with logical names
+   	IN generateLogicalNames			BIT, 	
+
+	-- If sourceResource is blank, then layerType, inGroupIds must be set with derivedFilterPath being optional
+		-- PM=Physical Metadata - generateDatasourceList physical metadata tables
+		-- FV=Formatting Views 	- generateDatasourceList formatting views
+		-- BV=Business Views 	- generateDatasourceList business views (only single source)
+		-- LV=Logical Views 	- generateDatasourceList logical views (only single source)
+		-- CV=Client Views 		- generateDatasourceList client views (only single source)
+		-- CP=Client Published 	- generateDatasourceList client published views (only single source)
+   	IN layerType					VARCHAR,
+
+		-- This is a comma separate list group ids to process from the configureStartingFolders.
+		-- Pass in null to select all groupIds.
+	IN inGroupIds					LONGVARCHAR, 
+
+		-- The list &quot;derivedFilterPath&quot; is a comma-separated list of resources and may be used with either generateToFolder (option 1) to groupId (option 2) 
+		-- The path is derived by concatenating the partial filter path with the source path of the designated layer type.
+		-- The layerType and the groupId are used to filter the rows from the configureStartingFolders.  The source path is
+		--    defined in configureStartingFolders per the layerType and groupId combination.
+		--   e.g. layerType=CP and sourceFolderPath=/shared/BestPractices/DataAbstractionSample/Application/Views
+		--        The derivedFilterPath list=Orders_Closed,/Orders/Customers,Orders/Product
+		--        Even though there are several other views in the /Orders folder under the Client_Views only the ones specified
+		--	      will be generated to the Client_Published.  Views directly under the source path do not require any qualifying path except the view name.
+		--        Lastly, a leading &apos;/&apos; is not required but may be present if desired.
+		-- Correlate the groupId position with the derivedFilterPath position
+		--		derivedFilterPath=&quot;customers,orders&quot;,shippingmethods
+		--                         |                     |
+		--                         v                     v
+		--		          groupId=ds_inventory.tutorial,ds_orders.tutorial
+		-- If null, generate views from all source folders as directed by the &quot;configure starting folders&quot; and the designated layer type.
+
+	IN inDerivedFilterPath			LONGVARCHAR, 
+
+		-- This is an alternative entry point for this method.  If this is set then layerType,inGroupIds and inDerivedFilterPath are ignored
+	IN 	startingFolderVector		VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.startingFolderExtendedType),
+
+		-- The vector of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+	IN ConfigParamsVector			VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.ConfigParamsType),
+
+	OUT result						CURSOR /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.DataSourceRowV2Row
+)
+BEGIN
+	DECLARE moduleName					VARCHAR DEFAULT &apos;generateDatasourceList&apos;;
+	DECLARE ConfigParamsXML				LONGVARCHAR;
+	DECLARE startingFolderExtendedXML	LONGVARCHAR;
+	DECLARE i							INTEGER DEFAULT 1;
+
+	SET ConfigParamsXML = 
+&apos;&lt;ConfigParamsType&gt;
+    &lt;generateMode&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].generateMode,&apos;  &apos;))||&apos;&lt;/generateMode&gt;
+    &lt;outputMode&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].outputMode,&apos;  &apos;))||&apos;&lt;/outputMode&gt;
+    &lt;generateViews&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateViews AS VARCHAR),&apos;  &apos;))||&apos;&lt;/generateViews&gt;
+    &lt;resourceCaseRule&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].resourceCaseRule,&apos;  &apos;))||&apos;&lt;/resourceCaseRule&gt;
+    &lt;columnCaseRule&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].columnCaseRule,&apos;  &apos;))||&apos;&lt;/columnCaseRule&gt;
+    &lt;separator&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].separator,&apos;  &apos;))||&apos;&lt;/separator&gt;
+    &lt;useAliasRule&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].useAliasRule AS VARCHAR),&apos;  &apos;))||&apos;&lt;/useAliasRule&gt;
+    &lt;resourcePrefix&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].resourcePrefix,&apos;  &apos;))||&apos;&lt;/resourcePrefix&gt;
+    &lt;resourceSuffix&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].resourceSuffix,&apos;  &apos;))||&apos;&lt;/resourceSuffix&gt;
+    &lt;generateWithSourceColumn&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateWithSourceColumn AS VARCHAR),&apos;  &apos;))||&apos;&lt;/generateWithSourceColumn&gt;
+    &lt;generateCast&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateCast AS VARCHAR),&apos;  &apos;))||&apos;&lt;/generateCast&gt;
+    &lt;generateIndexes&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateIndexes AS VARCHAR),&apos;  &apos;))||&apos;&lt;/generateIndexes&gt;
+    &lt;debug&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].debug,&apos;  &apos;))||&apos;&lt;/debug&gt;
+    &lt;debug2&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].debug2,&apos;  &apos;))||&apos;&lt;/debug2&gt;
+    &lt;debug3&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].debug3,&apos;  &apos;))||&apos;&lt;/debug3&gt;
+    &lt;basePath&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].basePath,&apos;  &apos;))||&apos;&lt;/basePath&gt;
+    &lt;scriptsPath&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].scriptsPath,&apos;  &apos;))||&apos;&lt;/scriptsPath&gt;
+    &lt;padAmount&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].padAmount AS VARCHAR),&apos;  &apos;))||&apos;&lt;/padAmount&gt;
+&lt;/ConfigParamsType&gt;&apos;;
+
+	WHILE (i &lt;= CARDINALITY(startingFolderVector)) DO
+		SET startingFolderExtendedXML = startingFolderExtendedXML ||
+&apos;&lt;startingFolderExtendedType&gt;
+    &lt;groupId&gt;&apos;||TRIM(NVL(startingFolderVector[i].groupId,&apos;  &apos;))||&apos;&lt;/groupId&gt;
+    &lt;process&gt;&apos;||TRIM(NVL(CAST(startingFolderVector[i].process AS VARCHAR),&apos;  &apos;))||&apos;&lt;/process&gt;
+    &lt;layerType&gt;&apos;||TRIM(NVL(startingFolderVector[i].layerType,&apos;  &apos;))||&apos;&lt;/layerType&gt;
+    &lt;pathDerivation&gt;&apos;||TRIM(NVL(startingFolderVector[i].pathDerivation,&apos;  &apos;))||&apos;&lt;/pathDerivation&gt;
+    &lt;sourceFolderPath&gt;&apos;||TRIM(NVL(startingFolderVector[i].sourceFolderPath,&apos;  &apos;))||&apos;&lt;/sourceFolderPath&gt;
+    &lt;targetFolderPath&gt;&apos;||TRIM(NVL(startingFolderVector[i].targetFolderPath,&apos;  &apos;))||&apos;&lt;/targetFolderPath&gt;
+    &lt;derivedFilterPath&gt;&apos;||TRIM(NVL(startingFolderVector[i].derivedFilterPath,&apos;  &apos;))||&apos;&lt;/derivedFilterPath&gt;
+    &lt;typeDefProcPath&gt;&apos;||TRIM(NVL(startingFolderVector[i].typeDefProcPath,&apos;  &apos;))||&apos;&lt;/typeDefProcPath&gt;
+    &lt;typeDefProcName&gt;&apos;||TRIM(NVL(startingFolderVector[i].typeDefProcName,&apos;  &apos;))||&apos;&lt;/typeDefProcName&gt;
+&lt;/startingFolderExtendedType&gt;&apos;||CHR(10);
+		SET i = i + 1;
+	END WHILE;
+
+	IF (UPPER(ConfigParamsVector[1].debug) = &apos;Y&apos;) THEN
+		CALL PRINT(moduleName||&apos;: ConfigParamsXML:&apos;||CHR(10)||NVL(ConfigParamsXML,&apos;null&apos;));
+		CALL PRINT(moduleName||&apos;: startingFolderExtendedXML:&apos;||CHR(10)||NVL(startingFolderExtendedXML,&apos;null&apos;));
+	END IF;
+
+	-- Invoke the generateDatasourceListXMLInsertDB
+	OPEN result FOR 
+		SELECT * FROM /shared/ASAssets/BestPractices_v81/Procedures/generateDatasourceListXMLInsertDB(performInsertUpdate, refreshCache, sourceResource, generateLogicalNames, layerType, inGroupIds, inDerivedFilterPath, startingFolderExtendedXML, ConfigParamsXML);
+END </attribute>
+  <attribute name="creationDate" type="LONG">1548189531537</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564687931337</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">8/204</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/203</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1548189531537</attribute>
+</metadata>

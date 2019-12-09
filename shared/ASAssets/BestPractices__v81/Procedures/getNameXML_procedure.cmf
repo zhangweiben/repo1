@@ -1,0 +1,535 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getNameXML" path="/shared/ASAssets/BestPractices_v81/Procedures/getNameXML" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="inLogicalID" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inContainerList" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="inProjectFolderName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="inGreatGrandParentName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="inGrandParentName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="inParentName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inContainerName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="inResourceName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="columnType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="applyReservedWordList" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="ConfigParamsXML" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="containerList" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="logicalName" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="logicalType" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="compositeTransformation" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="annotation" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="status" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/generateName/getNameGenerated" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inContainer" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inResourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="caseRule" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="separator" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="useAliasRule" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="generationScriptsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="status" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/getDefaultValuesXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="scriptsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="defaultValuesXML" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/retrieveName/getNameRetrieved" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inProjectFolderName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inGreatGrandParentName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inGrandParentName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inParentName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inContainerName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inResourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="generateWithSourceColumn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="logicalName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="logicalType" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="logicalTransformation" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="annotation" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="status" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/retrieveName/getNamesRetrievedContainer" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inLogicalID" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inContainerList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inProjectFolderName" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="inGreatGrandParentName" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="inGrandParentName" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="inParentName" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="inContainerName" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="inResourceName" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="generateWithSourceColumn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="inDebug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="containerList" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="logicalName" direction="OUT">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="logicalType" direction="OUT">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="logicalTransformation" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="annotation" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="status" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="tagName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inXMLDoc" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resultValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inWord" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	getNameXML:  
+	-- Data Virtualization Best Practices --
+
+	Get the name of the resource (word) being passed in.  
+	If Generate mode=&apos;G&apos; then generate the name and apply all the word rules for case and aliasing.  
+		Generate the composite transformation based on the columnType passed in.
+	If Generate mode=&apos;R&apos; then retrieve the logical name and the composite transformation from the Common Model Excel
+		spreadsheet based on the resource name (word) and the container.
+ 
+	Input:
+		inProjectFolderName - the name of the project folder (defaultValue.basePath)(projectName)
+		inGreatGrandParentName - the name of the great grand parent of the parent 	(dataSourcename)
+		inGrandParentName - the name of the grand parent of the parent 				(catalogName)
+		inParentName - the name of the parent of the container 						(schemaName)
+		inContainer - the parent of the &quot;inResourceName&quot; or resource. 				(viewName)
+			Values: any text without blanks in it
+		inResourceName - a generic term for any resource name						(columnName)
+			Values: any text without blanks in it
+		columnType - the type of column for the resource (&quot;word&quot;) passed in.
+			Values: VARCHAR(30) or DOUBLE or INTEGER, etc.
+		applyReservedWordList - 1=true, apply the reserved word list to the output, 0=false, do not apply reserved word list
+		ConfigParamsXML - The XML of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+	Output:
+		logicalName - the result is the logical name found in the excel spreadsheet files
+			Values: the logical column name
+		logicalType - the logical column type
+		compositeTransformation - the composite transformation found in the excel spreadsheet file
+		annotation - the &quot;Logical_Definition&quot; annotation for the view
+		status - the status of the result
+			-- when generateMode = &apos;G&apos; possible values are:
+			-- 		GENERATED - generated the column name based on rules supplied
+			-- 		UNCHANGED - remains unchanged when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=1
+			-- when generateMode = &apos;R&apos; possible values are:
+			-- 		FOUND - found when it finds a match to physical name in the spreadsheet
+			-- 		UNCHANGED - remains unchanged when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=1
+			-- 		DROPPED - gets dropped from the list when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=0
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	06/15/2010		Mike Tinius			5.2.0			Created new
+	04/22/2013		Mike Tinius			5.2.0			Added logicalType for Best Pracices 7.1
+	10/10/2013		Mike Tinius			6.1.0			8.0: Added datasourceName, projectFolderName and grandParentName
+	03/15/2014		Mike Tinius			6.2.0			Added &quot;AS&quot; to the composite transformation when generateMode=&quot;G&quot; so that the generated SQL matches what is created when generateMode=&quot;R&quot;.
+														Added new parameter &quot;applyReservedWordList&quot; to indicate whether to apply reserved word list to output or not.
+	08/08/2014		Mike Tinius			6.2.5			B.P. 8.1.3: Modified ability create no transformation when generateMode=R and generateCast=0
+	01/24/2019		Mike Tinius			8.0.0			B.P. 2019.1: Added the ability to handle columnCaseRule, resourcePrefix, resourceSuffix and newColumnList for generateMode=&apos;G&apos;. 
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+	06/12/2019		Mike Tinius			7.0.8			B.P. 2019.200: Derived the new getNameXML from getName to eliminate vector usage.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE getNameXML(
+	IN  inLogicalID				CHAR(1),		-- C=column, T=table [alleviates confusion between the same physical name being a column or table.
+	IN  inContainerList			LONGVARCHAR,
+	IN  inProjectFolderName		VARCHAR,
+	IN  inGreatGrandParentName	VARCHAR,
+	IN  inGrandParentName		VARCHAR,
+	IN  inParentName			VARCHAR,
+	IN 	inContainerName			VARCHAR,
+	IN	inResourceName			VARCHAR,
+	IN  columnType				VARCHAR,
+	IN  applyReservedWordList	BIT,
+	IN 	ConfigParamsXML			LONGVARCHAR,
+	OUT containerList			LONGVARCHAR,
+	OUT logicalName				VARCHAR,
+	OUT logicalType				VARCHAR,
+	OUT compositeTransformation	LONGVARCHAR,
+	OUT annotation				LONGVARCHAR,
+	OUT	status					VARCHAR
+		-- when generateMode = &apos;G&apos; possible values are:
+		-- 		GENERATED - generated the column name based on rules supplied
+		-- 		UNCHANGED - remains unchanged when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=1
+		-- when generateMode = &apos;R&apos; possible values are:
+		-- 		FOUND - found when it finds a match to physical name in the spreadsheet
+		-- 		UNCHANGED - remains unchanged when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=1
+		-- 		DROPPED - gets dropped from the list when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=0
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;  &apos;||&apos;getNameXML&apos;;
+	DECLARE ConfigParamsRec			/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.ConfigParamsType;
+	DECLARE defaultValuesXML		LONGVARCHAR;
+	DECLARE configureScriptsPath	LONGVARCHAR;
+	DECLARE retriveColumnOption		VARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.retriveColumnOption;
+	DECLARE actionType				VARCHAR DEFAULT &apos;&apos;;
+	DECLARE caseRule				CHAR(1);
+	DECLARE ex						EXCEPTION;
+
+
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;debug3&apos;, ConfigParamsXML, ConfigParamsRec.debug3);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;generateMode&apos;, ConfigParamsXML, ConfigParamsRec.generateMode);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;generateCast&apos;, ConfigParamsXML, ConfigParamsRec.generateCast);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;resourceCaseRule&apos;, ConfigParamsXML, ConfigParamsRec.resourceCaseRule);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;columnCaseRule&apos;, ConfigParamsXML, ConfigParamsRec.columnCaseRule);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;generateWithSourceColumn&apos;, ConfigParamsXML, ConfigParamsRec.generateWithSourceColumn);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;separator&apos;, ConfigParamsXML, ConfigParamsRec.separator);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;useAliasRule&apos;, ConfigParamsXML, ConfigParamsRec.useAliasRule);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;resourcePrefix&apos;, ConfigParamsXML, ConfigParamsRec.resourcePrefix);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;resourceSuffix&apos;, ConfigParamsXML, ConfigParamsRec.resourceSuffix);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;scriptsPath&apos;, ConfigParamsXML, ConfigParamsRec.scriptsPath);
+
+	if (ConfigParamsRec.debug3 = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, ConfigParamsRec.debug3, 
+			&apos;   inProjectFolderName=[&apos;||NVL(inProjectFolderName,&apos;null&apos;)||
+			&apos;]  inGreatGrandParentName=[&apos;||NVL(inGreatGrandParentName,&apos;null&apos;)||
+			&apos;]  inGrandParentName=[&apos;||NVL(inGrandParentName,&apos;null&apos;)||
+			&apos;]  inParentName=[&apos;||NVL(inParentName,&apos;null&apos;)||
+			&apos;]  inContainerName=[&apos;||NVL(inContainerName,&apos;null&apos;)||
+			&apos;]  inResourceName=[&apos;||NVL(inResourceName,&apos;null&apos;)||
+			&apos;]  columnType=[&apos;||NVL(columnType,&apos;null&apos;)||
+			&apos;]  generateMode=[&apos;||NVL(ConfigParamsRec.generateMode,&apos;null&apos;)||
+			&apos;]  generateCast=[&apos;||NVL(CAST(ConfigParamsRec.generateCast AS VARCHAR),&apos;null&apos;)||
+			&apos;]&apos;);
+	end if;
+
+	SET logicalType = &apos;&apos;;
+
+	IF (UPPER(ConfigParamsRec.generateMode) = &apos;G&apos;) THEN 	-- &apos;G&apos;
+		SET actionType = &apos;Generated&apos;;
+		call /shared/ASAssets/BestPractices_v81/Procedures/getDefaultValuesXML(ConfigParamsRec.scriptsPath, defaultValuesXML);
+		call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;configureScriptsPath&apos;, defaultValuesXML, configureScriptsPath);
+
+		-- Apply the case rule for folders, tables or columns
+		SET caseRule = ConfigParamsRec.resourceCaseRule; -- caseRule is used when inLogicalID: T=tables and F=folders
+		IF (inLogicalID = &apos;C&apos;) THEN
+			SET caseRule = ConfigParamsRec.columnCaseRule;
+ 		END IF;
+
+		-- Generated Name		
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/generateName/getNameGenerated(
+			inContainerName,
+			inResourceName, 
+			caseRule,
+			ConfigParamsRec.separator,
+			ConfigParamsRec.useAliasRule,
+			configureScriptsPath,
+			ConfigParamsRec.debug3,
+			logicalName, 
+			status);	
+
+		-- Add the prefix to the table name if it exists
+		IF (inLogicalID = &apos;T&apos; AND ConfigParamsRec.resourcePrefix IS NOT NULL AND LENGTH(ConfigParamsRec.resourcePrefix) &gt; 0) THEN
+			SET logicalName =  ConfigParamsRec.resourcePrefix || logicalName;
+		END IF;
+
+		-- Add the suffix to the table name if it exists
+		IF (inLogicalID = &apos;T&apos; AND ConfigParamsRec.resourceSuffix IS NOT NULL AND LENGTH(ConfigParamsRec.resourceSuffix) &gt; 0) THEN
+			SET logicalName = logicalName || ConfigParamsRec.resourceSuffix;
+		END IF;
+ 
+		-- Apply double quotes around reserved words if required
+		IF (applyReservedWordList = 1) THEN
+			call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(logicalName, null, logicalName);
+		END IF;
+
+		-- Generate the transform &quot;CAST&quot; statement [mtinius: 5/10/2012]
+		IF (ConfigParamsRec.generateCast &gt;= 1 and columnType is not null and LENGTH(columnType) &gt; 0) then
+			SET compositeTransformation = &apos;CAST(? AS &apos;||columnType||&apos;) AS&apos;;
+		ELSE
+			SET compositeTransformation = &apos;&apos;;
+		END IF;
+	ELSE
+		SET actionType = &apos;Retrieved&apos;;
+
+		-- Retrieved Name from a list
+		-- New retrieve name
+		IF (retriveColumnOption = &apos;NEW&apos;) THEN
+			CALL /shared/ASAssets/BestPractices_v81/Procedures/retrieveName/getNamesRetrievedContainer(
+				inLogicalID,
+				inContainerList,
+				inProjectFolderName,
+				inGreatGrandParentName,
+				inGrandParentName,
+				inParentName,
+				inContainerName, 
+				inResourceName, 
+				ConfigParamsRec.generateWithSourceColumn,
+				ConfigParamsRec.debug3, 
+				containerList,
+				logicalName, 
+				logicalType,
+				compositeTransformation, 
+				annotation,
+				status);	
+		-- Original retrieve name
+		ELSEIF (retriveColumnOption = &apos;ORIGINAL&apos;) then
+			CALL /shared/ASAssets/BestPractices_v81/Procedures/retrieveName/getNameRetrieved(
+				inProjectFolderName,
+				inGreatGrandParentName,
+				inGrandParentName,
+				inParentName,
+				inContainerName, 
+				inResourceName, 
+				ConfigParamsRec.generateWithSourceColumn,
+				ConfigParamsRec.debug3, 
+				logicalName, 
+				logicalType,
+				compositeTransformation, 
+				annotation,
+				status);	
+
+		ELSE
+			raise ex value &apos;Invalid defaultValues.retriveColumnOption=&apos;||NVL(retriveColumnOption,&apos;null&apos;);
+		END IF;
+
+		-- Apply double quotes around reserved words if required
+		IF (applyReservedWordList = 1) THEN
+			call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(logicalName, null, logicalName);
+		END IF;
+
+		-- 2014-08-04 mtinius: Generate the transform &quot;CAST&quot; statement
+		IF (ConfigParamsRec.generateCast = 0) then
+			SET compositeTransformation = &apos;&apos;;
+		END IF;
+	END IF;
+	if (ConfigParamsRec.debug3 = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, ConfigParamsRec.debug3, 
+			&apos;actionType=[&apos;||actionType||
+			&apos;]  ProjectFolderName=[&apos;||NVL(inProjectFolderName,&apos;null&apos;)||
+			&apos;]  GreatGrandParentName=[&apos;||NVL(inGreatGrandParentName,&apos;null&apos;)||
+			&apos;]  GrandParentName=[&apos;||NVL(inGrandParentName,&apos;null&apos;)||
+			&apos;]  GrandParent=[&apos;||NVL(inGrandParentName,&apos;null&apos;)||
+			&apos;]  Parent=[&apos;||NVL(inParentName,&apos;null&apos;)||
+			&apos;]  Container=[&apos;||NVL(inContainerName,&apos;null&apos;)||
+			&apos;]  Name=[&apos;||NVL(inResourceName,&apos;null&apos;)||
+			&apos;]  logicalName=[&apos;||NVL(logicalName,&apos;null&apos;)||
+			&apos;]  logicalType=[&apos;||NVL(logicalType,&apos;null&apos;)||
+			&apos;]  Transform=[&apos;||NVL(compositeTransformation,&apos;null&apos;)||
+			&apos;]  Annotation=[&apos;||NVL(annotation,&apos;null&apos;)||
+			&apos;]&apos;);
+	end if;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564149750489</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:10:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed</attribute>
+  <attribute name="p:3:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:4:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:6:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:7:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:8:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:9:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

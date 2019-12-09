@@ -1,0 +1,1651 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateViewsXML" path="/shared/ASAssets/BestPractices_v81/Procedures/generateViewsXML" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="ConfigParamsXML" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="layerType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="groupId" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="derivedFilterPath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="generateViewsRow" type="TABLE" refId="1">
+        <element name="datasourceName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="projectFolderName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="greatGrandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="grandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="parentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="containerName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="containerType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="columnName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="logicalColumnName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="logicalColumnType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="logicalStatus">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="containerPath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="duration">
+          <datatype name="IntervalDay" type="INTERVAL_DAY" intervalMode="INTERVAL_HOUR_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/GetEnvironment" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="variableName" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyName" type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyValue" type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/generateCRUD_OperationsXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="overwrite" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="copyPrivilegeMode" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="startingFolderXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="ConfigParamsXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inProjectFolderName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="datasourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="projectFolderName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="greatGrandParentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="grandParentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="parentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="containerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="containerType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalColumnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalColumnType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalStatus">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="containerPath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="duration">
+            <datatype type="INTERVAL_DAY" intervalMode="INTERVAL_HOUR_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/generateCRUD_TypeDefinitionsXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="overwrite" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="copyPrivilegeMode" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="startingFolderXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inConfigParamsXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inProjectFolderName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="datasourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="projectFolderName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="greatGrandParentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="grandParentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="parentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="containerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="containerType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalColumnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalColumnType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalStatus">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="containerPath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="duration">
+            <datatype type="INTERVAL_DAY" intervalMode="INTERVAL_HOUR_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/generateViewsLoopXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="generateType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="overwrite" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="copyAnnotation" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="copyPrivilegeMode" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="generateUnsupportedColumnType" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="ConfigParamsXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="startingFolderXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="exactMatch" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="excludeDsPathsList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inProjectFolderName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="newColumnList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="datasourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="projectFolderName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="greatGrandParentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="grandParentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="parentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="containerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="containerType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalColumnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalColumnType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalStatus">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="containerPath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="duration">
+            <datatype type="INTERVAL_DAY" intervalMode="INTERVAL_HOUR_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/getDefaultValuesXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="scriptsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="defaultValuesXML" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="tagName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inXMLDoc" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resultValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/getUtilitiesVersion" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="version" direction="OUT">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/lowerLevelProcedures/getBasicResourceXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="folderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="folderPath" direction="OUT">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseInputText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseOutput" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="trimText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="includeDelimiter" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="object">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractTextList" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="separator" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="preserveDoubleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveSingleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveParenthesis" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveQualifier" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="trimResults" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="textExpression">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getDelimitedOccurrence" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOccurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inTrimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/xml/getValueFromXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="namespaces" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inXpath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inXml" direction="IN">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	generateViewsXML: 
+	-- Data Virtualization Best Practices --
+
+	This is the main procedure used for generating any layer of views from data sources or other view layers including
+		&quot;Physical Views&quot;, &quot;Formatting Views&quot;, &quot;Logical Views&quot;, and  &quot;Client Views&quot;
+
+	Whether you have 10&apos;s, 100&apos;s or 1000&apos;s of relational tables that you want to map into a canonical
+	format, this auto-generation utility will aid in the mapping of data abstraction layers to the 
+	physical tables.
+	
+	1) Edit the /&lt;project-name&gt;/generationScripts/ConfigureParams and ConfigureStartingFolders file to set up the processing
+		startingFolderXML - 
+			defines which data source folders to process, 
+			where the views get generated, 
+			and whether the sub-folders are derived from the source or defined absolutely
+
+	2) Execute the top level procedure which is:
+		/&lt;project-name&gt;/generationScripts/generatePhysicalViews
+		/&lt;project-name&gt;/generationScripts/generateFormattingViews
+	3) Refresh Studio to see the Views that were generated
+
+	Cautions:
+	   CAUTION(1): Overlapping sourceFolderPath definitions will result in duplicated views being produced
+		Take the 2 source folder paths expressed below.  The 2nd one is a sub-directory of the first one.
+		This will result in the same source folders being processed twice which generates the same mapping views
+		but in different target folders.
+	    (1,&apos;PV&apos;,&apos;D&apos;,&apos;/shared/DataAbstractSample/PhysicalLayer&apos;,		null, &apos;/shared/DataAbstractSample/FormattingLayer&apos;),
+	    (1,&apos;PV&apos;,&apos;D&apos;,&apos;/shared/DataAbstractSample/PhysicalLayer/ORDERS&apos;,	null, &apos;/shared/DataAbstractSample/FormattingLayer/Orders&apos;)
+
+	    CAUTION(2): Source Folder Path definitions are case sensitive and must match the actual source path that you
+		want to introspect to create mapping views from.
+
+	    CAUTION(3): Only relational sources are supported at this time.
+
+	Input:
+		Environmnet Variables set by invoking generate...Views procedures:
+			This is an alternative approach to setting variables without modiffying the signature of a procedure.
+
+			Local Variable			Environment Variable				Desscription
+			-----------------------	---------------------------			----------------------------------------
+			generateType 			best.practices.generateType			VIEW or LINK - differentiates the type of generation to be performed
+			generateViewsWrapper	best.practices.generateViewsWrapper generate the view wrapper print out
+																			0=Do not print out row information to console window (print to cursor result window)
+																			1=Do print out row information for TABLE only to consle window
+																			2=Do print out row information for TABLE and COLUMNS to console window
+			overwrite				best.practices.overwrite			overwrite a target resource or not: 
+																			0=&quot;FAIL_IF_EXISTS&quot;=do not overwrite the resource.  If the resource exists, raise an exception.
+																			1=&quot;SKIP_IF_EXISTS&quot;=skip the resource if it exists and continue processing
+																			2=&quot;OVERWRITE_IF_EXISTS&quot;=do overwrite the resource if it exists.
+			copyAnnotation 			best.practices.copyAnnotation		copy a resource annotation (TABLE or COLUMN), 0=false (default), 1=true
+			copyPrivilegeMode		best.practices.copyPrivilegeMode	determine the type of copy: null (default)=do set privileges at all, 0=OVERWRITE_APPEND, 1=SET_EXACTLY
+			sourceResource 			best.practices.sourceResource		user supplied source folder or specific resource for generating a LINK or VIEW from.
+			generateToFolder 		best.practices.generateToFolder		user supplied folder for generating LINKS or VIEWS into
+			exactMatch				best.practices.exactMatch			determine how to filter on the source resources
+																			0=fuzzy match - sourcePath + derivedFilterPath must simply be contained within resourcePath
+																			1=exact match - sourcePath + derivedFilterPath must match exactly in resourcePath
+			executeModuleName		best.practices.executeModuleName	the name of the executing module/procedure
+
+			-- The XML of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+		ConfigParamsXML
+
+			-- the designator for the layer in which to generate from
+			-- FV=Formatting Views - generateFormattingViews invokes generateViews
+			-- BV=Business Views - use generateViews
+			-- LV=Logical Views - generateLoicalViews invokes generateViews
+			-- CV=Client Views - generateClientViews invokes generateViews
+			-- CP=Client Published - generateClientPublished invokes generateViews
+   		layerType 
+
+			-- this is the group id located in the /generationScripts/Configure/ConfigureStartingFolders. 
+			-- This is a filter that allows the user to only generate for a specific group
+		inGroupId  
+
+			-- The list &quot;derivedFilterPath&quot; is a comma-separated list of resources and may be used with either generateToFolder (option 1) to groupId (option 2) 
+			-- The path is derived by concatenating the partial filter path with the source path of the designated layer type.
+			-- The layerType and the groupId are used to filter the rows from the configureStartingFolders.  The source path is
+			--    defined in configureStartingFolders per the layerType and groupId combination.
+			--   e.g. layerType=CP and sourceFolderPath=/shared/BestPractices_v73/DataAbstractionSample/L1_Mapping_Layer/Client_Views
+			--        The derivedFilterPath list=Orders_Closed,/Orders/Customers,Orders/Product
+			--        Even though there are several other views in the /Orders folder under the Client_Views only the ones specified
+			--	      will be generated to the Client_Published.  Views directly under the source path do not require any qualifying path except the view name.
+			--        Lastly, a leading &apos;/&apos; is not required but may be present if desired.
+			-- Correlate the groupId position with the derivedFilterPath position
+			--		derivedFilterPath=&quot;customers,orders&quot;,shippingmethods
+			--                         |                     |
+			--                         v                     v
+			--		          groupId=ds_inventory.tutorial,ds_orders.tutorial
+			-- If null, generate views from all source folders as directed by the &quot;configure starting folders&quot; and the designated layer type.
+		derivedFilterPath	LONGVARCHAR, 
+
+	Output:
+		-- View Generation results
+			generateViewsRow - 	CURSOR (
+		 		datasourceName			VARCHAR(255), 
+				projectFolderName		VARCHAR(255), 
+				greatGrandParentName	VARCHAR(255), 
+				grandParentName			VARCHAR(255), 
+				parentName				VARCHAR(255),
+		        containerName 			VARCHAR(255), 
+		        containerType 			VARCHAR(255), - the resource type of the container resource (i.e. TABLE)
+		        columnName 				VARCHAR(255), - the name of the original column within the source resource.
+		        logicalColumnName 		VARCHAR(255), - the name of the target column that will be created.
+        		logicalColumnType 		VARCHAR(255), - the type of the target column that will be created.
+		        logicalStatus 			VARCHAR(4000), - the status for the usage of this column
+ 						-- on input, when generateMode = &apos;G&apos; possible values are:
+						-- 		GENERATED - generated the column name based on rules supplied
+						-- 		UNCHANGED - remains unchanged when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=1
+						-- on input, when generateMode = &apos;R&apos; possible values are:
+						-- 		FOUND - found when it finds a match to physical name in the spreadsheet
+						-- 		UNCHANGED - remains unchanged when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=1
+						-- 		DROPPED - gets dropped from the list when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=0
+       			containerPath 			VARCHAR(4000), - the full path to the container resource.
+				duration				INTERVAL HOUR TO SECOND
+			)
+Sample:
+containerName,containerType,columnName,logicalColumnName,logicalStatus,containerPath
+transforms,CONTAINER,productCatalog_Transformation,productCatalog_Transformation,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,ProductID,ProductID,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,ProductName,ProductName,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,CategoryID,CategoryID,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,CategoryName,CategoryName,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,ProductDescription,ProductDescription,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,SerialNumber,SerialNumber,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,UnitPrice,UnitPrice,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,ReorderLevel,ReorderLevel,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,LeadTime,LeadTime,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+View Generation Complete,,,,,
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	06/15/2010		Mike Tinius			5.2.0			Created new
+	05/17/2013		Mike Tinius			5.2.0			Updated for Best Practices 7.1 - added overwrite, copyAnnotation, updatePrivilegesRecursively, copyPrivilegeMode, publishToFolder, targetResource
+	07/31/2013		Mike Tinius			6.0.0			B.P. 7.3: Add printout of begin and end time and duration.
+	09/16/2013		Mike Tinius			6.1.0			B.P. 7.3.1: patch - modified generateViewsWrapper to allow 0, 1, 2
+	11/08/2013		Mike Tinius			6.1.0			B.P. 8.0: added projectFolderName, greatGrandParentName, and duration to output
+	10/28/2014		Mike Tinius			6.2.6			B.P. 8.1.5: Fixed output message to print the line instead of null when view is SKIPPED.
+	11/21/2014		Mike Tinius			6.2.6			B.P. 8.1.5: Fixed display of last view for conditions generateViewsWrapper = 1 and generateViewsWrapper = 2.
+	11/25/2014		Mike Tinius			6.2.6			B.P. 8.1.5: Fixed issue when groupId contains a single quote which is caused by data source name having a single quote.														
+	09/21/2015		Mike Tinius			7.0.x			B.P. 8.1.7: Added generateViews=2 for a select * projection.  Requires Utilities_2015Q3
+	12/11/2015		Mike Tinius			7.0.x			B.P. 8.1.8: Fix to allow a derived filter path longer than VARCHAR(4000).  Changed to LONGVARCHAR.
+	03/02/2018		Mike Tinius			7.0.5			Replaced RegexSplit with extractDelimitedText
+	01/24/2019		Mike Tinius			8.0.0			B.P. 2019.1: Added the ability to handle columnCaseRule, resourcePrefix, resourceSuffix and newColumnList for generateMode=&apos;G&apos;. 
+	01/29/2019		Mike Tinius			8.0.0			B.P. 2019.101: Fix bug so derivedFilterPath could be used with generateToFolder.
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+	06/12/2019		Mike Tinius			7.0.8			B.P. 2019.200: Derived the new generateViewsXML from generateViews to eliminate vector usage.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE generateViewsXML(
+		-- The XML of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+	IN ConfigParamsXML		LONGVARCHAR,
+
+		-- FV=Formatting Views - generateFormattingViews invokes generateViews
+		-- BV=Business Views - use generateViews
+		-- LV=Logical Views - generateLoicalViews invokes generateViews
+		-- CV=Client Views - generateClientViews invokes generateViews
+		-- CP=Client Published - generateClientPublished invokes generateViews
+    IN layerType			VARCHAR,
+
+		-- This is a comma separate list group ids to process from the configureStartingFolders
+		-- This is a comma separated list of derived paths to generate views from.  It is not the full path of the resource.
+	IN groupId				LONGVARCHAR, 
+
+		-- The list &quot;derivedFilterPath&apos; is a comma-separated list of resources and may be used with either generateToFolder (option 1) to groupId (option 2) 
+		-- The path is derived by concatenating the partial filter path with the source path of the designated layer type.
+		-- The layerType and the groupId are used to filter the rows from the configureStartingFolders.  The source path is
+		--    defined in configureStartingFolders per the layerType and groupId combination.
+		--   e.g. layerType=CP and sourceFolderPath=/shared/BestPractices_v73/DataAbstractionSample/L1_Mapping_Layer/Client_Views
+		--        The derivedFilterPath list=Orders_Closed,/Orders/Customers,Orders/Product
+		--        Even though there are several other views in the /Orders folder under the Client_Views only the ones specified
+		--	      will be generated to the Client_Published.  Views directly under the source path do not require any qualifying path except the view name.
+		--        Lastly, a leading &apos;/&apos; is not required but may be present if desired.
+		-- Correlate the groupId position with the derivedFilterPath position
+		--		derivedFilterPath=&quot;customers,orders&quot;,shippingmethods
+		--                         |                     |
+		--                         v                     v
+		--		          groupId=ds_inventory.tutorial,ds_orders.tutorial
+		-- If null, generate views from all source folders as directed by the &quot;configure starting folders&quot; and the designated layer type.
+		-- Note: exactMatch is defaulted to 0 so a partial path match is the only thing required
+	IN derivedFilterPath	LONGVARCHAR, 
+
+    OUT result PIPE 		/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.generateViewsRow
+)
+BEGIN
+	DECLARE moduleName					VARCHAR DEFAULT &apos;generateViewsXML&apos;;
+	DECLARE ConfigParamsRec				/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.ConfigParamsType;
+	DECLARE defaultValuesXML			LONGVARCHAR;
+	DECLARE defaultValuesRec			/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.defaultValuesType;
+	DECLARE groupId_					LONGVARCHAR DEFAULT groupId;
+	DECLARE derivedFilterPath_			LONGVARCHAR DEFAULT derivedFilterPath;
+	DECLARE debug						CHAR(1);
+	DECLARE debug2						CHAR(1);
+	DECLARE envValue					LONGVARCHAR;
+	DECLARE i,j							INTEGER DEFAULT 1;
+	DECLARE tables, cols, tcols			INTEGER DEFAULT 0;
+	DECLARE projectFolderName			VARCHAR; -- The last folder name in the defaultValues.basePath
+	DECLARE startingFolderCursor		CURSOR /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.startingFolderType;
+	DECLARE startingFolderExtendedXML	LONGVARCHAR;
+/*
+&lt;startingFolderExtendedType&gt;
+	&lt;groupId&gt;&lt;/groupId&gt;
+	&lt;process&gt;&lt;/process&gt;
+	&lt;layerType&gt;&lt;/layerType&gt;
+	&lt;pathDerivation&gt;&lt;/pathDerivation&gt;
+	&lt;sourceFolderPath&gt;&lt;/sourceFolderPath&gt;
+	&lt;targetFolderPath&gt;&lt;/targetFolderPath&gt;
+	&lt;derivedFilterPath&gt;&lt;/derivedFilterPath&gt;
+	&lt;typeDefProcPath&gt;&lt;/typeDefProcPath&gt;
+	&lt;typeDefProcName&gt;&lt;/typeDefProcName&gt;
+&lt;/startingFolderExtendedType&gt;
+*/
+	DECLARE derivedFilterVector			VECTOR(ROW(groupId VARCHAR, derivedFilterPath LONGVARCHAR));
+/*
+&lt;derivedFilterType&gt;
+    &lt;groupId&gt;&lt;/groupId&gt;
+    &lt;derivedFilter&gt;&lt;/derivedFilter&gt;
+&lt;/derivedFilterType&gt;
+*/
+	DECLARE sqlStatement				LONGVARCHAR;
+	DECLARE ex							EXCEPTION;
+	DECLARE namespaces					VARCHAR(4000);
+	DECLARE xpath						VARCHAR(4000);
+	DECLARE xmlOut						XML;
+	DECLARE message						VARCHAR(4000);
+	DECLARE newline						VARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.newline;
+	DECLARE columnOutput				LONGVARCHAR DEFAULT null;
+	DECLARE tableOutput					LONGVARCHAR DEFAULT null;
+	DECLARE tableOutputCnt				INTEGER DEFAULT 1;
+	DECLARE tableOutputLength			INTEGER;
+	DECLARE tableOutputTotalLength		INTEGER;
+	DECLARE PRINT_LEN					INTEGER DEFAULT 63000;
+	DECLARE columnFormat				VARCHAR;
+	DECLARE hours						INTEGER;
+	DECLARE minutes						INTEGER;
+	DECLARE seconds						DECIMAL(32,3);
+	DECLARE startTime					TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+	DECLARE endTime						TIMESTAMP;
+	DECLARE duration					INTERVAL DAY to SECOND;
+	DECLARE currentRowDuration			INTERVAL DAY to SECOND;
+	DECLARE durationStr					VARCHAR;
+	DECLARE groupIdTemp					VARCHAR;
+
+	DECLARE generateType				VARCHAR;
+			-- &apos;VIEW&apos; - generate views
+			-- &apos;LINK&apos; - generate a published link resource
+	DECLARE generateViewsWrapper		INTEGER;
+			-- generate the view wrapper print out
+			-- 0=Do not print out row information
+			-- 1=Do print out row information for TABLE only
+			-- 2=Do print out row information for TABLE and COLUMNS
+	DECLARE overwrite					INTEGER;
+			-- overwrite - allows user to decide whether they want to overwrite an existing view or not.
+			-- 0=false=do not overwrite the composite published database resource.  If the resource exists, raise an exception.
+			-- 1=true=do overwrite the composite published database resource if it exists.
+	DECLARE copyAnnotation				INTEGER;
+			-- copyAnnotation - allows user to decide whether they want to copy annotations or not form both resource and columns.
+			-- 0=false=do not copy the annotation from the target resource
+			-- 1=true=do copy the annotation from the target resource
+	DECLARE	copyPrivilegeMode 			INTEGER;
+			-- flag indicating the mode in which to copy privileges.  Privileges are only copied from the parent when creating new resources including folders.
+			-- null (default) - do not set any privileges at all
+			-- 0 - set mode to &quot;OVERWRITE_APPEND&quot; - merges and does not update privileges for users or groups not mentioned.
+			-- 1 - set the mode to &quot;SET_EXACTLY&quot; - makes privileges look exactly like those provided in the call.
+	DECLARE sourceResource				LONGVARCHAR;
+			-- OPTION 1 - generate resources from this source folder
+	DECLARE generateToFolder			VARCHAR(4000);
+			-- OPTION 1 - generate resources is controlled by explicit folder settings for a target resource and the folder to generate resources to.
+	DECLARE exactMatch					SMALLINT;
+			-- Used by generateCastViews only.
+			-- 0=fuzzy match - sourcePath + derivedFilterPath must simply be contained within resourcePath
+			-- 1=(default) exact match - sourcePath + derivedFilterPath must match exactly in resourcePath
+	DECLARE executeModuleName			VARCHAR;
+			-- The name of the module the request came from
+	DECLARE typeDefinitionProcedureName VARCHAR;
+			-- The name of the type definition procedure to be generated for CRUD operations
+	DECLARE typeDefinitionProcedurePath	LONGVARCHAR;
+			-- The path of the type definition procedure not including the type definition procedure name.
+	DECLARE generateUnsupportedColumnType INTEGER;
+		-- flag indicating whether to ignore or generate unsupported column types.  For example in Oracle an SDO spatial type gets imported into Composite as &apos;OTHER&apos;.
+		-- 0/null (default) - ignore column type = &apos;OTHER&apos; and do not generate that column
+		-- 1 - generate columns where the column type = &apos;OTHER&apos;
+	DECLARE excludeDsPathsList			LONGVARCHAR;
+		-- comma separated list of resource paths or partials paths to exclude.  This may be useful when a data source has been moved and it&apos;s index or foreign keys
+		--	are pointing to another data source that does not exist anymore.  It may be necessary to exclude that path or paths.  If an exception is thrown during 
+		--	execution, try excluding those paths.
+		--	Values: /shared/MyPath/Physical/Metadata/MyDatasource
+	DECLARE newColumnList				LONGVARCHAR;
+		-- A formatted list of new columns to add to the end of the view.  The column will not be added if it already exists.
+		-- The format is as follows:  column1&amp;&amp;type1&amp;&amp;value1//column2&amp;&amp;type2&amp;&amp;value2//column3&amp;&amp;type3&amp;&amp;value3
+	DECLARE resourceName				VARCHAR DEFAULT null;
+	DECLARE resourceType				VARCHAR;
+	DECLARE version						DOUBLE;
+	DECLARE minVersion					DOUBLE DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.minVersion;
+	DECLARE padChar						CHAR(1) DEFAULT &apos; &apos;;
+	DECLARE padChar2					CHAR(1) DEFAULT &apos;_&apos;;
+	DECLARE logicalStatus				VARCHAR(15);
+	DECLARE logicalStatusMessage		VARCHAR(4000);
+	DECLARE location					INTEGER;
+
+	/***************************************************************
+	 * Make sure the Utilities are up to date
+	 ***************************************************************/
+	call /shared/ASAssets/Utilities/getUtilitiesVersion(version);
+	if (version &lt;  minVersion) then
+		raise ex value &apos;Utilities &apos;||minVersion||&apos; or higher is required&apos;;
+	end if;
+
+	-- Set local Configuration parameters	
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;debug&apos;, ConfigParamsXML, ConfigParamsRec.debug);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;debug2&apos;, ConfigParamsXML, ConfigParamsRec.debug2);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;basePath&apos;, ConfigParamsXML, ConfigParamsRec.basePath);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;generateViews&apos;, ConfigParamsXML, ConfigParamsRec.generateViews);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;scriptsPath&apos;, ConfigParamsXML, ConfigParamsRec.scriptsPath);
+	set debug = ConfigParamsRec.debug;
+	set debug2 = ConfigParamsRec.debug2;
+
+	-- Set default configuration parameters	
+	call /shared/ASAssets/BestPractices_v81/Procedures/getDefaultValuesXML(ConfigParamsRec.scriptsPath, defaultValuesXML);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;typeDefinitionPath&apos;, defaultValuesXML, defaultValuesRec.typeDefinitionPath);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;typeDefinitionProcName&apos;, defaultValuesXML, defaultValuesRec.typeDefinitionProcName);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;configureScriptsPath&apos;, defaultValuesXML, defaultValuesRec.configureScriptsPath);
+
+	-- Extract the project name from the last folder name at the end of the basePath.
+	call /shared/ASAssets/Utilities/string/getDelimitedOccurrence(ConfigParamsRec.basePath, &apos;R&apos;, &apos;/&apos;, 1, 0, projectFolderName);
+
+	-- Get environment variables
+	call /lib/util/GetEnvironment(&apos;best.practices.generateType&apos;,envValue);
+	if (envValue IS NOT NULL AND UPPER(envValue) = &apos;[NULL]&apos;) then
+		set generateType = null;
+	else
+		set generateType = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.generateViewsWrapper&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set generateViewsWrapper = null;
+	else
+		set generateViewsWrapper = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.overwrite&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set overwrite = null;
+	else
+		set overwrite = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.copyAnnotation&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set copyAnnotation = null;
+	else
+		set copyAnnotation = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.copyPrivilegeMode&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set copyPrivilegeMode = null;
+	else
+		set copyPrivilegeMode = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.sourceResource&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set sourceResource = null;
+	else
+		set sourceResource = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.generateToFolder&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set generateToFolder = null;
+	else
+		set generateToFolder = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.exactMatch&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set exactMatch = null;
+	else
+		set exactMatch = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.executeModuleName&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set executeModuleName = null;
+	else
+		set executeModuleName = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.typeDefinitionProcedureName&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set typeDefinitionProcedureName = null;
+	else
+		set typeDefinitionProcedureName = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.generateUnsupportedColumnType&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set generateUnsupportedColumnType = null;
+	else
+		set generateUnsupportedColumnType = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.excludeDsPathsList&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set excludeDsPathsList = null;
+	else
+		set excludeDsPathsList = envValue;
+	end if;
+	call /lib/util/GetEnvironment(&apos;best.practices.newColumnList&apos;,envValue);
+	if (envValue IS NOT NULL AND (UPPER(envValue) = &apos;[NULL]&apos; OR UPPER(envValue) = &apos;NULL&apos;)) then
+		set newColumnList = null;
+	else
+		set newColumnList = envValue;
+	end if;
+
+
+	-- Validate the environment variables
+	if (generateType is null) then
+		set generateType = &apos;VIEW&apos;;
+	end if;
+	if (generateViewsWrapper is null) then
+		set generateViewsWrapper = 1;
+	end if;
+	if (overwrite is null) then
+		set overwrite = 1;	-- 2014-06-06: mtinius - changed default to 1=skip if exists as a safeguard.  This is a change from the 2=overwrite for past releases.
+	end if;
+	if (overwrite &lt; 0 or overwrite &gt; 2) then
+		raise ex value &apos;The parameter &quot;overwrite&quot; is invalid. 0=FAIL_IF_EXISTS, 1=SKIP_IF_EXISTS, 2=OVERWRITE_IF_EXISTS.&apos;;
+	end if;
+	if (copyAnnotation is null) then
+		set copyAnnotation = 0;		-- set the default behavior to not copy the annotation so it is compatible with past releases.
+	end if;
+	if (copyAnnotation &lt; 0 or copyAnnotation &gt; 1) then
+		raise ex value &apos;The parameter &quot;copyAnnotation&quot; is invalid. 0=DO NOT COPY ANNOTATION, 1=COPY ANNOTATION.&apos;;
+	end if;
+	if (sourceResource is not null and generateToFolder is null) then
+		raise ex value &apos;The parameter &quot;generateToFolder&quot; may not be blank or null.&apos;;
+	end if;
+	-- Note: updatePrivilegesRecursively - the default behavior is null which is to not apply privileges at all
+	--       copyPrivilegeMode - the default behavior is null which is to not apply priviletes at all
+	if (copyPrivilegeMode is not null and (copyPrivilegeMode &lt; 0 or copyPrivilegeMode &gt; 1)) then
+		raise ex value &apos;The parameter &quot;copyPrivilegeMode&quot; is invalid. null (default)-do not set any privileges, 0-set mode to &quot;OVERWRITE_APPEND&quot;, 1-set the mode to &quot;SET_EXACTLY&quot;.&apos;;
+	end if;
+	if (exactMatch is null) then
+		set exactMatch = 1;
+	end if;
+	if (exactMatch &lt; 0 or exactMatch &gt; 1) then
+		raise ex value &apos;The parameter &quot;exactMatch&quot; is invalid. 0=fuzzy match, 1=exact match.&apos;;
+	end if;
+	if (generateUnsupportedColumnType is null) then
+		set generateUnsupportedColumnType = 0;			-- set the default behavior to not generate unsupported column types
+	end if;
+	if (groupId is not null and (layerType IS NULL OR LENGTH(&apos;|&apos;||layerType||&apos;|&apos;) = 2)) then  --Empty
+		raise ex value &apos;The &quot;layerType&quot; may not be null or empty when the &quot;groupId&quot; is specified.&apos;;
+	end if;
+	-- Setup the type definition procedure name and path
+	if (typeDefinitionProcedureName IS NULL OR LENGTH(&apos;|&apos;||typeDefinitionProcedureName||&apos;|&apos;) = 2) then  --Empty
+		set typeDefinitionProcedureName = defaultValuesRec.typeDefinitionProcName;
+	end if;
+
+	-- Print out parameters for debugging purposes
+	IF (debug = &apos;Y&apos;) THEN
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;basePath=&apos;||NVL(ConfigParamsRec.basePath,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;projectFolderName=&apos;||NVL(projectFolderName,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;executeModuleName=&apos;||NVL(executeModuleName,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;generateType=&apos;||NVL(generateType,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;overwrite=&apos;||NVL(cast(overwrite as varchar),&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;copyAnnotation=&apos;||NVL(cast(copyAnnotation as varchar),&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;copyPrivilegeMode=&apos;||NVL(cast(copyPrivilegeMode as varchar),&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;generateUnsupportedColumnType=&apos;||NVL(cast(generateUnsupportedColumnType as varchar),&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;exactMatch=&apos;||NVL(cast(exactMatch as varchar),&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;derivedFilterPath=&apos;||NVL(derivedFilterPath_,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;typeDefinitionProcedureName=&apos;||NVL(typeDefinitionProcedureName,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;excludeDsPathsList=&apos;||NVL(excludeDsPathsList,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;newColumnList=&apos;||NVL(newColumnList,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;OPTION 1:&apos;);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;sourceResource=&apos;||NVL(sourceResource,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;generateToFolder=&apos;||NVL(generateToFolder,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;OPTION 2:&apos;);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;layerType=&apos;||NVL(layerType,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;groupId=&apos;||NVL(groupId,&apos;null&apos;));
+	END IF;
+
+	CASE executeModuleName
+		WHEN &apos;generateCastViews&apos; 			THEN set message = &apos;GENERATE CAST VIEWS...&apos;;
+		WHEN &apos;generateClientPublished&apos;		THEN set message = &apos;GENERATE CLIENT PUBLISHED VIEWS...LAYER TYPE=&apos;||NVL(layerType,&apos;null&apos;);
+		WHEN &apos;generateClientViews&apos; 			THEN set message = &apos;GENERATE CLIENT VIEWS...LAYER TYPE=&apos;||NVL(layerType,&apos;null&apos;);
+		WHEN &apos;generateBusinessViews&apos; 		THEN set message = &apos;GENERATE BUSINESS VIEWS...LAYER TYPE=&apos;||NVL(layerType,&apos;null&apos;);
+		WHEN &apos;generateLogicalViews&apos; 		THEN set message = &apos;GENERATE LOGICAL VIEWS...LAYER TYPE=&apos;||NVL(layerType,&apos;null&apos;);
+		WHEN &apos;generateFormattingViews&apos; 		THEN set message = &apos;GENERATE FORMATTING VIEWS...LAYER TYPE=&apos;||NVL(layerType,&apos;null&apos;);
+		WHEN &apos;generatePhysicalViews&apos; 		THEN set message = &apos;GENERATE PHYSICAL VIEWS...LAYER TYPE=&apos;||NVL(layerType,&apos;null&apos;);
+		WHEN &apos;generatePublishedResource&apos; 	THEN set message = &apos;GENERATE PUBLISHED RESOURCE...LAYER TYPE=&apos;||NVL(layerType,&apos;null&apos;);
+		WHEN &apos;generateViews&apos; 				THEN set message = &apos;GENERATE VIEWS...LAYER TYPE=&apos;||NVL(layerType,&apos;null&apos;);
+		WHEN &apos;generateCRUDOperations&apos; 		THEN set message = &apos;GENERATE CRUD OPERATION PROCEDURES...&apos;||NVL(layerType,&apos;null&apos;);
+		WHEN &apos;generateTypeDefinitions&apos; 		THEN set message = &apos;GENERATE CRUD TYPE DEFINITIONS...&apos;||NVL(layerType,&apos;null&apos;);
+		ELSE
+			set message = &apos;The executing module/procedure is invalid: &apos;||NVL(executeModuleName,&apos;null&apos;);
+			raise ex value message;
+	END CASE;
+
+/* ------------------------------------------------------------------------
+ * Get the ConfigureStartingFolders info:
+ * ------------------------------------------------------------------------
+	Sample of the StartFolderXML - Identifies the various Data Sources that need to undergo View Generation
+	groupid,process, layerType, pathDerivation, sourceFolderPath, 			targetFolderPath
+	(&apos;g1&apos;,0,&apos;FV&apos;,&apos;D&apos;,&apos;/shared/ViewGenerator/PhysicalMetadata/INVENTORY&apos;,	&apos;/shared/ViewGenerator/FormattingLayer/Inventory&apos;),
+	(&apos;g2&apos;,1,&apos;FV&apos;,&apos;A&apos;,&apos;/shared/ViewGenerator/PhysicalMetadata/ORDERS&apos;,		&apos;/shared/ViewGenerator/FormattingLayer/Orders&apos;)
+*/
+	if (derivedFilterPath is not null and length(trim(derivedFilterPath)) &gt; 0) then
+		-- Automatically add double quotes around the comma-separated list if the quotes don&apos;t exist.
+		if (INSTR(derivedFilterPath_, &apos;,&apos;) &gt; 0) and (INSTR(derivedFilterPath_, &apos;&quot;&apos;) = 0) then
+			SET derivedFilterPath_ = &apos;&quot;&apos;||derivedFilterPath_||&apos;&quot;&apos;;
+		end if;
+
+		/*
+		The extractTextList is used to extract a separated list of values containing
+			embedded separators within double quotes, single quotes.  The result is returned as a cursor based on
+			the boundaries of the the qualifiers: double quotes, single quotes or paired parenthesis.  The separator value
+			is preserved within the qualifier if the flag for that qualifier is set to 1 (true).
+		*/
+		-- Create a vector of the comma-separated derived filter paths associated with their respective (positional) groupId
+		for r as select * from /shared/ASAssets/Utilities/string/extractTextList(derivedFilterPath_,&apos;,&apos;,1,0,0,0,1) do
+			-- Initialize or extend the vector
+			if (derivedFilterVector is null) then
+				set derivedFilterVector = VECTOR[(null)];
+				set i = 1;
+			else
+				set derivedFilterVector = EXTEND(derivedFilterVector,1);
+				set i = i + 1;
+			end if;
+
+			-- set the derivedFilterPath
+			set derivedFilterVector[i].derivedFilterPath = r.textExpression;
+
+			-- Set the associated groupId with the derivedFilterPath item based on their respective position within the comma-separated string.
+			set j = 0;
+			groupLoop:
+			for g as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(groupId_,&apos;,&apos;,0,0,0,1,0) do
+				set j = j + 1;
+				if (i = j) then
+					set derivedFilterVector[i].groupId = g.object;
+					if (INSTR(derivedFilterVector[i].groupId, &apos;&apos;&apos;&apos;) &gt; 0) then
+						set derivedFilterVector[i].groupId = REPLACE(derivedFilterVector[i].groupId, &apos;&apos;&apos;&apos;, &apos;&apos;&apos;&apos;&apos;&apos;);
+					end if;
+					leave groupLoop;
+				end if;
+			end for;
+		end for;
+	end if;
+
+	-- If the sourceResource is not null, it overrides the use of groupIds and layertype
+	if (sourceResource is not null) then
+
+		-- Retrieve the resource XML and get the annotation
+		call /shared/ASAssets/Utilities/repository/lowerLevelProcedures/getBasicResourceXML(sourceResource, null, xmlOut);
+		-- Extract the annotation
+		set namespaces = &apos;xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot; xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&apos;;
+		set xpath = &apos;/resource:getResourceResponse/resource:resources/resource:resource/resource:type&apos;;
+		call /shared/ASAssets/Utilities/&quot;xml&quot;/getValueFromXML(&apos;N&apos;, namespaces, xpath, CAST(xmlOut as LONGVARCHAR), resourceType);
+
+		-- If the source resource is not a folder/container then extract the folder path and resource name.
+		--   Use the resource name as the derivedFilterPath
+		set resourceName = null;
+		if (resourceType != &apos;CONTAINER&apos; and resourceType != &apos;DATA_SOURCE&apos;) then
+			call /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(sourceResource, &apos;E&apos;, resourceName, sourceResource);
+		end if;
+
+		-- If the source resource path has a non-CONTAINER resource type such as TABLE or PROCEDURE then set the derivedFilterPath to the resourceName
+		--		otherwise set the derivedFilterPath to the incoming derivedFilterPath was set then use the first occurrence of what was passed in
+		if (resourceName IS NOT NULL AND LENGTH(TRIM(resourceName)) &gt; 0) then
+			set derivedFilterPath_ = resourceName;
+		else
+			if (derivedFilterVector is not null and CARDINALITY(derivedFilterVector) &gt; 0) then
+				set derivedFilterPath_ = derivedFilterVector[1].derivedFilterPath;
+			end if;
+		end if;
+
+		-- Set the type definition procedure path		
+		CASE executeModuleName
+			WHEN &apos;generateCRUDOperations&apos; 	THEN	-- Generate CRUD Operations including Type Definitions
+				set typeDefinitionProcedurePath = REPLACE(generateToFolder||&apos;/&apos;||defaultValuesRec.typeDefinitionPath,&apos;//&apos;,&apos;/&apos;);
+			WHEN &apos;generateTypeDefinitions&apos; 		THEN 	-- Generate Type Definitions
+				set typeDefinitionProcedurePath = generateToFolder;
+			ELSE	-- Generate Views
+				set typeDefinitionProcedurePath = null;
+		END CASE;
+
+		-- The type definition procedure name must be unique
+		SET startingFolderExtendedXML = 
+&apos;&lt;startingFolderExtendedType&gt;
+    &lt;groupId/&gt;
+    &lt;process&gt;1&lt;/process&gt;
+    &lt;layerType/&gt;
+    &lt;pathDerivation&gt;A&lt;/pathDerivation&gt;
+    &lt;sourceFolderPath&gt;&apos;||TRIM(NVL(sourceResource,&apos;  &apos;))||&apos;&lt;/sourceFolderPath&gt;
+    &lt;targetFolderPath&gt;&apos;||TRIM(NVL(generateToFolder,&apos;  &apos;))||&apos;&lt;/targetFolderPath&gt;
+    &lt;derivedFilterPath&gt;&apos;||TRIM(NVL(derivedFilterPath_,&apos;  &apos;))||&apos;&lt;/derivedFilterPath&gt;
+    &lt;typeDefProcPath&gt;&apos;||TRIM(NVL(typeDefinitionProcedurePath,&apos;  &apos;))||&apos;&lt;/typeDefProcPath&gt;
+    &lt;typeDefProcName&gt;&apos;||TRIM(NVL(typeDefinitionProcedureName,&apos;  &apos;))||&apos;&lt;/typeDefProcName&gt;
+&lt;/startingFolderExtendedType&gt;&apos;;
+
+	else
+		if (groupId_ is not null and LENGTH(groupId_) &gt; 0) then
+			-- Turn the comma separated group id list CISORADEMO,XML into a SQL IN clause: groupId in (&apos;CISORADEMO&apos;,&apos;XML&apos;)
+			set i = 0;
+			for r as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(groupId_,&apos;,&apos;,0,0,0,1,0) do
+				set groupIdTemp = r.object;
+				if (INSTR(groupIdTemp, &apos;&apos;&apos;&apos;) &gt; 0) then
+					set groupIdTemp = REPLACE(groupIdTemp, &apos;&apos;&apos;&apos;, &apos;&apos;&apos;&apos;&apos;&apos;);
+				end if;
+
+				if (i = 0) then
+					set groupId_ = &apos;&apos;;
+				end if;
+				if (i &gt; 0) then
+					set groupId_ = groupId_ || &apos;,&apos;;
+				end if;
+				set groupId_ = groupId_ || &apos;&apos;&apos;&apos;||groupIdTemp||&apos;&apos;&apos;&apos;;
+				set i = i + 1;
+			end for;
+			-- Construct the SQL statement
+			set sqlStatement = REPLACE(&apos;SELECT * FROM &apos;|| defaultValuesRec.configureScriptsPath ||
+			&apos;/ConfigureStartingFolders() WHERE layerType=&apos;|| &apos;&apos;&apos;&apos;|| layerType || &apos;&apos;&apos;&apos; ||
+				&apos; and groupId in (&apos;|| groupId_ ||&apos;)&apos;, &apos;//&apos;, &apos;/&apos;);
+		else
+			-- Construct the SQL statement for all groupIds
+			set sqlStatement = REPLACE(&apos;SELECT * FROM &apos;|| defaultValuesRec.configureScriptsPath ||
+			&apos;/ConfigureStartingFolders() WHERE layerType=&apos;|| &apos;&apos;&apos;&apos;|| layerType || &apos;&apos;&apos;&apos;, &apos;//&apos;, &apos;/&apos;);
+		end if;
+		if (debug = &apos;Y&apos;) then
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;sqlStatement=&apos;||NVL(sqlStatement,&apos;null&apos;));
+		end if;
+
+/*	DECLARE PUBLIC TYPE startingFolderExtendedType ROW (
+		groupId				VARCHAR,
+		process 			BIT,
+		layerType			VARCHAR,
+		pathDerivation 		CHAR(1),
+		sourceFolderPath 	TypeDefinitions.pathType,
+		targetFolderPath 	TypeDefinitions.pathType,
+		derivedFilterPath	LONGVARCHAR
+	);
+*/
+		set startingFolderExtendedXML = &apos;&apos;;
+
+		OPEN startingFolderCursor FOR sqlStatement;
+		FOR startingFolder AS startingFolderCursor DO
+			-- Correlate the groupId position with the derivedFilterPath position
+			--		derivedFilterPath=&quot;customers,orders&quot;,shippingmethods
+			--                         |                     |
+			--                         v                     v
+			--		          groupId=ds_inventory.tutorial,ds_orders.tutorial
+			SET i = 1;
+			IF (derivedFilterVector IS NOT NULL AND CARDINALITY(derivedFilterVector) &gt; 0) THEN
+				WHILE (i &lt;= CARDINALITY(derivedFilterVector)) DO
+					IF (startingFolder.groupId = derivedFilterVector[i].groupId) THEN
+						SET derivedFilterPath_ = derivedFilterVector[i].derivedFilterPath;
+					END IF;
+					SET i = i + 1;
+				END WHILE;
+			ELSE
+				SET derivedFilterPath_ = null;
+			END IF;
+
+			-- The type definition procedure name must be unique
+			SET typeDefinitionProcedureName = typeDefinitionProcedureName||&apos;_&apos;||startingFolder.groupId;
+			SET typeDefinitionProcedurePath = REPLACE(startingFolder.targetFolderPath||&apos;/&apos;||defaultValuesRec.typeDefinitionPath,&apos;//&apos;,&apos;/&apos;);
+
+			SET startingFolderExtendedXML = startingFolderExtendedXML ||
+&apos;&lt;startingFolderExtendedType&gt;
+    &lt;groupId&gt;&apos;||TRIM(NVL(startingFolder.groupId,&apos;  &apos;))||&apos;&lt;/groupId&gt;
+    &lt;process&gt;&apos;||TRIM(NVL(CAST(startingFolder.process AS VARCHAR),&apos;  &apos;))||&apos;&lt;/process&gt;
+    &lt;layerType&gt;&apos;||TRIM(NVL(startingFolder.layerType,&apos;  &apos;))||&apos;&lt;/layerType&gt;
+    &lt;pathDerivation&gt;&apos;||TRIM(NVL(startingFolder.pathDerivation,&apos;  &apos;))||&apos;&lt;/pathDerivation&gt;
+    &lt;sourceFolderPath&gt;&apos;||TRIM(NVL(startingFolder.sourceFolderPath,&apos;  &apos;))||&apos;&lt;/sourceFolderPath&gt;
+    &lt;targetFolderPath&gt;&apos;||TRIM(NVL(startingFolder.targetFolderPath,&apos;  &apos;))||&apos;&lt;/targetFolderPath&gt;
+    &lt;derivedFilterPath&gt;&apos;||TRIM(NVL(derivedFilterPath_,&apos;  &apos;))||&apos;&lt;/derivedFilterPath&gt;
+    &lt;typeDefProcPath&gt;&apos;||TRIM(NVL(typeDefinitionProcedurePath,&apos;  &apos;))||&apos;&lt;/typeDefProcPath&gt;
+    &lt;typeDefProcName&gt;&apos;||TRIM(NVL(typeDefinitionProcedureName,&apos;  &apos;))||&apos;&lt;/typeDefProcName&gt;
+&lt;/startingFolderExtendedType&gt;&apos;||CHR(10);
+
+			if (debug2 = &apos;Y&apos;) then
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, LPAD(i, 4 , &apos; &apos;)||&apos;. Starting Folder=&apos;||NVL(startingFolder.sourceFolderPath,&apos;null&apos;));
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, LPAD(i, 4 , &apos; &apos;)||&apos;.   Target Folder=&apos;||NVL(startingFolder.targetFolderPath,&apos;null&apos;));
+			end if;
+		END FOR;
+	end if;	
+	CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, NVL(startingFolderExtendedXML,&apos;null&apos;));
+
+/* ------------------------------------------------------------------------
+ * Output Debug information
+ * ------------------------------------------------------------------------*/
+	if (debug = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;-------------------------------------------------&apos;);	
+ 		-- 0=Do not generate - (browse only) print out what will happen but don&apos;t perform the generation
+		-- 1=Do generate [DEFAULT] - Perform the VIEW Generation with a column projection, 
+		-- 2= Do generate          - Perform the VIEW Generation with a select * projection, 
+		IF (ConfigParamsRec.generateViews &gt;= 1) THEN
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, message);
+		ELSE
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;BROWSE MODE ONLY...NO VIEWS GENERATED...&apos;);
+		END IF;
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;-------------------------------------------------&apos;);	
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;&apos;);	
+	end if;
+
+/* ------------------------------------------------------------------------
+ * Begin the processing
+ * ------------------------------------------------------------------------*/
+	CASE executeModuleName
+		-- Generate CRUD Operations including Type Definitions
+		WHEN &apos;generateCRUDOperations&apos; 		THEN
+			-- The layer type must be set to CR
+			if (layerType is not null and layerType != &apos;CR&apos;) then
+				raise ex value &apos;ERROR: Only layer type of &quot;CR&quot; is permitted for generating CRUD operations.&apos;;
+			end if;
+
+			if (generateViewsWrapper = 1) then
+				-- Print the Row Header
+				call print(&apos;ROW &apos;||LPAD(&apos;0&apos;,7,padChar)||&apos; &apos;||RPAD(&apos;containerName&apos;,40,padChar)||&apos; &apos;||RPAD(&apos;resourcerType&apos;,15,padChar)||RPAD(&apos;name&apos;,40,padChar)||RPAD(&apos;logicalName&apos;,40,padChar)||RPAD(&apos;logicalType&apos;,20,padChar)||RPAD(&apos;logicalStatus&apos;,15,padChar)||&apos;containerPath&apos;);
+			end if;
+			set i = 1;
+
+			-- Generate the CRUD Operations
+			FOR r AS
+				SELECT * from /shared/ASAssets/BestPractices_v81/Procedures/generateCRUD_OperationsXML(overwrite, copyPrivilegeMode, startingFolderExtendedXML, ConfigParamsXML, projectFolderName)
+			DO
+				-- Print out the record only if the view wrapper was chosen so there is output in the console window.
+				if (generateViewsWrapper &gt;= 1) then
+					if (r.logicalColumnName is not null and LENGTH(r.logicalColumnName) &gt; 0) then
+						call print(&apos;ROW &apos;||LPAD(cast(i as varchar),	7,padChar)||&apos; &apos;||
+							RPAD(NVL(r.containerName,&apos; &apos;),		40,padChar)||&apos; &apos;||
+							RPAD(NVL(r.containerType,&apos; &apos;),		15,padChar)||
+							RPAD(NVL(r.columnName,&apos; &apos;),			40,padChar)||
+							RPAD(NVL(r.logicalColumnName,&apos; &apos;),	40,padChar)||
+							RPAD(NVL(r.logicalColumnType,&apos; &apos;),	20,padChar)||
+							RPAD(NVL(r.logicalStatus,&apos; &apos;),		15,padChar)||
+							NVL(r.containerPath,&apos; &apos;));
+					end if;
+					set i = i + 1;
+				end if;
+
+				-- insert the record into the output pipe cursor
+				INSERT INTO result VALUES(r);
+			END FOR;
+
+		-- Generate Type Definitions
+		WHEN &apos;generateTypeDefinitions&apos; 		THEN 
+			-- The layer type must be set to CR
+			if (layerType is not null and layerType != &apos;CR&apos;) then
+				raise ex value &apos;ERROR: Only layer type of &quot;CR&quot; is permitted for generating CRUD operations.&apos;;
+			end if;
+
+			if (generateViewsWrapper &gt;= 1) then
+				-- Print the Row Header
+				call print(&apos;ROW &apos;||LPAD(&apos;0&apos;,7,padChar)||&apos; &apos;||RPAD(&apos;containerName&apos;,40,padChar)||&apos; &apos;||RPAD(&apos;resourcerType&apos;,15,padChar)||RPAD(&apos;name&apos;,40,padChar)||RPAD(&apos;logicalName&apos;,40,padChar)||RPAD(&apos;logicalType&apos;,20,padChar)||RPAD(&apos;logicalStatus&apos;,15,padChar)||&apos;containerPath&apos;);
+			end if;
+			set i = 1;
+
+			-- Generate Type Definitions
+			FOR r AS
+				SELECT * from /shared/ASAssets/BestPractices_v81/Procedures/generateCRUD_TypeDefinitionsXML(overwrite, copyPrivilegeMode, startingFolderExtendedXML, ConfigParamsXML, projectFolderName)
+			DO
+				-- Print out the record only if the view wrapper was chosen so there is output in the console window.
+				if (generateViewsWrapper = 1) then
+					if (r.logicalColumnName is not null and LENGTH(r.logicalColumnName) &gt; 0) then
+						call print(&apos;ROW &apos;||LPAD(cast(i as varchar),	7,padChar)||&apos; &apos;||
+							RPAD(NVL(r.containerName,&apos; &apos;),		40,padChar)||&apos; &apos;||
+							RPAD(NVL(r.containerType,&apos; &apos;),		15,padChar)||
+							RPAD(NVL(r.columnName,&apos; &apos;),			40,padChar)||
+							RPAD(NVL(r.logicalColumnName,&apos; &apos;),	40,padChar)||
+							RPAD(NVL(r.logicalColumnType,&apos; &apos;),	20,padChar)||
+							RPAD(NVL(r.logicalStatus,&apos; &apos;),		15,padChar)||
+							NVL(r.containerPath,&apos; &apos;)||
+							NVL(cast(r.duration as varchar), &apos; &apos;));
+					end if;
+					set i = i + 1;
+				end if;
+
+				-- insert the record into the output pipe cursor
+				INSERT INTO result VALUES(r);
+			END FOR;
+
+		-- Generate Views
+		ELSE
+			if (generateViewsWrapper &gt;= 1) then
+				-- Print the Row Header
+				call print(&apos;____VIEW ______#  COLUMN ____#  TOTAL COLUMNS   &apos;||RPAD(&apos;DURATION&apos;,14,padChar)||&apos; &apos;||RPAD(&apos;containerName&apos;,40,padChar)||&apos; &apos;||RPAD(&apos;resourceType&apos;,15,padChar)||RPAD(&apos;resourceName&apos;,40,padChar)||RPAD(&apos;logicalName&apos;,40,padChar)||RPAD(&apos;logicalType&apos;,20,padChar)||RPAD(&apos;logicalStatus&apos;,15,padChar)||RPAD(&apos;containerPath&apos;,100,padChar)||&apos;logicalStatusMessage&apos;);
+			end if;
+
+			-- Generate Views
+			FOR r AS
+				SELECT * from /shared/ASAssets/BestPractices_v81/Procedures/generateViewsLoopXML(generateType, overwrite, copyAnnotation, copyPrivilegeMode, generateUnsupportedColumnType, ConfigParamsXML, startingFolderExtendedXML, exactMatch, excludeDsPathsList, projectFolderName, newColumnList)
+			DO
+/*			generateViewsRow - 	CURSOR (
+		 		datasourceName			VARCHAR(255), 
+				projectFolderName		VARCHAR(255), 
+				greatGrandParentName	VARCHAR(255), 
+				grandParentName			VARCHAR(255), 
+				parentName				VARCHAR(255),
+		        containerName 			VARCHAR(255), 
+		        containerType 			VARCHAR(255), - the resource type of the container resource (i.e. TABLE)
+		        columnName 				VARCHAR(255), - the name of the original column within the source resource.
+		        logicalColumnName 		VARCHAR(255), - the name of the target column that will be created.
+        		logicalColumnType 		VARCHAR(255), - the type of the target column that will be created.
+		        logicalStatus 			VARCHAR(4000), - the status for the usage of this column
+ 						-- on input, when generateMode = &apos;G&apos; possible values are:
+						-- 		GENERATED - generated the column name based on rules supplied
+						-- 		UNCHANGED - remains unchanged when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=1
+						-- on input, when generateMode = &apos;R&apos; possible values are:
+						-- 		FOUND - found when it finds a match to physical name in the spreadsheet
+						-- 		UNCHANGED - remains unchanged when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=1
+						-- 		DROPPED - gets dropped from the list when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=0
+       			containerPath 			VARCHAR(4000) - the full path to the container resource.
+				duration				INTERVAL HOUR TO SECOND
+			)
+*/
+				-- Print out the record only if the view wrapper was chosen so there is output in the console window.
+				if (generateViewsWrapper &gt;= 1) then
+
+					-- Extract the status from the status message
+					SET location = INSTR(r.logicalStatus, &apos;:&apos;, 1, 1);
+					IF (location &gt; 0) THEN
+						set logicalStatus = TRIM(SUBSTRING(NVL(r.logicalStatus,&apos;null&apos;),1,location-1));
+						set logicalStatusMessage = &apos;   STATUS_MSG=&apos;||TRIM(SUBSTRING(NVL(r.logicalStatus,&apos;null&apos;),location+1,LENGTH(r.logicalStatus)));
+					ELSE
+						set logicalStatus = TRIM(NVL(r.logicalStatus,&apos;null&apos;));
+						set logicalStatusMessage = &apos;&apos;;
+					END IF;
+					-- Set the current row duration no matter if it is a column or table
+					set currentRowDuration = r.duration;
+
+					-- Debug
+					--call print(&apos;logicalStatus=&apos;||logicalStatus||&apos;   logicalStatusMessage=&apos;||logicalStatusMessage||&apos;  logicalColumnName=&apos;||NVL(r.logicalColumnName,&apos;null&apos;)||&apos;  containerType=&apos;||NVL(r.containerType,&apos;null&apos;)||&apos;  currentRowDuration=&apos;||NVL(cast(currentRowDuration as varchar),&apos;null&apos;));
+
+					if (r.containerType is not null and LENGTH(r.containerType) &gt; 0) then
+				/***********************************************
+				 * OUTPUT TABLE ONLY: generateViewsWrapper = 1
+				 ***********************************************/
+						if (generateViewsWrapper = 1) then
+							if (r.containerType = &apos;TABLE&apos; or r.containerType = &apos;PROCEDURE&apos;) then
+								if (tableOutput is not null) then
+									if (duration is null) then
+										set duration = currentRowDuration;
+									end if;
+									set hours = EXTRACT(HOUR FROM duration);
+									set minutes = EXTRACT(MINUTE FROM duration);
+									set seconds = EXTRACT(SECOND FROM duration);
+									set durationStr = LPAD(hours,2,&apos;0&apos;)||&apos;:&apos;||LPAD(minutes,2,&apos;0&apos;)||&apos;:&apos;||LPAD(seconds,6,&apos;0&apos;); -- 00:00:00.000
+
+									set tableOutput = REPLACE(tableOutput, &apos;T_COLSx&apos;, 		LPAD(cast(tcols as varchar), 		7,padChar2));
+									set tableOutput = REPLACE(tableOutput, &apos;C_COLSx&apos;, 		LPAD(cast(cols as varchar), 		7,padChar2));
+									set tableOutput = REPLACE(tableOutput, &apos;DURATIONxxxx&apos;,	RPAD(NVL(cast(durationStr as varchar),&apos;null&apos;),12, &apos;0&apos;));
+									call print(tableOutput);
+									set tableOutput = null;
+								end if;
+								set tables = tables + 1;
+								set cols = 0;
+								if (tables = 1) then
+									call print(&apos;&apos;); -- blank line after header and before first row
+								end if;
+								set tableOutput = 
+									&apos;____VIEW &apos;||LPAD(cast(tables as varchar),	7,padChar2)||&apos;  &apos;||
+									&apos;COLS &apos;||LPAD(cast(&apos;C_COLSx&apos; as varchar), 7,padChar2)||&apos;  &apos;||
+									&apos;T_COLS &apos;||LPAD(cast(&apos;T_COLSx&apos; as varchar), 7,padChar2)||&apos;  &apos;||
+									&apos;DURATIONxxxx&apos;||&apos;   &apos;||
+									RPAD(TRIM(NVL(r.containerName,&apos;  &apos;)),		40,padChar)||&apos; &apos;||
+									RPAD(TRIM(NVL(r.containerType,&apos;  &apos;)),		15,padChar)||
+									RPAD(TRIM(NVL(r.columnName,&apos;  &apos;)),			40,padChar)||
+									RPAD(TRIM(NVL(r.logicalColumnName,&apos;  &apos;)),	40,padChar)||
+									RPAD(TRIM(NVL(r.logicalColumnType,&apos;  &apos;)),	20,padChar)||
+									RPAD(TRIM(NVL(logicalStatus,&apos;  &apos;)),			15,padChar)||
+									NVL(r.containerPath,&apos;null&apos;)||
+									logicalStatusMessage;
+							else
+								set cols = cols + 1;
+								set tcols = tcols + 1;
+								set duration = r.duration; -- column duration.  The last column is the total duration for the view.  It is an incremental duration.
+							end if;
+						end if;
+
+				/************************************************
+				 * OUTPUT COLUMN ROWS: generateViewsWrapper = 2
+				 ************************************************/
+						if (generateViewsWrapper = 2) then
+							if (r.containerType = &apos;TABLE&apos; or r.containerType = &apos;PROCEDURE&apos;) then
+								if (tableOutput is not null) then
+									if (duration is null) then
+										set duration = currentRowDuration;
+									end if;
+									set hours = EXTRACT(HOUR FROM duration);
+									set minutes = EXTRACT(MINUTE FROM duration);
+									set seconds = EXTRACT(SECOND FROM duration);
+									set durationStr = LPAD(hours,2,&apos;0&apos;)||&apos;:&apos;||LPAD(minutes,2,&apos;0&apos;)||&apos;:&apos;||LPAD(seconds,6,&apos;0&apos;); -- 00:00:00.000
+
+									set tableOutput = REPLACE(tableOutput, &apos;T_COLSx&apos;, 		LPAD(cast(tcols as varchar), 		7,padChar2));
+									set tableOutput = REPLACE(tableOutput, &apos;C_COLSx&apos;, 		LPAD(cast(cols as varchar), 		7,padChar2));
+									set tableOutput = REPLACE(tableOutput, &apos;DURATIONxxxx&apos;,	RPAD(NVL(cast(durationStr as varchar),&apos;null&apos;),12, &apos;0&apos;));
+									-- Don&apos;t print out the tableOutput when the status is SKIPPED: and the tableOutput contains the phrase &apos;END VIEW&apos; because it uselessly duplicates the &apos;BEG VIEW&apos; line.
+									if (POSITION(&apos;SKIPPED:&apos; IN tableOutput) = 0 AND POSITION(&apos;END VIEW&apos; IN tableOutput) &gt; 0) then
+										call print(tableOutput||newline);
+									end if;
+									set tableOutput = null;
+								else
+									call print(&apos;&apos;);
+								end if;
+								set tables = tables + 1;
+								set cols = 0;
+							/**************************************
+							 * OUTPUT COLUMN ROWS: TABLE or PROCEDURE
+							 **************************************/
+								set hours = EXTRACT(HOUR FROM r.duration);
+								set minutes = EXTRACT(MINUTE FROM r.duration);
+								set seconds = EXTRACT(SECOND FROM r.duration);
+								set durationStr = LPAD(hours,2,&apos;0&apos;)||&apos;:&apos;||LPAD(minutes,2,&apos;0&apos;)||&apos;:&apos;||LPAD(seconds,6,&apos;0&apos;); -- 00:00:00.000
+								set tableOutput = 
+									&apos;BEG VIEW &apos;||LPAD(cast(tables as VARCHAR),	7,padChar2)||&apos;  &apos;||
+									&apos;COL# &apos;||LPAD(cast(cols as VARCHAR), 		7,padChar2)||&apos;  &apos;||
+									&apos;T_COLS &apos;||LPAD(cast(tcols as VARCHAR), 	7,padChar2)||&apos;  &apos;||
+									RPAD(durationStr, 							12, &apos;0&apos;)||&apos;  &apos;||
+									RPAD(NVL(r.containerName,&apos; &apos;),				40,padChar)||&apos; &apos;||
+									RPAD(NVL(r.containerType,&apos; &apos;),				15,padChar)||
+									RPAD(NVL(r.columnName,&apos; &apos;),					40,padChar)||
+									RPAD(NVL(r.logicalColumnName,&apos; &apos;),			40,padChar)||
+									RPAD(NVL(r.logicalColumnType,&apos; &apos;),			20,padChar)||
+									RPAD(NVL(logicalStatus,&apos; &apos;),				15,padChar)||
+									NVL(r.containerPath,&apos;null&apos;)||
+									logicalStatusMessage;
+								call print(tableOutput);
+
+								-- Construct the &quot;END VIEW&quot;
+								set tableOutput = 
+									&apos;END VIEW &apos;||LPAD(cast(tables as VARCHAR),	7,padChar2)||&apos;  &apos;||
+									&apos;COLS &apos;||LPAD(cast(&apos;C_COLSx&apos; as VARCHAR), 	7,padChar2)||&apos;  &apos;||
+									&apos;T_COLS &apos;||LPAD(cast(&apos;T_COLSx&apos; as VARCHAR), 7,padChar2)||&apos;  &apos;||
+									&apos;DURATIONxxxx&apos;||&apos;  &apos;||
+									RPAD(NVL(r.containerName,&apos; &apos;),				40,padChar)||&apos; &apos;||
+									RPAD(NVL(r.containerType,&apos; &apos;),				15,padChar)||
+									RPAD(NVL(r.columnName,&apos; &apos;),					40,padChar)||
+									RPAD(NVL(r.logicalColumnName,&apos; &apos;),			40,padChar)||
+									RPAD(NVL(r.logicalColumnType,&apos; &apos;),			20,padChar)||
+									RPAD(NVL(logicalStatus,&apos; &apos;),				15,padChar)||
+									NVL(r.containerPath,&apos;null&apos;)||
+									logicalStatusMessage;
+
+							/**************************************
+							 * OUTPUT COLUMN ROWS: OTHER
+							 **************************************/
+							else
+								set cols = cols + 1;
+								set tcols = tcols + 1;
+								set duration = r.duration;
+								set hours = EXTRACT(HOUR FROM duration);
+								set minutes = EXTRACT(MINUTE FROM duration);
+								set seconds = EXTRACT(SECOND FROM duration);
+								set durationStr = LPAD(hours,2,&apos;0&apos;)||&apos;:&apos;||LPAD(minutes,2,&apos;0&apos;)||&apos;:&apos;||LPAD(seconds,6,&apos;0&apos;); -- 00:00:00.000
+								set columnOutput = 
+									&apos;____VIEW &apos;||LPAD(cast(tables as VARCHAR),	7,padChar2)||&apos;  &apos;||
+									&apos;COL# &apos;||LPAD(cast(cols as VARCHAR), 		7,padChar2)||&apos;  &apos;||
+									&apos;T_COLS &apos;||LPAD(cast(tcols as VARCHAR), 	7,padChar2)||&apos;  &apos;||
+									RPAD(durationStr, 							12, &apos;0&apos;)||&apos;  &apos;||
+									RPAD(NVL(r.containerName,&apos; &apos;),				40,padChar)||&apos; &apos;||
+									RPAD(NVL(r.containerType,&apos; &apos;),				15,padChar)||
+									RPAD(NVL(r.columnName,&apos; &apos;),					40,padChar)||
+									RPAD(NVL(r.logicalColumnName,&apos; &apos;),			40,padChar)||
+									RPAD(NVL(r.logicalColumnType,&apos; &apos;),			20,padChar)||
+									RPAD(NVL(logicalStatus,&apos; &apos;),				15,padChar)||
+									NVL(r.containerPath,&apos;null&apos;)||
+									logicalStatusMessage;
+								call print(columnOutput);
+							end if;
+						end if;
+					end if;
+				end if;
+
+				-- insert the record into the output pipe cursor
+				INSERT INTO result VALUES(r);
+			END FOR;
+	END CASE;
+
+	-- Print out the last view
+	if (tableOutput is not null) then
+		if (duration is null) then
+			set duration = currentRowDuration;
+		end if;
+		set hours = EXTRACT(HOUR FROM duration);
+		set minutes = EXTRACT(MINUTE FROM duration);
+		set seconds = EXTRACT(SECOND FROM duration);
+		set durationStr = LPAD(NVL(cast(hours as varchar),&apos;  &apos;),2,&apos;0&apos;)||&apos;:&apos;||LPAD(NVL(cast(minutes as varchar),&apos;  &apos;),2,&apos;0&apos;)||&apos;:&apos;||LPAD(NVL(cast(seconds as varchar),&apos;  &apos;),6,&apos;0&apos;); -- 00:00:00.000
+
+		set tableOutput = REPLACE(tableOutput, &apos;T_COLSx&apos;, 		LPAD(cast(NVL(cast(tcols as varchar),&apos;null&apos;) as VARCHAR), 		7,padChar2));
+		set tableOutput = REPLACE(tableOutput, &apos;C_COLSx&apos;, 		LPAD(cast(NVL(cast(cols as varchar),&apos;null&apos;) as VARCHAR), 		7,padChar2));
+		set tableOutput = REPLACE(tableOutput, &apos;DURATIONxxxx&apos;,	RPAD(NVL(cast(durationStr as varchar),&apos;null&apos;),12, &apos;0&apos;));
+		-- Don&apos;t print out the tableOutput when the status is SKIPPED: and the tableOutput contains the phrase &apos;END VIEW&apos; because it uselessly duplicates the &apos;BEG VIEW&apos; line.
+		if (POSITION(&apos;SKIPPED:&apos; IN tableOutput) = 0 AND ( (generateViewsWrapper = 1 AND POSITION(&apos;____VIEW&apos; IN tableOutput) &gt; 0) OR (generateViewsWrapper = 2 AND POSITION(&apos;END VIEW&apos; IN tableOutput) &gt; 0)) ) then
+			call print(NVL(tableOutput,&apos;null&apos;));
+		end if;
+	end if;
+
+	set endTime = CURRENT_TIMESTAMP;
+	set duration = endTime - startTime;
+	if (debug = &apos;Y&apos;) then
+		call print(&apos;&apos;);
+		call print(&apos;Start Time=&apos;||startTime);
+		call print(&apos;  End Time=&apos;||endTime);
+		call print(&apos;  Duration=&apos;||cast(duration as varchar));
+	end if; 
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573160027349</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:0:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">14/936</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/1013</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/1003</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/1010</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/1011</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/1012</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/867</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/912</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/774</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/727</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/861</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/738</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/795</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">16/908</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/763</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/977</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

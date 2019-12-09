@@ -1,0 +1,229 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="v_GPT073_MASTER_MARGINS" path="/shared/Amway_POC/L2_Physical/ds_Appraise/v_GPT073_MASTER_MARGINS" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="CORP_CD" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMWAY_SKU_PFX" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMWAY_SKU_BASE" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMWAY_SKU_SFX" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="SKU_CD" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ROYALTY" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ADA_MARGIN" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMAB" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMAB_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMAD" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMAD_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CMAB" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CMAB_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CMAD" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CMAD_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="MEAS_CR_LC_AMT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRB_GRS_PRFT_LC_AMT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRB_MAB_LC_AMT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRB_MAB_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRB_MAD_LC_AMT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRB_MAD_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CHANGED_DT" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Amway_POC/L1_DataSources/ds_Appraise/GPB110/dbo/GPT073_MASTER_MARGINS" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="CORP_CD" nullable="false">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_PFX" nullable="false">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_BASE" nullable="false">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="AMWAY_SKU_SFX" nullable="false">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="SKU_CD" nullable="false">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ROYALTY" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="ADA_MARGIN" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAB" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAB_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="AMAD" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAD_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CMAB" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CMAB_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CMAD" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CMAD_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="MEAS_CR_LC_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_GRS_PRFT_LC_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_MAB_LC_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_MAB_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CNTRB_MAD_LC_AMT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_MAD_PCT" nullable="false">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CHANGED_DT" nullable="false">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    *
+FROM      
+    /shared/Amway_POC/L1_DataSources/ds_Appraise/GPB110/dbo/GPT073_MASTER_MARGINS GPT073_MASTER_MARGINS</attribute>
+  <attribute name="creationDate" type="LONG">1534265102064</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1534265337350</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="BYTE_ARRAY">EIEJBAAAAAEQUQYBABUARwBQAFQAMAA3ADMAXwBNAEEAUwBUAEUAUgBfAE0AQQBSAEcASQBOAFMGAgAVAEcAUABUADAANwAzAF8ATQBBAFMAVABFAFIAXwBNAEEAUgBHAEkATgBTAwv/////AwoAAQbKAwz/////CxEABwAGAHMAaABhAHIAZQBkAAkAQQBtAHcAYQB5AF8AUABPAEMADgBMADEAXwBEAGEAdABhAFMAbwB1AHIAYwBlAHMACwBkAHMAXwBBAHAAcAByAGEAaQBzAGUABgBHAFAAQgAxADEAMAADAGQAYgBvABUARwBQAFQAMAA3ADMAXwBNAEEAUwBUAEUAUgBfAE0AQQBSAEcASQBOAFP//wMFAAAAAAgCEDEGAf//AQIBAQYAAQMAAQQAAQUAAwcAAAAABwkAAAABAAAAAAkKAAAAARBBBgEAAQAqBgIAAAYD//8GBP//Awr/////BgUAAAYGAAAGBwAABggAAP////8JBgAAAAEQggMKAAAAlQMLAAAAJwMMAAABeAMNAAABZ///CAMQcQMBAAAACwMCAAAAMgkDAAACJhB0AwYAAAAA//8QcgYE/////xBz//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2////////</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1534265102064</attribute>
+</metadata>

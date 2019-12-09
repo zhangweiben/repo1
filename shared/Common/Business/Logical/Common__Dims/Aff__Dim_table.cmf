@@ -1,0 +1,136 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Aff_Dim" path="/shared/Common/Business/Logical/Common_Dims/Aff_Dim" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>Affiliate Dimension This table contains information about Amway affiliates, including address of its headquarters and the top sponsoring ABO number</annotation>
+  <columns>
+    <column name="aff_wid" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>System generated warehouse identifier (wid) for a unique affiliate record.</annotation>
+    </column>
+    <column name="aff_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>code of affiliate</annotation>
+    </column>
+    <column name="aff_top_level_account_no" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>top sponsor (highest level in LOS) ABO number</annotation>
+    </column>
+    <column name="aff_desc" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>full name of affiliate</annotation>
+    </column>
+    <column name="aff_short_name" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>short name of affiliate</annotation>
+    </column>
+    <column name="aff_address_line_1" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="90"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>post address of affiliate</annotation>
+    </column>
+    <column name="aff_address_line_2" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="64"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>post address of affiliate</annotation>
+    </column>
+    <column name="aff_city" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="90"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>city where the headquarters of affiliate is located</annotation>
+    </column>
+    <column name="aff_state_province" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="55"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>code of state where affiliate headquarters is located</annotation>
+    </column>
+    <column name="aff_postal_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="10"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>postal code of affiliate headquarters</annotation>
+    </column>
+  </columns>
+  <indexes>
+    <index name="pk" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="aff_wid" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/EAP/Common_Dims/Aff_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="aff_wid">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="aff_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="aff_top_level_account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_short_name">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="aff_address_line_1">
+        <datatype type="STRING" maxLength="90"/>
+      </element>
+      <element name="aff_address_line_2">
+        <datatype type="STRING" maxLength="64"/>
+      </element>
+      <element name="aff_city">
+        <datatype type="STRING" maxLength="90"/>
+      </element>
+      <element name="aff_state_province">
+        <datatype type="STRING" maxLength="55"/>
+      </element>
+      <element name="aff_postal_code">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	* 
+FROM
+	/shared/Common/Physical/Formatting/EAP/Common_Dims/Aff_Dim Aff_Dim</attribute>
+  <attribute name="creationDate" type="LONG">1573666079360</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">true</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1574132831980</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1573666079360</attribute>
+</metadata>

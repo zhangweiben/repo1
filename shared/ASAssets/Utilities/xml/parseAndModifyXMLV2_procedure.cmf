@@ -1,0 +1,603 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="parseAndModifyXMLV2" path="/shared/ASAssets/Utilities/xml/parseAndModifyXMLV2" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>parseAndModifyXMLV2:
+
+	Parse and XML document given an XML list of XPath statements and modify the values and reconstruct the XML.
+ 	IMPORTANT:  When updating an element with a list of attributes, you must supply all of the original
+	attributes in order to retain what you had.  This routine overwrites the original element so be careful.
+
+	Use cases supported:
+		Use Case 1: Modify the attribute for an element
+		Use Case 2: Modify the value of the the element with attributes
+		Use Case 3: Modify the element with no attributes
+		Use Case 4: Modify the element with no attributes and SETit to null
+		Use Case 5: Retain the original attributes and modify the element with attributes and SETit to null
+
+	Input:
+		debug - defines the debugging options for this procedure.  
+			Values: Y = debugging turned on, N = debugging turned off
+		namespaces - any string with the valid namespaces for the incoming XML  
+			Values: e.g. xmlns:sam=&quot;http://www.compositesw.com/samples/mynamespace/v1.0&quot;
+
+		ElemAttrXML - contains a list of qualified elements, qualified attributes and the value to change in this format:
+			SET ElemAttrXML = 
+				-- Repeat the section &lt;qualElemAttr&gt; for as many as are required.
+				&apos;&lt;qualElemAttr&gt;&lt;qualElem&gt;&lt;/qualElem&gt;&lt;qualAttr&gt;&lt;/qualAttr&gt;&lt;value&gt;&lt;/value&gt;&lt;/qualElemAttr&gt;&apos;||CHR(10)||
+				&apos;&lt;qualElemAttr&gt;&lt;qualElem&gt;&lt;/qualElem&gt;&lt;qualAttr&gt;&lt;/qualAttr&gt;&lt;value&gt;&lt;/value&gt;&lt;/qualElemAttr&gt;&apos;||CHR(10);
+
+			It may be necessary to read the orginal values for each attribute to construct this list on the fly
+			if you want to retain certain values.  Then modify only the attributes that you want to change.
+			Values: ElemAttrXML e.g. 
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Name&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:isbn&lt;/qualAttr&gt;		&lt;value&gt;00-0000-000&lt;/value&gt;	&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Name&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;The Book&lt;/value&gt;		&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;Chapter&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;Chapter 1&lt;/value&gt;	&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;Paragraph&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;&lt;/value&gt;				&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:firstname&lt;/qualAttr&gt;	&lt;value&gt;Joe&lt;/value&gt;			&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:lastname&lt;/qualAttr&gt;	&lt;value&gt;Author&lt;/value&gt;		&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;&lt;/value&gt;				&lt;/qualElemAttr&gt;
+
+		inXml - any XML document
+			Values: e.g. 
+				&lt;Book xmlns:sam=&quot;http://www.compositesw.com/samples/mynamespace/v1.0&quot;&gt;
+					&lt;sam:Name sam:isbn=&quot;12-3456-123&quot;/&gt;
+					&lt;Chapter&gt;Test Data&lt;/Chapter&gt;
+					&lt;Paragraph&gt;Paragraph 1&lt;/Paragraph&gt;
+				&lt;/Book&gt;
+	Output:
+		outXml - modified XML
+			Values: e.g. 
+				&lt;Book xmlns:sam=&quot;http://www.compositesw.com/samples/mynamespace/v1.0&quot;&gt; 	
+					&lt;sam:Name sam:isbn=&quot;00-0000-000&quot;&gt;Joe Author&lt;/sam:Name&gt; 	
+					&lt;Chapter&gt;Chapter 1&lt;/Chapter&gt; 	
+					&lt;Paragraph xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:nil=&quot;true&quot;/&gt; 
+				&lt;/Book&gt; 
+	Limitations:
+		This method does not modify an iteration of the same node.
+
+	XSLT Template Examples:
+	-----------------------
+		Use Case 1: Modify the attribute for an element
+		Use Case 2: Modify the value of the the element with attributes
+		-----------
+			ElemAttrXML =
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Name&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:isbn&lt;/qualAttr&gt;		&lt;value&gt;00-0000-000&lt;/value&gt;	&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Name&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;The Book&lt;/value&gt;		&lt;/qualElemAttr&gt;
+
+			&lt;xslt:template match=&quot;sam:Name&quot;&gt;
+			  &lt;xslt:element name=&quot;{name()}&quot;&gt;
+				&lt;xslt:attribute name=&quot;sam:isbn&quot;&gt;00-0000-000&lt;/xslt:attribute&gt;
+				&lt;xslt:element&gt;Joe Author&lt;/xslt:element&gt;
+			  &lt;/xslt:element&gt;
+			&lt;/xslt:template&gt;
+
+		Use Case 3: Modify the element with no attributes
+		-----------
+			ElemAttrXML =
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;Chapter&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;Chapter 1&lt;/value&gt;	&lt;/qualElemAttr&gt;
+
+			&lt;xslt:template match=&quot;Chapter&quot;&gt;
+			  &lt;xslt:element name=&quot;{name()}&quot;&gt;
+				&lt;xslt:element&gt;Chapter 1&lt;/xslt:element&gt;
+			  &lt;/xslt:element&gt;
+			&lt;/xslt:template&gt;
+
+		Use Case 4: Modify the element with no attributes and SETit to null
+		-----------
+			ElemAttrXML = 
+				(&apos;Paragraph&apos;,NULL,NULL),				-- Use Case 4: Modify the element with no attributes and SETit to null
+
+			&lt;xslt:template match=&quot;Paragraph&quot;&gt;
+			  &lt;xslt:element name=&quot;{name()}&quot;&gt;
+			    &lt;xslt:attribute name=&quot;xsi:nil&quot;&gt;true&lt;/xslt:attribute&gt;
+			  &lt;/xslt:element&gt;
+			&lt;/xslt:template&gt;
+
+		Use Case 5: Retain the original attributes and modify the element with attributes and SETit to null
+		-----------
+			ElemAttrXML = 
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:firstname&lt;/qualAttr&gt;	&lt;value&gt;Joe&lt;/value&gt;			&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:lastname&lt;/qualAttr&gt;	&lt;value&gt;Author&lt;/value&gt;		&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;&lt;/value&gt;				&lt;/qualElemAttr&gt;
+
+			&lt;xslt:template match=&quot;sam:Author&quot;&gt;
+			  &lt;xslt:element name=&quot;{name()}&quot;&gt;
+			    &lt;xslt:attribute name=&quot;sam:firstname&quot;&gt;Joe&lt;/xslt:attribute&gt;
+			    &lt;xslt:attribute name=&quot;sam:lastname&quot;&gt;Author&lt;/xslt:attribute&gt;
+			    &lt;xslt:attribute name=&quot;xsi:nil&quot;&gt;true&lt;/xslt:attribute&gt;
+			  &lt;/xslt:element&gt;
+			&lt;/xslt:template&gt;
+
+	Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2011.2		01/18/2011		Mike Tinius			5.2.0			Created new.
+	2019.200	04/04/2019		Mike Tinius			7.0.8			Changed custom functions to explicit paths.
+	2019.200	05/21/2019		Mike Tinius			7.0.8			New parseAndModifyXMLV2 derived from parseAndModifyXML to remove vector input.
+
+	(c) 2017 TIBCO Software Inc. All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="namespaces" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="ElemAttrXML" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="inXml" direction="IN" nullable="true">
+      <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+        <schemaDatatype>
+          <datatype name="XML" type="TREE" refId="1"></datatype>
+        </schemaDatatype>
+      </datatype>
+    </parameter>
+    <parameter name="outXml" direction="OUT" nullable="true">
+      <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+        <schemaDatatype>
+          <datatype name="XML" type="TREE" refId="1"></datatype>
+        </schemaDatatype>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/Pause" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="timeInMilliSeconds" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/numOccurrences" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="searchString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="stringToSearch" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="num" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	parseAndModifyXMLV2:
+
+	Parse and XML document given an XML list of XPath statements and modify the values and reconstruct the XML.
+ 	IMPORTANT:  When updating an element with a list of attributes, you must supply all of the original
+	attributes in order to retain what you had.  This routine overwrites the original element so be careful.
+
+	Use cases supported:
+		Use Case 1: Modify the attribute for an element
+		Use Case 2: Modify the value of the the element with attributes
+		Use Case 3: Modify the element with no attributes
+		Use Case 4: Modify the element with no attributes and SETit to null
+		Use Case 5: Retain the original attributes and modify the element with attributes and SETit to null
+
+	Input:
+		debug - defines the debugging options for this procedure.  
+			Values: Y = debugging turned on, N = debugging turned off
+		namespaces - any string with the valid namespaces for the incoming XML  
+			Values: e.g. xmlns:sam=&quot;http://www.compositesw.com/samples/mynamespace/v1.0&quot;
+
+		ElemAttrXML - contains a list of qualified elements, qualified attributes and the value to change in this format:
+			SET ElemAttrXML = 
+				-- Repeat the section &lt;qualElemAttr&gt; for as many as are required.
+				&apos;&lt;qualElemAttr&gt;&lt;qualElem&gt;&lt;/qualElem&gt;&lt;qualAttr&gt;&lt;/qualAttr&gt;&lt;value&gt;&lt;/value&gt;&lt;/qualElemAttr&gt;&apos;||CHR(10)||
+				&apos;&lt;qualElemAttr&gt;&lt;qualElem&gt;&lt;/qualElem&gt;&lt;qualAttr&gt;&lt;/qualAttr&gt;&lt;value&gt;&lt;/value&gt;&lt;/qualElemAttr&gt;&apos;||CHR(10);
+
+			It may be necessary to read the orginal values for each attribute to construct this list on the fly
+			if you want to retain certain values.  Then modify only the attributes that you want to change.
+			Values: ElemAttrXML e.g. 
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Name&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:isbn&lt;/qualAttr&gt;		&lt;value&gt;00-0000-000&lt;/value&gt;	&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Name&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;The Book&lt;/value&gt;		&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;Chapter&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;Chapter 1&lt;/value&gt;	&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;Paragraph&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;&lt;/value&gt;				&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:firstname&lt;/qualAttr&gt;	&lt;value&gt;Joe&lt;/value&gt;			&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:lastname&lt;/qualAttr&gt;	&lt;value&gt;Author&lt;/value&gt;		&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;&lt;/value&gt;				&lt;/qualElemAttr&gt;
+
+		inXml - any XML document
+			Values: e.g. 
+				&lt;Book xmlns:sam=&quot;http://www.compositesw.com/samples/mynamespace/v1.0&quot;&gt;
+					&lt;sam:Name sam:isbn=&quot;12-3456-123&quot;/&gt;
+					&lt;Chapter&gt;Test Data&lt;/Chapter&gt;
+					&lt;Paragraph&gt;Paragraph 1&lt;/Paragraph&gt;
+				&lt;/Book&gt;
+	Output:
+		outXml - modified XML
+			Values: e.g. 
+				&lt;Book xmlns:sam=&quot;http://www.compositesw.com/samples/mynamespace/v1.0&quot;&gt; 	
+					&lt;sam:Name sam:isbn=&quot;00-0000-000&quot;&gt;Joe Author&lt;/sam:Name&gt; 	
+					&lt;Chapter&gt;Chapter 1&lt;/Chapter&gt; 	
+					&lt;Paragraph xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:nil=&quot;true&quot;/&gt; 
+				&lt;/Book&gt; 
+	Limitations:
+		This method does not modify an iteration of the same node.
+
+	XSLT Template Examples:
+	-----------------------
+		Use Case 1: Modify the attribute for an element
+		Use Case 2: Modify the value of the the element with attributes
+		-----------
+			ElemAttrXML =
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Name&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:isbn&lt;/qualAttr&gt;		&lt;value&gt;00-0000-000&lt;/value&gt;	&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Name&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;The Book&lt;/value&gt;		&lt;/qualElemAttr&gt;
+
+			&lt;xslt:template match=&quot;sam:Name&quot;&gt;
+			  &lt;xslt:element name=&quot;{name()}&quot;&gt;
+				&lt;xslt:attribute name=&quot;sam:isbn&quot;&gt;00-0000-000&lt;/xslt:attribute&gt;
+				&lt;xslt:element&gt;Joe Author&lt;/xslt:element&gt;
+			  &lt;/xslt:element&gt;
+			&lt;/xslt:template&gt;
+
+		Use Case 3: Modify the element with no attributes
+		-----------
+			ElemAttrXML =
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;Chapter&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;Chapter 1&lt;/value&gt;	&lt;/qualElemAttr&gt;
+
+			&lt;xslt:template match=&quot;Chapter&quot;&gt;
+			  &lt;xslt:element name=&quot;{name()}&quot;&gt;
+				&lt;xslt:element&gt;Chapter 1&lt;/xslt:element&gt;
+			  &lt;/xslt:element&gt;
+			&lt;/xslt:template&gt;
+
+		Use Case 4: Modify the element with no attributes and SETit to null
+		-----------
+			ElemAttrXML = 
+				(&apos;Paragraph&apos;,NULL,NULL),				-- Use Case 4: Modify the element with no attributes and SETit to null
+
+			&lt;xslt:template match=&quot;Paragraph&quot;&gt;
+			  &lt;xslt:element name=&quot;{name()}&quot;&gt;
+			    &lt;xslt:attribute name=&quot;xsi:nil&quot;&gt;true&lt;/xslt:attribute&gt;
+			  &lt;/xslt:element&gt;
+			&lt;/xslt:template&gt;
+
+		Use Case 5: Retain the original attributes and modify the element with attributes and SETit to null
+		-----------
+			ElemAttrXML = 
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:firstname&lt;/qualAttr&gt;	&lt;value&gt;Joe&lt;/value&gt;			&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;sam:lastname&lt;/qualAttr&gt;	&lt;value&gt;Author&lt;/value&gt;		&lt;/qualElemAttr&gt;
+				&lt;qualElemAttr&gt;	&lt;qualElem&gt;sam:Author&lt;/qualElem&gt;	&lt;qualAttr&gt;&lt;/qualAttr&gt;				&lt;value&gt;&lt;/value&gt;				&lt;/qualElemAttr&gt;
+
+			&lt;xslt:template match=&quot;sam:Author&quot;&gt;
+			  &lt;xslt:element name=&quot;{name()}&quot;&gt;
+			    &lt;xslt:attribute name=&quot;sam:firstname&quot;&gt;Joe&lt;/xslt:attribute&gt;
+			    &lt;xslt:attribute name=&quot;sam:lastname&quot;&gt;Author&lt;/xslt:attribute&gt;
+			    &lt;xslt:attribute name=&quot;xsi:nil&quot;&gt;true&lt;/xslt:attribute&gt;
+			  &lt;/xslt:element&gt;
+			&lt;/xslt:template&gt;
+
+	Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2011.2		01/18/2011		Mike Tinius			5.2.0			Created new.
+	2019.200	04/04/2019		Mike Tinius			7.0.8			Changed custom functions to explicit paths.
+	2019.200	05/21/2019		Mike Tinius			7.0.8			New parseAndModifyXMLV2 derived from parseAndModifyXML to remove vector input.
+
+	(c) 2017 TIBCO Software Inc. All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE parseAndModifyXMLV2(
+	IN debug			CHAR(1),
+	IN namespaces		LONGVARCHAR,
+	IN ElemAttrXML		LONGVARCHAR,
+	IN inXml			XML,
+	OUT outXml			XML
+	)
+BEGIN
+	DECLARE moduleName		VARCHAR DEFAULT &apos;parseAndModifyXMLV2()&apos;;
+	DECLARE xsltExpr		LONGVARCHAR;
+	DECLARE xsltTemplate	LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE xsltAttributes	LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE prevElement		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE firstTime		BOOLEAN DEFAULT TRUE;
+	DECLARE pos1, pos2		INTEGER;
+	DECLARE pos3, pos4		INTEGER;
+	DECLARE len				INTEGER;
+	DECLARE numEntries		INTEGER;
+	DECLARE totalEntries	INTEGER;
+	DECLARE entry			LONGVARCHAR;
+    DECLARE TYPE ElemAttrValuesType ROW (
+        qualElem                LONGVARCHAR, 
+        qualAttr                LONGVARCHAR, 
+        invalue                 LONGVARCHAR
+    );
+	DECLARE rec				ElemAttrValuesType;
+	DECLARE ex				EXCEPTION;
+
+	if (upper(debug) = &apos;Y&apos;) then
+		call print(moduleName||&apos; : inXml=&apos;|| NVL(CAST(inXml AS LONGVARCHAR),&apos;null&apos;));	
+	end if;
+
+	-- Build the XSLT template that will SETelement and attribute values for a given Element
+	-- Build a template for each Element/Attribute pair found in the Element-Attribute list
+	/* Example:
+		SET ElemAttrXML = 
+			&apos;&lt;qualElemAttr&gt;&apos;||CHR(10)||
+			&apos;    &lt;qualElem&gt;&lt;/qualElem&gt;&apos;||CHR(10)||
+			&apos;    &lt;qualAttr&gt;&lt;/qualAttr&gt;&apos;||CHR(10)||
+			&apos;    &lt;value&gt;&lt;/value&gt;&apos;||CHR(10)||
+			&apos;&lt;/qualElemAttr&gt;&apos;||CHR(10);
+	*/
+	IF (ElemAttrXML IS NOT NULL AND LENGTH(TRIM(ElemAttrXML)) &gt; 0) THEN
+		CALL /shared/ASAssets/Utilities/string/numOccurrences(&apos;&lt;qualElemAttr&gt;&apos;, ElemAttrXML, totalEntries);
+		SET pos1 = INSTR(ElemAttrXML, &apos;&lt;qualElemAttr&gt;&apos;);
+		SET pos2 = INSTR(ElemAttrXML, &apos;&lt;/qualElemAttr&gt;&apos;);
+		SET numEntries = 0;
+		WHILE (pos1 &gt; 0 and pos2 &gt; 0) DO
+			SET numEntries = numEntries + 1;
+			SET len = LENGTH(&apos;&lt;qualElemAttr&gt;&apos;);
+			SET entry = TRIM(SUBSTRING(ElemAttrXML, pos1+len, pos2-(pos1+len)));
+
+			-- Extract the qualElem
+			SET pos3 = INSTR(entry, &apos;&lt;qualElem&gt;&apos;);
+			SET pos4 = INSTR(entry, &apos;&lt;/qualElem&gt;&apos;);
+			SET rec.qualElem = null;
+			IF (pos3 = 0 or pos4 = 0) THEN
+				RAISE ex VALUE &apos;entry[&apos;||numEntries||&apos;]/name not be blank or empty.&apos;;
+			ELSE
+				SET len = LENGTH(&apos;&lt;qualElem&gt;&apos;);
+				SET rec.qualElem = TRIM(SUBSTRING(entry, pos3+len, pos4-(pos3+len)));
+				IF (LENGTH(TRIM(rec.qualElem)) = 0) THEN
+					RAISE ex VALUE &apos;qualElemAttr[&apos;||numEntries||&apos;]/qualElem not be blank or empty.&apos;;
+				END IF;
+			END IF;
+			IF (UPPER(debug) = &apos;Y&apos;) THEN
+				CALL PRINT(moduleName||&apos; : qualElemAttr[&apos;||numEntries||&apos;]/qualElem=[&apos;||NVL(rec.qualElem,&apos;null&apos;)||&apos;]&apos;);
+			END IF;
+
+			-- Extract the qualAttr
+			SET pos3 = INSTR(entry, &apos;&lt;qualAttr&gt;&apos;);
+			SET pos4 = INSTR(entry, &apos;&lt;/qualAttr&gt;&apos;);
+			SET rec.qualAttr = &apos;&apos;;
+			IF (pos3 &gt; 0 AND pos4 &gt; 0) THEN
+				SET len = LENGTH(&apos;&lt;qualAttr&gt;&apos;);
+				SET rec.qualAttr = TRIM(SUBSTRING(entry, pos3+len, pos4-(pos3+len)));
+			END IF;
+			-- If the word NULL was passed in then SETthe column annotation to blank to destroy the annotation that is there.
+			IF (UPPER(rec.qualAttr) = &apos;NULL&apos;) THEN
+				SET rec.qualAttr = &apos;&apos;;
+			END IF;
+			IF (UPPER(debug) = &apos;Y&apos;) THEN
+				CALL PRINT(moduleName||&apos; : qualElemAttr[&apos;||numEntries||&apos;]/qualAttr=[&apos;||NVL(rec.qualAttr,&apos;null&apos;)||&apos;]&apos;);
+			END IF;
+
+			-- Extract the value
+			SET pos3 = INSTR(entry, &apos;&lt;value&gt;&apos;);
+			SET pos4 = INSTR(entry, &apos;&lt;/value&gt;&apos;);
+			SET rec.invalue = &apos;&apos;;
+			IF (pos3 &gt; 0 AND pos4 &gt; 0) THEN
+				SET len = LENGTH(&apos;&lt;value&gt;&apos;);
+				SET rec.invalue = TRIM(SUBSTRING(entry, pos3+len, pos4-(pos3+len)));
+			END IF;
+			-- If the word NULL was passed in then SETthe column annotation to blank to destroy the annotation that is there.
+			IF (UPPER(rec.invalue) = &apos;NULL&apos;) THEN
+				SET rec.invalue = &apos;&apos;;
+			END IF;
+			IF (UPPER(debug) = &apos;Y&apos;) THEN
+				CALL PRINT(moduleName||&apos; : qualElemAttr[&apos;||numEntries||&apos;]/value=[&apos;||NVL(rec.invalue,&apos;null&apos;)||&apos;]&apos;);
+			END IF;
+
+			-- Perform the logic for this entry
+			IF (rec.qualElem = prevElement) THEN
+				-- Determine if there is an attribute
+				IF (rec.qualAttr IS NOT NULL AND LENGTH(&apos;|&apos;||rec.qualAttr||&apos;|&apos;) &gt; 2) THEN
+					-- Modify the Attribute
+					SET xsltAttributes = xsltAttributes || &apos;&lt;xslt:attribute name=&quot;&apos;||rec.qualAttr||&apos;&quot;&gt;&apos;|| TRIM(NVL(rec.inValue,&apos;  &apos;)) ||&apos;&lt;/xslt:attribute&gt;&apos;;
+				ELSE -- Element only
+					-- Modify the element
+					IF  (rec.inValue IS NULL) THEN
+						-- Set the element to xsi:nil=&quot;true&quot;
+						SET xsltAttributes = xsltAttributes || &apos;&lt;xslt:attribute name=&quot;xsi:nil&quot;&gt;true&lt;/xslt:attribute&gt;&apos;;
+					ELSE
+						-- Set the element value
+						SET xsltAttributes = xsltAttributes || TRIM(NVL(rec.inValue,&apos;  &apos;));
+					END IF;
+				END IF;
+			ELSE
+				IF (firstTime) THEN
+					-- Create the starting Template
+					SET xsltTemplate = xsltTemplate  || CHR(10) ||
+						&apos;  &lt;xslt:template match=&quot;&apos;||rec.qualElem||&apos;&quot;&gt;&apos; || CHR(10) ||
+						&apos;    &lt;xslt:element name=&quot;{name()}&quot;&gt;&apos;;
+
+					-- Determine if there is an attribute
+					IF (rec.qualAttr IS NOT NULL AND LENGTH(&apos;|&apos;||rec.qualAttr||&apos;|&apos;) &gt; 2) THEN
+						-- Modify the Attribute
+						SET xsltAttributes = xsltAttributes || &apos;&lt;xslt:attribute name=&quot;&apos;||rec.qualAttr||&apos;&quot;&gt;&apos;|| TRIM(NVL(rec.inValue,&apos;  &apos;)) ||&apos;&lt;/xslt:attribute&gt;&apos;;
+					ELSE -- Element only
+						-- Modify the element
+						IF  (rec.inValue IS NULL) THEN
+							-- Set the element to xsi:nil=&quot;true&quot;
+							SET xsltAttributes = xsltAttributes || &apos;&lt;xslt:attribute name=&quot;xsi:nil&quot;&gt;true&lt;/xslt:attribute&gt;&apos;;
+						ELSE
+							-- Set the element value
+							SET xsltAttributes = xsltAttributes || TRIM(NVL(rec.inValue,&apos;  &apos;));
+						END IF;
+					END IF;
+
+					SET firstTime = false;
+				ELSE
+					-- Close out this template if when the element name changes except for the first time through
+					SET xsltTemplate = xsltTemplate || 
+						xsltAttributes || &apos;&lt;/xslt:element&gt;&apos; || CHR(10) ||
+						&apos;  &lt;/xslt:template&gt;&apos; || CHR(10);
+
+					-- If not the last entry in the list then begin a new template grouping
+					IF (numEntries &lt;= totalEntries) THEN
+						-- Create a new template
+						SET xsltTemplate = xsltTemplate  || CHR(10) ||
+						&apos;  &lt;xslt:template match=&quot;&apos;||rec.qualElem||&apos;&quot;&gt;&apos; || CHR(10) ||
+						&apos;    &lt;xslt:element name=&quot;{name()}&quot;&gt;&apos;;
+						SET xsltAttributes = &apos;&apos;; -- Initialize the attributes for starting a new template
+
+						-- Determine if there is an attribute
+						IF (rec.qualAttr IS NOT NULL AND LENGTH(&apos;|&apos;||rec.qualAttr||&apos;|&apos;) &gt; 2) THEN
+							-- Modify the Attribute
+							SET xsltAttributes = xsltAttributes || &apos;&lt;xslt:attribute name=&quot;&apos;||rec.qualAttr||&apos;&quot;&gt;&apos;|| TRIM(NVL(rec.inValue,&apos;  &apos;)) ||&apos;&lt;/xslt:attribute&gt;&apos;;
+						ELSE -- Element only
+							-- Modify the element
+							IF  (rec.inValue IS NULL) THEN
+								-- Set the element to xsi:nil=&quot;true&quot;
+								SET xsltAttributes = xsltAttributes || &apos;&lt;xslt:attribute name=&quot;xsi:nil&quot;&gt;true&lt;/xslt:attribute&gt;&apos;;
+							ELSE
+								-- Set the element value
+								SET xsltAttributes = xsltAttributes || rec.inValue;
+							END IF;
+						END IF;
+
+					END IF;
+				END IF;		
+			END IF;
+			SET prevElement = rec.qualElem;
+
+			-- Get the next column entry
+			SET pos1 = INSTR(ElemAttrXML, &apos;&lt;qualElemAttr&gt;&apos;, pos1+1);
+			SET pos2 = INSTR(ElemAttrXML, &apos;&lt;/qualElemAttr&gt;&apos;, pos2+1);
+		END WHILE;
+	END IF;
+
+
+	SET xsltTemplate = xsltTemplate ||
+		xsltAttributes || &apos;&lt;/xslt:element&gt;&apos; || CHR(10) ||
+		&apos;  &lt;/xslt:template&gt;&apos;;
+
+	-- Create the baseline XSTL script that will parse and replace an element with attributes
+	SET xsltExpr = 
+&apos;&lt;xslt:stylesheet version=&quot;1.0&quot;
+    xmlns:xslt=&quot;http://www.w3.org/1999/XSL/Transform&quot; 
+    xmlns:csw-xform=&quot;http://www.compositesw.com/2003/xform&quot; 
+    xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; 
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;
+    &apos;|| REPLACE(namespaces, CHR(9), &apos;    &apos;) || &apos;&gt;
+
+  &lt;xslt:output method=&quot;xml&quot; version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; indent=&quot;yes&quot; /&gt;
+
+  &lt;xslt:template match=&quot;node()&quot;&gt;
+    &lt;xslt:copy&gt;
+    &lt;xslt:apply-templates select=&quot;@*|node()&quot;/&gt;
+    &lt;/xslt:copy&gt;
+  &lt;/xslt:template&gt;
+&apos; || xsltTemplate ||&apos;
+
+  &lt;xslt:template match=&quot;@*|text()|comment()&quot;&gt;
+    &lt;xslt:copy&gt;
+      &lt;xslt:apply-templates select=&quot;@*|node()&quot;/&gt;
+    &lt;/xslt:copy&gt;
+  &lt;/xslt:template&gt;
+
+&lt;/xslt:stylesheet&gt;
+&apos;;
+	if (upper(debug) = &apos;Y&apos;) then
+		call print(moduleName||&apos; : XSLT=&apos;|| xsltExpr);	
+		call pause(500);
+	end if;
+
+	-- Execute the XSLT against the incoming XML (KO/SDR) format
+	SET outXml = XSLT( inXml, xsltExpr );
+END</attribute>
+  <attribute name="creationDate" type="LONG">1558461298453</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564694788840</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">10/215</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/347</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>Pause</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/346</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/199</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/231</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/162</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1558461298453</attribute>
+</metadata>

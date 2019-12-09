@@ -1,0 +1,548 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="GPG093_AUDIT_UPDATE" path="/shared/Amway_POC/L1_DataSources/ds_Appraise/GPB110/dbo/GPG093_AUDIT_UPDATE" type="PROCEDURE" subtype="DATABASE_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="@RETURN_VALUE" direction="RETURN" nullable="false">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@error_code" direction="INOUT" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LC_CORP_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(3)" subType="DATASOURCE_TYPE" type="STRING" minLength="3" maxLength="3"/>
+    </parameter>
+    <parameter name="@LC_AMWAY_SKU_PFX" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(3)" subType="DATASOURCE_TYPE" type="STRING" minLength="3" maxLength="3"/>
+    </parameter>
+    <parameter name="@LC_AMWAY_SKU_BASE" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_AMWAY_SKU_SFX" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(5)" subType="DATASOURCE_TYPE" type="STRING" minLength="5" maxLength="5"/>
+    </parameter>
+    <parameter name="@LC_SKU_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LC_AUDIT_WHO" direction="IN" nullable="true">
+      <datatype name="varchar" extendedName="varchar(30)" subType="DATASOURCE_TYPE" type="STRING" maxLength="30"/>
+    </parameter>
+    <parameter name="@LC_AUDIT_DT" direction="IN" nullable="true">
+      <datatype name="datetime" extendedName="datetime" subType="DATASOURCE_TYPE" type="DATETIME"/>
+    </parameter>
+    <parameter name="@LC_FRT_RATE_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_SALES_OUTLET_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_I_SOURCE_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_MAKE_BUY_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_UNIT_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_Status_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_BUSINESS_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_CATEGORY_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_SKU_DESC" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(25)" subType="DATASOURCE_TYPE" type="STRING" minLength="25" maxLength="25"/>
+    </parameter>
+    <parameter name="@LC_EFFECTIVE_DATE" direction="IN" nullable="true">
+      <datatype name="datetime" extendedName="datetime" subType="DATASOURCE_TYPE" type="DATETIME"/>
+    </parameter>
+    <parameter name="@LC_CASE_QTY" direction="IN" nullable="true">
+      <datatype name="smallint" extendedName="smallint" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="@LC_AVAILABLE_AS_EACH" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LC_UNIT_QTY" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_MARKUP_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LC_WEIGHT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_DUTY_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LC_VAT_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LC_ALCOHOL_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LC_NPI_FLAG" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LC_NPI_MFG_COST" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_PRICE_LIST_MAJOR" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_PRICE_LIST_MINOR" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_PV" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_BV" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_DC" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_DCIVAT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_SR" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_SRLVAT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_FACTORY_COST" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_FACTORY_COST_BYOUT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_UNIT_FORECAST" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LC_EXPORT_PRICE" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_EXPORT_FREIGHT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_COST_OF_SALE" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_COS_BILL" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_BV_FLAG" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LC_ASSOC_SKIPPED" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LC_ADDED_WHO" direction="IN" nullable="true">
+      <datatype name="varchar" extendedName="varchar(30)" subType="DATASOURCE_TYPE" type="STRING" maxLength="30"/>
+    </parameter>
+    <parameter name="@LC_ADDED_DT" direction="IN" nullable="true">
+      <datatype name="datetime" extendedName="datetime" subType="DATASOURCE_TYPE" type="DATETIME"/>
+    </parameter>
+    <parameter name="@LC_CHANGED_WHO" direction="IN" nullable="true">
+      <datatype name="varchar" extendedName="varchar(30)" subType="DATASOURCE_TYPE" type="STRING" maxLength="30"/>
+    </parameter>
+    <parameter name="@LC_CHANGED_DT" direction="IN" nullable="true">
+      <datatype name="datetime" extendedName="datetime" subType="DATASOURCE_TYPE" type="DATETIME"/>
+    </parameter>
+    <parameter name="@LC_OLD_AMWAY_SKU_PFX" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(3)" subType="DATASOURCE_TYPE" type="STRING" minLength="3" maxLength="3"/>
+    </parameter>
+    <parameter name="@LC_OLD_AMWAY_SKU_BASE" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_OLD_AMWAY_SKU_SFX" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(5)" subType="DATASOURCE_TYPE" type="STRING" minLength="5" maxLength="5"/>
+    </parameter>
+    <parameter name="@LC_ROYALTY_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LC_NPI_XFR_PRICE" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_CREATIVE_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_PACK_QTY" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LC_XFR_DUTY_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LC_XFR_DUTY_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(10,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_XFR_ROYAL_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(10,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_XFR_ADU_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(10,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_HYBRID_SKU" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LC_BDGT_FACTORY_COST" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_BDGT_FACTORY_COST_BYOUT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_BDGT_UNIT_FORECAST" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LC_BDGT_UNIT_FORECAST_LNR" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LC_BDGT_PROD_FORECAST" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LC_STD_COST_SRC_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(5)" subType="DATASOURCE_TYPE" type="STRING" minLength="5" maxLength="5"/>
+    </parameter>
+    <parameter name="@LC_HYBRD_COST_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_MEAS_CR_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_ADA_MRGN_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_MEAS_CR_EFF_DT" direction="IN" nullable="true">
+      <datatype name="datetime" extendedName="datetime" subType="DATASOURCE_TYPE" type="DATETIME"/>
+    </parameter>
+    <parameter name="@LC_MEAS_CR_SRC_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(2)" subType="DATASOURCE_TYPE" type="STRING" minLength="2" maxLength="2"/>
+    </parameter>
+    <parameter name="@LC_SELL_MULT_QTY" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LC_LTU_CONV_FLG" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LC_LTU_CONV_MULT_QTY" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LC_USER_DFINE_0_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_USER_DFINE_1_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_USER_DFINE_2_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_USER_DFINE_3_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_USER_DFINE_4_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_USER_DFINE_5_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_USER_DFINE_6_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_USER_DFINE_7_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_USER_DFINE_8_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_USER_DFINE_9_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_PRICE_CTGRY_GRP_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LC_RTAIL_PRFT_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(7,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="7" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LC_KEY_CHANGED" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LC_PRIOR_RECORD_WAS_FOUND" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LO_CORP_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(3)" subType="DATASOURCE_TYPE" type="STRING" minLength="3" maxLength="3"/>
+    </parameter>
+    <parameter name="@LO_AMWAY_SKU_PFX" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(3)" subType="DATASOURCE_TYPE" type="STRING" minLength="3" maxLength="3"/>
+    </parameter>
+    <parameter name="@LO_AMWAY_SKU_BASE" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_AMWAY_SKU_SFX" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(5)" subType="DATASOURCE_TYPE" type="STRING" minLength="5" maxLength="5"/>
+    </parameter>
+    <parameter name="@LO_SKU_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LO_AUDIT_WHO" direction="IN" nullable="true">
+      <datatype name="varchar" extendedName="varchar(30)" subType="DATASOURCE_TYPE" type="STRING" maxLength="30"/>
+    </parameter>
+    <parameter name="@LO_AUDIT_DT" direction="IN" nullable="true">
+      <datatype name="datetime" extendedName="datetime" subType="DATASOURCE_TYPE" type="DATETIME"/>
+    </parameter>
+    <parameter name="@LO_FRT_RATE_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_SALES_OUTLET_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_I_SOURCE_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_MAKE_BUY_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_UNIT_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_Status_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_BUSINESS_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_CATEGORY_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_SKU_DESC" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(25)" subType="DATASOURCE_TYPE" type="STRING" minLength="25" maxLength="25"/>
+    </parameter>
+    <parameter name="@LO_EFFECTIVE_DATE" direction="IN" nullable="true">
+      <datatype name="datetime" extendedName="datetime" subType="DATASOURCE_TYPE" type="DATETIME"/>
+    </parameter>
+    <parameter name="@LO_CASE_QTY" direction="IN" nullable="true">
+      <datatype name="smallint" extendedName="smallint" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="@LO_AVAILABLE_AS_EACH" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LO_UNIT_QTY" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_MARKUP_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LO_WEIGHT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_DUTY_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LO_VAT_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LO_ALCOHOL_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LO_NPI_FLAG" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LO_NPI_MFG_COST" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_PRICE_LIST_MAJOR" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_PRICE_LIST_MINOR" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_PV" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_BV" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_DC" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_DCIVAT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_SR" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_SRLVAT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_FACTORY_COST" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_FACTORY_COST_BYOUT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_UNIT_FORECAST" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LO_EXPORT_PRICE" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_EXPORT_FREIGHT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_COST_OF_SALE" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_COS_BILL" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_BV_FLAG" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LO_ASSOC_SKIPPED" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LO_ADDED_WHO" direction="IN" nullable="true">
+      <datatype name="varchar" extendedName="varchar(30)" subType="DATASOURCE_TYPE" type="STRING" maxLength="30"/>
+    </parameter>
+    <parameter name="@LO_ADDED_DT" direction="IN" nullable="true">
+      <datatype name="datetime" extendedName="datetime" subType="DATASOURCE_TYPE" type="DATETIME"/>
+    </parameter>
+    <parameter name="@LO_CHANGED_WHO" direction="IN" nullable="true">
+      <datatype name="varchar" extendedName="varchar(30)" subType="DATASOURCE_TYPE" type="STRING" maxLength="30"/>
+    </parameter>
+    <parameter name="@LO_CHANGED_DT" direction="IN" nullable="true">
+      <datatype name="datetime" extendedName="datetime" subType="DATASOURCE_TYPE" type="DATETIME"/>
+    </parameter>
+    <parameter name="@LO_OLD_AMWAY_SKU_PFX" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(3)" subType="DATASOURCE_TYPE" type="STRING" minLength="3" maxLength="3"/>
+    </parameter>
+    <parameter name="@LO_OLD_AMWAY_SKU_BASE" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_OLD_AMWAY_SKU_SFX" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(5)" subType="DATASOURCE_TYPE" type="STRING" minLength="5" maxLength="5"/>
+    </parameter>
+    <parameter name="@LO_ROYALTY_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LO_NPI_XFR_PRICE" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_CREATIVE_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_PACK_QTY" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LO_XFR_DUTY_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(14,6)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+    </parameter>
+    <parameter name="@LO_XFR_DUTY_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(10,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_XFR_ROYAL_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(10,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_XFR_ADU_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(10,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_HYBRID_SKU" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LO_BDGT_FACTORY_COST" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_BDGT_FACTORY_COST_BYOUT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_BDGT_UNIT_FORECAST" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LO_BDGT_UNIT_FORECAST_LNR" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LO_BDGT_PROD_FORECAST" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LO_STD_COST_SRC_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(5)" subType="DATASOURCE_TYPE" type="STRING" minLength="5" maxLength="5"/>
+    </parameter>
+    <parameter name="@LO_HYBRD_COST_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_MEAS_CR_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_ADA_MRGN_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_MEAS_CR_EFF_DT" direction="IN" nullable="true">
+      <datatype name="datetime" extendedName="datetime" subType="DATASOURCE_TYPE" type="DATETIME"/>
+    </parameter>
+    <parameter name="@LO_MEAS_CR_SRC_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(2)" subType="DATASOURCE_TYPE" type="STRING" minLength="2" maxLength="2"/>
+    </parameter>
+    <parameter name="@LO_SELL_MULT_QTY" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LO_LTU_CONV_FLG" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="@LO_LTU_CONV_MULT_QTY" direction="IN" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="@LO_USER_DFINE_0_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_USER_DFINE_1_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_USER_DFINE_2_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_USER_DFINE_3_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_USER_DFINE_4_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_USER_DFINE_5_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_USER_DFINE_6_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_USER_DFINE_7_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_USER_DFINE_8_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_USER_DFINE_9_AMT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(18,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+    </parameter>
+    <parameter name="@LO_PRICE_CTGRY_GRP_CD" direction="IN" nullable="true">
+      <datatype name="char" extendedName="char(4)" subType="DATASOURCE_TYPE" type="STRING" minLength="4" maxLength="4"/>
+    </parameter>
+    <parameter name="@LO_RTAIL_PRFT_PCT" direction="IN" nullable="true">
+      <datatype name="decimal" extendedName="decimal(7,4)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="7" maxFractionalDigits="4"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="creationDate" type="LONG">1534185700446</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1534186503647</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="orgName" type="STRING">GPG093_AUDIT_UPDATE;1</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1534185700446</attribute>
+</metadata>

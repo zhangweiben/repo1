@@ -1,0 +1,626 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="v_AWV00004_CNTRY_AFF_DIM" path="/shared/Amway_POC/L2_Physical/ds_GDW/DWSAVR01/v_AWV00004_CNTRY_AFF_DIM" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="CNTRY_KEY_NO" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_SHORT_NM" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMWAY_CNTRY_CD" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_NM" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_ADR_1_DESC" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_ADR_2_DESC" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_ADR_3_DESC" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_CITY_NM" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_ST_CD" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_POST_CD" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_AFF_STRT_BUS_KEY_NO" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_CNTAC_NM" nullable="true">
+      <datatype type="STRING" minLength="25" maxLength="25"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_BNS_CNTAC_PHN_NO" nullable="true">
+      <datatype type="STRING" minLength="14" maxLength="14"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_TRACK_NM" nullable="true">
+      <datatype type="STRING" minLength="25" maxLength="25"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_TRACK_PHN_NO" nullable="true">
+      <datatype type="STRING" minLength="14" maxLength="14"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_MODEM_PHN_NO" nullable="true">
+      <datatype type="STRING" minLength="14" maxLength="14"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_FAX_NO" nullable="true">
+      <datatype type="STRING" minLength="14" maxLength="14"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_ILB_ACCT_NO" nullable="true">
+      <datatype type="STRING" minLength="14" maxLength="14"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_RWARD_NM" nullable="true">
+      <datatype type="STRING" minLength="10" maxLength="10"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_CURCY_KEY_NO" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_CURCY_CD" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_CURCY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_RPT_CURCY_KEY_NO" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_RPT_CURCY_CD" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_RPT_CURCY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AS400_SRVR_NM" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="DMS_LIB_NM" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="IMS_LIB_NM" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="OMS_LIB_NM" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="SYSTEM_CD" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_KEY_NO" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_TRSR_CD" nullable="true">
+      <datatype type="STRING" minLength="6" maxLength="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_ISO_CD" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_ISO_3CHAR_CD" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="GDW_IMC_DIM_FLG" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="GDW_ORD_FACT_FLG" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="EUROMON_CNTRY_CD" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ATLAS_CNTRY_CD" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="OPER_UNIT" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_ID" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_DESC" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_SHORT_NM" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_ADR_1_DESC" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_ADR_2_DESC" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_ADR_3_DESC" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_CITY_NM" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_ST_CD" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_POST_CD" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_BEG_FYTD_KEY_NO" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_END_FYTD_KEY_NO" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_TOP_LVL_IBO_NO" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_REMIT_MGMT_FLG" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_PERS_VOL_FLG" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_MRKT_CD" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_MRKT_DESC" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_RENEW_TYPE_CD" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_RENEW_TYPE_DESC" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_AMWAY_OF_NO" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_AMWAY_ISPON_NO" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="RGN_CD" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="RGN_DESC" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="SUB_RGN_CD" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="SUB_RGN_DESC" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="MRKT_CLSTR_CD" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="MRKT_CLSTR_DESC" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="GEN_MGR_DESC" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Amway_POC/L1_DataSources/ds_GDW/DWSAVR01/AWV00004_CNTRY_AFF_DIM" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="CNTRY_KEY_NO" nullable="false">
+        <datatype type="INTEGER" minValue="-9999999999" maxValue="9999999999"/>
+      </element>
+      <element name="CNTRY_SHORT_NM">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="AMWAY_CNTRY_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="CNTRY_NM">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="CNTRY_ADR_1_DESC">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="CNTRY_ADR_2_DESC">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="CNTRY_ADR_3_DESC">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="CNTRY_CITY_NM">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="CNTRY_ST_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="CNTRY_POST_CD">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="CNTRY_AFF_STRT_BUS_KEY_NO">
+        <datatype type="INTEGER" minValue="-9999999999" maxValue="9999999999"/>
+      </element>
+      <element name="CNTRY_CNTAC_NM">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="CNTRY_BNS_CNTAC_PHN_NO">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="CNTRY_TRACK_NM">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="CNTRY_TRACK_PHN_NO">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="CNTRY_MODEM_PHN_NO">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="CNTRY_FAX_NO">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="CNTRY_ILB_ACCT_NO">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="CNTRY_RWARD_NM">
+        <datatype type="STRING" minLength="10" maxLength="10"/>
+      </element>
+      <element name="CNTRY_CURCY_KEY_NO">
+        <datatype type="INTEGER" minValue="-9999999999" maxValue="9999999999"/>
+      </element>
+      <element name="CNTRY_CURCY_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="CNTRY_CURCY_DESC">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="CNTRY_RPT_CURCY_KEY_NO">
+        <datatype type="INTEGER" minValue="-9999999999" maxValue="9999999999"/>
+      </element>
+      <element name="CNTRY_RPT_CURCY_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="CNTRY_RPT_CURCY_DESC">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="AS400_SRVR_NM">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="DMS_LIB_NM">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="IMS_LIB_NM">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="OMS_LIB_NM">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="SYSTEM_CD" nullable="false">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="AFF_KEY_NO">
+        <datatype type="INTEGER" minValue="-9999999999" maxValue="9999999999"/>
+      </element>
+      <element name="CNTRY_TRSR_CD">
+        <datatype type="STRING" minLength="6" maxLength="6"/>
+      </element>
+      <element name="CNTRY_ISO_CD">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="CNTRY_ISO_3CHAR_CD">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="GDW_IMC_DIM_FLG" nullable="false">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="GDW_ORD_FACT_FLG" nullable="false">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="EUROMON_CNTRY_CD">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="ATLAS_CNTRY_CD">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="OPER_UNIT">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="AFF_ID">
+        <datatype type="INTEGER" minValue="-999999999999999999" maxValue="999999999999999999"/>
+      </element>
+      <element name="AFF_DESC">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="AFF_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="AFF_ADR_1_DESC">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="AFF_ADR_2_DESC">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="AFF_ADR_3_DESC">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="AFF_CITY_NM">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="AFF_ST_CD">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="AFF_POST_CD">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="AFF_BEG_FYTD_KEY_NO">
+        <datatype type="INTEGER" minValue="-9999999999" maxValue="9999999999"/>
+      </element>
+      <element name="AFF_END_FYTD_KEY_NO">
+        <datatype type="INTEGER" minValue="-9999999999" maxValue="9999999999"/>
+      </element>
+      <element name="AFF_TOP_LVL_IBO_NO">
+        <datatype type="INTEGER" minValue="-999999999999999999" maxValue="999999999999999999"/>
+      </element>
+      <element name="AFF_REMIT_MGMT_FLG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="AFF_PERS_VOL_FLG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="AFF_MRKT_CD">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="AFF_MRKT_DESC">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="AFF_RENEW_TYPE_CD">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="AFF_RENEW_TYPE_DESC">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="AFF_AMWAY_OF_NO">
+        <datatype type="INTEGER" minValue="-999999999999999999" maxValue="999999999999999999"/>
+      </element>
+      <element name="AFF_AMWAY_ISPON_NO">
+        <datatype type="INTEGER" minValue="-999999999999999999" maxValue="999999999999999999"/>
+      </element>
+      <element name="RGN_CD">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="SUB_RGN_CD">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="SUB_RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="MRKT_CLSTR_CD">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="MRKT_CLSTR_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="GEN_MGR_DESC">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    *
+FROM      
+    /shared/Amway_POC/L1_DataSources/ds_GDW/DWSAVR01/AWV00004_CNTRY_AFF_DIM AWV00004_CNTRY_AFF_DIM</attribute>
+  <attribute name="creationDate" type="LONG">1534345624596</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">true</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566915813805</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="BYTE_ARRAY">EIEJBAAAAAEQUQYBABYAQQBXAFYAMAAwADAAMAA0AF8AQwBOAFQAUgBZAF8AQQBGAEYAXwBEAEkATQYCABYAQQBXAFYAMAAwADAAMAA0AF8AQwBOAFQAUgBZAF8AQQBGAEYAXwBEAEkATQML/////wMKAAEgeQMM/////wsRAAYABgBzAGgAYQByAGUAZAAJAEEAbQB3AGEAeQBfAFAATwBDAA4ATAAxAF8ARABhAHQAYQBTAG8AdQByAGMAZQBzAAYAZABzAF8ARwBEAFcACABEAFcAUwBBAFYAUgAwADEAFgBBAFcAVgAwADAAMAAwADQAXwBDAE4AVABSAFkAXwBBAEYARgBfAEQASQBN//8DBQAAAAAIAhAxBgH//wECAQEGAAEDAAEEAAEFAAMHAAAAAAcJAAAAAQAAAAAJCgAAAAEQQQYBAAEAKgYCAAAGA///BgT//wMK/////wYFAAAGBgAABgcAAAYIAAD/////CQYAAAABEIIDCgAAAJ0DCwAAAEADDAAAAgcDDQAAAav//wgDEHEDAQAAAAsDAgAAADIJAwAAAiYQdAMGAAAAAP//EHIGBP////8Qc///EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv///////w==</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1534345624596</attribute>
+</metadata>

@@ -1,0 +1,655 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getDocumentationDriver" path="/shared/ASAssets/Utilities/documentation/getDocumentationDriver" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>getDocumentationDriver:
+
+	This is the documentation driver procedure.  It is used to generate documentation for composite resources and save to a file.  
+	The &quot;/shared/Utilities/documentation/constants&quot; procedure sets the defaults for a number of parameters.  Because there is no output 
+	for this procedure it could be used as a trigger procedure if a customer wanted to generate documentation on a scheduled basis.
+
+	The best practice for the developer is to copy the constants() procedure to the project directory and modify the constants there.  
+	Pass in the location of that procedure to this driver.  This allows you to customize the default values once.
+ 
+	Input:
+		in_resourcePath				The starting CIS path for which to introspect resources and generate documentation.
+		in_resourceType				The resource type of the resource path.
+		in_filePath					The full file system path to generate the documentation file to.
+		in_docPreambleImpl			The CIS path to the procedure that represents the preamble of the documentation.  
+										If left null, the default &quot;geDocPreambleImpl1&quot; is used.
+		in_docResourceFormatImpl	The CIS path to the procedure that performs the documentation formatting.
+										If left null, the default &quot;getDocResourceFormatImpl1&quot; is used.
+		in_constantPath				This is the path to the constants file
+										e.g. /shared/ASAssets/Utilities/documentation/constants()
+		in_switches					Provides guidance on what to print for documentation and save files.  
+										The format is print_switch=[option1|{default_option2}|option3]
+										This is a space separate list with no spaces before or after the equal sign.
+											print_containers=[{none}|all] - print the resource container (folder)
+											print_annotations=[none|{all}|nonblank|blank] - print all annotations whether they are blank or not
+											print_resource_projections=[none|{all}] - print the resource projections
+											print_resources_used=[none|{all}] - print the immediate child resources used by the parent resource
+											print_datasource_accessed=[none|{all}] - print the data source accessed list
+											print_datasource_lineage=[none|{all}] - print the data source lineage
+											print_time=[{no}|yes] - print the time it takes to retrieve the full documentation for each resource and the final time
+ 											save_file=[{no}|yes] - save the results to a file
+											save_file_intermediate=[{no}|yes] - save the file intermediately after each resource is completed
+										Example:
+											1) switches: when left blank or null then the defaults are taken
+											   result: all documentation modules are printed
+											2) switches: print_annotations=nonblank print_resource_projections=none print_resources_used=none print_datasource_lineage=none
+											   result: only non-blank annotations are printed and nothing else
+
+		in_excludeKeywordsInPathList Exclude keywords in path, case insensitive.  Comma separated list.  These are whole words and not wild cards.  
+										A word is defined by what exists between folder separators &quot;/&quot;. 
+										i.e. &apos;analysis,archive&apos;
+		in_excludePathsList			Exclude actual paths.  Double quotes are not required.  Comma separated list.
+										The exclude path list simply has to be present in any part of the resource path.  
+										This means that it can be a partial path.
+	Output:
+		none
+
+	Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2012.3		07/25/2012		Mike Tinius			5.2.0			Created new
+	2012.401	11/12/2012		Mike Tinius			5.2.0			Added the ability to save to a file after each resources formatted text is completed.  Modified input parameters.
+	2018.100	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	2019.200	04/04/2019		Mike Tinius			7.0.8			Changed custom functions to explicit paths.
+
+    (c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+
+
+===================
+EXAMPLE OUTPUT:
+====================
+
+Composite Software Documentation
+
+Generated on 2012-11-11 08:10:34.614
+
+================================================================================
+Resource Name: CompositeView
+Resource Path: /shared/examples/CompositeView
+Resource Type: TABLE
+
+Description:
+------------
+None
+
+Resource Column Projection:
+---------------------------
+    Column Name              Column Type          Native Base Type     Native Type          
+    ------------------------ -------------------- -------------------- --------------------
+    OrderID                  INTEGER              N/A                  N/A                  
+    ProductID                INTEGER              N/A                  N/A                  
+    Discount                 DOUBLE               N/A                  N/A                  
+    OrderDate                DATE                 N/A                  N/A                  
+    CompanyName              VARCHAR(50)          N/A                  N/A                  
+    CustomerContactFirstName VARCHAR(30)          N/A                  N/A                  
+    CustomerContactLastName  VARCHAR(50)          N/A                  N/A                  
+    CustomerContactPhone     VARCHAR(30)          N/A                  N/A                  
+    ProductName              VARCHAR(32768)       N/A                  N/A                  
+    TransactionID            INTEGER              N/A                  N/A                  
+    DateRequired             DATE                 N/A                  N/A                  
+    DatePromised             DATE                 N/A                  N/A                  
+    ShipDate                 DATE                 N/A                  N/A                  
+    SupplierID               INTEGER              N/A                  N/A                  
+    SupplierName             VARCHAR(50)          N/A                  N/A                  
+    SupplierContactName      VARCHAR(50)          N/A                  N/A                  
+    SupplierPhoneNumber      VARCHAR(30)          N/A                  N/A                  
+
+Resources Used:
+---------------
+    Resource Name  Resource Type  Sub Type   Resource Path                 
+    -------------- -------------- ---------- -----------------------------
+    ViewOrder      TABLE          SQL_TABLE  /shared/examples/ViewOrder    
+    ViewSales      TABLE          SQL_TABLE  /shared/examples/ViewSales    
+    ViewSupplier   TABLE          SQL_TABLE  /shared/examples/ViewSupplier 
+
+Data Source Accessed List:
+---------------------------
+    Datasource Name               Enabled Type        Sub Type                 Datasource Path                                     
+    ----------------------------- ------- ----------- ------------------------ ---------------------------------------------------
+    ds_orders                     1       DATA_SOURCE RELATIONAL_DATA_SOURCE   /shared/examples/ds_orders                          
+    ds_XML                        1       DATA_SOURCE XML_FILE_DATA_SOURCE     /shared/examples/ds_XML                             
+    ds_inventory                  1       DATA_SOURCE RELATIONAL_DATA_SOURCE   /shared/examples/ds_inventory                       
+
+Data Source Lineage:
+--------------------
+seqnum   id     pid    depth  resource path
+     1 - 20587             0  /shared/examples/CompositeView
+
+     2 - 20658  20587      1    /shared/examples/ViewOrder
+     3 - 20741  20658      2      [CS] /shared/examples/ds_orders/customers  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_orders
+     4 - 20679  20658      2      [CS] /shared/examples/ds_orders/orderdetails  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_orders
+     5 - 20711  20658      2      [CS] /shared/examples/ds_orders/orders  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_orders
+     6 - 20670  20711      3        /shared/examples/ds_orders
+     7 - 20729  20670      4          [CS] /shared/examples/ds_orders/cache_status  [TABLE.DATABASE_TABLE]
+                                      [DS] /shared/examples/ds_orders
+     8 - 20671  20670      4          [CS] /shared/examples/ds_orders/cache_tracking  [TABLE.DATABASE_TABLE]
+                                      [DS] /shared/examples/ds_orders
+     9 - 20689  20711      3        [CS] /shared/examples/ds_orders/orders_cache  [TABLE.DATABASE_TABLE]
+                                    [DS] /shared/examples/ds_orders
+
+    10 - 20774  20587      1    /shared/examples/ViewSales
+    11 - 20679  20774      2      [CS] /shared/examples/ds_orders/orderdetails  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_orders
+    12 - 20786  20774      2      /shared/examples/productCatalog_Transformation
+    13 - 20757  20786      3        [CS] /shared/examples/ds_XML/productCatalog.xml  [TREE.XML_FILE_TREE]
+                                    [DS] /shared/examples/ds_XML
+
+    14 - 20763  20587      1    /shared/examples/ViewSupplier
+    15 - 20606  20763      2      [CS] /shared/examples/ds_inventory/inventorytransactions  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_inventory
+    16 - 20619  20763      2      [CS] /shared/examples/ds_inventory/purchaseorders  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_inventory
+    17 - 20644  20763      2      [CS] /shared/examples/ds_inventory/suppliers  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_inventory
+
+Resource Documentation Generation Time=0 00:00:00.266
+--------------------------------------------------------------------------------
+
+...resources not shown for sake of brevity
+
+================================================================================
+---------------------
+Documentation Summary
+---------------------
+Starting Root Path: /shared/examples
+---------------------------------------------------------
+Print Switches Input: save_file=yes save_file_intermediate=yes print_time=yes
+
+print_containers=0             Key:[{none}=0|all=1]
+print_annotations=1            Key:[none=0|{all}=1|nonblank=2|blank=3]
+print_resource_projections=1   Key:[none=0|{all}=1]
+print_resources_used=1         Key:[none=0|{all}=1]
+print_datasource_accessed=1    Key:[none=0|{all}=1]
+print_datasource_lineage=1     Key:[none=0|{all}=1]
+print_time=1                   Key:[{no}=0|yes=1]
+save_file=1                    Key:[{no}=0|yes=1]
+save_file_intermediate=1       Key:[{no}=0|yes=1]
+
+---------------------------------------------------------
+Total Number of Resources:               23
+---------------------------------------------------------
+Number of Published    (LINK):           0
+Number of Folders      (CONTAINER):      0
+Number of Views        (TABLE):          15
+Number of Procedures   (PROCEDURE):      3
+Number of Data Sources (DATA_SOURCE):    3
+Number of XML          (TREE):           1
+Number of Triggers     (TRIGGER):        0
+Number of Connectors   (CONNECTOR):      0
+Number of Def. Sets    (DEFINITION_SET): 1
+Number of Other resource type:           0
+---------------------------------------------------------
+Documentation Generation Time=0 00:00:01.7
+--------------------------------------------------------------------------------</annotation>
+  <parameters>
+    <parameter name="in_resourcePath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="in_resourceType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="in_filePath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="in_docPreambleImpl" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="in_docResourceFormatImpl" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="in_constantPath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="in_switches" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="in_excludeKeywordsInPathList" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="in_excludePathsList" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/documentation/getAllDocumentationAPI" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="docPreambleImpl" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="docResourceFormatImpl" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="constantPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="switches" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="excludeKeywordsInPathList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="excludePathsList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="filePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="formattedText" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 	getDocumentationDriver:
+
+	This is the documentation driver procedure.  It is used to generate documentation for composite resources and save to a file.  
+	The &quot;/shared/Utilities/documentation/constants&quot; procedure sets the defaults for a number of parameters.  Because there is no output 
+	for this procedure it could be used as a trigger procedure if a customer wanted to generate documentation on a scheduled basis.
+
+	The best practice for the developer is to copy the constants() procedure to the project directory and modify the constants there.  
+	Pass in the location of that procedure to this driver.  This allows you to customize the default values once.
+ 
+	Input:
+		in_resourcePath				The starting CIS path for which to introspect resources and generate documentation.
+		in_resourceType				The resource type of the resource path.
+		in_filePath					The full file system path to generate the documentation file to.
+		in_docPreambleImpl			The CIS path to the procedure that represents the preamble of the documentation.  
+										If left null, the default &quot;geDocPreambleImpl1&quot; is used.
+		in_docResourceFormatImpl	The CIS path to the procedure that performs the documentation formatting.
+										If left null, the default &quot;getDocResourceFormatImpl1&quot; is used.
+		in_constantPath				This is the path to the constants file
+										e.g. /shared/ASAssets/Utilities/documentation/constants()
+		in_switches					Provides guidance on what to print for documentation and save files.  
+										The format is print_switch=[option1|{default_option2}|option3]
+										This is a space separate list with no spaces before or after the equal sign.
+											print_containers=[{none}|all] - print the resource container (folder)
+											print_annotations=[none|{all}|nonblank|blank] - print all annotations whether they are blank or not
+											print_resource_projections=[none|{all}] - print the resource projections
+											print_resources_used=[none|{all}] - print the immediate child resources used by the parent resource
+											print_datasource_accessed=[none|{all}] - print the data source accessed list
+											print_datasource_lineage=[none|{all}] - print the data source lineage
+											print_time=[{no}|yes] - print the time it takes to retrieve the full documentation for each resource and the final time
+ 											save_file=[{no}|yes] - save the results to a file
+											save_file_intermediate=[{no}|yes] - save the file intermediately after each resource is completed
+										Example:
+											1) switches: when left blank or null then the defaults are taken
+											   result: all documentation modules are printed
+											2) switches: print_annotations=nonblank print_resource_projections=none print_resources_used=none print_datasource_lineage=none
+											   result: only non-blank annotations are printed and nothing else
+
+		in_excludeKeywordsInPathList Exclude keywords in path, case insensitive.  Comma separated list.  These are whole words and not wild cards.  
+										A word is defined by what exists between folder separators &quot;/&quot;. 
+										i.e. &apos;analysis,archive&apos;
+		in_excludePathsList			Exclude actual paths.  Double quotes are not required.  Comma separated list.
+										The exclude path list simply has to be present in any part of the resource path.  
+										This means that it can be a partial path.
+	Output:
+		none
+
+	Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2012.3		07/25/2012		Mike Tinius			5.2.0			Created new
+	2012.401	11/12/2012		Mike Tinius			5.2.0			Added the ability to save to a file after each resources formatted text is completed.  Modified input parameters.
+	2018.100	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	2019.200	04/04/2019		Mike Tinius			7.0.8			Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+
+===================
+EXAMPLE OUTPUT:
+====================
+
+Composite Software Documentation
+
+Generated on 2012-11-11 08:10:34.614
+
+================================================================================
+Resource Name: CompositeView
+Resource Path: /shared/examples/CompositeView
+Resource Type: TABLE
+
+Description:
+------------
+None
+
+Resource Column Projection:
+---------------------------
+    Column Name              Column Type          Native Base Type     Native Type          
+    ------------------------ -------------------- -------------------- --------------------
+    OrderID                  INTEGER              N/A                  N/A                  
+    ProductID                INTEGER              N/A                  N/A                  
+    Discount                 DOUBLE               N/A                  N/A                  
+    OrderDate                DATE                 N/A                  N/A                  
+    CompanyName              VARCHAR(50)          N/A                  N/A                  
+    CustomerContactFirstName VARCHAR(30)          N/A                  N/A                  
+    CustomerContactLastName  VARCHAR(50)          N/A                  N/A                  
+    CustomerContactPhone     VARCHAR(30)          N/A                  N/A                  
+    ProductName              VARCHAR(32768)       N/A                  N/A                  
+    TransactionID            INTEGER              N/A                  N/A                  
+    DateRequired             DATE                 N/A                  N/A                  
+    DatePromised             DATE                 N/A                  N/A                  
+    ShipDate                 DATE                 N/A                  N/A                  
+    SupplierID               INTEGER              N/A                  N/A                  
+    SupplierName             VARCHAR(50)          N/A                  N/A                  
+    SupplierContactName      VARCHAR(50)          N/A                  N/A                  
+    SupplierPhoneNumber      VARCHAR(30)          N/A                  N/A                  
+
+Resources Used:
+---------------
+    Resource Name  Resource Type  Sub Type   Resource Path                 
+    -------------- -------------- ---------- -----------------------------
+    ViewOrder      TABLE          SQL_TABLE  /shared/examples/ViewOrder    
+    ViewSales      TABLE          SQL_TABLE  /shared/examples/ViewSales    
+    ViewSupplier   TABLE          SQL_TABLE  /shared/examples/ViewSupplier 
+
+Data Source Accessed List:
+---------------------------
+    Datasource Name               Enabled Type        Sub Type                 Datasource Path                                     
+    ----------------------------- ------- ----------- ------------------------ ---------------------------------------------------
+    ds_orders                     1       DATA_SOURCE RELATIONAL_DATA_SOURCE   /shared/examples/ds_orders                          
+    ds_XML                        1       DATA_SOURCE XML_FILE_DATA_SOURCE     /shared/examples/ds_XML                             
+    ds_inventory                  1       DATA_SOURCE RELATIONAL_DATA_SOURCE   /shared/examples/ds_inventory                       
+
+Data Source Lineage:
+--------------------
+seqnum   id     pid    depth  resource path
+     1 - 20587             0  /shared/examples/CompositeView
+
+     2 - 20658  20587      1    /shared/examples/ViewOrder
+     3 - 20741  20658      2      [CS] /shared/examples/ds_orders/customers  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_orders
+     4 - 20679  20658      2      [CS] /shared/examples/ds_orders/orderdetails  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_orders
+     5 - 20711  20658      2      [CS] /shared/examples/ds_orders/orders  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_orders
+     6 - 20670  20711      3        /shared/examples/ds_orders
+     7 - 20729  20670      4          [CS] /shared/examples/ds_orders/cache_status  [TABLE.DATABASE_TABLE]
+                                      [DS] /shared/examples/ds_orders
+     8 - 20671  20670      4          [CS] /shared/examples/ds_orders/cache_tracking  [TABLE.DATABASE_TABLE]
+                                      [DS] /shared/examples/ds_orders
+     9 - 20689  20711      3        [CS] /shared/examples/ds_orders/orders_cache  [TABLE.DATABASE_TABLE]
+                                    [DS] /shared/examples/ds_orders
+
+    10 - 20774  20587      1    /shared/examples/ViewSales
+    11 - 20679  20774      2      [CS] /shared/examples/ds_orders/orderdetails  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_orders
+    12 - 20786  20774      2      /shared/examples/productCatalog_Transformation
+    13 - 20757  20786      3        [CS] /shared/examples/ds_XML/productCatalog.xml  [TREE.XML_FILE_TREE]
+                                    [DS] /shared/examples/ds_XML
+
+    14 - 20763  20587      1    /shared/examples/ViewSupplier
+    15 - 20606  20763      2      [CS] /shared/examples/ds_inventory/inventorytransactions  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_inventory
+    16 - 20619  20763      2      [CS] /shared/examples/ds_inventory/purchaseorders  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_inventory
+    17 - 20644  20763      2      [CS] /shared/examples/ds_inventory/suppliers  [TABLE.DATABASE_TABLE]
+                                  [DS] /shared/examples/ds_inventory
+
+Resource Documentation Generation Time=0 00:00:00.266
+--------------------------------------------------------------------------------
+
+...resources not shown for sake of brevity
+
+================================================================================
+---------------------
+Documentation Summary
+---------------------
+Starting Root Path: /shared/examples
+---------------------------------------------------------
+Print Switches Input: save_file=yes save_file_intermediate=yes print_time=yes
+
+print_containers=0             Key:[{none}=0|all=1]
+print_annotations=1            Key:[none=0|{all}=1|nonblank=2|blank=3]
+print_resource_projections=1   Key:[none=0|{all}=1]
+print_resources_used=1         Key:[none=0|{all}=1]
+print_datasource_accessed=1    Key:[none=0|{all}=1]
+print_datasource_lineage=1     Key:[none=0|{all}=1]
+print_time=1                   Key:[{no}=0|yes=1]
+save_file=1                    Key:[{no}=0|yes=1]
+save_file_intermediate=1       Key:[{no}=0|yes=1]
+
+---------------------------------------------------------
+Total Number of Resources:               23
+---------------------------------------------------------
+Number of Published    (LINK):           0
+Number of Folders      (CONTAINER):      0
+Number of Views        (TABLE):          15
+Number of Procedures   (PROCEDURE):      3
+Number of Data Sources (DATA_SOURCE):    3
+Number of XML          (TREE):           1
+Number of Triggers     (TRIGGER):        0
+Number of Connectors   (CONNECTOR):      0
+Number of Def. Sets    (DEFINITION_SET): 1
+Number of Other resource type:           0
+---------------------------------------------------------
+Documentation Generation Time=0 00:00:01.7
+--------------------------------------------------------------------------------
+
+*/
+PROCEDURE getDocumentationDriver(
+	IN in_resourcePath				LONGVARCHAR, -- must be a starting path
+	IN in_resourceType				VARCHAR,
+	IN in_filePath					LONGVARCHAR,
+	IN in_docPreambleImpl			LONGVARCHAR,
+	IN in_docResourceFormatImpl		LONGVARCHAR,
+	IN in_constantPath				LONGVARCHAR,
+	IN in_switches					LONGVARCHAR,
+	IN in_excludeKeywordsInPathList	LONGVARCHAR,
+	IN in_excludePathsList			LONGVARCHAR
+)
+BEGIN
+	DECLARE moduleName					VARCHAR DEFAULT &apos;getDocumentationDriver&apos;;
+	-- Location of the constants file
+	DECLARE constantPath				VARCHAR(1024) DEFAULT &apos;/shared/ASAssets/Utilities/documentation/constants()&apos;;
+	DECLARE debug						CHAR(1);
+	DECLARE resourcePath				LONGVARCHAR;
+	DECLARE resourceType				VARCHAR;
+	DECLARE filePath					LONGVARCHAR;
+	DECLARE docPreambleImpl				LONGVARCHAR;
+	DECLARE docResourceFormatImpl		LONGVARCHAR;
+	DECLARE excludeKeywordsInPathList	LONGVARCHAR;
+	DECLARE excludePathsList			LONGVARCHAR;
+	DEcLARE switches					LONGVARCHAR;
+	DECLARE formattedText				LONGVARCHAR;
+	DECLARE ex							EXCEPTION;
+	DECLARE message						LONGVARCHAR;
+	DECLARE resourceExists				BOOLEAN;
+
+	BEGIN
+
+		-- Validate the constant path is passed in and correct
+		if (in_constantPath IS NOT NULL AND LENGTH(&apos;|&apos;||in_constantPath||&apos;|&apos;) &gt; 2) then
+			set constantPath = in_constantPath;
+		end if;
+		if (constantPath IS NULL) then
+			raise ex value &apos;The constantPath cannot be null.&apos;;
+		else
+			call /lib/resource/ResourceExists(constantPath, &apos;PROCEDURE&apos;, null, resourceExists);
+			if (NOT resourceExists) then
+				raise ex value &apos;The constantPath does not exist=[&apos;||NVL(constantPath,&apos;null&apos;)||&apos;]&apos;;
+			end if;
+		end if;
+
+		-- Initialize default values
+		call /shared/ASAssets/Utilities/string/getConstantV2(constantPath, &apos;debug&apos;, 1, debug);
+
+		-- Determine if the default parameters or incoming parameters should be used.
+		if (in_resourcePath IS NOT NULL AND LENGTH(&apos;|&apos;||in_resourcePath||&apos;|&apos;) &gt; 2) then
+			set resourcePath = in_resourcePath;
+		else
+			call /shared/ASAssets/Utilities/string/getConstantV2(constantPath, &apos;resourcePath&apos;, 1, resourcePath);
+		end if;
+
+		if (in_resourceType IS NOT NULL AND LENGTH(&apos;|&apos;||in_resourceType||&apos;|&apos;) &gt; 2) then
+			set resourceType = in_resourceType;
+		else
+			call /shared/ASAssets/Utilities/string/getConstantV2(constantPath, &apos;resourceType&apos;, 1, resourceType);
+		end if;
+
+		if (in_filePath IS NOT NULL AND LENGTH(&apos;|&apos;||in_filePath||&apos;|&apos;) &gt; 2) then
+			set filePath = in_filePath;
+		else
+			call /shared/ASAssets/Utilities/string/getConstantV2(constantPath, &apos;filePath&apos;, 1, filePath);
+		end if;
+
+		if (in_resourcePath IS NOT NULL AND LENGTH(&apos;|&apos;||in_resourcePath||&apos;|&apos;) &gt; 2) then
+			set docPreambleImpl = in_docPreambleImpl;
+		else
+			call /shared/ASAssets/Utilities/string/getConstantV2(constantPath, &apos;docPreambleImpl&apos;, 1, docPreambleImpl);
+		end if;
+
+		if (in_docResourceFormatImpl IS NOT NULL AND LENGTH(&apos;|&apos;||in_docResourceFormatImpl||&apos;|&apos;) &gt; 2) then
+			set docResourceFormatImpl = in_docResourceFormatImpl;
+		else
+			call /shared/ASAssets/Utilities/string/getConstantV2(constantPath, &apos;docResourceFormatImpl&apos;, 1, docResourceFormatImpl);
+		end if;
+
+		if (in_switches IS NOT NULL AND LENGTH(&apos;|&apos;||in_switches||&apos;|&apos;) &gt; 2) then
+			set switches = in_switches;
+		else
+			call /shared/ASAssets/Utilities/string/getConstantV2(constantPath, &apos;switches&apos;, 1, switches);
+		end if;
+
+		if (in_excludeKeywordsInPathList IS NOT NULL AND LENGTH(&apos;|&apos;||in_excludeKeywordsInPathList||&apos;|&apos;) &gt; 2) then
+			set excludeKeywordsInPathList = in_excludeKeywordsInPathList;
+		else
+			call /shared/ASAssets/Utilities/string/getConstantV2(constantPath, &apos;excludeKeywordsInPathList&apos;, 1, excludeKeywordsInPathList);
+		end if;
+
+		if (in_excludePathsList IS NOT NULL AND LENGTH(&apos;|&apos;||in_excludePathsList||&apos;|&apos;) &gt; 2) then
+			set excludePathsList = in_excludePathsList;
+		else
+			call /shared/ASAssets/Utilities/string/getConstantV2(constantPath, &apos;excludePathsList&apos;, 1, excludePathsList);
+		end if;
+
+		-- Override the switches to always save to a file in intermediate mode as this is the entire point of this driver procedure
+		--   However, if the save_file switches are passed in then don&apos;t change them.
+		--   Additionally, if the default switches contain the save_file switches then don&apos;t change those either.
+		if (POSITION(&apos;save_file=&apos; IN switches) = 0) then
+			set switches = switches || &apos; save_file=yes&apos;;
+		end if;
+		if (POSITION(&apos;save_file_intermediate=&apos; IN switches) = 0) then
+			set switches = switches || &apos; save_file_intermediate=yes&apos;;
+		end if;
+
+		if (UPPER(debug) = &apos;Y&apos;) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;Starting resourcePath=&apos;||NVL(resourcePath,&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;Starting resourceType=&apos;||NVL(resourceType,&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;Document constantPath=&apos;||NVL(constantPath,&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;Document filePath=&apos;||NVL(filePath,&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;Document Preamble Proc=&apos;||NVL(docPreambleImpl,&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;Document Format Proc=&apos;||NVL(docResourceFormatImpl,&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;Document switches=&apos;||NVL(in_switches,&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;Document excludeKeywordsInPathList=&apos;||NVL(excludeKeywordsInPathList,&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;Document excludePathsList=&apos;||NVL(excludePathsList,&apos;null&apos;));
+		end if;
+
+		call /shared/ASAssets/Utilities/documentation/getAllDocumentationAPI(resourcePath, resourceType, docPreambleImpl, docResourceFormatImpl, constantPath, switches, excludeKeywordsInPathList, excludePathsList, filePath, formattedText);
+	EXCEPTION
+		ELSE
+			set message = CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR);
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,&apos;Y&apos;,&apos;Exception occurred: &apos;||NVL(message,&apos;null&apos;));
+			raise ex value message;
+	END;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564682255943</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

@@ -1,0 +1,218 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Wwv01100_Ibo_Nm_Mst" path="/shared/Common/Physical/Formatting/PostgreSQL_EAP/Magic_Bonus/Wwv01100_Ibo_Nm_Mst" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="aff_id" nullable="true">
+      <datatype type="DECIMAL" maxDigits="3" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ibo_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="nm_type_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="phys_nm" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="iso_lang_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="birth_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="gndr_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="last_nm_txt" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="title_txt" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mid_nm_txt" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="comm_type_cd" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="first_nm_txt" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bns_adr_link" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="phn_no_link" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="email_link" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rescy_flg" nullable="true">
+      <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sfx_txt" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_magic_bonus_wwsgls01/wwv01100_ibo_nm_mst" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="aff_id">
+        <datatype type="DECIMAL" maxDigits="3" maxFractionalDigits="0"/>
+      </element>
+      <element name="ibo_no">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="nm_type_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="phys_nm">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="iso_lang_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="birth_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="gndr_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="last_nm_txt">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="title_txt">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="mid_nm_txt">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="comm_type_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="first_nm_txt">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="bns_adr_link">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="phn_no_link">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="email_link">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="rescy_flg">
+        <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      </element>
+      <element name="sfx_txt">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	wwv01100_ibo_nm_mst.aff_id AS aff_id,
+	wwv01100_ibo_nm_mst.ibo_no AS ibo_no,
+	CAST(wwv01100_ibo_nm_mst.nm_type_cd AS CHAR(1)) AS nm_type_cd,
+	CAST(wwv01100_ibo_nm_mst.phys_nm AS VARCHAR(100)) AS phys_nm,
+	CAST(wwv01100_ibo_nm_mst.iso_lang_cd AS CHAR(3)) AS iso_lang_cd,
+	CAST(wwv01100_ibo_nm_mst.birth_dt AS TIMESTAMP) AS birth_dt,
+	CAST(wwv01100_ibo_nm_mst.gndr_cd AS CHAR(1)) AS gndr_cd,
+	CAST(wwv01100_ibo_nm_mst.last_nm_txt AS VARCHAR(150)) AS last_nm_txt,
+	CAST(wwv01100_ibo_nm_mst.title_txt AS VARCHAR(60)) AS title_txt,
+	CAST(wwv01100_ibo_nm_mst.mid_nm_txt AS VARCHAR(60)) AS mid_nm_txt,
+	CAST(wwv01100_ibo_nm_mst.comm_type_cd AS CHAR(2)) AS comm_type_cd,
+	CAST(wwv01100_ibo_nm_mst.first_nm_txt AS VARCHAR(150)) AS first_nm_txt,
+	CAST(wwv01100_ibo_nm_mst.bns_adr_link AS CHAR(1)) AS bns_adr_link,
+	CAST(wwv01100_ibo_nm_mst.phn_no_link AS CHAR(1)) AS phn_no_link,
+	CAST(wwv01100_ibo_nm_mst.email_link AS CHAR(2)) AS email_link,
+	CAST(wwv01100_ibo_nm_mst.rescy_flg AS NUMERIC(1,0)) AS rescy_flg,
+	CAST(wwv01100_ibo_nm_mst.sfx_txt AS VARCHAR(30)) AS sfx_txt 
+FROM
+	/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_magic_bonus_wwsgls01/wwv01100_ibo_nm_mst wwv01100_ibo_nm_mst</attribute>
+  <attribute name="creationDate" type="LONG">1555987165839</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569985203989</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1555987165839</attribute>
+</metadata>

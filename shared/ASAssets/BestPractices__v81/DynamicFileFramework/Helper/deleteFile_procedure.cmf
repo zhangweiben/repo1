@@ -1,0 +1,275 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="deleteFile" path="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/Helper/deleteFile" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>deleteFile:
+
+	A script that manages removing files from the file system.
+
+ 	Input:
+		debug:					Y=debug on, N=debug off
+		fileName:				The name of the file to be deleted.
+   	 	datasourcePath: 		Fully Qualified path to a Dynamic data source
+		messageAppend:			Message to append to the message generated here.
+	Output:
+		fileDeleted				0=not deleted, 1=deleted
+		message 				Poosible messages include:
+									&apos;FILE REMOVED.  &apos; + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+											&apos;NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+									&apos;UNABLE TO REMOVE FILE.  &apos;  + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+											&apos;NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+									&apos;FILE DOES NOT EXIST.  &apos; + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+											&apos;NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/10/2016		Mike Tinius			7.0.2			Created new for the purpose of removing files.
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="fileName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="datasourcePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="messageAppend" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="fileDeleted" direction="OUT" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="message" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/file/FileProcessingCJP/existsFile" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="filePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/file/FileProcessingCJP/remove" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="objectPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/file/getFileSeparator" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="result" direction="OUT">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getDataSourceRootPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="dsPath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="fileRootPath" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* deleteFile:
+
+	A script that manages removing files from the file system.
+
+ 	Input:
+		debug:					Y=debug on, N=debug off
+		fileName:				The name of the file to be deleted.
+   	 	datasourcePath: 		Fully Qualified path to a Dynamic data source
+		messageAppend:			Message to append to the message generated here.
+	Output:
+		fileDeleted				0=not deleted, 1=deleted
+		message 				Poosible messages include:
+									&apos;FILE REMOVED.  &apos; + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+											&apos;NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+									&apos;UNABLE TO REMOVE FILE.  &apos;  + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+											&apos;NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+									&apos;FILE DOES NOT EXIST.  &apos; + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+											&apos;NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/10/2016		Mike Tinius			7.0.2			Created new for the purpose of removing files.
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE deleteFile(
+	IN	debug				CHAR(1),	-- N=no debug, Y=debug
+	IN	fileName			VARCHAR,
+	IN	datasourcePath		VARCHAR(4000),
+	IN  messageAppend		VARCHAR,	-- Message to append to the message generated here.
+	OUT	fileDeleted			SMALLINT,	-- 0=not deleted, 1=deleted
+	OUT	message				VARCHAR(4000)
+)
+BEGIN
+	DECLARE moduleName			VARCHAR DEFAULT &apos;deleteFile&apos;;
+	DECLARE separator			VARCHAR;
+	DECLARE fileExists			BOOLEAN;
+	DECLARE fileRootPath		LONGVARCHAR;
+	DECLARE filePath			LONGVARCHAR;
+
+	-- Get the file separator
+	CALL /shared/ASAssets/Utilities/file/getFileSeparator(separator);
+	IF (separator IS NULL OR length(separator) = 0) THEN
+		SET separator = &apos;/&apos;;
+	END IF;
+	SET fileDeleted = 0;
+	SET message = null;
+
+	-- Get the actual file system path by determining if the root path is the actual path or a file system security token name
+	CALL /shared/ASAssets/Utilities/repository/getDataSourceRootPath(datasourcePath, debug, fileRootPath);
+
+	-- File root path is resolved so proceed with removal
+	IF (fileRootPath is not null) THEN
+		SET filePath = fileRootPath||separator||fileName;
+		CALL /shared/ASAssets/Utilities/file/FileProcessingCJP/existsFile(filePath, fileExists);
+		IF (fileExists) THEN
+			IF (debug = &apos;Y&apos;) THEN
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;FILE FOUND.  fileName=[&apos;||NVL(fileName,&apos;null&apos;)||&apos;]&apos;);
+			END IF;
+			-- Destroy the file system file
+			CALL /shared/ASAssets/Utilities/file/FileProcessingCJP/remove(filePath, fileExists);
+			CALL /shared/ASAssets/Utilities/file/FileProcessingCJP/existsFile(filePath, fileExists);
+			IF (NOT fileExists) THEN
+				SET fileDeleted = 1;
+					SET message = &apos;FILE REMOVED.  &apos;||TRIM(NVL(messageAppend,&apos;  &apos;));
+-- messageAppend:
+-- PUBLISHED VIEWS REMOVED
+-- VIEWS NOT PUBLISHED
+-- NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED
+/*
+				IF (published &gt; 0) THEN
+					SET message = &apos;FILE REMOVED.  PUBLISHED VIEWS REMOVED&apos;||TRIM(NVL(messageAppend,&apos;  &apos;));
+				ELSE
+					SET message = &apos;FILE REMOVED.  FILE NOT PUBLISHED&apos;||TRIM(NVL(messageAppend,&apos;  &apos;));
+				END IF;
+*/
+				IF (debug = &apos;Y&apos;) THEN
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, message||&apos;.  fileName=[&apos;||NVL(fileName,&apos;null&apos;)||&apos;]  filePath=[&apos;||NVL(filePath,&apos;null&apos;)||&apos;]&apos;);
+				END IF;
+			ELSE
+				SET message = &apos;UNABLE TO REMOVE FILE.  &apos;||TRIM(NVL(messageAppend,&apos;  &apos;)); 
+-- messageAppend:
+-- PUBLISHED VIEWS REMOVED
+-- VIEWS NOT PUBLISHED
+-- NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED
+/*
+				IF (published &gt; 0) THEN
+					SET message = &apos;UNABLE TO REMOVE FILE.  PUBLISHED VIEWS REMOVED&apos;||TRIM(NVL(messageAppend,&apos;  &apos;)); 
+				ELSE
+					SET message = &apos;UNABLE TO REMOVE FILE.  FILE NOT PUBLISHED&apos;||TRIM(NVL(messageAppend,&apos;  &apos;));
+				END IF;
+*/
+				IF (debug = &apos;Y&apos;) THEN
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, message||&apos;.  fileName=[&apos;||NVL(fileName,&apos;null&apos;)||&apos;]  filePath=[&apos;||NVL(filePath,&apos;null&apos;)||&apos;]&apos;);
+				END IF;
+			END IF;
+		ELSE
+			SET message = &apos;FILE DOES NOT EXIST.  &apos;||TRIM(NVL(messageAppend,&apos;  &apos;));
+-- messageAppend:
+-- PUBLISHED VIEWS REMOVED
+-- VIEWS NOT PUBLISHED
+-- NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED
+/*
+			IF (published &gt; 0) THEN
+				SET message = &apos;FILE DOES NOT EXIST.  PUBLISHED VIEWS REMOVED&apos;||TRIM(NVL(messageAppend,&apos;  &apos;));
+			ELSE
+				SET message = &apos;FILE DOES NOT EXIST&apos;;
+			END IF;
+*/
+			IF (debug = &apos;Y&apos;) THEN
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, message||&apos;.  fileName=[&apos;||NVL(fileName,&apos;null&apos;)||&apos;]&apos;);
+			END IF;
+		END IF;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1503581348064</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">1500</attribute>
+  <attribute name="creatorUserName" type="STRING">dynview</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1518823796769</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">1500</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1503581348064</attribute>
+</metadata>

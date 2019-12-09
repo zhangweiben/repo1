@@ -1,0 +1,363 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="importResourceOwnership" path="/shared/ASAssets/Utilities/deployment/privileges/importResourceOwnership" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>importResourceOwnership:
+
+	This procedure is typically invoked by the deployment script via the published datasource ASAssets to apply resource ownership 
+		from the previously saved resource_ownership.txt file that lives on the TDV server.
+		A deployment shell script may execute the following
+			$DIRNAME/JdbcSample.sh $DATABASE $HOST $DBPORT $USER $PASSWORD $DOMAIN &quot;SELECT * FROM Utilities.deployment.importResourceOwnership(&apos;N&apos;, &apos;$RESOWNERFILE&apos;)&quot;
+
+	Input:
+		debug 						- Y=debug on,  N=debug off.  Debug writes to CONSOLE and LOG.
+ 		resourceOwnershipFileName 	- The full TDV server file path to put the resource ownership into.
+	Output:
+		result 						- SUCCESS otherwise an exception is thrown.
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.4		10/16/2014      Jeremy Akers        6.2.6           Created new
+	2019.200	05/30/2019		Mike Tinius			7.0.8			Modified
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="resourceOwnershipFileName" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="invalidPathList" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Log" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToLog" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/deployment/privileges/helpers/splitResourceType" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="ownerPathList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outPipe" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="rPath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="rType">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/file/FileProcessingCJP/getFileContentsAscii" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="filePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="fileContent" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/changeResourceOwner" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="recurseChildren" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="newOwner" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="newOwnerDomain" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	importResourceOwnership:
+
+	This procedure is typically invoked by the deployment script via the published datasource ASAssets to apply resource ownership 
+		from the previously saved resource_ownership.txt file that lives on the TDV server.
+		A deployment shell script may execute the following
+			$DIRNAME/JdbcSample.[sh|bat] $DATABASE $HOST $DBPORT $USER $PASSWORD $DOMAIN &quot;SELECT * FROM Utilities.deployment.importResourceOwnership(&apos;N&apos;, &apos;$RESOWNERFILE&apos;)&quot;
+
+	Input:
+		debug 						- Y=debug on,  N=debug off.  Debug writes to CONSOLE and LOG.
+ 		resourceOwnershipFileName 	- The full TDV server file path to put the resource ownership into.
+	Output:
+		result						- SUCCESS if no invalid paths, WARNING if invalid path list otherwise an exception is thrown.
+		invalidPathList				- If not null, then a comma-separated list of paths [path:type] that are invalid as they do not exist and no ownership was applied.
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.4		10/16/2014      Jeremy Akers        6.2.6           Created new
+	2019.200	05/30/2019		Mike Tinius			7.0.8			Modified
+ 
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE importResourceOwnership(
+	IN debug							CHAR(1),		-- Y=debug on,  N=debug off.  Debug writes to CONSOLE and LOG.
+	IN resourceOwnershipFileName		LONGVARCHAR,	-- The full TDV server file path to put the resource ownership into.
+	OUT result							VARCHAR,		-- SUCCESS if no invalid paths, WARNING if invalid path list otherwise an exception is thrown.
+	OUT invalidPathList					LONGVARCHAR		-- If not null, then a comma-separated list of paths [path:type] that are invalid as they do not exist and no ownership was applied.
+)
+BEGIN
+	DECLARE moduleName			VARCHAR DEFAULT &apos;importResourceOwnership&apos;;
+	DECLARE ownershipEntries 	LONGVARCHAR;
+	DECLARE recurseChildren		BIT DEFAULT 1;
+	DECLARE message				LONGVARCHAR;
+	DECLARE resExists			BOOLEAN;
+
+	IF (UPPER(debug) = &apos;Y&apos;) THEN
+		SET message = moduleName||	&apos; :: BEGIN execute.&apos;||CHR(10)||
+									&apos;    INPUT: &apos;||CHR(10)||
+									&apos;      resourceOwnershipFileName=&apos;||NVL(CAST(resourceOwnershipFileName AS VARCHAR),&apos;null&apos;)||CHR(10);
+		CALL PRINT(message);
+		CALL LOG(message);
+	END IF;
+
+	CALL /shared/ASAssets/Utilities/file/FileProcessingCJP/getFileContentsAscii(resourceOwnershipFileName, ownershipEntries);
+
+	-- Remove the linefeed character
+	set ownershipEntries = REPLACE(ownershipEntries, CHR(10), &apos;&apos;);
+
+	-- Set the resource ownership for each resource path and type
+	for r as select * from /shared/ASAssets/Utilities/deployment/&quot;privileges&quot;/helpers/splitResourceType(ownershipEntries) do
+		if (r.rPath is not null and length(trim(r.rPath)) &gt; 0 and r.rType is not null and length(trim(r.rType)) &gt; 0) then
+			-- Apply ownership if ownerName is not a real null and the value is not &apos;null&apos;
+			if (r.ownerName is not null and r.ownerName &lt;&gt; &apos;null&apos; and r.ownerDomain is not null and r.ownerDomain &lt;&gt; &apos;null&apos;) then
+				call /lib/resource/ResourceExists(r.rPath, r.rType, null, resExists);
+				if (resExists) then
+					if (upper(debug) = &apos;Y&apos;) then
+						set message = moduleName||&apos; : Setting resource ownership for:  owner=&apos;||NVL(r.ownerName,&apos;null&apos;)||&apos;  domain=&apos;||NVL(r.ownerDomain,&apos;null&apos;)||&apos;  path=&apos;||NVL(r.rPath,&apos;null&apos;)||&apos;  type=&apos;||NVL(r.rType,&apos;null&apos;);
+						call print(message);
+						call log(message);
+					end if;
+					call /shared/ASAssets/Utilities/repository/changeResourceOwner(recurseChildren, r.rPath, r.rType, r.ownerName, r.ownerDomain);
+				else
+					if (upper(debug) = &apos;Y&apos;) then
+						set message = moduleName||&apos; : Skipping resource ownership [path/type does not exist] for:  owner=&apos;||NVL(r.ownerName,&apos;null&apos;)||&apos;  domain=&apos;||NVL(r.ownerDomain,&apos;null&apos;)||&apos;  path=&apos;||NVL(r.rPath,&apos;null&apos;)||&apos;  type=&apos;||NVL(r.rType,&apos;null&apos;);
+						call print(message);
+						call log(message);
+					end if;
+					if (invalidPathList is null) then
+						set invalidPathList = &apos;&apos;;
+					end if;
+					if (LENGTH(invalidPathList) &gt; 0) then
+						set invalidPathList = invalidPathList || &apos;,&apos;||CHR(10);
+					end if;
+					set invalidPathList = invalidPathList || NVL(r.rPath,&apos;null&apos;)||&apos;:&apos;||NVL(r.rType,&apos;null&apos;);
+				end if;
+			else
+				if (upper(debug) = &apos;Y&apos;) then
+					set message = moduleName||&apos; : Skipping resource ownership [owner or domain is null] for:  owner=&apos;||NVL(r.ownerName,&apos;null&apos;)||&apos;  domain=&apos;||NVL(r.ownerDomain,&apos;null&apos;)||&apos;  path=&apos;||NVL(r.rPath,&apos;null&apos;)||&apos;  type=&apos;||NVL(r.rType,&apos;null&apos;);
+					call print(message);
+					call log(message);
+				end if;
+			end if;
+		else
+			if (upper(debug) = &apos;Y&apos;) then
+				set message = moduleName||&apos; : Skipping resource ownership [path or type is null] for:  owner=&apos;||NVL(r.ownerName,&apos;null&apos;)||&apos;  domain=&apos;||NVL(r.ownerDomain,&apos;null&apos;)||&apos;  path=&apos;||NVL(r.rPath,&apos;null&apos;)||&apos;  type=&apos;||NVL(r.rType,&apos;null&apos;);
+				call print(message);
+				call log(message);
+			end if;
+		end if;
+	end for;
+
+	IF (invalidPathList IS NOT NULL) THEN
+		SET message = moduleName||	&apos; :: END WARNING: invalid path list=&apos;||invalidPathList;
+		SET result = &apos;WARNING&apos;;
+	ELSE
+		SET message = moduleName||	&apos; :: END sucessfully executed.&apos;;
+		SET result = &apos;SUCCESS&apos;;
+	END IF;
+
+	IF (UPPER(debug) = &apos;Y&apos;) THEN
+		CALL PRINT(message);
+		CALL LOG(message);
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1381455664206</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564683353839</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:1:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">12/72</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/93</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/73</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Log</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/94</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Log</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/54</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/55</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Log</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/80</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Log</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/116</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Log</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/101</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Log</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/115</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/100</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/79</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

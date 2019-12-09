@@ -1,0 +1,303 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="sqlScriptTestSelections" path="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/test/sqlScriptTestSelections" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="choice" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="resourcePath" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="resourceType" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="fromClause" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="sqlScript" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="Script" type="STRING">/*
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE sqlScriptTestSelections(
+	IN choice			INTEGER,
+	OUT resourcePath	LONGVARCHAR,
+	OUT resourceType	VARCHAR,
+	OUT fromClause		LONGVARCHAR,
+	OUT sqlScript		LONGVARCHAR
+)
+BEGIN
+	IF (choice = 0) then
+		set resourcePath = &apos;&apos;;
+		set resourceType = &apos;&apos;;
+		set fromClause = &apos;&apos;;
+		set sqlScript = &apos;&apos;;
+	END IF;
+
+	IF (choice = 1) then
+		set resourcePath = &apos;/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Formatting/cisOraDemoDS/CISORADEMO/Customers&apos;;
+		set resourceType = &apos;TABLE&apos;;
+		set fromClause = &apos;/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS CUSTOMERS&apos;;
+		set sqlScript = &apos;SELECT 
+	CAST(CASE CUSTOMERS.FAX_NUMBER  WHEN &apos;&apos;&apos;&apos;  THEN NULL ELSE CUSTOMERS.FAX_NUMBER  END AS VARCHAR(30)) AS FaxNumber,
+	CAST(CUSTOMERS.MOD_DT AS TIMESTAMP) AS ModifiedDate,
+	CAST(CURRENT_DATE() AS DATE) AS CurrentDate 
+FROM
+/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS CUSTOMERS&apos;;
+	END IF;
+
+	IF (choice = 2) then
+		set resourcePath = &apos;&apos;;
+		set resourceType = &apos;&apos;;
+		set fromClause = &apos;/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/File/testfile/&quot;test.file 2.txt&quot; &quot;test.file 2.txt&quot;,
+/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/File/testfile/&quot;test file 4.txt&quot; &quot;test file 4.txt&quot;&apos;;
+		set sqlScript = &apos;
+SELECT 
+	CAST(&quot;test.file 2.txt&quot;.id AS VARCHAR(255)) id,
+	&quot;test.file 2.txt&quot;.&quot;Description       &quot; &quot;Description       &quot;,
+	&quot;test.file 2.txt&quot;.&quot;value&quot; &quot;value&quot;,
+	&quot;test.file 2.txt&quot;.&quot; _ __col1 __&quot; &quot; _ __col1 __&quot;,
+	&quot;test.file 2.txt&quot;.&quot; col.a.b c&quot; &quot; col.a.b c&quot;,
+	&quot;test.file 2.txt&quot;.&quot; col.a.b/c&quot; &quot; col.a.b/c&quot;,
+	&quot;test.file 2.txt&quot;.&quot; (col.a.b c)&quot; &quot; (col.a.b c)&quot;,
+	&quot;test.file 2.txt&quot;.&quot;|| (col.a.b c)&quot; &quot; (col.a.b c)&quot;,
+	&quot;test file 4.txt&quot;.*
+FROM
+/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/File/testfile/&quot;test.file 2.txt&quot; &quot;test.file 2.txt&quot;,
+/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/File/testfile/&quot;test file 4.txt&quot; &quot;test file 4.txt&quot;
+&apos;;
+	END IF;
+
+	IF (choice = 3) then
+		set resourcePath = &apos;/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Formatting/testfile/test.file 2.txt&apos;;
+		set resourceType = &apos;TABLE&apos;;
+		set fromClause = &apos;/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/File/testfile/&quot;test.file 2.txt&quot; &quot;test.file 2.txt&quot;&apos;;
+		set sqlScript = &apos;
+SELECT 
+	&quot;test.file 2.txt&quot;.id id,
+	&quot;test.file 2.txt&quot;.&quot;Description       &quot; &quot;Description       &quot;,
+	&quot;test.file 2.txt&quot;.&quot;value&quot; &quot;value&quot;,
+	&quot;test.file 2.txt&quot;.&quot; _ __col1 __&quot; &quot; _ __col1 __&quot;,
+	&quot;test.file 2.txt&quot;.&quot; col.a.b c&quot; &quot; col.a.b c&quot; 
+FROM
+/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/File/testfile/&quot;test.file 2.txt&quot; &quot;test.file 2.txt&quot;&apos;;
+	END IF;
+
+	IF (choice = 4) then
+		set resourcePath = &apos;/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Formatting/testfile/Test.File 1&apos;;
+		set resourceType = &apos;TABLE&apos;;
+		set fromClause = &apos;/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/File/testfile/&quot;testfile.txt&quot; &quot;testfile.txt&quot;&apos;;
+		set sqlScript = &apos;SELECT 
+	CAST(&quot;testfile.txt&quot;.id AS INTEGER) AS ID,
+	CAST(&quot;testfile.txt&quot;.&quot;Description       &quot; AS VARCHAR(50)) AS Description,
+	CAST(&quot;testfile.txt&quot;.&quot;value&quot; || &apos;&apos; text&apos;&apos; AS VARCHAR(25)) AS colValue1,
+	CAST(case &quot;testfile.txt&quot;.&quot; _ __col1 __&quot;     when &apos;&apos;-&apos;&apos; then null    when &apos;&apos;NULL&apos;&apos; then null    else &quot;testfile.txt&quot;.&quot; _ __col1 __&quot; End AS VARCHAR(2)) AS colIdentifier,
+	CAST(case &quot;testfile.txt&quot;.&quot; col.a.b c&quot;     when &apos;&apos;-&apos;&apos; then null    when &apos;&apos;NULL&apos;&apos; then null    else &quot;testfile.txt&quot;.&quot; col.a.b c&quot; End AS VARCHAR(2)) AS colIdentifier2,
+	CAST(case substring(&quot;value&quot;,1,1)   when &apos;&apos;1&apos;&apos; then &apos;&apos;value 1&apos;&apos;   when &apos;&apos;2&apos;&apos; then &apos;&apos;value 2&apos;&apos;   when &apos;&apos;3&apos;&apos; then &apos;&apos;value 3&apos;&apos;   when &apos;&apos;4&apos;&apos; then &apos;&apos;value 4&apos;&apos;   when &apos;&apos;5&apos;&apos; then &apos;&apos;value 5&apos;&apos;   when &apos;&apos;6&apos;&apos; then &apos;&apos;value 6&apos;&apos;  else &apos;&apos;value 0&apos;&apos; end AS VARCHAR(10)) AS new_value_formatting,
+	CAST(id ||&apos;&apos;::&apos;&apos;|| &quot;value&quot; AS VARCHAR(255)) AS new_derived_column,
+	CAST(NULL AS VARCHAR(30)) AS new_null_column,
+	CAST(&quot;value&quot; AS VARCHAR(25)) AS colValue 
+FROM
+/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/File/testfile/&quot;testfile.txt&quot; &quot;testfile.txt&quot;&apos;;
+	END IF;
+
+	IF (choice = 5) then
+		set resourcePath = &apos;/shared/PNR/Physical/Formatting/SS_SSDS/EDW/VW_MonthlyProd_AccumPlusMaxPea&apos;;
+		set resourceType = &apos;TABLE&apos;;
+		set fromClause = &apos;/shared/PNR/Physical/Physical/SS_SSDS/EDW/view_MonthlyProd_AccumPlusMaxPeak view_MonthlyProd_AccumPlusMaxPeak&apos;;
+		set sqlScript = &apos;SELECT 
+    view_MonthlyProd_AccumPlusMaxPeak.Comp_sk, 
+    view_MonthlyProd_AccumPlusMaxPeak.UWI, 
+    view_MonthlyProd_AccumPlusMaxPeak.Well_Name &quot;Well Name&quot;, 
+    view_MonthlyProd_AccumPlusMaxPeak.Spud_DT &quot;Spud Date&quot;, 
+    view_MonthlyProd_AccumPlusMaxPeak.LAT, 
+    view_MonthlyProd_AccumPlusMaxPeak.LONG, 
+    view_MonthlyProd_AccumPlusMaxPeak.TVD, 
+    view_MonthlyProd_AccumPlusMaxPeak.Division, 
+    view_MonthlyProd_AccumPlusMaxPeak.OilCum1, 
+    view_MonthlyProd_AccumPlusMaxPeak.GasCum1, 
+    view_MonthlyProd_AccumPlusMaxPeak.WaterCum1, 
+    view_MonthlyProd_AccumPlusMaxPeak.BOECum1, 
+    view_MonthlyProd_AccumPlusMaxPeak.OilCum3, 
+    view_MonthlyProd_AccumPlusMaxPeak.GasCum3, 
+    view_MonthlyProd_AccumPlusMaxPeak.WaterCum3, 
+    view_MonthlyProd_AccumPlusMaxPeak.BOECum3, 
+    view_MonthlyProd_AccumPlusMaxPeak.OilCum6, 
+    view_MonthlyProd_AccumPlusMaxPeak.GasCum6, 
+    view_MonthlyProd_AccumPlusMaxPeak.WaterCum6, 
+    view_MonthlyProd_AccumPlusMaxPeak.BOECum6, 
+    view_MonthlyProd_AccumPlusMaxPeak.OilCum9, 
+    view_MonthlyProd_AccumPlusMaxPeak.GasCum9, 
+    view_MonthlyProd_AccumPlusMaxPeak.WaterCum9, 
+    view_MonthlyProd_AccumPlusMaxPeak.BOECum9, 
+    view_MonthlyProd_AccumPlusMaxPeak.OilCum12, 
+    view_MonthlyProd_AccumPlusMaxPeak.GasCum12, 
+    view_MonthlyProd_AccumPlusMaxPeak.WaterCum12, 
+    view_MonthlyProd_AccumPlusMaxPeak.BOECum12, 
+    view_MonthlyProd_AccumPlusMaxPeak.OilCum18, 
+    view_MonthlyProd_AccumPlusMaxPeak.GasCum18, 
+    view_MonthlyProd_AccumPlusMaxPeak.WaterCum18, 
+    view_MonthlyProd_AccumPlusMaxPeak.BOECum18, 
+    view_MonthlyProd_AccumPlusMaxPeak.OilCum24, 
+    view_MonthlyProd_AccumPlusMaxPeak.GasCum24, 
+    view_MonthlyProd_AccumPlusMaxPeak.WaterCum24, 
+    view_MonthlyProd_AccumPlusMaxPeak.BOECum24, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_SurrogateKey, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Comp_sk, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Oil_MonthRange_01_ProductionDate_AbsoluteMaximumPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Oil_MonthRange_01_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Oil_MonthRange_03_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Oil_MonthRange_06_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Oil_MonthRange_09_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Oil_MonthRange_12_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Oil_MonthRange_18_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Oil_MonthRange_24_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Gas_MonthRange_01_ProductionDate_AbsoluteMaximumPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Gas_MonthRange_01_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Gas_MonthRange_03_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Gas_MonthRange_06_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Gas_MonthRange_09_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Gas_MonthRange_12_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Gas_MonthRange_18_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Gas_MonthRange_24_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Water_MonthRange_01_ProductionDate_AbsoluteMaximumPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Water_MonthRange_01_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Water_MonthRange_03_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Water_MonthRange_06_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Water_MonthRange_09_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Water_MonthRange_12_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Water_MonthRange_18_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Water_MonthRange_24_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Boe_MonthRange_01_ProductionDate_AbsoluteMaximumPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Boe_MonthRange_01_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Boe_MonthRange_03_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Boe_MonthRange_06_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Boe_MonthRange_09_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Boe_MonthRange_12_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Boe_MonthRange_18_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_Boe_MonthRange_24_MaxPeak, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_DateTime_RowCreated, 
+    view_MonthlyProd_AccumPlusMaxPeak.maxPeak_DateTime_RowUpdated
+FROM      
+    /shared/PNR/Physical/Physical/SS_SSDS/EDW/view_MonthlyProd_AccumPlusMaxPeak view_MonthlyProd_AccumPlusMaxPeak&apos;;
+	END IF;
+
+	IF (choice = 6) then
+		set resourcePath = &apos;/shared/L3_Formatting_Layer/ORA_TOW/PD_OFM_EQUIP_HEADER&apos;;
+		set resourceType = &apos;TABLE&apos;;
+		set fromClause = &apos;/shared/L4_Physical_Layer/DataSources/ORA_TOW/TOWADMIN/PD_OFM_EQUIP_HEADER PD_OFM_EQUIP_HEADER&apos;;
+		set sqlScript = &apos;SELECT 
+    TRIM(PD_OFM_EQUIP_HEADER.DESK_NAME) DESK_NAME, 
+    PD_OFM_EQUIP_HEADER.FOREMAN, 
+    PD_OFM_EQUIP_HEADER.PUMPER, 
+    PD_OFM_EQUIP_HEADER.STOP_NAME, 
+    PD_OFM_EQUIP_HEADER.EQUIP_NAME, 
+    PD_OFM_EQUIP_HEADER.COUNTY_NAME, 
+    PD_OFM_EQUIP_HEADER.ST_PROV_NAME, 
+    PD_OFM_EQUIP_HEADER.STATION_NAME, 
+    PD_OFM_EQUIP_HEADER.MAJ_PROD_CD, 
+    PD_OFM_EQUIP_HEADER.EQUIP_TYPE, 
+    PD_OFM_EQUIP_HEADER.ROUTE_SK, 
+    PD_OFM_EQUIP_HEADER.STOP_SK, 
+    PD_OFM_EQUIP_HEADER.&quot;SupArea(HUAWCE)&quot;, 
+    PD_OFM_EQUIP_HEADER.EQUIP_SK, 
+    PD_OFM_EQUIP_HEADER.VOL_SRC_ID, 
+    PD_OFM_EQUIP_HEADER.DESK_SK
+FROM      
+    /shared/L4_Physical_Layer/DataSources/ORA_TOW/TOWADMIN/PD_OFM_EQUIP_HEADER PD_OFM_EQUIP_HEADER&apos;;
+	END IF;
+
+	IF (choice = 7) then
+		set resourcePath = &apos;/shared/BestPracticesTest/Physical/Metadata/Oracle/ORA_TOW/TOWADMIN/PD_OFM_EQUIP_HEADER&apos;;
+		set resourceType = &apos;TABLE&apos;;
+		set fromClause = &apos;/shared/BestPracticesTest/Physical/Metadata/Oracle/ORA_TOW/TOWADMIN/PD_OFM_EQUIP_HEADER PD_OFM_EQUIP_HEADER&apos;;
+		set sqlScript = &apos;SELECT 
+    CAST(PD_OFM_EQUIP_HEADER.&quot;SupArea(HUAWCE)&quot; AS INTEGER) &quot;SupArea(HUAWCE)&quot;
+FROM      
+   /shared/BestPracticesTest/Physical/Metadata/Oracle/ORA_TOW/TOWADMIN/PD_OFM_EQUIP_HEADER PD_OFM_EQUIP_HEADER&apos;;
+	END IF;
+
+	IF (choice = 8) then
+		set resourcePath = &apos;/shared/BestPracticesTest/Physical/Formatting/SS_SSDS_EDW/edw/dbo/SWAT30dayPriorNormalizedProduction2&apos;;
+		set resourceType = &apos;TABLE&apos;;
+		set fromClause = &apos;/shared/PNR/Physical/Metadata/SQL_Server/SS_SSDS_EDW/edw/dbo/&quot;SWAT30day prior normalized production&quot; SWAT30day_prior_normalized_production&apos;;
+		set sqlScript = &apos;SELECT * FROM /shared/PNR/Physical/Metadata/SQL_Server/SS_SSDS_EDW/edw/dbo/&quot;SWAT30day prior normalized production&quot; SWAT30day_prior_normalized_production&apos;;
+	END IF;
+
+	IF (choice = 9) then
+		set resourcePath = &apos;/shared/BestPracticesTest/Physical/Metadata/Oracle/ORA_TOW/TOWADMIN/PD_OFM_EQUIP_HEADER&apos;;
+		set resourceType = &apos;TABLE&apos;;
+		set fromClause = &apos;/shared/BestPracticesTest/Physical/Metadata/Oracle/ORA_TOW/TOWADMIN/PD_OFM_EQUIP_HEADER PD_OFM_EQUIP_HEADER&apos;;
+		set sqlScript = &apos;SELECT PD_OFM_EQUIP_HEADER.* FROM /shared/BestPracticesTest/Physical/Metadata/Oracle/ORA_TOW/TOWADMIN/PD_OFM_EQUIP_HEADER PD_OFM_EQUIP_HEADER&apos;;
+	END IF;
+
+	IF (choice = 10) then
+		set resourcePath = &apos;/shared/BestPracticesTest/Physical/Formatting/XML/ds_XML_Special/ProductcatalogTransformationSpecialchars&apos;;
+		set resourceType = &apos;TABLE&apos;;
+		set fromClause = &apos;/shared/BestPracticesTest/Physical/Formatting/Transformations/&quot;XML&quot;/ds_XML_Special/productCatalog_Transformation_SpecialChars() productCatalog_Transformation_SpecialChars&apos;;
+		set sqlScript = 
+&apos;SELECT 
+	CAST(productCatalog_Transformation_SpecialChars.&quot;Product ID&quot; AS NUMERIC(2147483647,0)) AS &quot;Product id&quot;,
+	CAST(productCatalog_Transformation_SpecialChars.&quot;Product Name&quot; AS VARCHAR(32768)) AS &quot;Product name&quot;,
+	CAST(productCatalog_Transformation_SpecialChars.&quot;Category,ID&quot; AS NUMERIC(2147483647,0)) AS &quot;Category,id&quot;,
+	CAST(productCatalog_Transformation_SpecialChars.&quot;Category, Name&quot; AS VARCHAR(32768)) AS &quot;Category, name&quot;,
+	CAST(productCatalog_Transformation_SpecialChars.ProductDescription AS VARCHAR(32768)) AS Productdescription,
+	CAST(productCatalog_Transformation_SpecialChars.SerialNumber AS VARCHAR(32768)) AS Serialnumber,
+	CAST(productCatalog_Transformation_SpecialChars.UnitPrice AS DECIMAL(32,6)) AS Unitprice,
+	CAST(productCatalog_Transformation_SpecialChars.ReorderLevel AS NUMERIC(2147483647,0)) AS Reorderlevel,
+	CAST(productCatalog_Transformation_SpecialChars.LeadTime AS VARCHAR(32768)) AS Leadtime 
+FROM
+/shared/BestPracticesTest/Physical/Formatting/Transformations/&quot;XML&quot;/ds_XML_Special/productCatalog_Transformation_SpecialChars() productCatalog_Transformation_SpecialChars&apos;;
+	END IF;
+
+
+END</attribute>
+  <attribute name="creationDate" type="LONG">1384687734160</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1557255382382</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

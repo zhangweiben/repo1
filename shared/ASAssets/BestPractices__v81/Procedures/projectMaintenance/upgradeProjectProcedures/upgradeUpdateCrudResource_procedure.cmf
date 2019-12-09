@@ -1,0 +1,629 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="upgradeUpdateCrudResource" path="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/upgradeUpdateCrudResource" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="scriptsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="projectPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="projectPathSrc" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="projectPathDst" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="inUpgradeVectorRow" direction="IN" nullable="true">
+      <datatype name="upgradeVector" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="upgradeType" type="TREE" refId="1">
+            <element name="bestPracticesVersionFrom">
+              <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+            </element>
+            <element name="bestPracticesVersionTo">
+              <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+            </element>
+            <element name="resourceAction">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="resourcePath">
+              <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+            </element>
+            <element name="resourceType">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="srcResource">
+              <datatype name="srcResource" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <datatype name="resourceType" referenceDefinitionSet="/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitions" referenceType="resourceType" type="TREE" refId="2">
+                    <element name="path">
+                      <datatype name="VARCHAR" referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+                    </element>
+                    <element name="type">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                  </datatype>
+                </itemDatatype>
+              </datatype>
+            </element>
+            <element name="dstResource">
+              <datatype name="dstResource" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <reference refId="2"/>
+                </itemDatatype>
+              </datatype>
+            </element>
+            <element name="updateStruct">
+              <datatype name="updateStruct" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <datatype name="updateType" type="TREE" refId="3">
+                    <element name="updateAction">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                    <element name="occurrence">
+                      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                    </element>
+                    <element name="numLines">
+                      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                    </element>
+                    <element name="keyTextVerify">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                    <element name="searchText">
+                      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+                    </element>
+                    <element name="replaceText">
+                      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+                    </element>
+                  </datatype>
+                </itemDatatype>
+              </datatype>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+    </parameter>
+    <parameter name="success" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/escapeSearchText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inSearchText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="searchText" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/upgradeUpdateResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="upgradeVectorRow" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="upgradeType" type="TREE" refId="2">
+              <element name="bestPracticesVersionFrom">
+                <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+              </element>
+              <element name="bestPracticesVersionTo">
+                <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+              </element>
+              <element name="resourceAction">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="resourcePath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="resourceType">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="srcResource">
+                <datatype name="srcResource" type="ARRAY" maxLength="0">
+                  <itemDatatype>
+                    <datatype name="resourceType" referenceDefinitionSet="/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitions" referenceType="resourceType" type="TREE" refId="3">
+                      <element name="path">
+                        <datatype name="VARCHAR" referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+                      </element>
+                      <element name="type">
+                        <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                      </element>
+                    </datatype>
+                  </itemDatatype>
+                </datatype>
+              </element>
+              <element name="dstResource">
+                <datatype name="dstResource" type="ARRAY" maxLength="0">
+                  <itemDatatype>
+                    <reference refId="3"/>
+                  </itemDatatype>
+                </datatype>
+              </element>
+              <element name="updateStruct">
+                <datatype name="updateStruct" type="ARRAY" maxLength="0">
+                  <itemDatatype>
+                    <datatype name="updateType" type="TREE" refId="4">
+                      <element name="updateAction">
+                        <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                      </element>
+                      <element name="occurrence">
+                        <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                      </element>
+                      <element name="numLines">
+                        <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                      </element>
+                      <element name="keyTextVerify">
+                        <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                      </element>
+                      <element name="searchText">
+                        <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="replaceText">
+                        <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+                      </element>
+                    </datatype>
+                  </itemDatatype>
+                </datatype>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/vector_crudProcedureVector" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="projectPathSrc" direction="IN">
+        <datatype type="STRING" maxLength="2048"/>
+      </element>
+      <element name="projectPathDst" direction="IN">
+        <datatype type="STRING" maxLength="2048"/>
+      </element>
+      <element name="updateStruct" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="updateType" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="updateType" type="TREE" refId="2">
+              <element name="updateAction">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="occurrence">
+                <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+              </element>
+              <element name="numLines">
+                <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+              </element>
+              <element name="keyTextVerify">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="searchText">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="replaceText">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="crudProcedureVector" direction="OUT">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="crudProcRow" type="TREE" refId="3">
+              <element name="updateAction">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="occurrence">
+                <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+              </element>
+              <element name="numLines">
+                <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+              </element>
+              <element name="searchText">
+                <datatype name="VARCHAR" type="STRING" maxLength="2048"/>
+              </element>
+              <element name="replaceText">
+                <datatype name="VARCHAR" type="STRING" maxLength="2048"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceListRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creationDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="creationDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="creatorUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creatorUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="lastModifiedDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="lastModifiedUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/searchResources" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="startingFolders" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="keywordList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="keywordOccurrence" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="force" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="startOrder">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="startPath">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="pos">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="keyword">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="keywordNum">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="occurrence">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="resourceText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	upgradeUpdateCrudResource:
+
+	This procedure is invoked by &quot;upgradeProject&quot; when the resource action=&quot;updateCrud&quot;.  This procedure updates a CRUD resource
+		from a destination path and type.  This procedure uses the &quot;updateStruct&quot; vector to provide additional direction
+		when updating procedure script text in place such as &quot;replace&quot;, &quot;replaceBefore&quot;, or &quot;replaceAfter&quot;.
+
+	Input: 
+		debug - &apos;Y&apos;=debug, &apos;N&apos;=do not debug
+		projectPath	- the path to the project begin upgraded
+		upgradeVectorRow - This is a single row from the upgradeVector which is defined below
+	Output:
+		success - 1=success, 0=fail
+	Exceptions: ex - throw an exception upon error
+
+	-----------------------------------------------------------------------------
+	The following defines the structures that are used for upgrading a project:
+	-----------------------------------------------------------------------------
+	DECLARE PUBLIC TYPE upgradeType ROW(
+		bestPracticesVersion	DOUBLE,					-- version of the best practices where the change is being applied
+		resourceAction			VARCHAR					-- action to take on the resource: 
+														--		     copy - copy srcResource to dstResource.  srcResource and dstResource required.  updateStruct is null.
+														--	                if resource type is CONTAINER then copy all resources
+														--	                if resource type is not CONTAINER then copy specific resource
+														--		copyLeave - copy srcResource to _Copy_#.  srcResource is required.  dstResource and updateStruct are null.
+														--	                Creates a copy of a resource and leaves the original in place. 
+														--	                The copy detects other copies an increments the number as needed in the format of _Copy_#
+														--	   copyRename - copy srcResource to _Copy_#.  srcResource is required.  dstResource and updateStruct are null.
+														--	                Creates a copy of a resource and renames the original to it.  The original is no longer present.
+														--	                The copy detects other copies an increments the number as needed in the format of _Copy_#
+														--	 copyChildren - copy the children of srcResource to dstResource.  srcResource and dstResource required.  updateStruct is null.
+														--	                Only copying from CONTAINER to CONTAINER is allowed.
+														--		   update - update dstResource using updateStruct.  srcResource is null.
+														--  updateTrigger - update all trigger resources found starting at dstResource using updateStruct.  srcResource is null.
+														--					 dstResource can be a single trigger or folder of triggers.
+														--	   updateCrud - update CRUD resources specified by dstResource using updateStruct.  srcResource is null.
+														--		   delete - delete dstResource.  srcResource and updateStruct are null.
+														--		     move - move srcResource to dstResource.  updateStruct is null.
+														--     moveCustom - move all custom scripts from srcResource folder to the specified dstResource folder. updateStruct is null.
+														--                  a custom resource is determined by finding a resource in dstResource that is not in the DataAbstraction_GENERIC_Template.
+														--         rebind - rebind srcResource to dstResource using startingFolder.  updateStruct is null.
+		resourcePath			VARCHAR(4000),			-- resource path of the resource or starting folder to be used with rebind action otherwise null.
+		resourceType			VARCHAR,				-- resource type of the resource to be used with rebind action otherwise null.
+		srcResource				VECTOR(resourceType), 	-- source reource is always a vector of 1
+		srcResource				VECTOR(resourceType), 	-- source reource is always a vector of 1
+		dstResource				VECTOR(resourceType),	-- destination resource may be an unbounded vector
+		updateStruct			VECTOR(updateType),		-- this structure is used when the resourceAction=update otherwise null
+	);
+	DECLARE PUBLIC TYPE resourceType 	ROW(
+		&quot;path&quot;		TypeDefinitions.pathType,	-- Path to resource
+		&quot;type&quot;		VARCHAR(255)				-- Resoruce type
+	);
+	DECLARE PUBLIC TYPE updateType ROW(
+		updateAction			VARCHAR,			-- update Action: 			replace, replaceBefore, replaceAfter [all actions are performed on a given resource]
+													-- updateTrigger Action: 	replacePath, replaceParam, fixParam [All actions are performed on a given trigger resource]
+		occurrence				INTEGER,			-- The occurrence of the searchText to act upon.  0=take action on all occurrences
+		numLines				INTEGER,			-- If updateAction=replaceBefore or replaceAfter, then then perform that action by searching
+													--   for the number of lines CHR(10) either before or after and placing the text at that location.
+		keyTextVerify			VARCHAR,			-- This is short unique text from the replaceText variable that allows the code to verify if the replace has already been done.
+		searchText				LONGVARCHAR,		-- The text to search for.  
+													-- If multiple occurrences are found the action may be taken according to the defined occurrence.
+													-- If the searchText is not found then no action is taken.
+		replaceText				LONGVARCHAR			-- The text to replace given the update action.
+	);
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	08/26/2013		Mike Tinius			6.1.0			Created new
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE upgradeUpdateCrudResource(	
+	IN debug					CHAR(1),	
+	IN scriptsPath				VARCHAR(4000), 	-- the full path to a project scripts path.  e.g. /shared/PROJECT/_scripts.  Don&apos;t put double quotes around the path.
+	-- This is the project path /shared/PROJECT
+	IN projectPath				VARCHAR(4000), 
+	IN projectPathSrc			VARCHAR(4000),
+	IN projectPathDst			VARCHAR(4000),
+	-- This is a single row from the upgradeVector	
+	IN inUpgradeVectorRow 		/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.upgradeVector,
+	OUT success					INTEGER
+)
+BEGIN
+	DECLARE moduleName					VARCHAR DEFAULT &apos;upgradeUpdateCrudResource&apos;;
+	DECLARE constantsPath				VARCHAR(4000);
+	-- This is a single row from the upgradeVector	
+	DECLARE upgradeVectorRow 			/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.upgradeVector DEFAULT inUpgradeVectorRow;
+	-- This is comes from vector_masterUpgradeVector and is release dependent.
+	DECLARE crudProcedureVector			VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/vector_crudProcedureVector.crudProcRow);
+	-- This is the baseline changes that need to be made no matter the release.
+	DECLARE defaultCrudProcedureVector	VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/vector_crudProcedureVector.crudProcRow);
+	DECLARE i,j							INTEGER DEFAULT 1;
+
+	DECLARE dstResource					VECTOR(/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitions.resourceType);	-- destination resource may be an unbounded vector
+	DECLARE updateStruct				VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.updateType);		-- this structure is used when the resourceAction=update otherwise null
+	DECLARE crudPath					VARCHAR(4000);
+	DECLARE ex							EXCEPTION;
+	DECLARE resourceAction				VARCHAR DEFAULT upgradeVectorRow[1].resourceAction;
+	DECLARE searchText					VARCHAR(4000);
+	DECLARE sqlStatement				LONGVARCHAR;
+	DECLARE curs						CURSOR(resourcePath VARCHAR(4000));
+	DECLARE resourceExists				BOOLEAN;
+	DECLARE resourceCount				INTEGER DEFAULT 0;
+
+
+	-- Iniitialize the upgrade vector
+	set upgradeVectorRow[1].resourceAction = &apos;update&apos;;
+	set upgradeVectorRow[1].resourcePath = null;
+	set upgradeVectorRow[1].resourceType = null;
+	set upgradeVectorRow[1].srcResource = null;
+
+	-- Apply reserved paths
+	call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(scriptsPath||&apos;/Constants&apos;, null, constantsPath);
+	set constantsPath = REPLACE(constantsPath||&apos;/&apos;,&apos;//&apos;,&apos;/&apos;);
+	-- Get the crud path
+	set sqlStatement = &apos;SELECT crudPath_ from &apos;|| constantsPath||&apos;defaultValues()&apos;;
+	call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;retrieve:    sqlStatement=&apos;||sqlStatement);
+	open curs for sqlStatement;
+	fetch curs into crudPath;
+	close curs;
+	set crudPath = REPLACE(crudPath, &apos;&quot;&apos;, &apos;&apos;); -- Remove double quotes around path parts.
+
+	call /lib/resource/ResourceExists(crudPath, &apos;CONTAINER&apos;, null, resourceExists);
+	if (not resourceExists) then
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;The CRUD path does not exist:  crudPath=&apos;||NVL(crudPath,&apos;null&apos;));
+	else
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;The CRUD path exists: crudPath=&apos;||NVL(crudPath,&apos;null&apos;));
+
+		-- Check to see if any resources exist in the CRUD folder
+		crudLoop:
+		for r as
+			SELECT name FROM /shared/ASAssets/Utilities/repository/getResourceListRecursive(crudPath, &apos;CONTAINER&apos;) 
+			WHERE resType &lt;&gt; &apos;CONTAINER&apos;
+		do
+			set resourceCount = resourceCount + 1;
+			leave crudLoop;
+		end for;
+
+		if (resourceCount = 0) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;There are no CRUD resources to process within the folder:  crudPath=&apos;||NVL(crudPath,&apos;null&apos;));
+		else
+			-- Get the default items for CRUD update and then add the &quot;updateVectorRow[1].updateStruct items to the end of the vector
+			call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/vector_crudProcedureVector(projectPathSrc, projectPathDst, upgradeVectorRow[1].updateStruct, crudProcedureVector);
+				-- This line is for testing purposes only.  Comment out the line above first and then uncomment this line.  Modify /test/vector_crudProcedureVector and test_vector_crudProcedureVector as needed.
+				--call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/test/vector_crudProcedureVector(projectPathSrc, projectPathDst, upgradeVectorRow[1].updateStruct, crudProcedureVector);
+
+			-- Initialize the update structure vector with the format and isEmpty procedures
+			set j = 1;
+			while (i &lt;= CARDINALITY(crudProcedureVector)) do
+				set updateStruct = VECTOR[(null)];
+				set updateStruct[j].updateAction = crudProcedureVector[i].updateAction;
+				set updateStruct[j].occurrence = crudProcedureVector[i].occurrence;
+				set updateStruct[j].numLines = crudProcedureVector[i].numLines;
+				set updateStruct[j].keyTextVerify = crudProcedureVector[i].replaceText;
+				set updateStruct[j].searchText = crudProcedureVector[i].searchText;
+				set updateStruct[j].replaceText = crudProcedureVector[i].replaceText;
+				set upgradeVectorRow[1].updateStruct = updateStruct;
+				set i = i + 1;
+
+				-- Escape any regex search characters
+				call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/escapeSearchText(updateStruct[j].searchText,searchText);
+
+				-- Log it
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  resourceAction=&apos;||resourceAction||&apos;   searchText=&apos;||NVL(searchText,&apos;null&apos;));
+
+				-- Search the folder for resources containing the searchText
+				for r as select * from /shared/ASAssets/Utilities/repository/searchResources(crudPath, searchText, &apos;1&apos;, 1) do
+					call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:      path=[&apos;||NVL(r.resourcePath,&apos;null&apos;)||&apos;]&apos;);
+
+					-- Initialize the destination path vector
+					set dstResource = VECTOR[(r.resourcePath, r.resourceType)];
+					-- Iniitialize the upgrade vector destination path
+					set upgradeVectorRow[1].dstResource = dstResource;
+
+					call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/upgradeUpdateResource(debug, upgradeVectorRow, success);
+					if (success = 0) then 
+						raise ex value &apos;The upgradeCrud action was not successful for resource=&apos;||upgradeVectorRow[1].dstResource[1].&quot;path&quot;;
+					end if;
+				end for;
+			end while;
+		end if;
+	end if;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573161757946</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:0:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:4:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

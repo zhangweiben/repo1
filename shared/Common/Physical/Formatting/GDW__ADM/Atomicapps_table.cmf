@@ -1,0 +1,229 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Atomicapps" path="/shared/Common/Physical/Formatting/GDW_ADM/Atomicapps" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="distb_nbr" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_nm" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rgn_desc" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sub_rgn_desc" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mrkt_clstr_desc" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="fiscl_yr_key_no" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="appdate" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="curr_day_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mo_yr_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="full_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mo_full_nm" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cmpl_mnth_curr_perf_yr_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="curr_mnth_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cm" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="fynum" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="dias" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_type" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="fyst" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/OnPremises/Oracle_GDW/AIUGGA2/ATOMICAPPS" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="DISTB_NBR">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="CNTRY_NM">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="SUB_RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="MRKT_CLSTR_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="FISCL_YR_KEY_NO">
+        <datatype type="INTEGER" minValue="-99999" maxValue="99999"/>
+      </element>
+      <element name="APPDATE">
+        <datatype type="INTEGER" minValue="-9999999999" maxValue="9999999999"/>
+      </element>
+      <element name="CURR_DAY_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="MO_YR_KEY_NO">
+        <datatype type="INTEGER" minValue="-9999999999" maxValue="9999999999"/>
+      </element>
+      <element name="FULL_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="MO_FULL_NM">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="CMPL_MNTH_CURR_PERF_YR_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="CURR_MNTH_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="CM">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="FYNUM">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="DIAS">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="IMC_TYPE">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="FYST">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(ATOMICAPPS.DISTB_NBR AS DOUBLE) AS distb_nbr,
+	CAST(ATOMICAPPS.CNTRY_NM AS VARCHAR(50)) AS cntry_nm,
+	CAST(ATOMICAPPS.RGN_DESC AS VARCHAR(30)) AS rgn_desc,
+	CAST(ATOMICAPPS.SUB_RGN_DESC AS VARCHAR(30)) AS sub_rgn_desc,
+	CAST(ATOMICAPPS.MRKT_CLSTR_DESC AS VARCHAR(30)) AS mrkt_clstr_desc,
+	CAST(ATOMICAPPS.FISCL_YR_KEY_NO AS INTEGER) AS fiscl_yr_key_no,
+	CAST(ATOMICAPPS.APPDATE AS BIGINT) AS appdate,
+	CAST(ATOMICAPPS.CURR_DAY_FLAG AS CHAR(1)) AS curr_day_flag,
+	CAST(ATOMICAPPS.MO_YR_KEY_NO AS BIGINT) AS mo_yr_key_no,
+	CAST(ATOMICAPPS.FULL_DT AS TIMESTAMP) AS full_dt,
+	CAST(ATOMICAPPS.MO_FULL_NM AS VARCHAR(10)) AS mo_full_nm,
+	CAST(ATOMICAPPS.CMPL_MNTH_CURR_PERF_YR_FLAG AS CHAR(1)) AS cmpl_mnth_curr_perf_yr_flag,
+	CAST(ATOMICAPPS.CURR_MNTH_FLAG AS CHAR(1)) AS curr_mnth_flag,
+	CAST(ATOMICAPPS.CM AS CHAR(1)) AS cm,
+	CAST(ATOMICAPPS.FYNUM AS DOUBLE) AS fynum,
+	CAST(ATOMICAPPS.DIAS AS DOUBLE) AS dias,
+	CAST(ATOMICAPPS.IMC_TYPE AS VARCHAR(15)) AS imc_type,
+	CAST(ATOMICAPPS.FYST AS CHAR(1)) AS fyst 
+FROM
+	/shared/Common/Physical/Metadata/OnPremises/Oracle_GDW/AIUGGA2/ATOMICAPPS ATOMICAPPS</attribute>
+  <attribute name="creationDate" type="LONG">1570035886401</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1570036000865</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1570035886401</attribute>
+</metadata>

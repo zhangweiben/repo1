@@ -1,0 +1,963 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Item_Master" path="/shared/Common/Business/Logical/General/Item_Master" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cntry_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_no" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="base_7_item_no" nullable="true">
+      <datatype type="STRING" maxLength="7"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_eng_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_long_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_type_cd" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_type_desc" nullable="true">
+      <datatype type="STRING" maxLength="270"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="uom_cd" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="uom_cd_desc" nullable="true">
+      <datatype type="STRING" maxLength="270"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_ship_qty" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_cs_qty" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_pall_qty" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="conv_to_ltu_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="local_src_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="logic_item_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sale_kit_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="brand_cd" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="brand_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="bus_ln_cd" nullable="true">
+      <datatype type="STRING" maxLength="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="bus_ln_desc" nullable="true">
+      <datatype type="STRING" maxLength="45"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_bus_ln_src" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_bus_ln_cd" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_bus_ln_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_ctgry_cd" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_ctgry_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_sub_ctgry_cd" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_sub_ctgry_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_brand_cd" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_brand_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_sub_brand_cd" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_sub_brand_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_fmly_cd" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_fmly_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_ind_cut_cd" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_ind_cut_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_grp_cd" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_grp_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_base_item_no" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_base_item_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/GDW/Awv00004_Cntry_Aff_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="cntry_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_short_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="amway_cntry_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_adr_1_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_adr_2_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_adr_3_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_city_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_st_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_post_cd">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_aff_strt_bus_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_cntac_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="cntry_bns_cntac_phn_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_track_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="cntry_track_phn_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_modem_phn_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_fax_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_ilb_acct_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_rward_nm">
+        <datatype type="STRING" minLength="10" maxLength="10"/>
+      </element>
+      <element name="cntry_curcy_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_curcy_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_curcy_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="cntry_rpt_curcy_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_rpt_curcy_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_rpt_curcy_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="as400_srvr_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="dms_lib_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="ims_lib_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="oms_lib_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="system_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_trsr_cd">
+        <datatype type="STRING" minLength="6" maxLength="6"/>
+      </element>
+      <element name="cntry_iso_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="cntry_iso_3char_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="gdw_imc_dim_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="gdw_ord_fact_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="euromon_cntry_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="atlas_cntry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="oper_unit">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="aff_id">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_short_nm">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="aff_adr_1_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_adr_2_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_adr_3_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_city_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_st_cd">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_post_cd">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_beg_fytd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_end_fytd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_top_lvl_ibo_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_remit_mgmt_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_pers_vol_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_mrkt_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_mrkt_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="aff_renew_type_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_renew_type_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="aff_amway_of_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_amway_ispon_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="rgn_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="rgn_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="sub_rgn_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="sub_rgn_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="mrkt_clstr_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="mrkt_clstr_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="gen_mgr_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="top_lvl_imc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/GDW/Dwv03000_Item_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="cntry_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="corp_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="item_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="curcy_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="item_launc_dt_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="mo_yr_curcy_comb_key_no">
+        <datatype type="STRING" maxLength="80"/>
+      </element>
+      <element name="item_price_eff_dt_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="whse_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="item_no">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="act_type">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="base_7_item_no">
+        <datatype type="STRING" maxLength="7"/>
+      </element>
+      <element name="brand_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="bus_ln_cd">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="bus_ln_desc">
+        <datatype type="STRING" maxLength="45"/>
+      </element>
+      <element name="comm_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="ctlg_item_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="ctlg_item_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="item_buyer_cd">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="item_buyer_desc">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="item_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="item_eng_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="item_long_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="item_plnr_cd">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="item_plnr_desc">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="item_type_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="item_type_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="item_vend_cd">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="item_vend_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+      <element name="prm_um_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="stat_cd">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="stat_desc">
+        <datatype type="STRING" maxLength="45"/>
+      </element>
+      <element name="ctgry_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="ctgry_desc">
+        <datatype type="STRING" maxLength="45"/>
+      </element>
+      <element name="sub_ctgry_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="sub_ctgry_desc">
+        <datatype type="STRING" maxLength="45"/>
+      </element>
+      <element name="uom_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="uom_cd_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="bns_bv_pct">
+        <datatype type="DECIMAL" maxDigits="6" maxFractionalDigits="4"/>
+      </element>
+      <element name="aff_cost_of_sales_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="meas_cr_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="xfr_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ada_base_dist_exp_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="clt_cs_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="clt_ea_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ibo_cs_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ibo_ea_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="item_cs_bv_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="item_cs_pv_lc_amt">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="4"/>
+      </element>
+      <element name="item_ea_bv_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="item_ea_pv_lc_amt">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="4"/>
+      </element>
+      <element name="mbr_cs_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="mbr_ea_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="postg_cs_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="postg_ea_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rtail_cs_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="rtail_ea_cost_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="item_ship_qty">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="item_cs_qty">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="item_pall_qty">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="conv_to_ltu_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="local_src_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="logic_item_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="sale_kit_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="jde_brand_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_brand_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_bus_ln_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_bus_ln_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_ctgry_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_sub_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_sub_ctgry_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="jde_fn_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_fn_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_frmt_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_frmt_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_indst_cut_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_indst_cut_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_pkg_type_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_pkg_type_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_size_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_size_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_subln_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_subln_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="jde_type_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="jde_type_desc">
+        <datatype type="STRING" maxLength="270"/>
+      </element>
+      <element name="rec_type_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="item_marg_valid_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="l070_prod_cd">
+        <datatype type="STRING" maxLength="7"/>
+      </element>
+      <element name="l070_prod_cd_desc">
+        <datatype type="STRING" maxLength="35"/>
+      </element>
+      <element name="l070_prod_cd_cumm_pos_2">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="l070_prod_cd_cumm_pos_3">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="l070_prod_cd_cumm_pos_4">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="l070_prod_cd_cumm_pos_5">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="l070_prod_cd_cumm_pos_6">
+        <datatype type="STRING" maxLength="6"/>
+      </element>
+      <element name="item_assmbly_type">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="item_bv_flg">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="item_sales_ctgry_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="item_sales_ctgry_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+      <element name="item_sales_div_cd">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="item_sales_div_desc">
+        <datatype type="STRING" maxLength="35"/>
+      </element>
+      <element name="item_sales_sub_div_cd">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="item_sales_sub_div_cd_desc">
+        <datatype type="STRING" maxLength="45"/>
+      </element>
+      <element name="item_vds">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="item_vds_type">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="item_vmi_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="glbl_bus_ln_src">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="glbl_bus_ln_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_bus_ln_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_sub_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_sub_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_brand_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_sub_brand_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_sub_brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_prdct_fmly_cd">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="glbl_prdct_fmly_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="glbl_prdct_ind_cut_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="glbl_prdct_ind_cut_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="glbl_prdct_grp_cd">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="glbl_prdct_grp_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_base_item_no">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="glbl_base_item_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="item_harm_cd">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="item_food_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="lcl_brand_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="lcl_brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="lcl_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="lcl_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="lcl_sub_ctgry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="lcl_sub_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="lcl_prdct_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="lcl_prdct_eng_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="lcl_prdct_lcl_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="lc_unit_cost_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="lc_xfr_cost_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="lc_duty_rt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="insrt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="updt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="glbl_bus_ln_ovrride_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="glbl_bus_ln_src_ori">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="glbl_gph_ovrride_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    Awv00004_Cntry_Aff_Dim.amway_cntry_cd corp_cd, 
+    Dwv03000_Item_Dim.cntry_key_no, 
+    Dwv03000_Item_Dim.item_key_no, 
+    Dwv03000_Item_Dim.item_no, 
+    Dwv03000_Item_Dim.base_7_item_no, 
+    Dwv03000_Item_Dim.item_desc, 
+    Dwv03000_Item_Dim.item_eng_desc, 
+    Dwv03000_Item_Dim.item_long_desc, 
+    Dwv03000_Item_Dim.item_type_cd, 
+    Dwv03000_Item_Dim.item_type_desc, 
+    Dwv03000_Item_Dim.uom_cd, 
+    Dwv03000_Item_Dim.uom_cd_desc, 
+    Dwv03000_Item_Dim.item_ship_qty, 
+    Dwv03000_Item_Dim.item_cs_qty, 
+    Dwv03000_Item_Dim.item_pall_qty, 
+    Dwv03000_Item_Dim.conv_to_ltu_flg, 
+    Dwv03000_Item_Dim.local_src_flg, 
+    Dwv03000_Item_Dim.logic_item_flg, 
+    Dwv03000_Item_Dim.sale_kit_flg, 
+    Dwv03000_Item_Dim.brand_cd, 
+    Dwv03000_Item_Dim.brand_desc, 
+    Dwv03000_Item_Dim.bus_ln_cd, 
+    Dwv03000_Item_Dim.bus_ln_desc, 
+    Dwv03000_Item_Dim.glbl_bus_ln_src, 
+    Dwv03000_Item_Dim.glbl_bus_ln_cd, 
+    Dwv03000_Item_Dim.glbl_bus_ln_desc, 
+    Dwv03000_Item_Dim.glbl_ctgry_cd, 
+    Dwv03000_Item_Dim.glbl_ctgry_desc, 
+    Dwv03000_Item_Dim.glbl_sub_ctgry_cd, 
+    Dwv03000_Item_Dim.glbl_sub_ctgry_desc, 
+    Dwv03000_Item_Dim.glbl_brand_cd, 
+    Dwv03000_Item_Dim.glbl_brand_desc, 
+    Dwv03000_Item_Dim.glbl_sub_brand_cd, 
+    Dwv03000_Item_Dim.glbl_sub_brand_desc, 
+    Dwv03000_Item_Dim.glbl_prdct_fmly_cd, 
+    Dwv03000_Item_Dim.glbl_prdct_fmly_desc, 
+    Dwv03000_Item_Dim.glbl_prdct_ind_cut_cd, 
+    Dwv03000_Item_Dim.glbl_prdct_ind_cut_desc, 
+    Dwv03000_Item_Dim.glbl_prdct_grp_cd, 
+    Dwv03000_Item_Dim.glbl_prdct_grp_desc, 
+    Dwv03000_Item_Dim.glbl_base_item_no, 
+    Dwv03000_Item_Dim.glbl_base_item_desc
+FROM      
+    /shared/Common/Physical/Formatting/GDW/Dwv03000_Item_Dim Dwv03000_Item_Dim INNER JOIN 
+        /shared/Common/Physical/Formatting/GDW/Awv00004_Cntry_Aff_Dim Awv00004_Cntry_Aff_Dim
+    ON Dwv03000_Item_Dim.cntry_key_no = Awv00004_Cntry_Aff_Dim.cntry_key_no</attribute>
+  <attribute name="creationDate" type="LONG">1556648629572</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1567705095647</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="BYTE_ARRAY">EIEJBAAAAAMQUQYBABYAQQB3AHYAMAAwADAAMAA0AF8AQwBuAHQAcgB5AF8AQQBmAGYAXwBEAGkAbQYCABYAQQB3AHYAMAAwADAAMAA0AF8AQwBuAHQAcgB5AF8AQQBmAGYAXwBEAGkAbQML/////wMK/////wMM/////wsRAAYABgBzAGgAYQByAGUAZAAGAEMAbwBtAG0AbwBuAAgAUABoAHkAcwBpAGMAYQBsAAoARgBvAHIAbQBhAHQAdABpAG4AZwADAEcARABXABYAQQB3AHYAMAAwADAAMAA0AF8AQwBuAHQAcgB5AF8AQQBmAGYAXwBEAGkAbf//EFEGAQARAEQAdwB2ADAAMwAwADAAMABfAEkAdABlAG0AXwBEAGkAbQYCABEARAB3AHYAMAAzADAAMAAwAF8ASQB0AGUAbQBfAEQAaQBtAwv/////Awr/////Awz/////CxEABgAGAHMAaABhAHIAZQBkAAYAQwBvAG0AbQBvAG4ACABQAGgAeQBzAGkAYwBhAGwACgBGAG8AcgBtAGEAdAB0AGkAbgBnAAMARwBEAFcAEQBEAHcAdgAwADMAMAAwADAAXwBJAHQAZQBtAF8ARABpAG3//xBTBgkABQBJAE4ATgBFAFIDDQAAAAEDDgAAAAAIDxBiBgcAAQA9AQUACAMQQQYBAAwAYwBuAHQAcgB5AF8AawBlAHkAXwBuAG8GAgAABgP//wYE//8DCv////8IDBAZAxIAAAABBAeAAAAAAAAAAP//AwsAAAAB//8IBBBBBgEADABjAG4AdAByAHkAXwBrAGUAeQBfAG4AbwYCAAAGA///BgT//wMK/////wgMEBkDEgAAAAEEB4AAAAAAAAAA//8DCwAAAAD///////8DBQAAAAEIAhAxBgH//wECAQEGAAEDAAEEAAEFAAMHAAAAAAcJAAAAAQAAAAIJCgAAACoQQQYBAA4AYQBtAHcAYQB5AF8AYwBuAHQAcgB5AF8AYwBkBgIABwBjAG8AcgBwAF8AYwBkBgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAwQEAAAAAAAAAAMBEwH//wMLAAAAAP//EEEGAQAMAGMAbgB0AHIAeQBfAGsAZQB5AF8AbgBvBgIAAAYD//8GBP//Awr/////CAwQGQMSAAAAAQQHgAAAAAAAAAD//wMLAAAAAf//EEEGAQALAGkAdABlAG0AXwBrAGUAeQBfAG4AbwYCAAAGA///BgT//wMK/////wgMEBkDEgAAAAEEB4AAAAAAAAAA//8DCwAAAAH//xBBBgEABwBpAHQAZQBtAF8AbgBvBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAA8BEwH//wMLAAAAAf//EEEGAQAOAGIAYQBzAGUAXwA3AF8AaQB0AGUAbQBfAG4AbwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAAHARMB//8DCwAAAAH//xBBBgEACQBpAHQAZQBtAF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAEsARMB//8DCwAAAAH//xBBBgEADQBpAHQAZQBtAF8AZQBuAGcAXwBkAGUAcwBjBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAASwBEwH//wMLAAAAAf//EEEGAQAOAGkAdABlAG0AXwBsAG8AbgBnAF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAEsARMB//8DCwAAAAH//xBBBgEADABpAHQAZQBtAF8AdAB5AHAAZQBfAGMAZAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAAKARMB//8DCwAAAAH//xBBBgEADgBpAHQAZQBtAF8AdAB5AHAAZQBfAGQAZQBzAGMGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAABDgETAf//AwsAAAAB//8QQQYBAAYAdQBvAG0AXwBjAGQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAACgETAf//AwsAAAAB//8QQQYBAAsAdQBvAG0AXwBjAGQAXwBkAGUAcwBjBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAQ4BEwH//wMLAAAAAf//EEEGAQANAGkAdABlAG0AXwBzAGgAaQBwAF8AcQB0AHkGAgAABgP//wYE//8DCv////8IDBAZAxIAAAABBAeAAAAAAAAAAP//AwsAAAAB//8QQQYBAAsAaQB0AGUAbQBfAGMAcwBfAHEAdAB5BgIAAAYD//8GBP//Awr/////CAwQGQMSAAAAAQQHgAAAAAAAAAD//wMLAAAAAf//EEEGAQANAGkAdABlAG0AXwBwAGEAbABsAF8AcQB0AHkGAgAABgP//wYE//8DCv////8IDBAZAxIAAAABBAeAAAAAAAAAAP//AwsAAAAB//8QQQYBAA8AYwBvAG4AdgBfAHQAbwBfAGwAdAB1AF8AZgBsAGcGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAQQEAAAAAAAAAAEBEwH//wMLAAAAAf//EEEGAQANAGwAbwBjAGEAbABfAHMAcgBjAF8AZgBsAGcGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAQQEAAAAAAAAAAEBEwH//wMLAAAAAf//EEEGAQAOAGwAbwBnAGkAYwBfAGkAdABlAG0AXwBmAGwAZwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAABBAQAAAAAAAAAAQETAf//AwsAAAAB//8QQQYBAAwAcwBhAGwAZQBfAGsAaQB0AF8AZgBsAGcGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAQQEAAAAAAAAAAEBEwH//wMLAAAAAf//EEEGAQAIAGIAcgBhAG4AZABfAGMAZAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAADARMB//8DCwAAAAH//xBBBgEACgBiAHIAYQBuAGQAXwBkAGUAcwBjBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAGQBEwH//wMLAAAAAf//EEEGAQAJAGIAdQBzAF8AbABuAF8AYwBkBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAAwBEwH//wMLAAAAAf//EEEGAQALAGIAdQBzAF8AbABuAF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAAtARMB//8DCwAAAAH//xBBBgEADwBnAGwAYgBsAF8AYgB1AHMAXwBsAG4AXwBzAHIAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAADARMB//8DCwAAAAH//xBBBgEADgBnAGwAYgBsAF8AYgB1AHMAXwBsAG4AXwBjAGQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAACgETAf//AwsAAAAB//8QQQYBABAAZwBsAGIAbABfAGIAdQBzAF8AbABuAF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAABkARMB//8DCwAAAAH//xBBBgEADQBnAGwAYgBsAF8AYwB0AGcAcgB5AF8AYwBkBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAAoBEwH//wMLAAAAAf//EEEGAQAPAGcAbABiAGwAXwBjAHQAZwByAHkAXwBkAGUAcwBjBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAGQBEwH//wMLAAAAAf//EEEGAQARAGcAbABiAGwAXwBzAHUAYgBfAGMAdABnAHIAeQBfAGMAZAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAAKARMB//8DCwAAAAH//xBBBgEAEwBnAGwAYgBsAF8AcwB1AGIAXwBjAHQAZwByAHkAXwBkAGUAcwBjBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAGQBEwH//wMLAAAAAf//EEEGAQANAGcAbABiAGwAXwBiAHIAYQBuAGQAXwBjAGQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAACgETAf//AwsAAAAB//8QQQYBAA8AZwBsAGIAbABfAGIAcgBhAG4AZABfAGQAZQBzAGMGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAAZAETAf//AwsAAAAB//8QQQYBABEAZwBsAGIAbABfAHMAdQBiAF8AYgByAGEAbgBkAF8AYwBkBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAAoBEwH//wMLAAAAAf//EEEGAQATAGcAbABiAGwAXwBzAHUAYgBfAGIAcgBhAG4AZABfAGQAZQBzAGMGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAAZAETAf//AwsAAAAB//8QQQYBABIAZwBsAGIAbABfAHAAcgBkAGMAdABfAGYAbQBsAHkAXwBjAGQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAAHgETAf//AwsAAAAB//8QQQYBABQAZwBsAGIAbABfAHAAcgBkAGMAdABfAGYAbQBsAHkAXwBkAGUAcwBjBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAASwBEwH//wMLAAAAAf//EEEGAQAVAGcAbABiAGwAXwBwAHIAZABjAHQAXwBpAG4AZABfAGMAdQB0AF8AYwBkBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAAoBEwH//wMLAAAAAf//EEEGAQAXAGcAbABiAGwAXwBwAHIAZABjAHQAXwBpAG4AZABfAGMAdQB0AF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAEsARMB//8DCwAAAAH//xBBBgEAEQBnAGwAYgBsAF8AcAByAGQAYwB0AF8AZwByAHAAXwBjAGQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAAFAETAf//AwsAAAAB//8QQQYBABMAZwBsAGIAbABfAHAAcgBkAGMAdABfAGcAcgBwAF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAPoARMB//8DCwAAAAH//xBBBgEAEQBnAGwAYgBsAF8AYgBhAHMAZQBfAGkAdABlAG0AXwBuAG8GAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAAPAETAf//AwsAAAAB//8QQQYBABMAZwBsAGIAbABfAGIAYQBzAGUAXwBpAHQAZQBtAF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAABkARMB//8DCwAAAAH/////CQYAAAADEIIDCgAAARgDCwAAAB4DDAAAAMgDDQAAAMj//xCCAwoAAAAeAwsAAAAeAwwAAADIAw0AAADI//8QggMK/////wML/////wMM/////wMN////////CAMQcQMBAAAACwMCAAAAMgkDAAACJhB0AwYAAAAA//8QcgYEAAcAYwBvAHIAcABfAGMAZP//EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAAf//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAC//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAP//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAABP//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAF//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAb//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAB///EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAI//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAn//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAACv//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAL//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAz//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAADf//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAO//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAA///xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAEP//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAR//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABL//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAE///EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAU//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABX//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAFv//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAX//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABj//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAGf//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAa//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABv//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAHP//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAd//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAB7//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAH///EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAg//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAACH//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAIv//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAj//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAACT//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAJf//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAm//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAACf//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAKP//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAp//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb///////8=</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1556648629572</attribute>
+</metadata>

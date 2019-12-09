@@ -1,0 +1,768 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Country_Affiliate" path="/shared/Common/Business/Logical/General/Country_Affiliate" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="cntry_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_short_nm" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amway_cntry_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_nm" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_adr_1_desc" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_adr_2_desc" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_adr_3_desc" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_city_nm" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_st_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_post_cd" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_aff_strt_bus_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_cntac_nm" nullable="true">
+      <datatype type="STRING" minLength="25" maxLength="25"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_bns_cntac_phn_no" nullable="true">
+      <datatype type="STRING" minLength="14" maxLength="14"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_track_nm" nullable="true">
+      <datatype type="STRING" minLength="25" maxLength="25"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_track_phn_no" nullable="true">
+      <datatype type="STRING" minLength="14" maxLength="14"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_modem_phn_no" nullable="true">
+      <datatype type="STRING" minLength="14" maxLength="14"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_fax_no" nullable="true">
+      <datatype type="STRING" minLength="14" maxLength="14"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_ilb_acct_no" nullable="true">
+      <datatype type="STRING" minLength="14" maxLength="14"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_rward_nm" nullable="true">
+      <datatype type="STRING" minLength="10" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_curcy_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_curcy_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_curcy_desc" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_rpt_curcy_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_rpt_curcy_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_rpt_curcy_desc" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="as400_srvr_nm" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="dms_lib_nm" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ims_lib_nm" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="oms_lib_nm" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="system_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_trsr_cd" nullable="true">
+      <datatype type="STRING" minLength="6" maxLength="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_iso_cd" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_iso_3char_cd" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="gdw_imc_dim_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="gdw_ord_fact_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="euromon_cntry_cd" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="atlas_cntry_cd" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="oper_unit" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_id" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_desc" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_short_nm" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_adr_1_desc" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_adr_2_desc" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_adr_3_desc" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_city_nm" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_st_cd" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_post_cd" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_beg_fytd_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_end_fytd_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_top_lvl_ibo_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_remit_mgmt_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_pers_vol_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_mrkt_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_mrkt_desc" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_renew_type_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_renew_type_desc" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_amway_of_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_amway_ispon_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rgn_cd" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rgn_desc" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sub_rgn_cd" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sub_rgn_desc" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mrkt_clstr_cd" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mrkt_clstr_desc" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="gen_mgr_desc" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="top_lvl_imc_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/GDW/Awv00004_Cntry_Aff_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="cntry_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_short_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="amway_cntry_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_adr_1_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_adr_2_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_adr_3_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_city_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_st_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_post_cd">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="cntry_aff_strt_bus_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_cntac_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="cntry_bns_cntac_phn_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_track_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="cntry_track_phn_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_modem_phn_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_fax_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_ilb_acct_no">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="cntry_rward_nm">
+        <datatype type="STRING" minLength="10" maxLength="10"/>
+      </element>
+      <element name="cntry_curcy_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_curcy_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_curcy_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="cntry_rpt_curcy_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_rpt_curcy_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_rpt_curcy_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="as400_srvr_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="dms_lib_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="ims_lib_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="oms_lib_nm">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="system_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="cntry_trsr_cd">
+        <datatype type="STRING" minLength="6" maxLength="6"/>
+      </element>
+      <element name="cntry_iso_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="cntry_iso_3char_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="gdw_imc_dim_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="gdw_ord_fact_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="euromon_cntry_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="atlas_cntry_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="oper_unit">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="aff_id">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_short_nm">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="aff_adr_1_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_adr_2_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_adr_3_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_city_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_st_cd">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_post_cd">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_beg_fytd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_end_fytd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_top_lvl_ibo_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_remit_mgmt_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_pers_vol_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_mrkt_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_mrkt_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="aff_renew_type_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="aff_renew_type_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="aff_amway_of_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_amway_ispon_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="rgn_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="rgn_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="sub_rgn_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="sub_rgn_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="mrkt_clstr_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="mrkt_clstr_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="gen_mgr_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="top_lvl_imc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    Awv00004_Cntry_Aff_Dim.cntry_key_no cntry_key_no, 
+    Awv00004_Cntry_Aff_Dim.cntry_short_nm cntry_short_nm, 
+    Awv00004_Cntry_Aff_Dim.amway_cntry_cd amway_cntry_cd, 
+    Awv00004_Cntry_Aff_Dim.cntry_nm cntry_nm, 
+    Awv00004_Cntry_Aff_Dim.cntry_adr_1_desc cntry_adr_1_desc, 
+    Awv00004_Cntry_Aff_Dim.cntry_adr_2_desc cntry_adr_2_desc, 
+    Awv00004_Cntry_Aff_Dim.cntry_adr_3_desc cntry_adr_3_desc, 
+    Awv00004_Cntry_Aff_Dim.cntry_city_nm cntry_city_nm, 
+    Awv00004_Cntry_Aff_Dim.cntry_st_cd cntry_st_cd, 
+    Awv00004_Cntry_Aff_Dim.cntry_post_cd cntry_post_cd, 
+    Awv00004_Cntry_Aff_Dim.cntry_aff_strt_bus_key_no cntry_aff_strt_bus_key_no, 
+    Awv00004_Cntry_Aff_Dim.cntry_cntac_nm cntry_cntac_nm, 
+    Awv00004_Cntry_Aff_Dim.cntry_bns_cntac_phn_no cntry_bns_cntac_phn_no, 
+    Awv00004_Cntry_Aff_Dim.cntry_track_nm cntry_track_nm, 
+    Awv00004_Cntry_Aff_Dim.cntry_track_phn_no cntry_track_phn_no, 
+    Awv00004_Cntry_Aff_Dim.cntry_modem_phn_no cntry_modem_phn_no, 
+    Awv00004_Cntry_Aff_Dim.cntry_fax_no cntry_fax_no, 
+    Awv00004_Cntry_Aff_Dim.cntry_ilb_acct_no cntry_ilb_acct_no, 
+    Awv00004_Cntry_Aff_Dim.cntry_rward_nm cntry_rward_nm, 
+    Awv00004_Cntry_Aff_Dim.cntry_curcy_key_no cntry_curcy_key_no, 
+    Awv00004_Cntry_Aff_Dim.cntry_curcy_cd cntry_curcy_cd, 
+    Awv00004_Cntry_Aff_Dim.cntry_curcy_desc cntry_curcy_desc, 
+    Awv00004_Cntry_Aff_Dim.cntry_rpt_curcy_key_no cntry_rpt_curcy_key_no, 
+    Awv00004_Cntry_Aff_Dim.cntry_rpt_curcy_cd cntry_rpt_curcy_cd, 
+    Awv00004_Cntry_Aff_Dim.cntry_rpt_curcy_desc cntry_rpt_curcy_desc, 
+    Awv00004_Cntry_Aff_Dim.as400_srvr_nm as400_srvr_nm, 
+    Awv00004_Cntry_Aff_Dim.dms_lib_nm dms_lib_nm, 
+    Awv00004_Cntry_Aff_Dim.ims_lib_nm ims_lib_nm, 
+    Awv00004_Cntry_Aff_Dim.oms_lib_nm oms_lib_nm, 
+    Awv00004_Cntry_Aff_Dim.system_cd system_cd, 
+    Awv00004_Cntry_Aff_Dim.aff_key_no aff_key_no, 
+    Awv00004_Cntry_Aff_Dim.cntry_trsr_cd cntry_trsr_cd, 
+    Awv00004_Cntry_Aff_Dim.cntry_iso_cd cntry_iso_cd, 
+    Awv00004_Cntry_Aff_Dim.cntry_iso_3char_cd cntry_iso_3char_cd, 
+    Awv00004_Cntry_Aff_Dim.gdw_imc_dim_flg gdw_imc_dim_flg, 
+    Awv00004_Cntry_Aff_Dim.gdw_ord_fact_flg gdw_ord_fact_flg, 
+    Awv00004_Cntry_Aff_Dim.euromon_cntry_cd euromon_cntry_cd, 
+    Awv00004_Cntry_Aff_Dim.atlas_cntry_cd atlas_cntry_cd, 
+    Awv00004_Cntry_Aff_Dim.oper_unit oper_unit, 
+    Awv00004_Cntry_Aff_Dim.aff_id aff_id, 
+    Awv00004_Cntry_Aff_Dim.aff_desc aff_desc, 
+    Awv00004_Cntry_Aff_Dim.aff_short_nm aff_short_nm, 
+    Awv00004_Cntry_Aff_Dim.aff_adr_1_desc aff_adr_1_desc, 
+    Awv00004_Cntry_Aff_Dim.aff_adr_2_desc aff_adr_2_desc, 
+    Awv00004_Cntry_Aff_Dim.aff_adr_3_desc aff_adr_3_desc, 
+    Awv00004_Cntry_Aff_Dim.aff_city_nm aff_city_nm, 
+    Awv00004_Cntry_Aff_Dim.aff_st_cd aff_st_cd, 
+    Awv00004_Cntry_Aff_Dim.aff_post_cd aff_post_cd, 
+    Awv00004_Cntry_Aff_Dim.aff_beg_fytd_key_no aff_beg_fytd_key_no, 
+    Awv00004_Cntry_Aff_Dim.aff_end_fytd_key_no aff_end_fytd_key_no, 
+    Awv00004_Cntry_Aff_Dim.aff_top_lvl_ibo_no aff_top_lvl_ibo_no, 
+    Awv00004_Cntry_Aff_Dim.aff_remit_mgmt_flg aff_remit_mgmt_flg, 
+    Awv00004_Cntry_Aff_Dim.aff_pers_vol_flg aff_pers_vol_flg, 
+    Awv00004_Cntry_Aff_Dim.aff_mrkt_cd aff_mrkt_cd, 
+    Awv00004_Cntry_Aff_Dim.aff_mrkt_desc aff_mrkt_desc, 
+    Awv00004_Cntry_Aff_Dim.aff_renew_type_cd aff_renew_type_cd, 
+    Awv00004_Cntry_Aff_Dim.aff_renew_type_desc aff_renew_type_desc, 
+    Awv00004_Cntry_Aff_Dim.aff_amway_of_no aff_amway_of_no, 
+    Awv00004_Cntry_Aff_Dim.aff_amway_ispon_no aff_amway_ispon_no, 
+    Awv00004_Cntry_Aff_Dim.rgn_cd rgn_cd, 
+    Awv00004_Cntry_Aff_Dim.rgn_desc rgn_desc, 
+    Awv00004_Cntry_Aff_Dim.sub_rgn_cd sub_rgn_cd, 
+    Awv00004_Cntry_Aff_Dim.sub_rgn_desc sub_rgn_desc, 
+    Awv00004_Cntry_Aff_Dim.mrkt_clstr_cd mrkt_clstr_cd, 
+    Awv00004_Cntry_Aff_Dim.mrkt_clstr_desc mrkt_clstr_desc, 
+    Awv00004_Cntry_Aff_Dim.gen_mgr_desc gen_mgr_desc, 
+    Awv00004_Cntry_Aff_Dim.top_lvl_imc_key_no top_lvl_imc_key_no
+FROM      
+    /shared/Common/Physical/Formatting/GDW/Awv00004_Cntry_Aff_Dim Awv00004_Cntry_Aff_Dim</attribute>
+  <attribute name="creationDate" type="LONG">1557497289602</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="BYTE_ARRAY">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AwoAAAAeAwsAAAAeAwwAAADIAw0AAADI//8IAxBxAwEAAAALAwIAAABECQMAAALsEHQDBgAAAAD//xByBgQADABjAG4AdAByAHkAXwBrAGUAeQBfAG4Ab///EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAAf//EHIGBAAOAGMAbgB0AHIAeQBfAHMAaABvAHIAdABfAG4Abf//EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAAv//EHIGBAAOAGEAbQB3AGEAeQBfAGMAbgB0AHIAeQBfAGMAZP//EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAA///EHIGBAAIAGMAbgB0AHIAeQBfAG4Abf//EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAABP//EHIGBAAQAGMAbgB0AHIAeQBfAGEAZAByAF8AMQBfAGQAZQBzAGP//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAX//xByBgQAEABjAG4AdAByAHkAXwBhAGQAcgBfADIAXwBkAGUAcwBj//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAG//8QcgYEABAAYwBuAHQAcgB5AF8AYQBkAHIAXwAzAF8AZABlAHMAY///EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAB///EHIGBAANAGMAbgB0AHIAeQBfAGMAaQB0AHkAXwBuAG3//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAj//xByBgQACwBjAG4AdAByAHkAXwBzAHQAXwBjAGT//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAn//xByBgQADQBjAG4AdAByAHkAXwBwAG8AcwB0AF8AYwBk//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAK//8QcgYEABkAYwBuAHQAcgB5AF8AYQBmAGYAXwBzAHQAcgB0AF8AYgB1AHMAXwBrAGUAeQBfAG4Ab///EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAC///EHIGBAAOAGMAbgB0AHIAeQBfAGMAbgB0AGEAYwBfAG4Abf//EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAADP//EHIGBAAWAGMAbgB0AHIAeQBfAGIAbgBzAF8AYwBuAHQAYQBjAF8AcABoAG4AXwBuAG///xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAA3//xByBgQADgBjAG4AdAByAHkAXwB0AHIAYQBjAGsAXwBuAG3//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAA7//xByBgQAEgBjAG4AdAByAHkAXwB0AHIAYQBjAGsAXwBwAGgAbgBfAG4Ab///EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAD///EHIGBAASAGMAbgB0AHIAeQBfAG0AbwBkAGUAbQBfAHAAaABuAF8AbgBv//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAQ//8QcgYEAAwAYwBuAHQAcgB5AF8AZgBhAHgAXwBuAG///xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABH//xByBgQAEQBjAG4AdAByAHkAXwBpAGwAYgBfAGEAYwBjAHQAXwBuAG///xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABL//xByBgQADgBjAG4AdAByAHkAXwByAHcAYQByAGQAXwBuAG3//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABP//xByBgQAEgBjAG4AdAByAHkAXwBjAHUAcgBjAHkAXwBrAGUAeQBfAG4Ab///EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAFP//EHIGBAAOAGMAbgB0AHIAeQBfAGMAdQByAGMAeQBfAGMAZP//EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAFf//EHIGBAAQAGMAbgB0AHIAeQBfAGMAdQByAGMAeQBfAGQAZQBzAGP//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABb//xByBgQAFgBjAG4AdAByAHkAXwByAHAAdABfAGMAdQByAGMAeQBfAGsAZQB5AF8AbgBv//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAX//8QcgYEABIAYwBuAHQAcgB5AF8AcgBwAHQAXwBjAHUAcgBjAHkAXwBjAGT//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABj//xByBgQAFABjAG4AdAByAHkAXwByAHAAdABfAGMAdQByAGMAeQBfAGQAZQBzAGP//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABn//xByBgQADQBhAHMANAAwADAAXwBzAHIAdgByAF8AbgBt//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAa//8QcgYEAAoAZABtAHMAXwBsAGkAYgBfAG4Abf//EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAG///EHIGBAAKAGkAbQBzAF8AbABpAGIAXwBuAG3//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABz//xByBgQACgBvAG0AcwBfAGwAaQBiAF8AbgBt//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAd//8QcgYEAAkAcwB5AHMAdABlAG0AXwBjAGT//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAB7//xByBgQACgBhAGYAZgBfAGsAZQB5AF8AbgBv//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAf//8QcgYEAA0AYwBuAHQAcgB5AF8AdAByAHMAcgBfAGMAZP//EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAIP//EHIGBAAMAGMAbgB0AHIAeQBfAGkAcwBvAF8AYwBk//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAh//8QcgYEABIAYwBuAHQAcgB5AF8AaQBzAG8AXwAzAGMAaABhAHIAXwBjAGT//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAACL//xByBgQADwBnAGQAdwBfAGkAbQBjAF8AZABpAG0AXwBmAGwAZ///EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAI///EHIGBAAQAGcAZAB3AF8AbwByAGQAXwBmAGEAYwB0AF8AZgBsAGf//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAACT//xByBgQAEABlAHUAcgBvAG0AbwBuAF8AYwBuAHQAcgB5AF8AYwBk//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAl//8QcgYEAA4AYQB0AGwAYQBzAF8AYwBuAHQAcgB5AF8AYwBk//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAm//8QcgYEAAkAbwBwAGUAcgBfAHUAbgBpAHT//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAACf//xByBgQABgBhAGYAZgBfAGkAZP//EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAKP//EHIGBAAIAGEAZgBmAF8AZABlAHMAY///EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAKf//EHIGBAAMAGEAZgBmAF8AcwBoAG8AcgB0AF8AbgBt//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAq//8QcgYEAA4AYQBmAGYAXwBhAGQAcgBfADEAXwBkAGUAcwBj//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAr//8QcgYEAA4AYQBmAGYAXwBhAGQAcgBfADIAXwBkAGUAcwBj//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAs//8QcgYEAA4AYQBmAGYAXwBhAGQAcgBfADMAXwBkAGUAcwBj//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAt//8QcgYEAAsAYQBmAGYAXwBjAGkAdAB5AF8AbgBt//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAu//8QcgYEAAkAYQBmAGYAXwBzAHQAXwBjAGT//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAC///xByBgQACwBhAGYAZgBfAHAAbwBzAHQAXwBjAGT//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAADD//xByBgQAEwBhAGYAZgBfAGIAZQBnAF8AZgB5AHQAZABfAGsAZQB5AF8AbgBv//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAx//8QcgYEABMAYQBmAGYAXwBlAG4AZABfAGYAeQB0AGQAXwBrAGUAeQBfAG4Ab///EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAMv//EHIGBAASAGEAZgBmAF8AdABvAHAAXwBsAHYAbABfAGkAYgBvAF8AbgBv//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAz//8QcgYEABIAYQBmAGYAXwByAGUAbQBpAHQAXwBtAGcAbQB0AF8AZgBsAGf//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAADT//xByBgQAEABhAGYAZgBfAHAAZQByAHMAXwB2AG8AbABfAGYAbABn//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAA1//8QcgYEAAsAYQBmAGYAXwBtAHIAawB0AF8AYwBk//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAA2//8QcgYEAA0AYQBmAGYAXwBtAHIAawB0AF8AZABlAHMAY///EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAN///EHIGBAARAGEAZgBmAF8AcgBlAG4AZQB3AF8AdAB5AHAAZQBfAGMAZP//EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAOP//EHIGBAATAGEAZgBmAF8AcgBlAG4AZQB3AF8AdAB5AHAAZQBfAGQAZQBzAGP//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAADn//xByBgQADwBhAGYAZgBfAGEAbQB3AGEAeQBfAG8AZgBfAG4Ab///EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAOv//EHIGBAASAGEAZgBmAF8AYQBtAHcAYQB5AF8AaQBzAHAAbwBuAF8AbgBv//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAA7//8QcgYEAAYAcgBnAG4AXwBjAGT//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAADz//xByBgQACAByAGcAbgBfAGQAZQBzAGP//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAD3//xByBgQACgBzAHUAYgBfAHIAZwBuAF8AYwBk//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAA+//8QcgYEAAwAcwB1AGIAXwByAGcAbgBfAGQAZQBzAGP//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAD///xByBgQADQBtAHIAawB0AF8AYwBsAHMAdAByAF8AYwBk//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAABA//8QcgYEAA8AbQByAGsAdABfAGMAbABzAHQAcgBfAGQAZQBzAGP//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAEH//xByBgQADABnAGUAbgBfAG0AZwByAF8AZABlAHMAY///EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAQv//EHIGBAASAHQAbwBwAF8AbAB2AGwAXwBpAG0AYwBfAGsAZQB5AF8AbgBv//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv///////w==</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1557497289602</attribute>
+</metadata>

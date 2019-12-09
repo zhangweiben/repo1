@@ -1,0 +1,253 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="_readme" path="/shared/ASAssets/Utilities/examples/generate/_readme" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation/>
+  <parameters></parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="Script" type="STRING">/*
+	This _readme provides information on the how to generate views and destory views.  It provides background on various example scenarios.
+
+	Summary
+	-------------
+	 1. pEx0_create_published_ds_group_and_user 		- Create a default group [group1], user [user1], published data source [/services/databases/ExampleProject,] and assign privileges to [group1].
+	 2. pEx1_create_single_table_no_layers 				- Generate Views for a single table with no layers [products]
+	 3. pEx1_destroy_single_table_prefix 				- Destroy Views for a single table [products]
+	 4. pEx2_create_entire_schema_no_layers 			- Generate Views for all tables with no layers [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+	 5. pEx2_destroy_entire_schema 						- Destroy Views for all tables [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+	 6. pEx3_create_entire_schema_all_layers 			- Generate Views for all tables through all layers [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+	 7. pEx4_create_entire_schema_all_layers_with_fk 	- Generate Views for all tables through all layers with foreign keys and annotations [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+	 8. pEx4_destroy_entire_schema 						- Destroy Views for all tables in all layers [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+	 9. pEx5_create_multiple_tables_all_layers_prefix 	- Generate Views for multiple tables through all layers with a prefix [categories,products]
+	10. pEx4_destroy_entire_schema 						- Destroy Views for all tables in all layers [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+	11. pEx6_create_entire_schema_all_layers_no_idx_fk 	- Generate Views for all table through all layers with no annotations, indexe or foreign keys [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+	12. pEx4_destroy_entire_schema 						- Destroy Views for all tables in all layers [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+	13. pEx7_create_multiple_tables_all_layers_no_prefix- Generate Views for multiple tables through all layers with no prefix [categories,products]
+	14. pEx4_destroy_entire_schema 						- Destroy Views for all tables in all layers [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+
+
+	Configuration
+	-------------
+	If your Data Virtualization not installed on port 9400 then modify the port for this data source and test the connection:
+		The current port is 9408.  If you install DV on 9500 then the port is 9508.
+		/shared/ASAssets/Utilities/examples/generate/ExampleProject/Physical/Metadata/postgres/ds_inventory
+
+	The defaultValues do not need to be changed.   
+
+	Examples Scenarios
+	------------------
+	All &quot;EXECUTE&quot; scripts are located here: /shared/ASAssets/Utilities/generate/example
+
+	1. Create a default group [group1], user [user1], published data source [/services/databases/ExampleProject,] and assign privileges to [group1].
+		EXECUTE: pEx0_create_published_ds_group_and_user
+
+		Note: It is recommended to destory this group and user when you have finished with this example.
+		EXECUTE: pEx0_destory_published_ds_group_and_user
+
+	2. Generate Views for a single table with no layers [products]
+		EXECUTE: pEx1_create_single_table_no_layers
+			a. In this example, the view is published directly from the physical metadata layer to the published database.
+					/services/databases/ExampleProject/TestCatalog/tutorial
+			b. The view is published with a prefix: V_products
+			c. Input options selected:
+				prefix=V_			- If not null, the prefix is prepended to the view name.
+				overwrite=1			- 0=bypass view creation if exists.   1=If the view exists, overwrite the view
+				copyAnnotations=1	- 0=do not copy annotations.  1=copy view and column annotations if they exist
+				copySqlIndexes=0	- 0=do not copy indexes.  1=copy SQL indexes if they exist on the table/view.
+				copyForeignKeys=0	- 0=do not copy foreign keys.  1=copy foriegn keys if they exists.  
+										The foreign key reference will be modfied to point to the view on its corresponding layer.
+
+	3. Destroy Views for a single table [products]
+		EXECUTE: pEx1_destroy_single_table_prefix
+			a. In this example, the view is destroyed throughout the layers starting with the published resource and working down to the data source resource.
+			b. Input options selected:
+				destroyDatasourceResource=1	- 0=do not destroy the final data source resource.  1=destroy the final data source resource.
+				destroyEmptyParentFolder=1	- 0=do not destroy empty parent folders.  1=destroy empty parent folders.
+
+	4. Generate Views for all tables with no layers [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+		EXECUTE: pEx2_create_entire_schema_no_layers
+			a. In this example, all views are published directly from the physical metadata layer to the published database.
+					/services/databases/ExampleProject/TestCatalog/tutorial
+			b. Input options selected:
+				prefix=null			- If not null, the prefix is prepended to the view name.
+				overwrite=0			- 0=bypass view creation if exists.   1=If the view exists, overwrite the view
+				copyAnnotations=1	- 0=do not copy annotations.  1=copy view and column annotations if they exist
+				copySqlIndexes=0	- 0=do not copy indexes.  1=copy SQL indexes if they exist on the table/view.
+				copyForeignKeys=0	- 0=do not copy foreign keys.  1=copy foriegn keys if they exists.  
+										The foreign key reference will be modfied to point to the view on its corresponding layer.
+
+	5. Destroy Views for all tables [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+		EXECUTE: pEx2_destroy_entire_schema
+			a. In this example, all views are destroyed throughout the layers starting with the published resource and working down to the data source resource.
+				Notice how the parent folders do not get destroyed.  Notice how the data source table is not destroyed.
+			b. Input options selected:
+				destroyDatasourceResource=0	- 0=do not destroy the final data source resource.  1=destroy the final data source resource.
+				destroyEmptyParentFolder=0	- 0=do not destroy empty parent folders.  1=destroy empty parent folders.
+
+	6. Generate Views for all tables through all layers [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+		EXECUTE: pEx3_create_entire_schema_all_layers
+			a. In this example, all views are generated through the Data Abstraction layers and published.
+					/services/databases/ExampleProject/TestCatalog/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Application/Views/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Business/Logical/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Physical/Formatting/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Physical/Metadata/postgres/ds_inventory/tutorial
+			b. The views are published with no prefix.
+			c. Input options selected:
+				prefix=null			- If not null, the prefix is prepended to the view name.
+				overwrite=1			- 0=bypass view creation if exists.   1=If the view exists, overwrite the view
+				copyAnnotations=1	- 0=do not copy annotations.  1=copy view and column annotations if they exist
+				copySqlIndexes=1	- 0=do not copy indexes.  1=copy SQL indexes if they exist on the table/view.
+				copyForeignKeys=1	- 0=do not copy foreign keys.  1=copy foriegn keys if they exists.  
+										The foreign key reference will be modfied to point to the view on its corresponding layer.
+
+		DO NOT DELETE VIEWS.  CONTINUE TO #8 DIRECTLY TO DEMONSTRATE ANNOTATIONS AND FOREIGN KEYS.
+
+	7. Generate Views for all tables through all layers with foreign keys and annotations [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+		EXECUTE: pEx4_create_entire_schema_all_layers_with_fk
+			a. In this example, all views are generated through the Data Abstraction layers and published.
+					/services/databases/ExampleProject/TestCatalog/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Application/Views/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Business/Logical/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Physical/Formatting/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Physical/Metadata/postgres/ds_inventory/tutorial
+			b. The Formating layer is modified on the fly to emulate annotations and foriegn keys
+				1. The views [products, suppliers] are modified with table annotations.
+				2. The view [suppliers] is modified with column [supplierid,suppliername,address] annotations.
+				3. The view products is modified with a foreign key [fk_categoryid]
+			c. The views are published with no prefix.
+			d. Input options selected:
+				prefix=null			- If not null, the prefix is prepended to the view name.
+				overwrite=0			- 0=bypass view creation if exists.   1=If the view exists, overwrite the view
+				copyAnnotations=1	- 0=do not copy annotations.  1=copy view and column annotations if they exist
+				copySqlIndexes=1	- 0=do not copy indexes.  1=copy SQL indexes if they exist on the table/view.
+				copyForeignKeys=1	- 0=do not copy foreign keys.  1=copy foriegn keys if they exists.  
+										The foreign key reference will be modfied to point to the view on its corresponding layer.
+			e. Result
+				1. The published view [products] contains a table annotation, indexes and foreign keys: 
+						/services/databases/ExampleProject/TestCatalog/tutorial/products
+				2. The published view [suppliers] contains a table annotation and indexes: 
+						/services/databases/ExampleProject/TestCatalog/tutorial/suppliers
+				3. The Application Layer view [suppliers] contains table and column level annotations: 
+						/shared/ASAssets/Utilities/examples/generate/ExampleProject/Application/Views/tutorial/suppliers[supplierid, suppliername, address]
+					Published views cannot contain column level annotations.   The shared layer views may contain column level annotations.
+
+	8. Destroy Views for all tables in all layers [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+		EXECUTE: pEx4_destroy_entire_schema
+			a. In this example, all views are destroyed throughout the layers starting with the published resource and working down to the data source resource.
+				Notice how the parent folders are destroyed.  Notice how the data source resource is destroyed.
+			b. Input options selected:
+				destroyDatasourceResource=1	- 0=do not destroy the final data source resource.  1=destroy the final data source resource.
+				destroyEmptyParentFolder=1	- 0=do not destroy empty parent folders.  1=destroy empty parent folders.
+
+	9. Generate Views for multiple tables through all layers with a prefix [categories,products]
+		EXECUTE: pEx5_create_multiple_tables_all_layers_prefix
+			a. In this example, the view is generated through the Data Abstraction layers and published with annotations, indexes and foreign keys.
+					/services/databases/ExampleProject/TestCatalog/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Application/Views/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Business/Logical/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Physical/Formatting/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Physical/Metadata/postgres/ds_inventory/tutorial
+			b. Input options selected:
+				prefix=v_			- If not null, the prefix is prepended to the view name.
+				overwrite=1			- 0=bypass view creation if exists.   1=If the view exists, overwrite the view
+				copyAnnotations=1	- 0=do not copy annotations.  1=copy view and column annotations if they exist
+				copySqlIndexes=1	- 0=do not copy indexes.  1=copy SQL indexes if they exist on the table/view.
+				copyForeignKeys=1	- 0=do not copy foreign keys.  1=copy foriegn keys if they exists.  
+										The foreign key reference will be modfied to point to the view on its corresponding layer.
+
+	10. Destroy Views for all tables in all layers
+		EXECUTE: pEx4_destroy_entire_schema
+
+	11. Generate Views for all table through all layers with no annotations, indexe or foreign keys [categories, employees, inventorytransactions, products, purchaseorders, suppliers]
+		This script needs to be executed twice in a row in order to demonstrate that no annotations, indexes and foreign keys are being copied.
+		EXECUTE: pEx6_create_entire_schema_all_layers_no_idx_fk - the first time established the baseline views
+		EXECUTE: pEx6_create_entire_schema_all_layers_no_idx_fk - the second time will update the formatting layer views [products, suppliers] with annotations, indexes and foreign keys.
+			a. In this example, all views are generated through the Data Abstraction layers and published with no annotations, indexes or foreign keys.
+					/services/databases/ExampleProject/TestCatalog/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Application/Views/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Business/Logical/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Physical/Formatting/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Physical/Metadata/postgres/ds_inventory/tutorial
+			b. The Formating layer is modified on the fly to emulate annotations and foriegn keys and indexes
+				1. The views [products, suppliers] are modified with table annotations.
+				2. The view [suppliers] is modified with column [supplierid,suppliername,address] annotations.
+				3. The view products is modified with an index [products_key] and foreign key [fk_categoryid]
+			c. The views are published with no prefix.
+			d. Input options selected:
+				prefix=null			- If not null, the prefix is prepended to the view name.
+				overwrite=0			- 0=bypass view creation if exists.   1=If the view exists, overwrite the view
+				copyAnnotations=0	- 0=do not copy annotations.  1=copy view and column annotations if they exist
+				copySqlIndexes=0	- 0=do not copy indexes.  1=copy SQL indexes if they exist on the table/view.
+				copyForeignKeys=0	- 0=do not copy foreign keys.  1=copy foriegn keys if they exists.  
+										The foreign key reference will be modfied to point to the view on its corresponding layer.
+			e. Result - there are no annotations, indexes or foreign keys present in any views above the Formatting layer.
+				1. The published view [products] contains &quot;NO&quot; table annotation, indexes and foreign keys: 
+						/services/databases/ExampleProject/TestCatalog/tutorial/products
+				2. The published view [suppliers] contains &quot;NO&quot; table annotation and indexes: 
+						/services/databases/ExampleProject/TestCatalog/tutorial/suppliers
+				3. The Application Layer view [suppliers] contains &quot;NO&quot; table and column level annotations: 
+						/shared/ASAssets/Utilities/examples/generate/ExampleProject/Application/Views/tutorial/suppliers[supplierid, suppliername, address]
+					Published views cannot contain column level annotations.   The shared layer views may contain column level annotations.
+
+	12. Destroy Views for all tables in all layers
+		EXECUTE: pEx4_destroy_entire_schema
+
+	13. Generate Views for multiple tables through all layers with no prefix [categories,products]
+		EXECUTE: pEx7_create_multiple_tables_all_layers_no_prefix
+			a. In this example, the view is generated through the Data Abstraction layers and published with annotations, indexes and foreign keys.
+					/services/databases/ExampleProject/TestCatalog/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Application/Views/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Business/Logical/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Physical/Formatting/tutorial
+					/shared/ASAssets/Utilities/examples/generate/ExampleProject/Physical/Metadata/postgres/ds_inventory/tutorial
+			b. Input options selected:
+				prefix=null			- If not null, the prefix is prepended to the view name.
+				overwrite=1			- 0=bypass view creation if exists.   1=If the view exists, overwrite the view
+				copyAnnotations=1	- 0=do not copy annotations.  1=copy view and column annotations if they exist
+				copySqlIndexes=1	- 0=do not copy indexes.  1=copy SQL indexes if they exist on the table/view.
+				copyForeignKeys=1	- 0=do not copy foreign keys.  1=copy foriegn keys if they exists.  
+										The foreign key reference will be modfied to point to the view on its corresponding layer.
+
+	14. Destroy Views for all tables in all layers
+		EXECUTE: pEx4_destroy_entire_schema
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2018.100	01/10/2018		Mike Tinius			7.0.5			Created new.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE &quot;_readme&quot;()
+BEGIN
+END</attribute>
+  <attribute name="creationDate" type="LONG">1515775745444</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564748380651</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1515775745444</attribute>
+</metadata>

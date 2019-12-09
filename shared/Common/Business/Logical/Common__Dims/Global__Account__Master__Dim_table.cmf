@@ -1,0 +1,546 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Global_Account_Master_Dim" path="/shared/Common/Business/Logical/Common_Dims/Global_Account_Master_Dim" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>Global Account Master Dimension This table contains a master list of Sales Accounts (Global Accounts) at Amway.  A record represents an account within Amway that is updated as changes occur on the account from sources.  Data freshness: new &amp; updated account information is added to this table within 4 hours from when received into EAP</annotation>
+  <columns>
+    <column name="global_account_wid" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>A unique system generated warehouse identifier (wid) that is unique to an account record. Used to join across dimension and fact tables where account identifiers are used.</annotation>
+    </column>
+    <column name="global_account_id" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="14"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>An identifying number for the Sales Account expected to be unique across the global Enterprise.  Used to consistently refer to a Sales Account across multiple systems. Combining the Affiliate Code (aff_code) with the Account Number (account_no).</annotation>
+    </column>
+    <column name="account_no" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Account number assigned when account was generated. Suffix of the Global Account ID.</annotation>
+    </column>
+    <column name="aff_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The Affiliate code that the unique account ID was generated within. Prefix of the Global Account ID.</annotation>
+    </column>
+    <column name="aff_name" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Affiliate name related to the affiliate code.</annotation>
+    </column>
+    <column name="amway_country_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The amway country code that the account exists within.</annotation>
+    </column>
+    <column name="country_name" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Text field representing the associated country name.</annotation>
+    </column>
+    <column name="region" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The region where the account exists within.</annotation>
+    </column>
+    <column name="sub_region" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The sub region where the account exists within.</annotation>
+    </column>
+    <column name="iso_currency_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>A text label given to the local currency of the account. This code is a three letter code.</annotation>
+    </column>
+    <column name="language_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The language code used by the account.</annotation>
+    </column>
+    <column name="expiration_date" nullable="true">
+      <datatype name="DATE" type="DATE"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The date on which the current ABO Account contract (i.e. Account membership or registration) with Amway expires.  Refers to an end in the Sales &amp; Marketing relationship between Amway and the Party.Calculate based on Renewal Terms (Annual - Dec.31, Anniversary - Last Day of Entry Month + 1 year), Expiration Date changes to occur by Renewal and Renewal Reversal only</annotation>
+    </column>
+    <column name="account_name" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="400"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>A text label given to a specific Global Account (Sales Account). May be the legal name of the party or organization which owns the account or it may be a name selected by the primary owning party of the Sales Account. A label that legally identifies the Party registering a business with Amway.  This name must be represented in the English Language and Character set.</annotation>
+    </column>
+    <column name="imc_type_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The IMC Type Code is commonly used to identify specifics related to an account type. Used in caluclating Sales Account Type Codes</annotation>
+    </column>
+    <column name="imc_type_desc" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Business descirption of the IMC Type Code.</annotation>
+    </column>
+    <column name="bus_nature_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>A sub-classification within Sales Account Type that identifies a set of additional rules and privileges extended through the Amway Sales Plan.  Each value for Account Sub-Type identifies a unique set of compensation and sponsorship rules.</annotation>
+    </column>
+    <column name="bus_nature_name" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Business description of the business nature code</annotation>
+    </column>
+    <column name="bus_status_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Indicates the current activity state of the Sales Account.</annotation>
+    </column>
+    <column name="bus_status_desc" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="10"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Business description of the business status code</annotation>
+    </column>
+    <column name="bus_status_reason_desc" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Long business description of the business status code</annotation>
+    </column>
+    <column name="account_segment_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Account segment code, various usages by market but reprresent segments related to the sales plan.</annotation>
+    </column>
+    <column name="account_segment_name" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Account segment name: Silver Sponsor, Non Group Leader,  Platinum, Silver Producer or Null</annotation>
+    </column>
+    <column name="is_legal_entity" nullable="true">
+      <datatype name="BOOLEAN" type="BOOLEAN"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Using groupings of legal entity type codes determines if this account is a legal entity</annotation>
+    </column>
+    <column name="legal_entity_type_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The legal nature of a Party within a country. For example, the Party could be a Corporation (C), a Trust (T), a Partnership (P), or an Individual (I). It is primarily used in Europe to partition statutory reporting to national tax authorities.A level in the Oracle multi-organization hierarchy, it sits between Set-of-Books and Operating Unit.</annotation>
+    </column>
+    <column name="legal_entity_type_desc" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>descriptions of the legal entity type code</annotation>
+    </column>
+    <column name="loa_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="5"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The line of affiliation code - A higher aggregation or strategic grouping of the Business Affiliations. Use this data to support reporting and analytics. As an example, in North America they may have a Business Affiliation called N21, while in Europe it is NETWORK21 and in Asia it’s NETWORK 21 with a space in there and in South Africa it’s labeled as Dornan. These are all the same organization, just variations</annotation>
+    </column>
+    <column name="sponsor_global_account_wid" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Unique warehouse ID  of the sponsor account</annotation>
+    </column>
+    <column name="sponsor_global_account_id" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="14"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The direct sponsoring account of this account. All amway accounts must have a sponsor.</annotation>
+    </column>
+    <column name="sponsor_account_no" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The direct sponsor account number</annotation>
+    </column>
+    <column name="intl_sponsor_global_account_wid" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The international sponsor account&apos;s warehouse ID</annotation>
+    </column>
+    <column name="intl_sponsor_account_no" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The international sponsor account number</annotation>
+    </column>
+    <column name="intl_sponsor_aff_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The internataional sponsor account&apos;s affiliate code</annotation>
+    </column>
+    <column name="entry_date" nullable="true">
+      <datatype name="DATE" type="DATE"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The date of which the account was created and an account number was generated.</annotation>
+    </column>
+    <column name="sales_account_type_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>A code representing the classification of a Sales Account Type. Directly related to the Sales Account Type Description.  I = Independent Business Owner  P = Provisional ABO  M = Member C= Customer O = Other * = UNKNOWN</annotation>
+    </column>
+    <column name="sales_account_type_desc" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>A classification of Sales Account that establishes a formal set of arrangements between Amway and another party.  Different types of accounts indicate different attributes, rules, or characteristics (Privileges,Conduct expectations, etc) associated with the ACCOUNT.  Possible values of Sales Account Type are Independent Business Owner, Provisional ABO, Member, Customer, Other, &amp; Unknown</annotation>
+    </column>
+    <column name="local_account_type_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Local account types primarily used in GCR for distinction purposes</annotation>
+    </column>
+    <column name="local_account_type_desc" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Description of local account type</annotation>
+    </column>
+    <column name="original_imc_type_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>the original imc type when the account was first generated</annotation>
+    </column>
+    <column name="original_imc_type_desc" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>the original imc type desciription</annotation>
+    </column>
+    <column name="original_bus_nature_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>the original business nature code when the account was first generated</annotation>
+    </column>
+    <column name="original_bus_nature_name" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>the original business nature code description</annotation>
+    </column>
+    <column name="original_sponsor_global_account_wid" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The original sponsor account&apos;s warehouse identifier</annotation>
+    </column>
+    <column name="original_sponsor_account_no" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The original sponsor account number</annotation>
+    </column>
+    <column name="original_sales_account_type_code" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The original sales account type code when the account was first generated</annotation>
+    </column>
+    <column name="original_sales_account_type_desc" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The original sales account type code description</annotation>
+    </column>
+    <column name="is_test_sales_account" nullable="true">
+      <datatype name="BOOLEAN" type="BOOLEAN"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>A distinction to determine if this account is a test sales account.</annotation>
+    </column>
+    <column name="annual_sponsor_global_account_wid" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The annual sponsor account warehouse identifier</annotation>
+    </column>
+    <column name="annual_sponsor_account_no" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The annual sponsor account number</annotation>
+    </column>
+    <column name="annual_sponsor_global_account_id" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="14"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The annual sponsor global account id</annotation>
+    </column>
+    <column name="last_renewal_date" nullable="true">
+      <datatype name="DATE" type="DATE"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>The last renewal date of the contract with the Amway business</annotation>
+    </column>
+    <column name="is_auto_renewal_subscribed" nullable="true">
+      <datatype name="BOOLEAN" type="BOOLEAN"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>Whether or not this particular account is automatically renewed.</annotation>
+    </column>
+  </columns>
+  <indexes>
+    <index name="pk" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="global_account_wid" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/EAP/Common_Dims/Global_Account_Master_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="global_account_wid">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="global_account_id">
+        <datatype type="STRING" maxLength="14"/>
+      </element>
+      <element name="account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="aff_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="amway_country_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="country_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="region">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="sub_region">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="iso_currency_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="language_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="expiration_date">
+        <datatype type="DATE"/>
+      </element>
+      <element name="account_name">
+        <datatype type="STRING" maxLength="400"/>
+      </element>
+      <element name="imc_type_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="imc_type_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="bus_nature_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="bus_nature_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="bus_status_code">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="bus_status_desc">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="bus_status_reason_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="account_segment_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="account_segment_name">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="is_legal_entity">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="legal_entity_type_code">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="legal_entity_type_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="loa_code">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="sponsor_global_account_wid">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="sponsor_global_account_id">
+        <datatype type="STRING" maxLength="14"/>
+      </element>
+      <element name="sponsor_account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="intl_sponsor_global_account_wid">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="intl_sponsor_account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="intl_sponsor_aff_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="entry_date">
+        <datatype type="DATE"/>
+      </element>
+      <element name="sales_account_type_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="sales_account_type_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="local_account_type_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="local_account_type_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="original_imc_type_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="original_imc_type_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="original_bus_nature_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="original_bus_nature_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="original_sponsor_global_account_wid">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="original_sponsor_account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="original_sales_account_type_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="original_sales_account_type_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="is_test_sales_account">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="annual_sponsor_global_account_wid">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="annual_sponsor_account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="annual_sponsor_global_account_id">
+        <datatype type="STRING" maxLength="14"/>
+      </element>
+      <element name="last_renewal_date">
+        <datatype type="DATE"/>
+      </element>
+      <element name="is_auto_renewal_subscribed">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	* 
+FROM
+	/shared/Common/Physical/Formatting/EAP/Common_Dims/Global_Account_Master_Dim Global_Account_Master_Dim</attribute>
+  <attribute name="creationDate" type="LONG">1573571352631</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">true</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1574218241792</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1573571352631</attribute>
+</metadata>

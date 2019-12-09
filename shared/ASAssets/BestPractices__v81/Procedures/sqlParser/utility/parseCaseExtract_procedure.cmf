@@ -1,0 +1,269 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="parseCaseExtract" path="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/parseCaseExtract" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="columnExpression" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="begPos" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="endPos" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="inColumnList" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="columnList" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/isNumber" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="valueString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/TextUtils/RegexSplit" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="Input Text" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Regular Expression" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Limit" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="splitElement">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseInputText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseOutput" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="trimText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="includeDelimiter" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="object">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	parseCaseExtract - Extract the inner expression from a case statement based on the begin and end position
+		that is passed in.    The function &quot;parseCase&quot; drives the parsing.  This function &quot;parseCaseExtract&quot;
+		is used to extract the columnList from the text between the begin and end position.
+
+	IN
+		inColumnExpression - the incoming column expression
+		begPos - beginning position to begin extracting
+		endPos - ending position to stop extracting
+		inColumnList - the existing column list to add to
+	OUT
+		columnList - a list of column expressions found that are not literal strings or numbers.
+			this may contain additional function expressions
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	11/11/2011		Mike Tinius			5.2.0			Created new
+	03/15/2013		Mike Tinius			5.2.0			Modifications for Best Practices 7.0
+	06/24/2013		Mike Tinius			6.0.0			7.2: Multiple instances of Best Practices supported
+	03/02/2018		Mike Tinius			7.0.5			Replaced RegexSplit with extractDelimitedText
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE parseCaseExtract(
+	IN columnExpression	LONGVARCHAR,
+	IN begPos			INTEGER,
+	IN endPos			INTEGER,
+	IN inColumnList		LONGVARCHAR,
+	OUT columnList		LONGVARCHAR
+)
+BEGIN
+	DECLARE moduleName		VARCHAR DEFAULT &apos;parseCaseExtract&apos;;
+	DECLARE debug			CHAR(1) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.debugSqlParser3;
+	DECLARE opList			VARCHAR DEFAULT &apos;[&lt;&gt;=]|&amp;EQ;|&amp;eq;|&amp;Eq;|&amp;eQ;|&amp;LE;|&amp;le;|&amp;Le;|&amp;lE;|&amp;LT;|&lt;|&amp;Lt;|&amp;lT;|&amp;GT;|&gt;|&amp;Gt;|&amp;gT;|&amp;GE;|&amp;ge;|&amp;Ge;|&amp;gE;&apos;;
+	DECLARE keywordNotFound BOOLEAN;
+	DECLARE sep				VARCHAR DEFAULT &apos;^&apos;; -- separator
+	DECLARE expression		LONGVARCHAR;
+	DECLARE j				INTEGER DEFAULT 1;
+	DECLARE notEmpty		INTEGER DEFAULT 0;
+	DECLARE empty			INTEGER DEFAULT 1;
+	DECLARE word			VARCHAR(2048);
+	DECLARE object			LONGVARCHAR;
+	DECLARE embeddedCase	BOOLEAN DEFAULT false;
+	DECLARE numParenPair	INTEGER DEFAULT 0;
+	DECLARE isNumber		INTEGER;
+
+	if (inColumnList is null) then
+		set columnList = &apos;&apos;;
+	else
+		set columnList = TRIM(inColumnList);
+	end if;
+	if (debug = &apos;Y&apos;) then
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;columnExpression=[&apos;||NVL(columnExpression,&apos;null&apos;)||&apos;]&apos;);
+	end if;
+	set expression = TRIM(SUBSTRING(columnExpression,begPos,endPos-begPos));
+	if (debug = &apos;Y&apos;) then
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;extracted expression=[&apos;||NVL(expression,&apos;null&apos;)||&apos;]  begPos=&apos;||begPos||&apos; endPos=&apos;||endPos);
+	end if;
+	-- Remove all keywords and operators from the expression.  What is leftover are column expressions.
+	--- Split into words based on space separator
+	for r as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(expression,&apos; &apos;,0,0,0,0,0) do
+		set word = r.object;
+		if (debug = &apos;Y&apos;) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;word=[&apos;||NVL(word,&apos;null&apos;)||&apos;]&apos;);
+		end if;
+		-- Check to see if this is an embedded CASE statement
+		if (word IS NOT NULL AND LENGTH(&apos;|&apos;||word||&apos;|&apos;) &gt; 2) then  --notEmpty
+			if (upper(word) = &apos;CASE&apos;) then
+				set embeddedCase = true;
+				if (columnList IS NOT NULL AND LENGTH(&apos;|&apos;||columnList||&apos;|&apos;) &gt; 2) then  --notEmpty
+					set columnList = TRIM(columnList || sep);
+				end if;
+			end if;
+
+			-- If the expression is not an embedded case statement then determine what words should be added to the columnList
+			if (NOT embeddedCase) then
+				-- count the parenthesis pairs to determine when the function is closed.
+				if (word = &apos;(&apos;) then
+					set numParenPair = numParenPair + 1;
+				elseif (word = &apos;)&apos;) then
+					set numParenPair = numParenPair - 1;
+				end if;
+				-- If inside a function then continue processing and don&apos;t split up the function
+				if (numParenPair &gt; 0) then
+					set columnList = TRIM(columnList ||&apos; &apos;||word);
+				else
+					-- when the word is the last closing paren in a group then capture it by itself
+					if (word = &apos;)&apos;) then
+						set columnList = TRIM(columnList ||&apos; &apos;||word);
+					else -- otherwise parse the word
+						-- Split the word based on the operator list &quot;opList&quot; which automatically removes operators
+						for s as select * from /shared/ASAssets/Utilities/string/TextUtils/RegexSplit(word,opList,0) do
+							set object = TRIM(s.splitElement);
+							call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/isNumber(object, isNumber);
+							-- Add a separator if a concat was found
+							if (object = &apos;||&apos;) then
+								set columnList = columnList || sep;
+							-- Add the word to the columnList if it is not a number
+							elseif (isNumber = 0) then
+								if (columnList IS NOT NULL AND LENGTH(&apos;|&apos;||columnList||&apos;|&apos;) &gt; 2) then  --notEmpty
+									set columnList = columnList || sep;
+								end if;
+								set columnList = columnList || TRIM(object);
+							end if;
+						end for;
+					end if;
+				end if;
+			end if;
+
+			-- If this is an embedded CASE statement than return it in its entirety.  
+			-- This will get parsed during the next recursive call from extractColumnExpression --&gt; parseCase --&gt; parseCaseExtract
+			if (embeddedCase) then
+				set columnList = TRIM(columnList ||&apos; &apos;||word);
+				if (upper(word) = &apos;END&apos;) then
+					set embeddedCase = false;
+				end if;
+			end if;
+		end if;
+	end for;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1554898115726</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

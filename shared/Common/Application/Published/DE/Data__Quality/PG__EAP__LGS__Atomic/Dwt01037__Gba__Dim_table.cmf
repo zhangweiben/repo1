@@ -1,0 +1,64 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Dwt01037_Gba_Dim" path="/shared/Common/Application/Published/DE/Data_Quality/PG_EAP_LGS_Atomic/Dwt01037_Gba_Dim" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="gba_key_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="gba_cd" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="gba_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/PostgreSQL_EAP/LGS_Atomic/Dwt01037_Gba_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="gba_key_no">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="0"/>
+      </element>
+      <element name="gba_cd">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="gba_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(Dwt01037_Gba_Dim.gba_key_no AS DECIMAL(10,0)) AS gba_key_no,
+	CAST(Dwt01037_Gba_Dim.gba_cd AS VARCHAR(15)) AS gba_cd,
+	CAST(Dwt01037_Gba_Dim.gba_desc AS VARCHAR(300)) AS gba_desc 
+FROM
+	/shared/Common/Physical/Formatting/PostgreSQL_EAP/LGS_Atomic/Dwt01037_Gba_Dim Dwt01037_Gba_Dim</attribute>
+  <attribute name="creationDate" type="LONG">1569986638538</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569987541239</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1569986638538</attribute>
+</metadata>

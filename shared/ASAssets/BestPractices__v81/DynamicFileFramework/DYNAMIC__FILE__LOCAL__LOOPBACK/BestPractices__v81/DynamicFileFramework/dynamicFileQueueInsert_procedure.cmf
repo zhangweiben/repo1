@@ -1,0 +1,79 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="dynamicFileQueueInsert" path="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/DYNAMIC_FILE_LOCAL_LOOPBACK/BestPractices_v81/DynamicFileFramework/dynamicFileQueueInsert" type="PROCEDURE" subtype="DATABASE_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" extendedName="CHAR(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="organization" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="projectname" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="subprojectname" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="actionOriginator" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="actiontype" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="requestusername" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="requestdomain" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="requestfilename" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="allownullfilename" direction="IN" nullable="true">
+      <datatype name="SMALLINT" extendedName="SMALLINT" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="constantslocation" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(4000)" subType="DATASOURCE_TYPE" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="metadatalayerpath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(4000)" subType="DATASOURCE_TYPE" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="formatlayerpath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(4000)" subType="DATASOURCE_TYPE" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="businesslayerpath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(4000)" subType="DATASOURCE_TYPE" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="appliationlayerpath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(4000)" subType="DATASOURCE_TYPE" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="publishedschemapath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(4000)" subType="DATASOURCE_TYPE" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="publisheddatabase" direction="IN" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="retentionpolicydays" direction="IN" nullable="true">
+      <datatype name="SMALLINT" extendedName="SMALLINT" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="proxyfilename" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="status" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" extendedName="VARCHAR(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="creationDate" type="LONG">1504002081541</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1518725142821</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1518725027186</attribute>
+</metadata>

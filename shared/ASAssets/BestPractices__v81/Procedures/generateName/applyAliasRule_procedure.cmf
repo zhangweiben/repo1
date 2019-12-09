@@ -1,0 +1,174 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="applyAliasRule" path="/shared/ASAssets/BestPractices_v81/Procedures/generateName/applyAliasRule" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="useAliasRule" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="word" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="basePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="debug3" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="alias" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* applyAliasRule:
+	-- Composite Best Practices --
+	Alias names are a way of converting short names or abbreviations into more formalizaed names that fit the canonical format.
+	For example, ds_inventory would be broken down into its word parts so we would have &quot;ds&quot; and &quot;inventory&quot;.  Each word
+	part would be passed into the &apos;shared/BestPractices/Procedures/generateName/applyAliasRule()&apos; procedure which will 
+	use the list below to convert the alias into the more formalized aliasRule.  So &quot;ds&quot; would become &quot;DataSource&quot;.
+	It should be noted that the case rules will be applied after the alias rules.  So the actual case-sensitivity of
+	the aliasRule may not be applied as you see it here.
+ 
+	Input:
+			-- 	When generating the abstract name from the data source, use the &quot;AliasNameRuleSet&quot; as a lookup procedure
+			--	  to match a word part against the Alias table.  For exmaple:
+			--		word part=ds		table alias=DS		table rule=DataSource
+			--	0=DO NOT perform alias rule lookup at all.  Word Part is passed through
+			--		result=ds
+			--     	1=Use alias rule and MATCH CASE exactly
+			--		result=ds (the original word part &apos;ds&apos; is returned as no match is found becuase &apos;ds&apos; is not equal to &apos;DS&apos;
+			--	2=Use alias rule and DO NOT MATCH CASE
+			--		result=DataSource (UPPER(&apos;ds&apos;) = UPPER(&apos;DS&apos;), therefore DataSource is returned	
+		useAliasRule - used when generateMode=&apos;G&apos;
+
+			-- the word part
+		word
+
+			-- the base path is the base CIS path to where AliasNameRuleSet() is located.
+		basePath
+
+			-- Y=print debug, N=don&apos;t print debug	
+		debug3
+	Output:
+		alias - the converted alias string for the incoming word part
+			Values: the value for whatever matches the name in the name/value list of &quot;AliasNameRuleSet()&quot;
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	08/20/2010		Mike Tinius			5.2.0			Created new
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+-- Remember to set the Server configuation for case sensitivity to &apos;true&apos;, default is false
+PROCEDURE applyAliasRule(
+		-- useAliasRule (used when generateMode=&apos;G&apos;)
+		-- 	When generating the abstract name from the data source, use the &quot;AliasNameRuleSet&quot; as a lookup procedure
+		--	  to match a word part against the Alias table.  For exmaple:
+		--		word part=ds		table alias=DS		table rule=DataSource
+		--	0=DO NOT perform alias rule lookup at all.  Word Part is passed through
+		--		result=ds
+		--     	1=Use alias rule and MATCH CASE exactly
+		--		result=ds (the original word part &apos;ds&apos; is returned as no match is found becuase &apos;ds&apos; is not equal to &apos;DS&apos;
+		--	2=Use alias rule and DO NOT MATCH CASE
+		--		result=DataSource (UPPER(&apos;ds&apos;) = UPPER(&apos;DS&apos;), therefore DataSource is returned	
+	IN 	useAliasRule	SMALLINT,
+
+		-- the word part
+	IN	word		VARCHAR,
+
+		-- the base path is the base CIS path to where AliasNameRuleSet() is located.
+	IN 	basePath	VARCHAR(4000),
+
+		-- Y=print debug, N=don&apos;t print debug	
+	IN 	debug3		CHAR(1),
+
+	OUT	alias		VARCHAR
+)
+BEGIN
+	DECLARE indent			VARCHAR DEFAULT &apos;      &apos;;
+	DECLARE moduleName		VARCHAR DEFAULT indent||&apos;applyAliasRule&apos;;
+	DECLARE sqlstmt		VARCHAR(500);
+	DECLARE whereClause	VARCHAR;
+	DECLARE ruleSet		ROW (alias VARCHAR, aliasRule VARCHAR);
+	DECLARE ruleSetCursor	CURSOR 	(alias VARCHAR, aliasRule VARCHAR);
+
+	IF (useAliasRule = 1) THEN 
+		SET whereClause = &apos;where alias = &apos;|| &apos;&apos;&apos;&apos;||word||&apos;&apos;&apos;&apos;;
+	ELSE 
+		SET whereClause = &apos;where UPPER(alias) = &apos;|| &apos;&apos;&apos;&apos;||UPPER(word)||&apos;&apos;&apos;&apos;;
+	END IF;
+	SET alias = word;
+
+	SET sqlstmt = REPLACE(&apos;SELECT * FROM /&apos; || basePath || &apos;/AliasNameRuleSet() &apos;|| whereClause , &apos;//&apos;,&apos;/&apos;);
+	if (debug3 = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug3, sqlstmt);
+	end if;
+
+	OPEN ruleSetCursor FOR sqlstmt;
+	ruleSetLoop:
+	FOR ruleSet AS ruleSetCursor DO
+		SET alias = ruleSet.aliasRule;
+	END FOR;
+	IF ruleSetCursor.ISOPEN THEN
+		CLOSE ruleSetCursor;
+	END IF; 		
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564600674099</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

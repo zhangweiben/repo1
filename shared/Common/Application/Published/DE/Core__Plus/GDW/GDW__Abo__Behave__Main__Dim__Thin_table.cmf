@@ -1,0 +1,229 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="GDW_Abo_Behave_Main_Dim_Thin" path="/shared/Common/Application/Published/DE/Core_Plus/GDW/GDW_Abo_Behave_Main_Dim_Thin" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="mo_yr_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_id" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_short_nm" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amway_cntry_cd" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_short_nm" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="org_app_mo_yr_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="appl_dt_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="globl_bus_stat_cd" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="globl_imc_type_cd" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="globl_imc_type_desc" nullable="true">
+      <datatype type="STRING" maxLength="25"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="globl_imc_type_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bus_natr_cd" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="status_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_days_after_signup" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_u35_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Business/Business/Core_Plus/GDW_Abo_Behave_Main_Dim_Thin" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="mo_yr_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="aff_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="aff_short_nm">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="amway_cntry_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="cntry_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="cntry_short_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="imc_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="imc_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="org_app_mo_yr_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="appl_dt_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="globl_bus_stat_cd">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="globl_imc_type_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="globl_imc_type_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+      <element name="globl_imc_type_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="bus_natr_cd">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="status_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="imc_days_after_signup">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="imc_u35_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.mo_yr_key_no AS DOUBLE) AS mo_yr_key_no,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.aff_id AS DOUBLE) AS aff_id,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.aff_short_nm AS VARCHAR(30)) AS aff_short_nm,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.amway_cntry_cd AS VARCHAR(3)) AS amway_cntry_cd,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.cntry_key_no AS DOUBLE) AS cntry_key_no,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.cntry_short_nm AS VARCHAR(50)) AS cntry_short_nm,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.imc_key_no AS DOUBLE) AS imc_key_no,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.imc_no AS DOUBLE) AS imc_no,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.org_app_mo_yr_key_no AS DOUBLE) AS org_app_mo_yr_key_no,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.appl_dt_key_no AS DOUBLE) AS appl_dt_key_no,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.globl_bus_stat_cd AS VARCHAR(10)) AS globl_bus_stat_cd,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.globl_imc_type_cd AS VARCHAR(1)) AS globl_imc_type_cd,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.globl_imc_type_desc AS VARCHAR(25)) AS globl_imc_type_desc,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.globl_imc_type_key_no AS DOUBLE) AS globl_imc_type_key_no,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.bus_natr_cd AS VARCHAR(2)) AS bus_natr_cd,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.status_key_no AS DOUBLE) AS status_key_no,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.imc_days_after_signup AS DOUBLE) AS imc_days_after_signup,
+	CAST(GDW_Abo_Behave_Main_Dim_Thin.imc_u35_flg AS CHAR(1)) AS imc_u35_flg 
+FROM
+	/shared/Common/Business/Business/Core_Plus/GDW_Abo_Behave_Main_Dim_Thin GDW_Abo_Behave_Main_Dim_Thin</attribute>
+  <attribute name="creationDate" type="LONG">1568335152509</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1568335201485</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1568335152509</attribute>
+</metadata>

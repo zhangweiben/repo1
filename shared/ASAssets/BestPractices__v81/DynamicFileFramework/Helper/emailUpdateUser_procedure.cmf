@@ -1,0 +1,251 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="emailUpdateUser" path="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/Helper/emailUpdateUser" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>emailUpdateUser:
+
+	A script that manages updating a username and email in the DYNAMIC_FILE_EMAIL table.
+	Emails are important for being able to send notifications to users based on dynamic file/view generation.
+
+ 	Input:
+		debug					N=no debug, Y=debug
+		userName:				The unique user name to associate with an email.
+		userEmail:				The email associated with the user or a group email.
+	Output:
+		status:					--0=not updated, 1=updated
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="userName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="userEmail" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="status" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/Helper/emailGetUser" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="userName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="userEmail" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="EXECUTE_DDL_PACKAGE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="DATASOURCE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="CATALOG_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SCHEMA_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_SEQ" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_QUEUE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="TABLESPACE_FILEGROUP" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="PROCESS_WAIT_TIME_SECONDS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_RETENTION_POLICY_DAYS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CSV_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="EXCEL_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* emailUpdateUser:
+
+	A script that manages updating a username and email in the DYNAMIC_FILE_EMAIL table.
+	Emails are important for being able to send notifications to users based on dynamic file/view generation.
+
+ 	Input:
+		debug					N=no debug, Y=debug
+		userName:				The unique user name to associate with an email.
+		userEmail:				The email associated with the user or a group email.
+	Output:
+		status:					--0=not updated, 1=updated
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE emailUpdateUser(
+	IN	debug		CHAR(1),	-- N=no debug, Y=debug
+	IN  userName	VARCHAR,
+	IN  userEmail	LONGVARCHAR,
+	OUT status		INTEGER		--0=not updated, 1=updated
+)
+BEGIN
+	DECLARE moduleName				VARCHAR(255) DEFAULT &apos;emailUpdateUser&apos;;
+	DECLARE	globalConstantsPath		VARCHAR(4000) DEFAULT /shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants.globalConstantsPath;
+	DECLARE user_email				LONGVARCHAR;
+	DECLARE sqlStatement			LONGVARCHAR;
+	DECLARE queueDatasourcePath		LONGVARCHAR;
+	DECLARE queueCatalogName		VARCHAR;
+	DECLARE queueSchemaName			VARCHAR;
+	DECLARE queueTableName			VARCHAR;
+	DECLARE fullTablePath			LONGVARCHAR;
+	DECLARE ex						EXCEPTION;
+
+	SET status = 0;
+	IF (userName IS NOT NULL AND LENGTH(TRIM(userName)) &gt; 0 AND userEmail IS NOT NULL AND LENGTH(TRIM(userEmail)) &gt; 0) THEN
+		-- Get the datasource path, catalog and schema name to construct the path dynamically
+		CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;DATASOURCE_PATH&apos;, 1, queueDatasourcePath);
+		CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;CATALOG_NAME&apos;, 1, queueCatalogName);
+		CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;SCHEMA_NAME&apos;, 1, queueSchemaName);
+		CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;DYNAMIC_FILE_EMAIL&apos;, 1, queueTableName);
+		IF (queueDatasourcePath IS NULL OR LENGTH(TRIM(queueDatasourcePath)) = 0) THEN
+			RAISE ex VALUE &apos;The datasource path may not be null or empty:  &apos;||globalConstantsPath||&apos;.DATASOURCE_PATH&apos;;
+		END IF;
+		IF (queueSchemaName IS NULL OR LENGTH(TRIM(queueSchemaName)) = 0) THEN
+			RAISE ex VALUE &apos;The schema name may not be null or empty:  &apos;||globalConstantsPath||&apos;.SCHEMA_NAME&apos;;
+		END IF;
+		IF (queueCatalogName IS NULL OR LENGTH(TRIM(queueCatalogName)) = 0) THEN
+			SET queueCatalogName = &apos;&apos;;
+		ELSE
+			SET queueCatalogName = &apos;/&apos;||queueCatalogName;
+		END IF;
+		IF (queueTableName IS NULL OR LENGTH(TRIM(queueTableName)) = 0) THEN
+			RAISE ex VALUE &apos;The table name may not be null or empty:  &apos;||globalConstantsPath||&apos;.DYNAMIC_FILE_EMAIL&apos;;
+		END IF;
+		SET fullTablePath = queueDatasourcePath || queueCatalogName || &apos;/&apos;||queueSchemaName || &apos;/&apos;||queueTableName;
+		CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(fullTablePath, null, fullTablePath);
+
+		CALL /shared/ASAssets/BestPractices_v81/DynamicFileFramework/Helper/emailGetUser(debug, userName, user_email);
+		-- Update the record if the email is present for the given user
+		IF (user_email IS NOT NULL) THEN
+			SET sqlStatement = &apos;UPDATE &apos;||fullTablePath||&apos; SET USER_EMAIL = &apos;&apos;&apos;||userEmail||&apos;&apos;&apos; WHERE USER_NAME = &apos;&apos;&apos;||userName||&apos;&apos;&apos;&apos;;
+			IF (upper(debug) = &apos;Y&apos;) THEN
+				CALL print(moduleName||&apos; : sqlStatement=&apos;||NVL(sqlStatement,&apos;null&apos;));
+			END IF;
+			EXECUTE IMMEDIATE sqlStatement;
+			SET status = 1;
+		END IF;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1518212979784</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564411073194</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">10/79</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1518212979784</attribute>
+</metadata>

@@ -1,0 +1,889 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Mstb_Order_Header_Extend_Atl" path="/shared/Common/Physical/Formatting/5GPOS/Hong_Kong/Mstb_Order_Header_Extend_Atl" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="id" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="order_number" nullable="true">
+      <datatype type="STRING" minLength="14" maxLength="14"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="invoice_counter" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="volume_distributor_id" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="volume_dd" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="volume_legal_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="pickup_center" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="voucher_bv" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="voucher_pv" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="order_wight" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="tna_amount" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="coupon_amount" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="point_rate" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="point_charge" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="return_amount" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="return_quantity" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="return_point_amount" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="return_positive_point" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="return_negative_point" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="return_pc_flag" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cancel_date" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cancel_staff_number" nullable="true">
+      <datatype type="STRING" maxLength="16"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cancel_reason" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="manage_type" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="agent_distributor_number" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="agent_distributor_name" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="agent_distributor_id" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="print_type" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distributor_name" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="invoiceloc" nullable="true">
+      <datatype type="STRING" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="last_modified_timestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="invoice_number" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="invoice_checknum" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="coupon_number" nullable="true">
+      <datatype type="STRING" maxLength="16"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="corporation_id" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="corporation_name" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="group_number" nullable="true">
+      <datatype type="STRING" maxLength="16"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="group_status" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="volume_address" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="arap_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="gift_point_value" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="promtion_quantity" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="real_amount" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="control_dist_message" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="print_envelop_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="original_order_date" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="order_timestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="created_timestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="modified_timestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvdc1" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvdc2" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvdc3" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvdc4" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvdc5" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvst1" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvst2" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvst3" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvst4" nullable="true">
+      <datatype type="STRING" maxLength="64"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsvst5" nullable="true">
+      <datatype type="STRING" maxLength="128"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="address_drop_code" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="used_ecoupon_value" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="remain_ecoupon_value" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="deduct_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="restore_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="complete_date_time" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="label_code" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="original_invoice_number" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="remark" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="order_gift_point" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="return_order_gift_point" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="buyer_number" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="buyer_type" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="referrer_number" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="referrer_type" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="volume_number" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="foa_phone_number" nullable="true">
+      <datatype type="STRING" maxLength="32"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="self" nullable="true">
+      <datatype type="STRING" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="credit_card" nullable="true">
+      <datatype type="STRING" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/OnPremises/Oracle_5GPOS_Hong_Kong/POS_ORDER/MSTB_ORDER_HEADER_EXTEND_ATL" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="ID" nullable="false">
+        <datatype type="INTEGER" minValue="-999999999999" maxValue="999999999999"/>
+      </element>
+      <element name="ORDER_NUMBER">
+        <datatype type="STRING" minLength="14" maxLength="14"/>
+      </element>
+      <element name="INVOICE_COUNTER">
+        <datatype type="INTEGER" minValue="-999999999999" maxValue="999999999999"/>
+      </element>
+      <element name="VOLUME_DISTRIBUTOR_ID">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="VOLUME_DD">
+        <datatype type="INTEGER" minValue="-999999999999" maxValue="999999999999"/>
+      </element>
+      <element name="VOLUME_LEGAL_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="PICKUP_CENTER">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="VOUCHER_BV">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="VOUCHER_PV">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="ORDER_WIGHT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="TNA_AMOUNT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="COUPON_AMOUNT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="POINT_RATE">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="POINT_CHARGE">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="RETURN_AMOUNT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="RETURN_QUANTITY">
+        <datatype type="INTEGER" minValue="-999999999" maxValue="999999999"/>
+      </element>
+      <element name="RETURN_POINT_AMOUNT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="RETURN_POSITIVE_POINT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="RETURN_NEGATIVE_POINT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="RETURN_PC_FLAG">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="CANCEL_DATE">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="CANCEL_STAFF_NUMBER">
+        <datatype type="STRING" maxLength="16"/>
+      </element>
+      <element name="CANCEL_REASON">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="MANAGE_TYPE">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="AGENT_DISTRIBUTOR_NUMBER">
+        <datatype type="INTEGER" minValue="-999999999999" maxValue="999999999999"/>
+      </element>
+      <element name="AGENT_DISTRIBUTOR_NAME">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="AGENT_DISTRIBUTOR_ID">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="PRINT_TYPE">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="DISTRIBUTOR_NAME">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="INVOICELOC">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="LAST_MODIFIED_TIMESTAMP">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="INVOICE_NUMBER">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="INVOICE_CHECKNUM">
+        <datatype type="INTEGER" minValue="-99999999" maxValue="99999999"/>
+      </element>
+      <element name="COUPON_NUMBER">
+        <datatype type="STRING" maxLength="16"/>
+      </element>
+      <element name="CORPORATION_ID">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="CORPORATION_NAME">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="GROUP_NUMBER">
+        <datatype type="STRING" maxLength="16"/>
+      </element>
+      <element name="GROUP_STATUS">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="VOLUME_ADDRESS">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="ARAP_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="GIFT_POINT_VALUE">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="PROMTION_QUANTITY">
+        <datatype type="INTEGER" minValue="-999999999" maxValue="999999999"/>
+      </element>
+      <element name="REAL_AMOUNT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="CONTROL_DIST_MESSAGE">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="PRINT_ENVELOP_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ORIGINAL_ORDER_DATE">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="ORDER_TIMESTAMP">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="CREATED_TIMESTAMP">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="MODIFIED_TIMESTAMP">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="RSVDC1">
+        <datatype type="INTEGER" minValue="-99999999999999" maxValue="99999999999999"/>
+      </element>
+      <element name="RSVDC2">
+        <datatype type="INTEGER" minValue="-99999999999999" maxValue="99999999999999"/>
+      </element>
+      <element name="RSVDC3">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="RSVDC4">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="RSVDC5">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="RSVST1">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="RSVST2">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="RSVST3">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="RSVST4">
+        <datatype type="STRING" maxLength="64"/>
+      </element>
+      <element name="RSVST5">
+        <datatype type="STRING" maxLength="128"/>
+      </element>
+      <element name="ADDRESS_DROP_CODE">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="USED_ECOUPON_VALUE">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="REMAIN_ECOUPON_VALUE">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="DEDUCT_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="RESTORE_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="COMPLETE_DATE_TIME">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="LABEL_CODE">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ORIGINAL_INVOICE_NUMBER">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="REMARK">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="ORDER_GIFT_POINT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="RETURN_ORDER_GIFT_POINT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      </element>
+      <element name="BUYER_NUMBER">
+        <datatype type="INTEGER" minValue="-99999999999999" maxValue="99999999999999"/>
+      </element>
+      <element name="BUYER_TYPE">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="REFERRER_NUMBER">
+        <datatype type="INTEGER" minValue="-99999999999999" maxValue="99999999999999"/>
+      </element>
+      <element name="REFERRER_TYPE">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="VOLUME_NUMBER">
+        <datatype type="INTEGER" minValue="-99999999999999" maxValue="99999999999999"/>
+      </element>
+      <element name="FOA_PHONE_NUMBER">
+        <datatype type="STRING" maxLength="32"/>
+      </element>
+      <element name="SELF">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="CREDIT_CARD">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	MSTB_ORDER_HEADER_EXTEND_ATL.&quot;ID&quot; &quot;id&quot;,
+	MSTB_ORDER_HEADER_EXTEND_ATL.ORDER_NUMBER order_number,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.INVOICE_COUNTER AS BIGINT) AS invoice_counter,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.VOLUME_DISTRIBUTOR_ID AS VARCHAR(20)) AS volume_distributor_id,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.VOLUME_DD AS BIGINT) AS volume_dd,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.VOLUME_LEGAL_FLAG AS CHAR(1)) AS volume_legal_flag,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.PICKUP_CENTER AS VARCHAR(8)) AS pickup_center,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.VOUCHER_BV AS DECIMAL(14,2)) AS voucher_bv,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.VOUCHER_PV AS DECIMAL(14,2)) AS voucher_pv,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.ORDER_WIGHT AS DECIMAL(14,2)) AS order_wight,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.TNA_AMOUNT AS DECIMAL(14,2)) AS tna_amount,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.COUPON_AMOUNT AS DECIMAL(14,2)) AS coupon_amount,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.POINT_RATE AS DECIMAL(14,2)) AS point_rate,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.POINT_CHARGE AS DECIMAL(14,2)) AS point_charge,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RETURN_AMOUNT AS DECIMAL(14,2)) AS return_amount,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RETURN_QUANTITY AS INTEGER) AS return_quantity,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RETURN_POINT_AMOUNT AS DECIMAL(14,2)) AS return_point_amount,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RETURN_POSITIVE_POINT AS DECIMAL(14,2)) AS return_positive_point,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RETURN_NEGATIVE_POINT AS DECIMAL(14,2)) AS return_negative_point,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RETURN_PC_FLAG AS DOUBLE) AS return_pc_flag,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.CANCEL_DATE AS TIMESTAMP) AS cancel_date,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.CANCEL_STAFF_NUMBER AS VARCHAR(16)) AS cancel_staff_number,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.CANCEL_REASON AS VARCHAR(8)) AS cancel_reason,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.MANAGE_TYPE AS CHAR(1)) AS manage_type,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.AGENT_DISTRIBUTOR_NUMBER AS BIGINT) AS agent_distributor_number,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.AGENT_DISTRIBUTOR_NAME AS VARCHAR(200)) AS agent_distributor_name,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.AGENT_DISTRIBUTOR_ID AS VARCHAR(100)) AS agent_distributor_id,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.PRINT_TYPE AS CHAR(1)) AS print_type,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.DISTRIBUTOR_NAME AS VARCHAR(200)) AS distributor_name,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.INVOICELOC AS VARCHAR(4)) AS invoiceloc,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.LAST_MODIFIED_TIMESTAMP AS TIMESTAMP) AS last_modified_timestamp,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.INVOICE_NUMBER AS VARCHAR(32)) AS invoice_number,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.INVOICE_CHECKNUM AS INTEGER) AS invoice_checknum,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.COUPON_NUMBER AS VARCHAR(16)) AS coupon_number,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.CORPORATION_ID AS VARCHAR(32)) AS corporation_id,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.CORPORATION_NAME AS VARCHAR(256)) AS corporation_name,
+	MSTB_ORDER_HEADER_EXTEND_ATL.GROUP_NUMBER group_number,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.GROUP_STATUS AS CHAR(1)) AS group_status,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.VOLUME_ADDRESS AS VARCHAR(256)) AS volume_address,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.ARAP_FLAG AS CHAR(1)) AS arap_flag,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.GIFT_POINT_VALUE AS DECIMAL(14,2)) AS gift_point_value,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.PROMTION_QUANTITY AS INTEGER) AS promtion_quantity,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.REAL_AMOUNT AS DECIMAL(14,2)) AS real_amount,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.CONTROL_DIST_MESSAGE AS VARCHAR(32)) AS control_dist_message,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.PRINT_ENVELOP_FLAG AS CHAR(1)) AS print_envelop_flag,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.ORIGINAL_ORDER_DATE AS TIMESTAMP) AS original_order_date,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.ORDER_TIMESTAMP AS TIMESTAMP) AS order_timestamp,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.CREATED_TIMESTAMP AS TIMESTAMP) AS created_timestamp,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.MODIFIED_TIMESTAMP AS TIMESTAMP) AS modified_timestamp,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RSVDC1 AS BIGINT) AS rsvdc1,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RSVDC2 AS BIGINT) AS rsvdc2,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RSVDC3 AS DECIMAL(14,2)) AS rsvdc3,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RSVDC4 AS DECIMAL(14,2)) AS rsvdc4,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RSVDC5 AS DECIMAL(14,2)) AS rsvdc5,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RSVST1 AS VARCHAR(32)) AS rsvst1,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RSVST2 AS VARCHAR(32)) AS rsvst2,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RSVST3 AS VARCHAR(32)) AS rsvst3,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RSVST4 AS VARCHAR(64)) AS rsvst4,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RSVST5 AS VARCHAR(128)) AS rsvst5,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.ADDRESS_DROP_CODE AS VARCHAR(8)) AS address_drop_code,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.USED_ECOUPON_VALUE AS DECIMAL(14,2)) AS used_ecoupon_value,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.REMAIN_ECOUPON_VALUE AS DECIMAL(14,2)) AS remain_ecoupon_value,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.DEDUCT_FLAG AS CHAR(1)) AS deduct_flag,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RESTORE_FLAG AS CHAR(1)) AS restore_flag,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.COMPLETE_DATE_TIME AS TIMESTAMP) AS complete_date_time,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.LABEL_CODE AS CHAR(1)) AS label_code,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.ORIGINAL_INVOICE_NUMBER AS VARCHAR(32)) AS original_invoice_number,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.REMARK AS VARCHAR(256)) AS remark,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.ORDER_GIFT_POINT AS DECIMAL(14,2)) AS order_gift_point,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.RETURN_ORDER_GIFT_POINT AS DECIMAL(14,2)) AS return_order_gift_point,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.BUYER_NUMBER AS BIGINT) AS buyer_number,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.BUYER_TYPE AS VARCHAR(2)) AS buyer_type,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.REFERRER_NUMBER AS BIGINT) AS referrer_number,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.REFERRER_TYPE AS VARCHAR(2)) AS referrer_type,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.VOLUME_NUMBER AS BIGINT) AS volume_number,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.FOA_PHONE_NUMBER AS VARCHAR(32)) AS foa_phone_number,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.SELF AS VARCHAR(4)) AS self,
+	CAST(MSTB_ORDER_HEADER_EXTEND_ATL.CREDIT_CARD AS VARCHAR(4)) AS credit_card 
+FROM
+	/shared/Common/Physical/Metadata/OnPremises/Oracle_5GPOS_Hong_Kong/POS_ORDER/MSTB_ORDER_HEADER_EXTEND_ATL MSTB_ORDER_HEADER_EXTEND_ATL</attribute>
+  <attribute name="creationDate" type="LONG">1569000503825</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569000503825</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1569000503825</attribute>
+</metadata>

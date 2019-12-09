@@ -1,0 +1,203 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="WWT01400_NRT_TRX_MST" path="/shared/Common/Physical/Metadata/OnPremises/Oracle_Magic_DG2/WWSGLS01/WWT01400_NRT_TRX_MST" type="TABLE" subtype="DATABASE_TABLE" changeToken="0" tableType="TABLE">
+  <columns>
+    <column name="TRX_ID" nullable="true">
+      <datatype name="DOUBLE" extendedName="NUMBER" subType="DATASOURCE_TYPE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TRX_SRC_CD" nullable="true">
+      <datatype name="CHAR" extendedName="CHAR(3)" subType="DATASOURCE_TYPE" type="STRING" minLength="3" maxLength="3"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TRX_TYPE_CD" nullable="true">
+      <datatype name="CHAR" extendedName="CHAR(2)" subType="DATASOURCE_TYPE" type="STRING" minLength="2" maxLength="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROC_STAT_CD" nullable="true">
+      <datatype name="CHAR" extendedName="CHAR(2)" subType="DATASOURCE_TYPE" type="STRING" minLength="2" maxLength="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_ID" nullable="true">
+      <datatype name="SMALLINT" extendedName="NUMBER(3,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-999" maxValue="999"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="IBO_NO" nullable="true">
+      <datatype name="DOUBLE" extendedName="NUMBER" subType="DATASOURCE_TYPE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DLETE_REAS_CD" nullable="true">
+      <datatype name="CHAR" extendedName="CHAR(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SRC_ENTRY_DTM" nullable="false">
+      <datatype name="TIMESTAMP(6)" extendedName="TIMESTAMP(6)" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AUDIT_CREAT_USER_NM" nullable="true">
+      <datatype name="CHAR" extendedName="CHAR(10)" subType="DATASOURCE_TYPE" type="STRING" minLength="10" maxLength="10"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AUDIT_CREAT_DTM" nullable="true">
+      <datatype name="TIMESTAMP(6)" extendedName="TIMESTAMP(6)" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AUDIT_CHNG_USER_NM" nullable="true">
+      <datatype name="CHAR" extendedName="CHAR(10)" subType="DATASOURCE_TYPE" type="STRING" minLength="10" maxLength="10"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AUDIT_CHNG_DTM" nullable="true">
+      <datatype name="TIMESTAMP(6)" extendedName="TIMESTAMP(6)" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AUDIT_CHNG_MODUL_NM" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(30)" subType="DATASOURCE_TYPE" type="STRING" maxLength="30"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TRX_REDO_QTY" nullable="true">
+      <datatype name="DOUBLE" extendedName="NUMBER" subType="DATASOURCE_TYPE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TRX_PROC_STRT_DTM" nullable="true">
+      <datatype name="TIMESTAMP(9)" extendedName="TIMESTAMP(9)" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROC_HOLD_FLG" nullable="true">
+      <datatype name="TINYINT" extendedName="NUMBER(1,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-9" maxValue="9"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AUDIT_NTC_EMAIL_TXT" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(100)" subType="DATASOURCE_TYPE" type="STRING" maxLength="100"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TRX_PROC_END_DTM" nullable="true">
+      <datatype name="TIMESTAMP(9)" extendedName="TIMESTAMP(9)" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="USER_REAS_CD" nullable="true">
+      <datatype name="CHAR" extendedName="CHAR(5)" subType="DATASOURCE_TYPE" type="STRING" minLength="5" maxLength="5"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes>
+    <index name="WWI01400_AFF_IBO_TRX_SRC_CD" type="OTHER" unique="false">
+      <indexColumn name="AFF_ID" sortOrder="ASCENDING"/>
+      <indexColumn name="IBO_NO" sortOrder="ASCENDING"/>
+      <indexColumn name="TRX_TYPE_CD" sortOrder="ASCENDING"/>
+      <indexColumn name="SRC_ENTRY_DTM" sortOrder="ASCENDING"/>
+      <indexColumn name="PROC_STAT_CD" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">WWSGLS01</attribute>
+    </index>
+    <index name="WWI01400_AFF_ID_IDX" type="OTHER" unique="false">
+      <indexColumn name="AFF_ID" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">WWSGLS01</attribute>
+    </index>
+    <index name="WWI01400_PROC_STAT_CD_IDX" type="OTHER" unique="false">
+      <indexColumn name="PROC_STAT_CD" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">WWSGLS01</attribute>
+    </index>
+    <index name="WWI01400_TRX_ID_CPK" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="TRX_ID" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">WWSGLS01</attribute>
+    </index>
+    <index name="WWI01400_TRX_TYPE_CD_IDX" type="OTHER" unique="false">
+      <indexColumn name="TRX_TYPE_CD" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">WWSGLS01</attribute>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <attribute name="c:0:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:10:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:11:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:12:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:13:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:14:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:15:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:16:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:17:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:18:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:1:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:2:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:3:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:4:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:5:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:6:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:7:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:8:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:9:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="creationDate" type="LONG">1565804262302</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="i:0:indexSchema" type="STRING">WWSGLS01</attribute>
+  <attribute name="i:1:indexSchema" type="STRING">WWSGLS01</attribute>
+  <attribute name="i:2:indexSchema" type="STRING">WWSGLS01</attribute>
+  <attribute name="i:3:indexSchema" type="STRING">WWSGLS01</attribute>
+  <attribute name="i:4:indexSchema" type="STRING">WWSGLS01</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1565804262302</attribute>
+</metadata>

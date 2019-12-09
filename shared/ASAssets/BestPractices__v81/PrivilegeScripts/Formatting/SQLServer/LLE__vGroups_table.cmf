@@ -1,0 +1,271 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="LLE_vGroups" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/SQLServer/LLE_vGroups" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>Modified Date:	Modified By:		CSW Version:	Reason:
+	05/16/2017		Mike Tinius			7.0.5			Adapted for Data Abstraction Best Practices.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <columns>
+    <column name="rownum" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="sheetRownum" nullable="true">
+      <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="datasource" nullable="true">
+      <datatype type="STRING" minLength="9" maxLength="9" trailingSpaces="false"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="sheetName" nullable="true">
+      <datatype type="STRING" minLength="13" maxLength="13" trailingSpaces="false"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ORGANIZATION_NAME" nullable="true">
+      <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROJECT_NAME" nullable="true">
+      <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="SUBPROJECT_NAME" nullable="true">
+      <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="GROUP_NAME" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="GROUP_DESC" nullable="true">
+      <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="DOMAIN_NAME" nullable="true">
+      <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ENVIRONMENT_NAME" nullable="true">
+      <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ACCESS_FLAG" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="UNDO_LOCK" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="READ_ALL_CONFIG" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="MODIFY_ALL_CONFIG" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="READ_ALL_RESOURCES" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="MODIFY_ALL_RESOURCES" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="READ_ALL_STATUS" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="MODIFY_ALL_STATUS" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="READ_ALL_USER" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="MODIFY_ALL_USER" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ISACTIVE" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DB_LLE_SS/CMPPRV/dbo/COMPOSITE_STUDIO_RIGHTS" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="STUDIO_RIGHTS_ID" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="ORGANIZATION_NAME" nullable="false">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="PROJECT_NAME" nullable="false">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SUBPROJECT_NAME" nullable="false">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="GROUP_NAME" nullable="false">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="GROUP_DESC">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DOMAIN_NAME" nullable="false">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ENVIRONMENT_NAME" nullable="false">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ACCESS_FLAG">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="UNDO_LOCK">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="READ_ALL_CONFIG">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="MODIFY_ALL_CONFIG">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="READ_ALL_RESOURCES">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="MODIFY_ALL_RESOURCES">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="READ_ALL_STATUS">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="MODIFY_ALL_STATUS">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="READ_ALL_USER">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="MODIFY_ALL_USER">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="CREATEDBY" nullable="false">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="CREATEDDATE" nullable="false">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="UPDATEDBY" nullable="false">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="UPDATEDDATE" nullable="false">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="ISACTIVE" nullable="false">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	STUDIO_RIGHTS_ID as 		rownum, 
+	0 as 						sheetRownum, 
+	&apos;DB_LLE_SS&apos;					datasource,
+	&apos;Studio_Rights&apos; 			sheetName,
+	ORGANIZATION_NAME,
+	PROJECT_NAME, 
+	SUBPROJECT_NAME,
+	GROUP_NAME, 
+	GROUP_DESC, 
+	DOMAIN_NAME, 
+	ENVIRONMENT_NAME, 
+	ACCESS_FLAG,
+	UNDO_LOCK,
+	READ_ALL_CONFIG,
+	MODIFY_ALL_CONFIG,
+	READ_ALL_RESOURCES,
+	MODIFY_ALL_RESOURCES,
+	READ_ALL_STATUS,
+	MODIFY_ALL_STATUS,
+	READ_ALL_USER,
+	MODIFY_ALL_USER,
+	ISACTIVE
+FROM /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DB_LLE_SS/CMPPRV/dbo/COMPOSITE_STUDIO_RIGHTS
+WHERE ISACTIVE = &apos;Y&apos;
+
+</attribute>
+  <attribute name="creationDate" type="LONG">1415460093633</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1513835500910</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+</metadata>

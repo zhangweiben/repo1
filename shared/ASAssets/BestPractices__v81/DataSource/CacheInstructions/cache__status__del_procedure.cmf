@@ -1,0 +1,154 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="cache_status_del" path="/shared/ASAssets/BestPractices_v81/DataSource/CacheInstructions/cache_status_del" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters></parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DataSource/CommonModelCache/ciscache/cache_status" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="clusterid">
+        <datatype type="STRING" maxLength="40"/>
+      </element>
+      <element name="serverid" nullable="false">
+        <datatype type="STRING" maxLength="80"/>
+      </element>
+      <element name="resourceid" nullable="false">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="parameters">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="status" nullable="false">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="cachekey" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="starttime" nullable="false">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="finishtime">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="cleartime">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="bytes">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="message">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="bucket">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="incrementalstatus">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="incrementalmaintenancelevel">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DataSource/CommonModelCache/ciscache/common_model" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="cachekey" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="datasourceName">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="projectFolderName">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="greatGrandParentName">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="grandParentName">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="parentName">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="containerName">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="physicalName">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="physicalType">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceNum">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="logicalName">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="logicalType">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="annotation">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+      <element name="logicalTransformation">
+        <datatype type="STRING" maxLength="1024"/>
+      </element>
+      <element name="physicalNameEncoded">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE cache_status_del()
+BEGIN
+	delete from /shared/ASAssets/BestPractices_v81/DataSource/CommonModelCache/ciscache/cache_status where cachekey &gt; 4000;
+	delete from /shared/ASAssets/BestPractices_v81/DataSource/CommonModelCache/ciscache/common_model;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1386222389751</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1521512751904</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

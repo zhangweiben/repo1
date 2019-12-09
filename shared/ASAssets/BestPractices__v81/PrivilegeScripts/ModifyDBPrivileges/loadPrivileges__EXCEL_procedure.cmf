@@ -1,0 +1,896 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="loadPrivileges_EXCEL" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/ModifyDBPrivileges/loadPrivileges_EXCEL" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <parameters>
+    <parameter name="datasource" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="performInsertUpdate" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="rowsProcessed" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="rowsInserted" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="rowsUpdated" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="rowsDeleted" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="rowsInactive" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="duplicateRows" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="duplicateRowMsg" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="message" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Excel/vPrivileges_All_Excel" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="rownum">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="sheetRownum">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="datasource">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="sheetName">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Privilege_Type">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Organization">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Project">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SubProject">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Resource Path">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="Resource Type">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Recurse Dependencies">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Recurse Dependents">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Recurse Child">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="Revoke All">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Name">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Name Type">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Domain">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Env Type">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="OrderPrecedence">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="R">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="W">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="E">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="S">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="U">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="I">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="D">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="G">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Owner">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Owner Domain">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Comments">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="Initialize">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="IsActive">
+        <datatype type="STRING" minLength="1" maxLength="1" trailingSpaces="false"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/removePrependedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outText" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/trimComma" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outText" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/validateSupportingTables" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="datasource" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="organization" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="projectName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="subproject" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="domainName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="envName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="orgNotFound" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="projectNotFound" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="subprojectNotFound" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="domainNotFound" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="envNameNotFound" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="orgCount" direction="INOUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="projectCount" direction="INOUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="subprojectCount" direction="INOUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="domainCount" direction="INOUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="envNameCount" direction="INOUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="lastOrg" direction="INOUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="lastProject" direction="INOUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="lastSubproject" direction="INOUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="lastDomain" direction="INOUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="lastEnvName" direction="INOUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="exceptionText" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/ModifyDBPrivileges/TableMaintenance/modify_06_COMPOSITE_PRIVILEGES" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="datasource" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="performInsertUpdate" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="setInactive" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="performDelete" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inPRIVILEGE_ID" direction="IN">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      </element>
+      <element name="inORGANIZATION_NAME" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inPROJECT_NAME" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inSUBPROJECT_NAME" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inRESOURCE_PATH" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="inRESOURCE_TYPE" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inRECURSE_DEPENDENCIES" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inRECURSE_DEPENDENTS" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inRECURSE_CHILD" direction="IN">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="inREVOKE_ALL" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inNAME" direction="IN">
+        <datatype type="STRING" maxLength="1000"/>
+      </element>
+      <element name="inNAME_TYPE" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inDOMAIN_NAME" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inENVIRONMENT_NAME" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inREAD_ACCESS" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inWRITE_ACCESS" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inEXECUTE_ACCESS" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inSELECT_ACCESS" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inUPDATE_ACCESS" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inINSERT_ACCESS" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inDELETE_ACCESS" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inGRANT_ACCESS" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inINITIALIZE" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inOWNER_NAME" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOWNER_DOMAIN" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inCOMMENTS" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="actionType" direction="OUT">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="rowsProcessed" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="duplicateRows" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="duplicateRowMsg" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="message" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/user/getDomainGroups" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inDomainName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="domainName">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="explicitRights">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="effectiveRights">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="inheritedRights">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 	insertNewPrivileges_EXCEL:
+	--------------------------
+
+	This procedure is the generic interface for inserting and updating privileges from the generic Composite_Resource_Privileges_LOAD_DB.xlsx spreadsheet.
+		Location: /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DS_EXCEL/Composite_Resource_Privileges_LOAD_DB.xlsx
+	It does not delete privilege rows.  
+	In order to update a row, it uses the following columns to detect the existence of a row:
+		ISACTIVE=Y, ORGANIZATION_NAME, PROJECT, SUBPROJECT_NAME, RESOURCE_PATH, RESOURCE_TYPE, DOMAIN, NAME_TYPE, NAME, ENVIRONMENT_NAME
+	If no rows is detected then an insert is performed.
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	--------------	------------------	------------	-------
+	05/16/2017		Mike Tinius			7.0.5			Adapted for Data Abstraction Best Practices.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE loadPrivileges_EXCEL(
+	IN datasource				VARCHAR(255),-- REQUIRED FILTER: DB_[LLE,PROD], The source of the groups. Refer to getPrivilegeDatasourceToScriptMapping().
+	IN performInsertUpdate		CHAR(1),	-- Y or N.  Y=yes perform insert or update.  N=no do not perform insert or update but display the same messages to see what will be executed.
+	OUT rowsProcessed			INTEGER,	-- Number of rows processed in total.
+	OUT rowsInserted			INTEGER,	-- Number of rows inserted into the privilege database.
+	OUT rowsUpdated				INTEGER,	-- Number of rows updated into the privilege database.
+	OUT rowsDeleted				INTEGER,	-- Number of rows deleted into the privilege database.
+	OUT rowsInactive			INTEGER,	-- Number of rows set inactive into the privilege database.
+	OUT duplicateRows			INTEGER,	-- Number of duplicate rows found
+	OUT duplicateRowMsg			LONGVARCHAR,-- message for duplicate rows
+	OUT	message					LONGVARCHAR	-- a general message
+)
+BEGIN
+	DECLARE debug				CHAR(1) DEFAULT &apos;Y&apos;;
+	DECLARE orgNotFound			LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE projectNotFound		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE subprojectNotFound	LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE domainNotFound		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE envNameNotFound		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE orgCount			INTEGER DEFAULT 0;
+	DECLARE projectCount		INTEGER DEFAULT 0;
+	DECLARE subprojectCount		INTEGER DEFAULT 0;
+	DECLARE domainCount			INTEGER DEFAULT 0;
+	DECLARE envNameCount		INTEGER DEFAULT 0;
+	DECLARE organization		VARCHAR;
+	DECLARE project				VARCHAR;
+	DECLARE subproject			VARCHAR;
+	DECLARE domainName			VARCHAR;
+	DECLARE envName				VARCHAR;
+	DECLARE lastOrg				VARCHAR DEFAULT &apos;&apos;;
+	DECLARE lastProject			VARCHAR DEFAULT &apos;&apos;;
+	DECLARE lastSubproject		VARCHAR DEFAULT &apos;&apos;;
+	DECLARE lastDomain			VARCHAR DEFAULT &apos;&apos;;
+	DECLARE lastEnvName			VARCHAR DEFAULT &apos;&apos;;
+	DECLARE exceptionText		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE performMsg			VARCHAR DEFAULT &apos;&apos;;
+	DECLARE i					INTEGER DEFAULT 0;
+	DECLARE groupCount			INTEGER;
+	DECLARE ex					EXCEPTION;
+	DECLARE msg					LONGVARCHAR;
+	DECLARE actionType			VARCHAR;
+	DECLARE rowProcessed		INTEGER;
+	DECLARE rowDuplicate		INTEGER;
+	DECLARE duplicateMsg		LONGVARCHAR;
+
+	SET rowsProcessed = 0;
+	SET rowsInserted = 0;
+	SET rowsUpdated = 0;
+	SET rowsDeleted = 0;
+	SET rowsInactive = 0;
+	SET duplicateRows = 0;
+	SET duplicateRowMsg = &apos;&apos;;
+	SET message = &apos;&apos;;
+
+	IF (datasource IS NOT NULL AND datasource = &apos;EXCEL&apos;) THEN
+		raise ex value &apos;The input variable datasource=&quot;EXCEL&quot; is not valid.&apos;;
+	END IF;
+
+	-- Only allow the spreadsheet to have a single organization
+	IF (debug = &apos;Y&apos;) THEN
+		CALL PRINT(&apos;Validate unique &quot;Organization&quot; with source: /Formatting/Excel/vPrivileges_All_Excel&apos;);
+	END IF;
+	SET i = 0;
+	SET exceptionText = &apos;&apos;;
+	FOR r AS 
+		SELECT Organization
+		FROM /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Excel/vPrivileges_All_Excel
+		WHERE Organization IS NOT NULL AND LENGTH(TRIM(Organization)) &gt; 0
+		  AND Project IS NOT NULL AND LENGTH(TRIM(Project)) &gt; 0
+		  AND SubProject IS NOT NULL AND LENGTH(TRIM(SubProject)) &gt; 0
+		  AND &quot;Resource Path&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Resource Path&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+		  AND &quot;Domain&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Domain&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+		GROUP BY Organization
+	DO
+		SET i = i + 1;
+		IF (LENGTH(exceptionText) &gt; 0) THEN
+			SET exceptionText = exceptionText || &apos;, &apos;;
+		END IF;
+		SET exceptionText = exceptionText || r.Organization;
+	END FOR;
+	IF (i &gt; 1) THEN
+		SET msg = &apos;Only 1 organization is allowed per upload.  organization list=&apos;||exceptionText;
+		CALL PRINT(msg);
+		RAISE ex VALUE msg;
+	END IF;
+
+	-- Only allow the Excel Load spreadsheet to have a single Project.  It can have multiple sub-projects though.
+	IF (debug = &apos;Y&apos;) THEN
+		CALL PRINT(&apos;Validate unique &quot;Project&quot; with source: /Formatting/Excel/vPrivileges_All_Excel&apos;);
+	END IF;
+	SET i = 0;
+	SET exceptionText = &apos;&apos;;
+	FOR r AS 
+		SELECT Project
+		FROM /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Excel/vPrivileges_All_Excel
+		WHERE Organization IS NOT NULL AND LENGTH(TRIM(Organization)) &gt; 0
+		  AND Project IS NOT NULL AND LENGTH(TRIM(Project)) &gt; 0
+		  AND SubProject IS NOT NULL AND LENGTH(TRIM(SubProject)) &gt; 0
+		  AND &quot;Resource Path&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Resource Path&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+		  AND &quot;Domain&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Domain&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+		GROUP BY Project
+	DO
+		SET i = i + 1;
+		IF (LENGTH(exceptionText) &gt; 0) THEN
+			SET exceptionText = exceptionText || &apos;, &apos;;
+		END IF;
+		SET exceptionText = exceptionText || r.Project;
+	END FOR;
+	IF (i &gt; 1) THEN
+		SET msg = &apos;Only 1 Project is allowed per upload.  Project list=&apos;||exceptionText;
+		CALL PRINT(msg);
+		RAISE ex VALUE msg;
+	END IF;
+
+	-- Only allow the Excel Load spreadsheet to have a single non-composite Domain. Any domain that is not &quot;composite&quot; and not &quot;dynamic&quot;
+	IF (debug = &apos;Y&apos;) THEN
+		CALL PRINT(&apos;Validate unique non-composite &quot;Domain&quot; with source: /Formatting/Excel/vPrivileges_All_Excel&apos;);
+	END IF;
+	SET i = 0;
+	SET exceptionText = &apos;&apos;;
+	FOR r AS 
+		SELECT &quot;Domain&quot;
+		FROM /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Excel/vPrivileges_All_Excel
+		WHERE Organization IS NOT NULL AND LENGTH(TRIM(Organization)) &gt; 0
+		  AND Project IS NOT NULL AND LENGTH(TRIM(Project)) &gt; 0
+		  AND SubProject IS NOT NULL AND LENGTH(TRIM(SubProject)) &gt; 0
+		  AND &quot;Resource Path&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Resource Path&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+		  AND &quot;Domain&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Domain&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+		  AND &quot;Domain&quot; NOT IN (&apos;composite&apos;,&apos;dynamic&apos;)
+		GROUP BY &quot;Domain&quot;
+	DO
+		SET i = i + 1;
+		IF (LENGTH(exceptionText) &gt; 0) THEN
+			SET exceptionText = exceptionText || &apos;, &apos;;
+		END IF;
+		SET exceptionText = exceptionText || r.&quot;Domain&quot;;
+	END FOR;
+	IF (i &gt; 1) THEN
+		SET msg = &apos;Only 1 non-composite Domain is allowed per upload.  Domain list=&apos;||exceptionText;
+		CALL PRINT(msg);
+		RAISE ex VALUE msg;
+	END IF;
+
+	-- Validate that the groups exist in CIS
+	IF (debug = &apos;Y&apos;) THEN
+		CALL PRINT(&apos;Validate group exists in CIS DEV with source: /Formatting/Excel/vPrivileges_All_Excel&apos;);
+	END IF;
+	SET i = 0;
+	SET exceptionText = &apos;&apos;;
+	FOR r AS 
+		SELECT DISTINCT Name, &quot;Domain&quot;
+		FROM /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Excel/vPrivileges_All_Excel
+		WHERE Organization IS NOT NULL AND LENGTH(TRIM(Organization)) &gt; 0
+		  AND Project IS NOT NULL AND LENGTH(TRIM(Project)) &gt; 0
+		  AND SubProject IS NOT NULL AND LENGTH(TRIM(SubProject)) &gt; 0
+		  AND &quot;Resource Path&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Resource Path&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+		  AND &quot;Domain&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Domain&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+		  AND &quot;Name Type&quot; IS NOT NULL AND &quot;Name Type&quot;= &apos;GROUP&apos;
+	DO
+		SELECT COUNT(*) cnt INTO groupCount
+			FROM /shared/ASAssets/Utilities/repository/&quot;user&quot;/getDomainGroups(r.&quot;Domain&quot;)
+			WHERE name = r.Name;
+		IF (groupCount = 0) THEN
+			SET i = i + 1;
+			IF (LENGTH(exceptionText) &gt; 0) THEN
+				SET exceptionText = exceptionText || &apos;, &apos;;
+			END IF;
+			SET exceptionText = exceptionText || r.Name||&apos;@&apos;||r.&quot;Domain&quot;;
+		END IF;
+	END FOR;
+	IF (i &gt; 0) THEN
+		SET msg = &apos;The CIS group name does not exist.  GroupName list=&apos;||exceptionText;
+		CALL PRINT(msg);
+		RAISE ex VALUE msg;
+	END IF;
+
+	-- Pre-Process the rows and insure the privilege DB supporting tables have the necessary rows
+	--		ORGANIZATION_TYPE.ORGANIZATION_NAME
+	--		PROJECT_TYPE.ORGANIZATION_NAME and PROJECT_TYPE.PROJECT_NAME
+	--		SUBPROJECT_TYPE.SUBPROJECT_NAME and SUBPROJECT_TYPE.PROJECT_NAME
+	--		DOMAIN_TYPE.DOMAIN_NAME
+	--		ENVIRONMENT_TYPE.ENVIRONMENT_NAME
+	IF (debug = &apos;Y&apos;) THEN
+		CALL PRINT(&apos;Validate supporting tables with source: /Formatting/Excel/vPrivileges_All_Excel&apos;);
+	END IF;
+	SET exceptionText = &apos;&apos;;
+	FOR r AS 
+		SELECT * 
+		FROM /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Excel/vPrivileges_All_Excel
+		WHERE Organization IS NOT NULL AND LENGTH(TRIM(Organization)) &gt; 0
+		  AND Project IS NOT NULL AND LENGTH(TRIM(Project)) &gt; 0
+		  AND SubProject IS NOT NULL AND LENGTH(TRIM(SubProject)) &gt; 0
+		  AND &quot;Resource Path&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Resource Path&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+		  AND &quot;Domain&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Domain&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+	DO
+		-- Validate the supporting tables
+		call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/validateSupportingTables(
+			datasource,
+			debug,
+			r.Organization,
+			r.Project,
+			r.SubProject,
+			r.&quot;Domain&quot;,
+			r.&quot;Env Type&quot;,
+			orgNotFound,
+			projectNotFound,
+			subprojectNotFound,
+			domainNotFound,
+			envNameNotFound,
+			orgCount,
+			projectCount,
+			subprojectCount,
+			domainCount,
+			envNameCount,
+			lastOrg,
+			lastProject,
+			lastSubproject,
+			lastDomain,
+			lastEnvName,
+			exceptionText
+		);
+	END FOR;
+	-- If there is exception text then raise an error and do not process the rows.
+	IF (LENGTH(exceptionText) &gt; 0) THEN
+		SET msg = CHR(10)||&apos;The supporting tables have missing rows.  exception:&apos;||CHR(10)||exceptionText||CHR(10);
+		SET msg = msg ||&apos;INVOKE performSupportingTableMaintenance(&apos;&apos;N&apos;&apos;, &apos;;
+		IF (LENGTH(orgNotFound) &gt; 0) THEN
+			CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/trimComma(orgNotFound, orgNotFound);
+			CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/removePrependedText(orgNotFound, orgNotFound);
+			SET msg = msg || &apos;&apos;&apos;&apos;||orgNotFound||&apos;&apos;&apos;, &apos;;
+		ELSE
+			SET msg = msg || &apos;null, &apos;;
+		END IF;
+		IF (LENGTH(projectNotFound) &gt; 0) THEN
+			CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/trimComma(projectNotFound, projectNotFound);
+			CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/removePrependedText(projectNotFound, projectNotFound);
+			SET msg = msg || &apos;&apos;&apos;&apos;||projectNotFound||&apos;&apos;&apos;, &apos;;
+		ELSE
+			SET msg = msg || &apos;null, &apos;;
+		END IF;
+		IF (LENGTH(subprojectNotFound) &gt; 0) THEN
+			CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/trimComma(subprojectNotFound, subprojectNotFound);
+			CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/removePrependedText(subprojectNotFound, subprojectNotFound);
+			SET msg = msg || &apos;&apos;&apos;&apos;||subprojectNotFound||&apos;&apos;&apos;, &apos;;
+		ELSE
+			SET msg = msg || &apos;null, &apos;;
+		END IF;
+		IF (LENGTH(domainNotFound) &gt; 0) THEN
+			CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/trimComma(domainNotFound, domainNotFound);
+			CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/removePrependedText(domainNotFound, domainNotFound);
+			SET msg = msg || &apos;&apos;&apos;&apos;||domainNotFound||&apos;&apos;&apos;, &apos;;
+		ELSE
+			SET msg = msg || &apos;null, &apos;;
+		END IF;
+		IF (LENGTH(envNameNotFound) &gt; 0) THEN
+			CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/trimComma(envNameNotFound, envNameNotFound);
+			CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/removePrependedText(envNameNotFound, envNameNotFound);
+			SET msg = msg || &apos;&apos;&apos;&apos;||domainNotFound||&apos;&apos;&apos;, &apos;;
+		ELSE
+			SET msg = msg || &apos;null, &apos;;
+		END IF;
+		SET msg = msg || &apos;)&apos;;
+		CALL PRINT(msg);
+		RAISE ex VALUE msg;
+	END IF;
+
+	-- Perform the actual insert of the rows
+	FOR r AS 
+		SELECT 
+			Organization				ORGANIZATION_NAME,
+			Project						PROJECT_NAME,
+			SubProject					SUBPROJECT_NAME,
+			&quot;Resource Path&quot;				RESOURCE_PATH,
+			&quot;Resource Type&quot;				RESOURCE_TYPE,
+			&quot;Recurse Dependencies&quot;		RECURSE_DEPENDENCIES,
+			&quot;Recurse Dependents&quot;		RECURSE_DEPENDENTS,
+			&quot;Recurse Child&quot;				RECURSE_CHILD,
+			&quot;Revoke All&quot;				REVOKE_ALL,
+			Name						NAME,
+			&quot;Name Type&quot;					NAME_TYPE,
+			&quot;Domain&quot;					DOMAIN_NAME,
+			&quot;Env Type&quot;					ENVIRONMENT_NAME,
+			R							READ_ACCESS, 
+			W							WRITE_ACCESS, 
+			E							EXECUTE_ACCESS, 
+			S							SELECT_ACCESS, 
+			U							UPDATE_ACCESS, 
+			I							INSERT_ACCESS, 
+			D							DELETE_ACCESS, 
+			G							GRANT_ACCESS,
+			Owner						OWNER_NAME,
+			&quot;Owner Domain&quot;				OWNER_DOMAIN,
+			Comments					COMMENTS,
+			Initialize					INITIALIZE,
+			IsActive					ISACTIVE,
+			Privilege_Type				PRIVILEGE_TYPE						
+		FROM /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Excel/vPrivileges_All_Excel
+		WHERE Organization IS NOT NULL AND LENGTH(TRIM(Organization)) &gt; 0
+		  AND Project IS NOT NULL AND LENGTH(TRIM(Project)) &gt; 0
+		  AND SubProject IS NOT NULL AND LENGTH(TRIM(SubProject)) &gt; 0
+		  AND &quot;Resource Path&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Resource Path&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+		  AND &quot;Domain&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Domain&quot;)) &gt; 0
+		  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0
+	DO
+		call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/ModifyDBPrivileges/TableMaintenance/modify_06_COMPOSITE_PRIVILEGES(
+				datasource,				-- REQUIRED FILTER: DB_[LLE,PROD], The source of the groups. Refer to getPrivilegeDatasourceToScriptMapping().
+				performInsertUpdate,	-- Y or N.  Y=yes perform insert or update.  N=no do not perform insert or update but display the same messages to see what will be executed.
+				null,					-- setInactive: Y=if the record exists set it inactive.  N/null=do not perform this operation.
+				null,					-- performDelete: Y=perform a delete using filters supplied.  N/null=do not perform delete but perform insert or update instead.
+				null,					-- This is used only when deleting a specific row by its generated PRIVILEGE_ID
+				r.ORGANIZATION_NAME,
+				r.PROJECT_NAME,
+				r.SUBPROJECT_NAME,
+				r.RESOURCE_PATH,
+				r.RESOURCE_TYPE,
+				r.RECURSE_DEPENDENCIES,
+				r.RECURSE_DEPENDENTS,
+				r.RECURSE_CHILD,
+				r.REVOKE_ALL,
+				r.NAME,
+				r.NAME_TYPE,
+				r.DOMAIN_NAME,
+				r.ENVIRONMENT_NAME,
+				r.READ_ACCESS,
+				r.WRITE_ACCESS,
+				r.EXECUTE_ACCESS,
+				r.SELECT_ACCESS,
+				r.UPDATE_ACCESS,
+				r.INSERT_ACCESS,
+				r.DELETE_ACCESS,
+				r.GRANT_ACCESS,
+				r.INITIALIZE,
+				r.OWNER_NAME,
+				r.OWNER_DOMAIN,
+				r.COMMENTS,
+				actionType,				-- I=insert, U=update, D=delete, S=set inactive
+				rowProcessed,			-- Number of rows process for the action type
+				rowDuplicate,			-- Number of duplicate rows found
+				duplicateMsg,			-- message for duplicate rows
+				msg
+		);
+		set rowsProcessed = rowsProcessed + rowProcessed;
+		if (actionType = &apos;I&apos;) then
+			SET rowsInserted = rowsInserted + rowProcessed;
+		end if;
+		if (actionType = &apos;U&apos;) then
+			SET rowsUpdated = rowsUpdated + rowProcessed;
+		end if;
+		if (actionType = &apos;D&apos;) then
+			SET rowsDeleted = rowsDeleted + rowProcessed;
+		end if;
+		if (actionType = &apos;S&apos;) then
+			SET rowsInactive = rowsInactive + rowProcessed;
+		end if;
+		set duplicateRows = duplicateRows + rowDuplicate;
+		set duplicateRowMsg = duplicateRowMsg || duplicateMsg || chr(10);
+		set msg = REPLACE(REPLACE(msg, CHR(9), &apos;&apos;), CHR(10), &apos;&apos;);
+		while (INSTR(msg, &apos;  &apos;) &gt; 0) do
+			set msg = REPLACE(msg, &apos;  &apos;, &apos; &apos;);
+		end while;
+		set message = message || msg || CHR(10);
+	END FOR;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1459379915947</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap_im</attribute>
+  <attribute name="creatorUserId" type="INTEGER">4306</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">4306</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">8/122</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/177</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/116</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/146</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/212</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/223</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/92</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/304</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/152</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/183</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1459379915947</attribute>
+</metadata>

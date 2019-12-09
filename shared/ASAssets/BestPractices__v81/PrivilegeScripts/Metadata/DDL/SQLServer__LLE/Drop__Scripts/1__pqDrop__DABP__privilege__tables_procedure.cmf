@@ -1,0 +1,89 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="1_pqDrop_DABP_privilege_tables" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/DDL/SQLServer_LLE/Drop_Scripts/1_pqDrop_DABP_privilege_tables" type="PROCEDURE" subtype="EXTERNAL_SQL_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="SchemaName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">metadata.added;datatype.changed;direction.changed</attribute>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="CURSOR" type="TABLE" refId="1">
+        <element name="result">
+          <datatype name="CHAR" type="STRING" minLength="255" maxLength="255"/>
+        </element>
+      </datatype>
+      <attribute name="Customized" type="STRING">metadata.added;datatype.changed;direction.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DB_LLE_SS" type="DATA_SOURCE">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">&lt;version 2&gt;multipartseparator=;+;
+-- Parameter 0: schemaName=dbo
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES_R01&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; DROP CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R01&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES_R02&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; DROP CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R02&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES_R03&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; DROP CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R03&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES_R04&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; DROP CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R04&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES_R05&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; DROP CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R05&quot;; ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS_R01&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; DROP CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R01&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS_R02&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; DROP CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R02&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS_R03&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; DROP CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R03&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS_R04&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; DROP CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R04&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS_R05&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; DROP CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R05&quot;; ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER_R01&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; DROP CONSTRAINT &quot;COMPOSITE_USER_R01&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER_R02&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; DROP CONSTRAINT &quot;COMPOSITE_USER_R02&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER_R03&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; DROP CONSTRAINT &quot;COMPOSITE_USER_R03&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER_R04&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; DROP CONSTRAINT &quot;COMPOSITE_USER_R04&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER_R05&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; DROP CONSTRAINT &quot;COMPOSITE_USER_R05&quot;; ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;PROJECT_TYPE_R01&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;PROJECT_TYPE&quot; DROP CONSTRAINT &quot;PROJECT_TYPE_R01&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;SUBPROJECT_TYPE_R01&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;SUBPROJECT_TYPE&quot; DROP CONSTRAINT &quot;SUBPROJECT_TYPE_R01&quot;; ;
+
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;DOMAIN_TYPE&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;DOMAIN_TYPE&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;ENVIRONMENT_TYPE&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;ENVIRONMENT_TYPE&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;ORGANIZATION_TYPE&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;ORGANIZATION_TYPE&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;PROJECT_TYPE&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;PROJECT_TYPE&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;SUBPROJECT_TYPE&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;SUBPROJECT_TYPE&quot;; ;
+
+select &apos;SUCCESS&apos; result; ;</attribute>
+  <attribute name="creationDate" type="LONG">1379679170655</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="isSingleSelect" type="STRING">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1513829548381</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="p:0:Customized" type="STRING">metadata.added;datatype.changed;direction.changed</attribute>
+  <attribute name="p:1:Customized" type="STRING">metadata.added;datatype.changed;direction.changed</attribute>
+  <attribute name="passThroughSource" type="STRING">/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DB_LLE_SS</attribute>
+</metadata>

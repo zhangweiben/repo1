@@ -1,0 +1,158 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="pq_151_Test" path="/shared/Amway_POC/L3_Business/Appraise/Tests/pq_151_Test" type="PROCEDURE" subtype="EXTERNAL_SQL_PROCEDURE" changeToken="0">
+  <annotation/>
+  <parameters>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="CURSOR" type="TABLE" refId="1">
+        <element name="varcharColumn">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn2">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn3">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn4">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn5">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn6">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn7">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn8">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn9">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn10">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn11">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn12">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn13">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn14">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn15">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn16">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn17">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn18">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn19">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn20">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn21">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn22">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn23">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn24">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn25">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn26">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/Amway_POC/L1_DataSources/ds_Appraise" type="DATA_SOURCE">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">Select 
+	SOURCE_TBL = &apos;GPT151&apos; ,
+	T151.CORP_CD,
+	T151.AMWAY_SKU_PFX,
+	T151.AMWAY_SKU_BASE,
+	T151.AMWAY_SKU_SFX,
+	T151.SKU_CD,
+	T150.BUSINESS_CD,
+	T151.PV,
+	T151.BV,
+	T151.DC,
+	T151.SRLVAT,
+	T151.SR,
+	NON_BV = (T151.SR - T151.BV),
+	T075.AMAB,
+	T075.AMAB_PCT,
+	T075.AMAD,
+	T075.AMAD_PCT,
+	T075.CMAB,
+	T075.CMAB_PCT,
+	T075.CMAD,
+	T075.CMAD_PCT,
+	T150.ADDED_DT,
+	T150.CHANGED_DT,
+	EFF_DT = T150.EFFECTIVE_DATE ,
+	T150.CASE_QTY,
+	T150.LTU_CONV_FLG, 
+	T150.LTU_CONV_MULT_QTY 
+From dbo.GPT150_PRE_PRI_MASTER  as T150
+Join dbo.GPT151_PRE_PRI_OPTS as T151 on
+	T151.CORP_CD = T150.CORP_CD and
+	T151.AMWAY_SKU_PFX = T150.AMWAY_SKU_PFX and
+	T151.AMWAY_SKU_BASE = T150.AMWAY_SKU_BASE and
+	T151.AMWAY_SKU_SFX = T150.AMWAY_SKU_SFX and
+	T151.SKU_CD = T150.SKU_CD
+Join dbo.GPT075_PRE_PRI_MARGINS as T075 on
+	T075.CORP_CD = T150.CORP_CD and
+	T075.AMWAY_SKU_PFX = T150.AMWAY_SKU_PFX and
+	T075.AMWAY_SKU_BASE = T150.AMWAY_SKU_BASE and
+	T075.AMWAY_SKU_SFX = T150.AMWAY_SKU_SFX and
+	T075.SKU_CD = T150.SKU_CD and
+	T075.PREPRI_NUM = T151.PREPRI_NUM
+Where
+	T151.MAIN_OPT = &apos;Y&apos; and
+	isnull(T150.COSMETIC_LEAD, &apos;N&apos;) &lt;&gt; &apos;Y&apos; and
+	T151.MAIN_OPT = &apos;Y&apos; and
+	(
+		T150.PRE_Status_CD_APRV = &apos;Y&apos; and
+		T150.PRE_Status_CD = &apos;FP&apos; and 
+		T150.LTU_CONV_FLG in (&apos;Y&apos;,&apos;N&apos;)
+	)</attribute>
+  <attribute name="creationDate" type="LONG">1534339587772</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="isSingleSelect" type="STRING">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1534339731026</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="passThroughSource" type="STRING">/shared/Amway_POC/L1_DataSources/ds_Appraise</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1534339587772</attribute>
+</metadata>

@@ -1,0 +1,504 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getConfigureParams" path="/shared/ASAssets/BestPractices_v81/Procedures/getConfigureParams" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="basePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="generateMode" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="outputMode" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="generateViews" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="resourceCaseRule" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="columnCaseRule" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="useAliasRule" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="resourcePrefix" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="resourceSuffix" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="generateWithSourceColumn" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="generateCast" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="generateIndexes" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="ConfigParamsVector" direction="OUT" nullable="true">
+      <datatype name="ConfigParamsVector" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="ConfigParamsType" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="ConfigParamsType" type="TREE" refId="1">
+            <element name="generateMode">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="outputMode">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="generateViews">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="resourceCaseRule">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="columnCaseRule">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="separator">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="useAliasRule">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="resourcePrefix">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="resourceSuffix">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="generateWithSourceColumn">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="generateCast">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="generateIndexes">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="debug">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="debug2">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="debug3">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="basePath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="scriptsPath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="padAmount">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/util/GetEnvironment" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="variableName" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyName" type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyValue" type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/getDefaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="scriptsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="defaultValuesVector" direction="OUT">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="defaultValuesType" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="defaultValuesType" type="TREE" refId="2">
+              <element name="bestPracticesVersion">
+                <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+              </element>
+              <element name="basePath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="scriptsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="configureScriptsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="constantsScriptsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="generationScriptsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="compositeDatabasePath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="applicationPublishedPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="applicationServicesPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="applicationViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="applicationViewsSubFolder">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="crudPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="typeDefinitionPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="typeDefinitionProcName">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="businessBusinessPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="businessLogicalPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="physicalFormattingPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="physicalFormattingTransformationPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="physicalViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="physicalMetadataPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="genUniqueIDPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="debugTime">
+                <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* getConfigureParams:
+	-- Data Virtualization Best Practices --
+	Set up the ConfigParamsVector by merging the default settings with any any user settings.
+
+	    	--	 	G=Generate the resource names 
+	    	--	 	R=Retrieve the resource name,  (resources include PATH names, VIEW names AND COLUMN names)
+   	&apos;G&apos;,	-- generateMode,
+
+ 	   		--	 	A=Return All abstract columns, 
+	    	--	 	U=Return ONLY Unchanged/Dropped columns that were NOT found.
+   	&apos;A&apos;,	-- outputMode,
+
+			--     0=Do not generate - (browse only) print out what will happen but don&apos;t perform the generation
+			--     1=Do generate [DEFAULT] - Perform the VIEW Generation with a column projection, 
+			--     2=Do generate           - Perform the VIEW Generation with a select * projection, 
+	1,		-- generateViews
+
+			--  TABLES/PROCEDURES only.  This caseRule is only used for tables or procedures.
+			--	 	Assumption:  The original table name has to have separators (_) for this to work properly.
+			--			     If the original word has no separators then the case rule gets applied to the single word
+			--		j=javaCase - 1st word part is lower case, following word parts are 1st is letter is upper and remaining word part is lower with no separators
+			--		C=CamelCase - 1st letter of each word part is upper case and remaining word part is lower with no separators
+			--		T=Title_Case - 1st letter of each word part is upper case and remaining word part is lower with separators retained
+			--		U=UPPER_CASE - All word parts are UPPER case with separtors retained
+			--		l=lower_case - All word parts are lower case with separators retained
+			--		O=Original_case - The word is not changed at all -- just pass it through as is
+	&apos;O&apos;,	-- resourceCaseRule (used when generateMode=&apos;G&apos;) 
+
+			--  COLUMNS only.  This caseRule is only used for columns.
+			--	 	Assumption:  The original column name has to have separators (_) for this to work properly.
+			--			     If the original word has no separators then the case rule gets applied to the single word
+			--		j=javaCase - 1st word part is lower case, following word parts are 1st is letter is upper and remaining word part is lower with no separators
+			--		C=CamelCase - 1st letter of each word part is upper case and remaining word part is lower with no separators
+			--		T=Title_Case - 1st letter of each word part is upper case and remaining word part is lower with separators retained
+			--		U=UPPER_CASE - All word parts are UPPER case with separtors retained
+			--		l=lower_case - All word parts are lower case with separators retained
+			--		O=Original_case - The word is not changed at all -- just pass it through as is
+	&apos;O&apos;,	-- columnCaseRule (used when generateMode=&apos;G&apos;) 
+
+			--		default=_
+			--	    Word part separator consisting of a 1 character value such as &apos;_&apos;
+			--		which is used to separate the word parts within a column.  Spaces ARE NOT allowed IN COLUMN NAMES.
+			--		Example MY_COLUMN_NAME
+	&apos;_&apos;,	-- separator (used when generateMode=&apos;G&apos;)
+
+			--	 	When generating the logical name from the data source, use the &quot;AliasNameRuleSet&quot; as a lookup procedure
+			--		  to match a word part against the Alias table.  For exmaple:
+			--			word part=ds		table alias=DS		table rule=DataSource
+			--		0=[default] DO NOT perform alias rule lookup at all.  Word Part is passed through
+			--			result=ds
+			--	  	1=Use alias rule and MATCH CASE exactly
+			--			result=ds (the original word part &apos;ds&apos; is returned as no match is found becuase &apos;ds&apos; is not equal to &apos;DS&apos;
+			--		2=Use alias rule and DO NOT MATCH CASE
+			--			result=DataSource (UPPER(&apos;ds&apos;) = UPPER(&apos;DS&apos;), therefore DataSource is returned	
+	2,		-- useAliasRule (used when generateMode=&apos;G&apos;)
+
+			-- 		Any set of characters used to prefix a table or procedure name.  Include underscores with the suffix if applicable.
+			--		Example: V_ MY_TABLE or V_MY_TABLE 	
+	null,	-- resourcePrefix (used when generateMode=&apos;G&apos;)
+
+			--  	Any set of characters used to suffix a table or procedure name.  Include underscores with the suffix if applicable.
+			--		Example: _APP MY_TABLE or MY_TABLE_APP 	
+	null,	-- resourceSuffix (used when generateMode=&apos;G&apos;)
+
+			--	 	This parameter allows the user to control whether to generate the view with the original data source
+			--		   column or not.  It adds a level of control and flexibility into this automation process.
+			--		Regarding the retrieved logicalColumn from the mapping spreadsheet.
+			--		   When logicalColumn IS blank OR NULL then
+			--		   0=Do NOT generate the view with the source column (no pass through)-logical status is DROPPED
+			--	 	   1=[default] Generate the view with the source column (pass through)-logical status is UNCHANGED
+	1,		-- generateWithSourceColumn (used when generateMode=&apos;R&apos;)
+
+			-- 		This parameter allows the user to control whether to generate the cast statement around the generated
+			--		   column or not.  It uses the column type from the source view.
+			--		0=[default] Do not generate CAST statement.  Pass through column as is.  Default behavior.
+			-- 		1=Generate the CAST statement around the column
+	0,		--	generateCast (used when generateMode=&apos;G&apos;)
+
+			-- 		This parameter allows the user to control whether to generate indexes on the target views 
+			--		   as derived from the underlying resources
+			--		0=[default] Do not generate indexes
+			-- 		1=Generate indexes
+	1,		--	generateIndexes
+
+	&apos;Y&apos;,	-- Debug level 1: &apos;Y&apos;=print to log and console window, &apos;F&apos;=no debug output to log or console
+	&apos;N&apos;,	-- Debug level 2: &apos;Y&apos;=print to log and console window, &apos;F&apos;=no debug output to log or console
+	&apos;N&apos;,	-- Debug level 3: &apos;Y&apos;=print to log and console window, &apos;F&apos;=no debug output to log or console
+	NULL, 	-- Path to the base project directory.  Path gets SET dynamically so it is initially set to NULL.
+	NULL, 	-- Path to the scripts subfolder of the project directory.  Path gets SET dynamically so it is initially set to NULL.
+
+			-- The amount of padding to use when printing out the columnName (in the example below padding of 30 is used)
+	40		-- padAmount - The amount of padding to use when printing out the columnName (in the example below padding of 30 is used)
+
+	Input:
+		basePath - Path to the base project directory  
+    	generateMode - user setting (see above description)
+    	outputMode - user setting (see above description)
+    	generateViews - user setting (see above description)
+    	caseRule - user setting (see above description)
+    	useAliasRule - user setting (see above description)
+    	generateWithSourceColumn - user setting (see above description)
+    	generateCast - user setting (see above description)
+	Output:
+		ConfigParamsVector - The vector of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	06/15/2010		Mike Tinius			5.2.0			Created new
+	09/21/2015		Mike Tinius			7.0.x			B.P. 8.1.7:  Added generateViews=2 for a select * projection.  Requires Utilities_2015Q3
+	01/24/2019		Mike Tinius			8.0.0			B.P. 2019.1: Added the ability to handle columnCaseRule, resourcePrefix and resourceSuffix. 
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE getConfigureParams(
+	IN basePath					VARCHAR(4000),-- (MANDATORY FIELD)
+	 		-- Path to the base project directory  
+			-- Path gets SET dynamically so it is initially set to NULL.
+    IN generateMode				CHAR(1),--(OPTIONAL)
+    IN outputMode				CHAR(1),--(OPTIONAL)
+    IN generateViews			SMALLINT,--(OPTIONAL)
+    IN resourceCaseRule			CHAR(1),--(OPTIONAL)
+    IN columnCaseRule			CHAR(1),--(OPTIONAL)
+    IN useAliasRule				SMALLINT,--(OPTIONAL)
+    IN resourcePrefix			VARCHAR,--(OPTIONAL)
+    IN resourceSuffix			VARCHAR,--(OPTIONAL)
+    IN generateWithSourceColumn SMALLINT,--(OPTIONAL)
+    IN generateCast 			SMALLINT,--(OPTIONAL)
+	IN generateIndexes			SMALLINT,--(OPTIONAL)
+   OUT ConfigParamsVector		VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.ConfigParamsType)
+)
+BEGIN
+	DECLARE indent					VARCHAR DEFAULT &apos;&apos;;
+	DECLARE moduleName				VARCHAR DEFAULT indent||&apos;getConfigureParams&apos;;
+	DECLARE sqlstmt					VARCHAR(500);
+	DECLARE ConfigParamsCursor		CURSOR /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.ConfigParamsType;
+	DECLARE defaultValuesVector		VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.defaultValuesType);
+	DECLARE scriptsPath				VARCHAR(4000);
+	DECLARE envValue				LONGVARCHAR;
+	DECLARE no_basePath_provided	EXCEPTION;
+	DECLARE no_scriptsPath_provided	EXCEPTION;
+
+	-- Get environment variables
+	call /lib/util/GetEnvironment(&apos;best.practices.scriptsPath&apos;,envValue);
+	if (envValue IS NOT NULL AND UPPER(envValue) = &apos;[NULL]&apos;) then
+		set scriptsPath = null;
+	else
+		set scriptsPath = envValue;
+	end if;
+	IF ((scriptsPath IS NULL) OR (LENGTH(TRIM(scriptsPath)) = 0)) THEN 
+		RAISE no_scriptsPath_provided;
+	END IF;
+ 	IF ((basePath IS NULL) OR (LENGTH(TRIM(basePath)) = 0)) THEN 
+		RAISE no_basePath_provided;
+	END IF;
+
+    -- Get the ConfigureParams info and override with the any &quot;NOT NULL&quot; parameters that are passed in.
+    -- Return NULL if basePath is not provided.
+		call /shared/ASAssets/BestPractices_v81/Procedures/getDefaultValues(scriptsPath,defaultValuesVector);
+		SET sqlstmt = REPLACE(&apos;SELECT * FROM &apos;|| defaultValuesVector[1].configureScriptsPath || &apos;/ConfigureParams()&apos;, &apos;//&apos;, &apos;/&apos;);
+		OPEN ConfigParamsCursor FOR sqlstmt;
+		FOR ConfigParams AS ConfigParamsCursor DO
+			SET ConfigParamsVector = VECTOR[(ConfigParams)];
+			IF (generateMode IS NOT NULL) THEN 
+				SET ConfigParamsVector[1].generateMode = generateMode;		
+			END IF;
+			IF (outputMode IS NOT NULL) THEN 
+				SET ConfigParamsVector[1].outputMode = outputMode;		
+			END IF;
+			IF (generateViews IS NOT NULL) THEN 
+				SET ConfigParamsVector[1].generateViews = generateViews;		
+			ELSE
+				SET ConfigParamsVector[1].generateViews = 1;		-- if null, set default to 1
+			END IF;
+			IF (resourceCaseRule IS NOT NULL OR LENGTH(resourceCaseRule) &gt; 0) THEN 
+				SET ConfigParamsVector[1].resourceCaseRule = resourceCaseRule;
+			ELSE
+				SET ConfigParamsVector[1].resourceCaseRule = &apos;O&apos;;			-- if null set default to &apos;O&apos; orinigial
+			END IF; 
+			IF (columnCaseRule IS NOT NULL OR LENGTH(columnCaseRule) &gt; 0) THEN 
+				SET ConfigParamsVector[1].columnCaseRule = columnCaseRule;
+			ELSE
+				SET ConfigParamsVector[1].columnCaseRule = &apos;O&apos;;		-- if null set default to &apos;O&apos; orinigial
+			END IF; 
+			IF (useAliasRule IS NOT NULL) THEN 
+				SET ConfigParamsVector[1].useAliasRule = useAliasRule;
+			ELSE
+				SET ConfigParamsVector[1].useAliasRule = 0;			-- if null, set default to 0
+			END IF; 
+			IF (resourcePrefix IS NOT NULL OR LENGTH(resourcePrefix) &gt; 0) THEN 
+				SET ConfigParamsVector[1].resourcePrefix = resourcePrefix;
+			ELSE
+				SET ConfigParamsVector[1].resourcePrefix = null;	-- set to null as default
+			END IF; 
+			IF (resourceSuffix IS NOT NULL OR LENGTH(resourceSuffix) &gt; 0) THEN 
+				SET ConfigParamsVector[1].resourceSuffix = resourceSuffix;
+			ELSE
+				SET ConfigParamsVector[1].resourceSuffix = null;	-- set to null as default
+			END IF; 
+			IF (generateWithSourceColumn IS NOT NULL) THEN 
+				SET ConfigParamsVector[1].generateWithSourceColumn = generateWithSourceColumn;
+			ELSE
+				SET ConfigParamsVector[1].generateWithSourceColumn = 1; -- if null, set default to 1
+			END IF;
+			IF (generateCast IS NOT NULL) THEN 
+				SET ConfigParamsVector[1].generateCast = generateCast;
+			ELSE
+				SET ConfigParamsVector[1].generateCast = 0;			-- if null, set default to 0
+			END IF;
+			IF (generateIndexes IS NOT NULL) THEN 
+				SET ConfigParamsVector[1].generateIndexes = generateIndexes;
+			ELSE
+				SET ConfigParamsVector[1].generateIndexes = 0; 		-- if null set default to 0
+			END IF;
+			SET ConfigParamsVector[1].basePath = basePath;
+ 			SET ConfigParamsVector[1].scriptsPath = scriptsPath;
+		END FOR;
+		if (ConfigParamsVector[1].debug = &apos;Y&apos;) then
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, ConfigParamsVector[1].debug, 
+				&apos;generateMode=[&apos;||TRIM(NVL(ConfigParamsVector[1].generateMode,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  outputMode=[&apos;||TRIM(NVL(ConfigParamsVector[1].outputMode,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  generateViews=[&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateViews AS VARCHAR),&apos;  &apos;))||&apos;]&apos;||
+				&apos;  resourceCaseRule=[&apos;||TRIM(NVL(ConfigParamsVector[1].resourceCaseRule,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  columnCaseRule=[&apos;||TRIM(NVL(ConfigParamsVector[1].columnCaseRule,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  separator=[&apos;||TRIM(NVL(ConfigParamsVector[1].separator,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  useAliasRule=[&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].useAliasRule AS VARCHAR),&apos;  &apos;))||&apos;]&apos;||
+				&apos;  resourcePrefix=[&apos;||TRIM(NVL(ConfigParamsVector[1].resourcePrefix,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  resourceSuffix=[&apos;||TRIM(NVL(ConfigParamsVector[1].resourceSuffix,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  generateWithSourceColumn=[&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateWithSourceColumn AS VARCHAR),&apos;  &apos;))||&apos;]&apos;||
+				&apos;  generateCast=[&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateCast AS VARCHAR),&apos;  &apos;))||&apos;]&apos;||
+				&apos;  generateIndexes=[&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateIndexes AS VARCHAR),&apos;  &apos;))||&apos;]&apos;||
+				&apos;  debug=[&apos;||TRIM(NVL(ConfigParamsVector[1].debug,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  debug2=[&apos;||TRIM(NVL(ConfigParamsVector[1].debug2,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  debug3=[&apos;||TRIM(NVL(ConfigParamsVector[1].debug3,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  basePath=[&apos;||TRIM(NVL(ConfigParamsVector[1].basePath,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  scriptsPath=[&apos;||TRIM(NVL(ConfigParamsVector[1].scriptsPath,&apos;  &apos;))||&apos;]&apos;||
+				&apos;  padAmount=[&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].padAmount AS VARCHAR),&apos;  &apos;))||&apos;]&apos;
+			);
+		end if;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564599691851</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:8:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:9:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

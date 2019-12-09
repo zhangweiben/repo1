@@ -1,0 +1,117 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getTimestampInterval" path="/shared/ASAssets/Utilities/time/getTimestampInterval" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0" isFunction="true">
+  <annotation>getTimestampInterval:
+	Add a value of &quot;hours&quot; to a given timestamp value to calculate time.
+ 
+	Input:
+		inInterval - number of hours.  
+			Values: e.g. 25
+		inTimestamp - any timestamp.  
+			Values: e.g. 2010-07-10 00:00:00
+	Output:
+		endDatetime - resulting timestamp
+			Values: e.g. 2010-07-11 01:00:00 (timestamp increased by 25 hours)
+	Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2010.3		08/02/2010		Mike Tinius			5.1.0			Added new.
+	2019.200	05/20/2019		Mike Tinius			7.0.8			Modified FROM clause to use /services/databases/system/DUAL
+
+    (c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="inInterval" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="inTimestamp" direction="IN" nullable="true">
+      <datatype name="TIMESTAMP" type="DATETIME"/>
+    </parameter>
+    <parameter name="endDatetime" direction="OUT" nullable="true">
+      <datatype name="TIMESTAMP" type="DATETIME"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="Script" type="STRING">/* getTimestampInterval:
+	Add a value of &quot;hours&quot; to a given timestamp value to calculate time.
+ 
+	Input:
+		inInterval - number of hours.  
+			Values: e.g. 25
+		inTimestamp - any timestamp.  
+			Values: e.g. 2010-07-10 00:00:00
+	Output:
+		endDatetime - resulting timestamp
+			Values: e.g. 2010-07-11 01:00:00 (timestamp increased by 25 hours)
+	Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2010.3		08/02/2010		Mike Tinius			5.1.0			Added new.
+	2019.200	05/20/2019		Mike Tinius			7.0.8			Modified FROM clause to use /services/databases/system/DUAL
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE getTimestampInterval(
+	in inInterval	integer,   -- number of hours
+	in inTimestamp	timestamp, 
+	out endDatetime timestamp
+)
+BEGIN
+	DECLARE resultCursor 	CURSOR (dt timestamp);
+	DECLARE sql_stmt 	varchar(2048) DEFAULT
+  	&apos;SELECT inTimestamp 
+		+ INTERVAL &apos;&apos;&apos; || inInterval / 24 || &apos;&apos;&apos; DAY  
+		+ INTERVAL &apos;&apos;&apos; || inInterval % 24 || &apos;&apos;&apos; HOUR 
+  	FROM /services/databases/system/DUAL&apos;;
+
+	OPEN resultCursor FOR sql_stmt;
+	fetch resultCursor into endDatetime;
+	close resultCursor;
+
+--call print (&apos;myTimestamp=&apos;||myTimestamp);
+--call print (&apos;days=&apos;||myInterval / 24);
+--call print (&apos;hours=&apos;||myInterval % 24);
+--call print (&apos;endDatetime=&apos;||endDatetime);
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564693863169</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

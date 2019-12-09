@@ -1,0 +1,658 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Amw_Notification" path="/shared/Common/Application/Published/DE/Core_Plus/Sales_Support/Amw_Notification" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="activityid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="activityadditionalparams" nullable="true">
+      <datatype type="STRING" maxLength="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="activitytypecode" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="actualdurationminutes" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="actualend" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="actualstart" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amw_typeid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="community" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="createdby" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="createdon" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="createdonbehalfby" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="deliverylastattemptedon" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="deliveryprioritycode" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="description" nullable="true">
+      <datatype type="STRING" maxLength="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="exchangeitemid" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="exchangerate" nullable="true">
+      <datatype type="DECIMAL" maxDigits="23" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="exchangeweblink" nullable="true">
+      <datatype type="STRING" maxLength="1250"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="importsequencenumber" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="instancetypecode" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="isbilled" nullable="true">
+      <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ismapiprivate" nullable="true">
+      <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="isregularactivity" nullable="true">
+      <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="isworkflowcreated" nullable="true">
+      <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="lastonholdtime" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="leftvoicemail" nullable="true">
+      <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="modifiedby" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="modifiedon" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="modifiedonbehalfby" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="onholdtime" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="overriddencreatedon" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ownerid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="owningbusinessunit" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="owningteam" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="owninguser" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="postponeactivityprocessinguntil" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="prioritycode" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="processid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="regardingobjectid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="scheduleddurationminutes" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="scheduledend" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="scheduledstart" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sendermailboxid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="senton" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="seriesid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="serviceid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="slaid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="slainvokedid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sortdate" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="stageid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="statecode" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="statuscode" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="subject" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="timezoneruleversionnumber" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="transactioncurrencyid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="traversedpath" nullable="true">
+      <datatype type="STRING" maxLength="1250"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="utcconversiontimezonecode" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="versionnumber" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/Sales_Support/Amw_Notification" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="activityid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="activityadditionalparams">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="activitytypecode">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="actualdurationminutes">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="actualend">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="actualstart">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="amw_typeid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="community">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="createdby">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="createdon">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="createdonbehalfby">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="deliverylastattemptedon">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="deliveryprioritycode">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="description">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="exchangeitemid">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="exchangerate">
+        <datatype type="DECIMAL" maxDigits="23" maxFractionalDigits="10"/>
+      </element>
+      <element name="exchangeweblink">
+        <datatype type="STRING" maxLength="1250"/>
+      </element>
+      <element name="importsequencenumber">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="instancetypecode">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="isbilled">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="ismapiprivate">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="isregularactivity">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="isworkflowcreated">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="lastonholdtime">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="leftvoicemail">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="modifiedby">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="modifiedon">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="modifiedonbehalfby">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="onholdtime">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="overriddencreatedon">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="ownerid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="owningbusinessunit">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="owningteam">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="owninguser">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="postponeactivityprocessinguntil">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="prioritycode">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="processid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="regardingobjectid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="scheduleddurationminutes">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="scheduledend">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="scheduledstart">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="sendermailboxid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="senton">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="seriesid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="serviceid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="slaid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="slainvokedid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="sortdate">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="stageid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="statecode">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="statuscode">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="subject">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="timezoneruleversionnumber">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="transactioncurrencyid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="traversedpath">
+        <datatype type="STRING" maxLength="1250"/>
+      </element>
+      <element name="utcconversiontimezonecode">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="versionnumber">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	Amw_Notification.activityid activityid,
+	Amw_Notification.activityadditionalparams activityadditionalparams,
+	Amw_Notification.activitytypecode activitytypecode,
+	Amw_Notification.actualdurationminutes actualdurationminutes,
+	Amw_Notification.actualend actualend,
+	Amw_Notification.actualstart actualstart,
+	Amw_Notification.amw_typeid amw_typeid,
+	Amw_Notification.community community,
+	Amw_Notification.createdby createdby,
+	Amw_Notification.createdon createdon,
+	Amw_Notification.createdonbehalfby createdonbehalfby,
+	Amw_Notification.deliverylastattemptedon deliverylastattemptedon,
+	Amw_Notification.deliveryprioritycode deliveryprioritycode,
+	Amw_Notification.description description,
+	Amw_Notification.exchangeitemid exchangeitemid,
+	Amw_Notification.exchangerate exchangerate,
+	Amw_Notification.exchangeweblink exchangeweblink,
+	Amw_Notification.importsequencenumber importsequencenumber,
+	Amw_Notification.instancetypecode instancetypecode,
+	Amw_Notification.isbilled isbilled,
+	Amw_Notification.ismapiprivate ismapiprivate,
+	Amw_Notification.isregularactivity isregularactivity,
+	Amw_Notification.isworkflowcreated isworkflowcreated,
+	Amw_Notification.lastonholdtime lastonholdtime,
+	Amw_Notification.leftvoicemail leftvoicemail,
+	Amw_Notification.modifiedby modifiedby,
+	Amw_Notification.modifiedon modifiedon,
+	Amw_Notification.modifiedonbehalfby modifiedonbehalfby,
+	Amw_Notification.onholdtime onholdtime,
+	Amw_Notification.overriddencreatedon overriddencreatedon,
+	Amw_Notification.ownerid ownerid,
+	Amw_Notification.owningbusinessunit owningbusinessunit,
+	Amw_Notification.owningteam owningteam,
+	Amw_Notification.owninguser owninguser,
+	Amw_Notification.postponeactivityprocessinguntil postponeactivityprocessinguntil,
+	Amw_Notification.prioritycode prioritycode,
+	Amw_Notification.processid processid,
+	Amw_Notification.regardingobjectid regardingobjectid,
+	Amw_Notification.scheduleddurationminutes scheduleddurationminutes,
+	Amw_Notification.scheduledend scheduledend,
+	Amw_Notification.scheduledstart scheduledstart,
+	Amw_Notification.sendermailboxid sendermailboxid,
+	Amw_Notification.senton senton,
+	Amw_Notification.seriesid seriesid,
+	Amw_Notification.serviceid serviceid,
+	Amw_Notification.slaid slaid,
+	Amw_Notification.slainvokedid slainvokedid,
+	Amw_Notification.sortdate sortdate,
+	Amw_Notification.stageid stageid,
+	Amw_Notification.statecode statecode,
+	Amw_Notification.statuscode statuscode,
+	Amw_Notification.subject subject,
+	Amw_Notification.timezoneruleversionnumber timezoneruleversionnumber,
+	Amw_Notification.transactioncurrencyid transactioncurrencyid,
+	Amw_Notification.traversedpath traversedpath,
+	Amw_Notification.utcconversiontimezonecode utcconversiontimezonecode,
+	Amw_Notification.versionnumber versionnumber 
+FROM
+	/shared/Common/Physical/Formatting/Sales_Support/Amw_Notification Amw_Notification</attribute>
+  <attribute name="creationDate" type="LONG">1567128076896</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1567128474238</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1567128076896</attribute>
+</metadata>

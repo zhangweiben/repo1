@@ -1,0 +1,497 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Qual_Fact" path="/shared/Common/Business/Logical/Dimensional_Topics/Qual_Fact" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>Qualification Fact</annotation>
+  <columns>
+    <column name="global_account_wid" nullable="true">
+      <datatype name="BIGINT" type="INTEGER"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>This column identifies the Account (most commonly an ABO, but technically possible for Customers and other account types) that has earned the given qualification.</annotation>
+    </column>
+    <column name="qual_attr_wid" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>This is the key to the Qual_Attr_Dim table.  If any of the attributes in the Qual_Attr_Dim table are needed in your data you must join to this table using this column.</annotation>
+    </column>
+    <column name="qual_period" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>This is the Period (a year month value in yyyymm format, 201912 for example) in which the qualification was earned.</annotation>
+    </column>
+    <column name="qual_wid" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>This is the key to the Qual_Dim table.  If you need any information from the Qual_Dim table you must use this column to join to the Qual_Dim table.</annotation>
+    </column>
+    <column name="qual_approval_date" nullable="true">
+      <datatype name="DATE" type="DATE"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>This is the date the qualification was approved.</annotation>
+    </column>
+    <column name="aff_wid" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>This is the key to the Affiliate_Dim table.  In this table it identifies which affiliate the ABO that earned the qualification is associated with.</annotation>
+    </column>
+    <column name="qual_counter_no" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation>This field is used for counting qualifications of an ABO. The value is always equal to 1.</annotation>
+    </column>
+  </columns>
+  <indexes>
+    <index name="pk" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="global_account_wid" sortOrder="ASCENDING"/>
+      <indexColumn name="qual_attr_wid" sortOrder="ASCENDING"/>
+      <indexColumn name="aff_wid" sortOrder="ASCENDING"/>
+      <indexColumn name="qual_period" sortOrder="ASCENDING"/>
+      <indexColumn name="qual_wid" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys>
+    <foreignKey name="fk_gam" primaryKeyName="pk" primaryKeyTableName="/shared/Common/Business/Logical/Common_Dims/Global_Account_Master_Dim">
+      <foreignKeyColumn primaryColumnName="global_account_wid" foreignColumnName="global_account_wid"/>
+    </foreignKey>
+    <foreignKey name="fk_qual_attr" primaryKeyName="pk" primaryKeyTableName="/shared/Common/Business/Logical/Dimensional_Topics/Qual_Attr_Dim">
+      <foreignKeyColumn primaryColumnName="qual_attr_wid" foreignColumnName="qual_attr_wid"/>
+    </foreignKey>
+    <foreignKey name="fk_aff" primaryKeyName="pk" primaryKeyTableName="/shared/Common/Business/Logical/Common_Dims/Aff_Dim">
+      <foreignKeyColumn primaryColumnName="aff_wid" foreignColumnName="aff_wid"/>
+    </foreignKey>
+    <foreignKey name="fk_year_month" primaryKeyName="pk" primaryKeyTableName="/shared/Common/Business/Logical/Common_Dims/Year_Month_Dim">
+      <foreignKeyColumn primaryColumnName="year_month" foreignColumnName="qual_period"/>
+    </foreignKey>
+    <foreignKey name="fk_qual" primaryKeyName="pk" primaryKeyTableName="/shared/Common/Business/Logical/Dimensional_Topics/Qual_Dim">
+      <foreignKeyColumn primaryColumnName="qual_wid" foreignColumnName="qual_wid"/>
+    </foreignKey>
+  </foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Business/Logical/Common_Dims/Aff_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="aff_wid">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="aff_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="aff_top_level_account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_short_name">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="aff_address_line_1">
+        <datatype type="STRING" maxLength="90"/>
+      </element>
+      <element name="aff_address_line_2">
+        <datatype type="STRING" maxLength="64"/>
+      </element>
+      <element name="aff_city">
+        <datatype type="STRING" maxLength="90"/>
+      </element>
+      <element name="aff_state_province">
+        <datatype type="STRING" maxLength="55"/>
+      </element>
+      <element name="aff_postal_code">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/Common_Dims/Global_Account_Master_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="global_account_wid">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="global_account_id">
+        <datatype type="STRING" maxLength="14"/>
+      </element>
+      <element name="account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="aff_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="aff_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="amway_country_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="country_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="region">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="sub_region">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="iso_currency_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="language_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="expiration_date">
+        <datatype type="DATE"/>
+      </element>
+      <element name="account_name">
+        <datatype type="STRING" maxLength="400"/>
+      </element>
+      <element name="imc_type_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="imc_type_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="bus_nature_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="bus_nature_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="bus_status_code">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="bus_status_desc">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="bus_status_reason_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="account_segment_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="account_segment_name">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="is_legal_entity">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="legal_entity_type_code">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="legal_entity_type_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="loa_code">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="sponsor_global_account_wid">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="sponsor_global_account_id">
+        <datatype type="STRING" maxLength="14"/>
+      </element>
+      <element name="sponsor_account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="intl_sponsor_global_account_wid">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="intl_sponsor_account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="intl_sponsor_aff_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="entry_date">
+        <datatype type="DATE"/>
+      </element>
+      <element name="sales_account_type_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="sales_account_type_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="local_account_type_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="local_account_type_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="original_imc_type_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="original_imc_type_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="original_bus_nature_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="original_bus_nature_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="original_sponsor_global_account_wid">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="original_sponsor_account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="original_sales_account_type_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="original_sales_account_type_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="is_test_sales_account">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="annual_sponsor_global_account_wid">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="annual_sponsor_account_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="annual_sponsor_global_account_id">
+        <datatype type="STRING" maxLength="14"/>
+      </element>
+      <element name="last_renewal_date">
+        <datatype type="DATE"/>
+      </element>
+      <element name="is_auto_renewal_subscribed">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/Common_Dims/Year_Month_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="year_month">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="month_name_3_year_name_2_desc">
+        <datatype type="STRING" maxLength="6"/>
+      </element>
+      <element name="year_month_desc">
+        <datatype type="STRING" maxLength="7"/>
+      </element>
+      <element name="perf_year_month_desc">
+        <datatype type="STRING" maxLength="7"/>
+      </element>
+      <element name="month_name">
+        <datatype type="STRING" maxLength="9"/>
+      </element>
+      <element name="month_name_3">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="month_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="perf_month_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="month_ago_year_month_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="quarter_ago_year_month_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="year_ago_year_month_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="year_quarter_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="perf_year_quarter_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="year_quarter_name">
+        <datatype type="STRING" maxLength="6"/>
+      </element>
+      <element name="perf_year_quarter_name">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="quarter_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="perf_quarter_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="quarter_ago_year_quarter_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="quarter_ago_perf_year_quarter_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="year_ago_year_quarter_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="year_ago_perf_year_quarter_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="year_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="perf_year_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="year_desc">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="perf_year_name">
+        <datatype type="STRING" maxLength="6"/>
+      </element>
+      <element name="year_ago_year_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="year_ago_perf_year_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="month_start_date">
+        <datatype type="DATE"/>
+      </element>
+      <element name="perf_year_month_start_date">
+        <datatype type="DATE"/>
+      </element>
+      <element name="month_end_date">
+        <datatype type="DATE"/>
+      </element>
+      <element name="days_in_month">
+        <datatype type="DECIMAL" maxDigits="2" maxFractionalDigits="0"/>
+      </element>
+      <element name="is_previous_month">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="is_current_month">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="is_next_month">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="months_ago">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="perf_years_ago">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="calendar_years_ago">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="calendar_month_to_date">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="perf_month_to_date">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/Dimensional_Topics/Qual_Attr_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="qual_attr_wid">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="is_overlap">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="is_first_time">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="qual_method_code">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="qual_method_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="qual_method_desc">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="qual_status_code">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="qual_status_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/Dimensional_Topics/Qual_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="qual_wid">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="qual_rank_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="qual_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="qual_alias_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="qual_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="qual_group_code">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="qual_group_desc">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="bonus_award_freq_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="bonus_award_freq_desc">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/EAP/Dimensional_Topics/Qual_Fact" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="global_account_wid">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="qual_attr_wid">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="qual_period">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="qual_wid">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="qual_approval_date">
+        <datatype type="DATE"/>
+      </element>
+      <element name="aff_wid">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="qual_counter_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	* 
+FROM
+	/shared/Common/Physical/Formatting/EAP/Dimensional_Topics/Qual_Fact Qual_Fact</attribute>
+  <attribute name="creationDate" type="LONG">1573666145677</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">true</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1574133251270</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1573666145677</attribute>
+</metadata>

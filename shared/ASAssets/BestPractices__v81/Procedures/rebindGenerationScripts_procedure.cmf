@@ -1,0 +1,363 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="rebindGenerationScripts" path="/shared/ASAssets/BestPractices_v81/Procedures/rebindGenerationScripts" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="startingResourceFolder" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="rebindOldFolder" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="rebindNewFolder" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="resultMessage" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceListRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creationDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="creationDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="creatorUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creatorUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="lastModifiedDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="lastModifiedUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getUsedResourcesCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="usedResCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/rebindResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="rebindVector" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="rebindVector" type="TREE" refId="2">
+              <element name="oldPath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="oldType">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="newPath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="newType">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="3"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="3"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* rebindGenerationScripts:
+	-- Data Virtualization Best Practices --
+	This procedure is used to rebind the generation scripts &quot;&lt;baseFolder&gt;/constants/defaultValues&quot;.   Since several of the scripts
+	point to this folder to provide basic starting folder information, it is vital that the correct binding be in 
+	place.  For example, if you were to copy one of the generationScripts from folder A to folder B...this would not 
+	change the bindings to the &quot;&lt;baseFolder&gt;/constants/defaultValues&quot;.   You could go in by hand and change each and 
+	every script but that is potentially error prone.  This script will help you to rebind all of the generationScripts
+	that make a reference to the &quot;rebindOldFolder&quot; and allow you to rebind to the new &quot;rebindNewFolder&quot;.   The starting point
+	for this script is provided by &quot;startingResourceFolder&quot;.
+ 
+	For example, let&apos;s say that you copied scripts out of /shared/BestPractices/DataAbstraction_GENERIC_Template/_generationScripts
+	and pasted them into /shared/BestPractices/DataAbstractionSample/_generationScripts.   The scripts still point to the folder
+	/shared/BestPractices/DataAbstraction_GENERIC_Template/_constants.  The sample values below show what the input
+	should look like to preform the rebinding for all of the generation scripts.
+
+	Input:
+		debug - Y=debug, N=do not debug
+		startingResourceFolder - the folder &quot;&lt;baseFolder&gt;/_generationScripts&quot; from which to start from and interrogate all of the resource Views in it.  
+			Values: e.g. /shared/BestPractices/DataAbstractionSample/_generationScripts
+		rebindOldFolder - the old folder &quot;&lt;oldBaseFolder&gt;/_constants&quot; which the scripts are currently pointing to.
+			Values: e.g. /shared/BestPractices/DataAbstraction_GENERIC_Template/_constants
+		rebindNewFolder - the current folder &quot;&lt;baseFolder&gt;/_constants&quot; which want the scripts to point to.
+			Values: e.g. /shared/BestPractices/DataAbstractionSample/_constants
+	Output:
+		result - success or failure
+			Values: &apos;success&apos; or &apos;failure&apos;
+		resultMessage - null if success or a message text upon failure.
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	08/02/2010		Mike Tinius			5.2.0			Created new
+	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE rebindGenerationScripts(
+	IN debug					CHAR(1),
+	IN startingResourceFolder 	VARCHAR(4000),
+	IN rebindOldFolder			VARCHAR(4000),
+	IN rebindNewFolder			VARCHAR(4000),
+	OUT result					VARCHAR(255),
+	OUT resultMessage			VARCHAR(4000)
+)  
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;rebindGenerationScripts&apos;;
+	DECLARE rebindOldFolder_		VARCHAR(4000) DEFAULT REPLACE(rebindOldFolder,&apos;&quot;&apos;,&apos;&apos;);
+	DECLARE rebindNewFolder_		VARCHAR(4000) DEFAULT REPLACE(rebindNewFolder,&apos;&quot;&apos;,&apos;&apos;);
+	DECLARE startingResourcePath 	VARCHAR(4000);
+	DECLARE resourceType			VARCHAR;
+	DECLARE resourceExists			BOOLEAN;
+	DECLARE rebindVector 			/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitions.rebindVector;	-- newDataSource
+	DECLARE success					BIT;
+	DECLARE createResponse			XML;
+	DECLARE faultResponse			XML;
+	DECLARE ex						EXCEPTION;
+
+	set startingResourcePath = startingResourceFolder;
+
+	if (debug = &apos;Y&apos;) then
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:     startingPath=&apos;||startingResourceFolder); 	--/shared/TEST1
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  rebindOldFolder=&apos;||rebindOldFolder); 		-- /shared/BestPractices/DataAbstraction_GENERIC_Template/_scripts/Constants
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  rebindNewFolder=&apos;||rebindNewFolder); 		-- /shared/TEST1/_scripts/Constants
+	end if;
+
+--  BEGIN INDEPENDENT TRANSACTION
+	SET result = &apos;success&apos;;
+	CALL /lib/resource/ResourceExists(startingResourcePath, &apos;CONTAINER&apos;, null, resourceExists);
+	IF (resourceExists) THEN
+		CALL /lib/resource/ResourceExists(rebindNewFolder_, &apos;CONTAINER&apos;, null, resourceExists);
+		IF (resourceExists) THEN
+	    	FOR r AS  SELECT 
+                resPath ResourcePath, 
+                resType ResourceType
+            FROM      
+                /shared/ASAssets/Utilities/repository/getResourceListRecursive(startingResourcePath, &apos;CONTAINER&apos;)
+		    DO
+				if (debug = &apos;Y&apos;) then
+					call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:         Resource=&apos;||r.ResourcePath);
+				end if;
+				FOR s AS 
+					SELECT resourceName, resourcePath, resourceType  
+					FROM /shared/ASAssets/Utilities/repository/getUsedResourcesCursor(r.ResourcePath, r.ResourceType) 
+				DO
+					if (POSITION(rebindOldFolder_ IN s.ResourcePath) &gt; 0) then
+						if (debug = &apos;Y&apos;) then
+							call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:           Rebind=&apos;||s.resourcePath||&apos;  TO  &apos;||rebindNewFolder_ || &apos;/&apos; || s.resourceName);
+						end if;
+						SET rebindVector = VECTOR [(
+							rebindOldFolder_ || &apos;/&apos; || s.resourceName,
+							s.resourceType,
+							rebindNewFolder_ || &apos;/&apos; || s.resourceName,
+							s.resourceType
+							)];
+		
+						CALL /shared/ASAssets/Utilities/repository/rebindResource(
+							r.ResourcePath,
+							r.ResourceType,
+							rebindVector,
+							success,
+							createResponse,
+							faultResponse
+						);
+						IF (faultResponse IS NOT NULL) THEN
+							SET resultMessage = CAST(faultResponse AS LONGVARCHAR);
+						END IF;
+					end if;
+				END FOR ;     
+		    END FOR;
+		ELSE
+			SET result = &apos;failure&apos;;
+			SET resultMessage = &apos;Rebind To Folder does not exist: &apos; || NVL(startingResourcePath,&apos;null&apos;);
+			raise ex value resultMessage;
+		END IF;
+	ELSE
+		SET result = &apos;failure&apos;;
+		SET resultMessage = &apos;Starting Folder does not exist: &apos; || NVL(startingResourcePath,&apos;null&apos;);
+		raise ex value resultMessage;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

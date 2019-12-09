@@ -1,0 +1,637 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="rebindFolder" path="/shared/ASAssets/Utilities/repository/rebindFolder" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>rebindFolder:
+
+	-- CIS Repository Helper Procedure --
+
+	This procedure provides the capability to rebind all the resources in a folder.  For example, if a 
+		View points to a data source table, you may want to rebind to a different data source
+		that has the same strucutre.  This may be useful when redeploying from Dev to Test to Production
+		or simply rebinding to a different development instance of the database.
+
+	This procedure allows for the possibility of the &quot;rebindFromFolder&quot; to not exist.  This may be the case
+		if rebinding resources after deploying from one environment to another where the the name of the
+		datasource catalog or schema is different between the environments and the source folder does not
+		exist in the target environment.   However, if the user of this procedure simply provides an 
+		incorrect &quot;rebindFromFolder&quot;, this procedure will not throw an exception but simply finish 
+		successfully with no indication that the folder was incorrect.
+
+		Rules:
+		1) If a resource in the folder has both the source and the target sources present, it will
+			use rebindResource to do an explicit rebind.
+		2) If a resource in the folder does not have the source present, it will rebind using explicit
+			text modification techniques instead of rebindResource.  The following text modification
+			techniques are supported for the given resource type:
+				resourceType = &apos;TABLE&apos;
+					subtype = &apos;SQL_TABLE&apos; -- Regular View not a database table
+	
+				resourceType = &apos;PROCEDURE&apos;
+					subtype = &apos;SQL_SCRIPT_PROCEDURE&apos; -- Custom Procedure or Parameterized query
+					subtype = &apos;EXTERNAL_SQL_PROCEDURE&apos; -- Packaged Query Procedure
+ 					subtype = &apos;BASIC_TRANSFORM_PROCEDURE&apos; -- XSLT Basic Transformation definition
+					subtype = &apos;XSLT_TRANSFORM_PROCEDURE&apos; -- XSLT Transformation text
+					subtype = &apos;STREAM_TRANSFORM_PROCEDURE&apos; -- XSLT Stream Transformation text
+		3) if a resource in the folder does not have the target present, that is an error and an exception is raised.
+
+ 	Input:
+		startingResourceFolder - Full resource path to the starting folder to begin rebinding
+			Values: e.g. /shared/Utilities/repository/examples
+
+		rebindFromFolder - The source &quot;used&quot; resource folder to rebind from
+
+		rebindToFolder - The target &quot;used&quot; resource folder to rebind to
+
+	Output:
+		success	- true(1) or false(0)
+			Values: 1 or 0
+
+		faultResponse - null if succesful otherwise contains a fault resposne.
+			Values: Fault Resposne XML value
+
+	Exceptions:
+        N/A
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2013.2		04/24/2013		Mike Tinius			5.2.0			Created new
+	2018.100	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	2019.200	05/22/2019		Mike Tinius			7.0.8			Removed the use of VECTOR.  Consolidated code and eliminated procedure calls to be more efficient.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="startingResourceFolder" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="rebindFromFolder" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="rebindToFolder" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="success" direction="OUT" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="faultResponse" direction="OUT" nullable="true">
+      <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+        <schemaDatatype>
+          <datatype name="XML" type="TREE" refId="1"></datatype>
+        </schemaDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/System" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/services/webservices/system/admin/resource/operations/rebindResources" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="rebindResources" direction="IN">
+        <datatype name="rebindResources" extendedName="{http://www.compositesw.com/services/system/admin/resource}rebindResources" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}rebindResources" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}rebindResources">
+          <schemaDatatype>
+            <datatype name="rebindResources" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="rebindResourcesRequest" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="2">
+              <element name="entries" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="3">
+                  <element name="entry" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                    <datatype name="pathTypePair" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="4">
+                      <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                    </datatype>
+                  </element>
+                </datatype>
+              </element>
+              <element name="rebindRules" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="rebindRuleList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="5">
+                  <element name="rebindRule" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                    <datatype name="rebindRule" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="6">
+                      <element name="oldPath" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="oldType" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="newPath" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="newType" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                    </datatype>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="rebindResourcesResponse" direction="OUT">
+        <datatype name="rebindResourcesResponse" extendedName="{http://www.compositesw.com/services/system/admin/resource}rebindResourcesResponse" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}rebindResourcesResponse" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}rebindResourcesResponse">
+          <schemaDatatype>
+            <datatype name="rebindResourcesResponse" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="rebindResourcesResponse" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="7"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="fault" direction="OUT">
+        <datatype name="fault" extendedName="{http://www.compositesw.com/services/system/util/common}fault" namespace="http://www.compositesw.com/services/system/util/common" referenceDefinitionSet="/services/webservices/system/util/common/operations/CommonSchema" referenceType="{http://www.compositesw.com/services/system/util/common}fault" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/util/common}fault">
+          <schemaDatatype>
+            <datatype name="fault" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="fault" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="ELEMENT_DECL" type="TREE" refId="8">
+              <element name="errorEntry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                <datatype name="messageEntry" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="9">
+                  <element name="code" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="message" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="detail" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="severity" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="messageSeverity" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/_debug" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceListRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creationDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="creationDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="creatorUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creatorUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="lastModifiedDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="lastModifiedUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getUsedResourcesCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="usedResCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/rebind/rebindReplaceText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="fromFolder" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="toFolder" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+    rebindFolder:
+
+	-- CIS Repository Helper Procedure --
+
+	This procedure provides the capability to rebind all the resources in a folder.  For example, if a 
+		View points to a data source table, you may want to rebind to a different data source
+		that has the same strucutre.  This may be useful when redeploying from Dev to Test to Production
+		or simply rebinding to a different development instance of the database.
+
+	This procedure allows for the possibility of the &quot;rebindFromFolder&quot; to not exist.  This may be the case
+		if rebinding resources after deploying from one environment to another where the the name of the
+		datasource catalog or schema is different between the environments and the source folder does not
+		exist in the target environment.   However, if the user of this procedure simply provides an 
+		incorrect &quot;rebindFromFolder&quot;, this procedure will not throw an exception but simply finish 
+		successfully with no indication that the folder was incorrect.
+
+		Rules:
+		1) If a resource in the folder has both the source and the target sources present, it will
+			use rebindResource to do an explicit rebind.
+		2) If a resource in the folder does not have the source present, it will rebind using explicit
+			text modification techniques instead of rebindResource.  The following text modification
+			techniques are supported for the given resource type:
+				resourceType = &apos;TABLE&apos;
+					subtype = &apos;SQL_TABLE&apos; -- Regular View not a database table
+	
+				resourceType = &apos;PROCEDURE&apos;
+					subtype = &apos;SQL_SCRIPT_PROCEDURE&apos; -- Custom Procedure or Parameterized query
+					subtype = &apos;EXTERNAL_SQL_PROCEDURE&apos; -- Packaged Query Procedure
+ 					subtype = &apos;BASIC_TRANSFORM_PROCEDURE&apos; -- XSLT Basic Transformation definition
+					subtype = &apos;XSLT_TRANSFORM_PROCEDURE&apos; -- XSLT Transformation text
+					subtype = &apos;STREAM_TRANSFORM_PROCEDURE&apos; -- XSLT Stream Transformation text
+		3) if a resource in the folder does not have the target present, that is an error and an exception is raised.
+
+ 	Input:
+		startingResourceFolder - Full resource path to the starting folder to begin rebinding
+			Values: e.g. /shared/Utilities/repository/examples
+
+		rebindFromFolder - The source &quot;used&quot; resource folder to rebind from
+
+		rebindToFolder - The target &quot;used&quot; resource folder to rebind to
+
+	Output:
+		success	- true(1) or false(0)
+			Values: 1 or 0
+
+		faultResponse - null if succesful otherwise contains a fault resposne.
+			Values: Fault Resposne XML value
+
+	Exceptions:
+        N/A
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2013.2		04/24/2013		Mike Tinius			5.2.0			Created new
+	2018.100	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	2019.200	05/22/2019		Mike Tinius			7.0.8			Removed the use of VECTOR.  Consolidated code and eliminated procedure calls to be more efficient.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE rebindFolder(
+	IN startingResourceFolder 	LONGVARCHAR,
+	IN rebindFromFolder			LONGVARCHAR,
+	IN rebindToFolder			LONGVARCHAR,
+	OUT success					BIT,
+	OUT faultResponse			XML
+)
+BEGIN
+    DECLARE moduleName      	VARCHAR DEFAULT &apos;rebindFolder&apos;;
+	DECLARE debug				CHAR(1) DEFAULT /shared/ASAssets/Utilities/repository/&quot;_debug&quot;.debug;
+	DECLARE rebindFromFolder_	LONGVARCHAR DEFAULT REPLACE(rebindFromFolder,&apos;//&apos;,&apos;/&apos;);
+	DECLARE rebindToFolder_		LONGVARCHAR DEFAULT REPLACE(rebindToFolder,&apos;//&apos;,&apos;/&apos;);
+	DECLARE resourcePath		LONGVARCHAR;
+	DECLARE resourceType		VARCHAR;
+	DECLARE resourceExists		BOOLEAN;
+	DECLARE resourcePathRebound	BOOLEAN;
+	DECLARE subtype				VARCHAR;
+	DECLARE rebindRules 		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE rebindRow 			ROW (
+		oldPath		LONGVARCHAR,
+		oldType		VARCHAR(255),
+		newPath		LONGVARCHAR,
+		newType		VARCHAR(255)
+	);
+	DECLARE i					INTEGER;
+	DECLARE createInput 		LONGVARCHAR;
+	DECLARE createResponse 		XML;
+	DECLARE success2			INTEGER;
+	DECLARE ex					EXCEPTION;
+
+	if (UPPER(debug) = &apos;Y&apos;) then
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INPUT: startingResourceFolder=&apos;||NVL(startingResourceFolder,&apos;null&apos;));
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INPUT: rebindFromFolder=&apos;||NVL(rebindFromFolder_,&apos;null&apos;));
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INPUT: rebindToFolder=&apos;||NVL(rebindToFolder_,&apos;null&apos;)||CHR(10));
+	end if;
+
+	set success = 1;
+	call /lib/resource/ResourceExists(startingResourceFolder, &apos;CONTAINER&apos;, null, resourceExists);
+	if (resourceExists) then
+		-- Get the list of resources recursively contained within the starting resource folder that was passed in.
+		FOR r AS 
+			SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceListRecursive(startingResourceFolder, &apos;CONTAINER&apos;)
+		DO
+			set resourcePath = r.respath;
+			set resourceType = r.resType;
+			set subtype = r.subtype;
+			set rebindRules = &apos;&apos;;
+			set rebindRow = null;
+			set resourcePathRebound = false;
+
+			-- Determine if the resource exists
+			call /lib/resource/ResourceExists(resourcePath, resourceType, null, resourceExists);
+			if (resourceExists) then
+
+				if (UPPER(debug) = &apos;Y&apos;) then
+					call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Parent resource to rebind:  resourceType=&apos;||NVL(resourceType,&apos;null&apos;)||&apos;  subtype=&apos;||NVL(subtype,&apos;null&apos;)||&apos;  resourcePath=&apos;||NVL(resourcePath,&apos;null&apos;));
+				end if;
+
+				-- BEGIN getRebindableResource and rebindCheckPathExists code combined logic:
+				if (resourceType = &apos;TABLE&apos; or
+					resourceType = &apos;PROCEDURE&apos; or
+					resourceType = &apos;LINK&apos; or
+					resourceType = &apos;DEFINITION_SET&apos; or
+					resourceType = &apos;DATA_SOURCE&apos; or
+					resourceType = &apos;TRIGGER&apos;) then
+
+					BEGIN
+						set i = 0;
+						for u as select * from /shared/ASAssets/Utilities/repository/getUsedResourcesCursor(resourcePath, resourceType) do
+							set rebindRow.oldPath = u.resourcePath;
+							set rebindRow.oldType = u.resourceType;
+							-- Check to see if the actual path is the same as the rebind from path
+							if (u.resourcePath = rebindFromFolder_) then
+								set rebindRow.newPath = rebindToFolder_;
+							else
+								-- Check to see if the actual path contains a partial path for rebind from with a / added to the end to insure it is a complete partial path.
+								if (INSTR(u.resourcePath, rebindFromFolder_||&apos;/&apos;) &gt; 0) then
+									set rebindRow.newPath = REPLACE(u.resourcePath, rebindFromFolder_||&apos;/&apos;, rebindToFolder_||&apos;/&apos;);
+								end if;
+							end if;
+							set rebindRow.newType = u.resourceType;
+
+							-- If the old and new paths are different then add them to the rebind rules XML
+							if (rebindRow.oldPath IS NOT NULL AND rebindRow.newPath IS NOT NULL AND rebindRow.oldPath != rebindRow.newPath) then
+								if (UPPER(debug) = &apos;Y&apos;) then
+									call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    REBIND RULE:&apos;|| 
+											&apos;  [OLD] oldType=&apos; || NVL(rebindRow.oldType,&apos;null&apos;) || &apos;  oldPath=&apos; || NVL(rebindRow.oldPath,&apos;null&apos;)  || 
+											&apos;  [NEW] newType=&apos; || NVL(rebindRow.newType,&apos;null&apos;) || &apos;  newPath=&apos; || NVL(rebindRow.newPath,&apos;null&apos;));
+								end if;
+								-- If both the old resource path and the new resource path exist then this is a &quot;rebindable&quot; resource
+								call /lib/resource/ResourceExists(rebindRow.oldPath, rebindRow.oldType, null, resourceExists);
+								if (resourceExists) then
+									call /lib/resource/ResourceExists(rebindRow.newPath, rebindRow.newType, null, resourceExists);
+									if (resourceExists) then
+										set rebindRules = rebindRules || 
+											&apos;       &lt;resource:rebindRule&gt;&apos;||CHR(10)||
+											&apos;           &lt;resource:oldPath&gt;&apos;|| CAST(XMLTEXT(REPLACE(rebindRow.oldPath, &apos;&quot;&apos;, &apos;&apos;)) AS LONGVARCHAR) ||&apos;&lt;/resource:oldPath&gt;&apos;||CHR(10)||
+											&apos;           &lt;resource:oldType&gt;&apos;|| CAST(XMLTEXT(REPLACE(rebindRow.oldType, &apos;&quot;&apos;, &apos;&apos;)) AS LONGVARCHAR) ||&apos;&lt;/resource:oldType&gt;&apos;||CHR(10)||
+											&apos;           &lt;resource:newPath&gt;&apos;|| CAST(XMLTEXT(REPLACE(rebindRow.newPath, &apos;&quot;&apos;, &apos;&apos;)) AS LONGVARCHAR) ||&apos;&lt;/resource:newPath&gt;&apos;||CHR(10)||
+											&apos;           &lt;resource:newType&gt;&apos;|| CAST(XMLTEXT(REPLACE(rebindRow.newType, &apos;&quot;&apos;, &apos;&apos;)) AS LONGVARCHAR) ||&apos;&lt;/resource:newType&gt;&apos;||CHR(10)||
+											&apos;       &lt;/resource:rebindRule&gt;&apos;||CHR(10);
+									else
+										raise System.NotFoundException value &apos;The target &quot;new path&quot;=[&apos;||NVL(rebindRow.newPath,&apos;null&apos;)||&apos;] and &quot;new type&quot;=[&apos;||NVL(rebindRow.newType,&apos;null&apos;)||&apos;] does not exist.&apos;;
+									end if;
+								else
+									if (UPPER(debug) = &apos;Y&apos;) then
+										call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    INVOKE rebind/rebindReplaceText()&apos;);
+									end if;
+									BEGIN INDEPENDENT TRANSACTION
+										call /shared/ASAssets/Utilities/repository/rebind/rebindReplaceText(resourcePath, resourceType, rebindFromFolder_, rebindToFolder_, debug, success2);
+										set resourcePathRebound = true;
+									EXCEPTION
+										ELSE RAISE;
+									END;
+								end if;
+							else
+								if (UPPER(debug) = &apos;Y&apos;) then
+									call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    NO REBIND REQUIRED:&apos;|| 
+											&apos;  [OLD] oldType=&apos; || NVL(rebindRow.oldType,&apos;null&apos;) || &apos;  oldPath=&apos; || NVL(rebindRow.oldPath,&apos;null&apos;)  || 
+											&apos;  [NEW] newType=&apos; || NVL(rebindRow.newType,&apos;null&apos;) || &apos;  newPath=&apos; || NVL(rebindRow.newPath,&apos;null&apos;));
+								end if;
+							end if;
+						end for;
+					EXCEPTION
+						ELSE
+							call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;EXCEPTION RETRIEVING &quot;getUsedResourcesCursor&quot;: &apos;||CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR));
+					END;
+				end if;
+
+				-- BEGIN rebindResourceImpl()
+				if (rebindRules IS NOT NULL AND LENGTH(rebindRules) &gt; 0) THEN
+					set createInput = 
+					&apos;&lt;resource:rebindResources &apos;||CHR(10)||
+					&apos;    xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot;&apos;||CHR(10)||
+					&apos;    xmlns:ns1=&quot;http://www.compositesw.com/services/system/util/common&quot;&gt;&apos;||CHR(10)||
+					&apos;    &lt;resource:entries&gt;&apos;||CHR(10)||
+					&apos;        &lt;resource:entry&gt;&apos;||CHR(10)||
+					&apos;           &lt;resource:path&gt;&apos; || CAST(XMLTEXT(REPLACE(resourcePath, &apos;&quot;&apos;, &apos;&apos;)) AS LONGVARCHAR) || &apos;&lt;/resource:path&gt;&apos;||CHR(10)||
+					&apos;           &lt;resource:type&gt;&apos; || resourceType || &apos;&lt;/resource:type&gt;&apos;||CHR(10)||
+					&apos;       &lt;/resource:entry&gt;&apos;||CHR(10)||
+					&apos;    &lt;/resource:entries&gt;&apos;||CHR(10)||
+					&apos;    &lt;resource:rebindRules&gt;&apos;||CHR(10)||
+							rebindRules || 
+					&apos;    &lt;/resource:rebindRules&gt;&apos;||CHR(10)||
+					&apos;&lt;/resource:rebindResources&gt;&apos;;
+
+					if (UPPER(debug) = &apos;Y&apos;) then
+						call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    INVOKE API rebindResources()  createInput:&apos;||CHR(10)||NVL(createInput,&apos;null&apos;));
+					end if;
+
+					BEGIN INDEPENDENT TRANSACTION
+						-- Invoke the API to rebind resources
+						call /services/webservices/system/admin/resource/operations/rebindResources(createInput, createResponse, faultResponse);
+						if (faultResponse is not null) then
+							raise System.SOAPFaultException value CAST(faultResponse as LONGVARCHAR);
+						end if;
+					EXCEPTION
+						ELSE RAISE;
+					END;
+					-- END rebindResourceImpl()
+				else
+					if (resourceType = &apos;CONTAINER&apos;) then
+						if (UPPER(debug) = &apos;Y&apos;) then
+							call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Skipping CONATINER path=&apos;||NVL(resourcePath,&apos;null&apos;));
+						end if;
+					else
+						if (not resourcePathRebound) then
+							if (UPPER(debug) = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;    INVOKE rebind/rebindReplaceText()&apos;);
+							end if;
+
+							BEGIN INDEPENDENT TRANSACTION
+								call /shared/ASAssets/Utilities/repository/rebind/rebindReplaceText(resourcePath, resourceType, rebindFromFolder_, rebindToFolder_, debug, success2);
+							EXCEPTION
+								ELSE RAISE;
+							END;
+						end if;
+					end if;
+				end if;
+
+				if (UPPER(debug) = &apos;Y&apos;) then
+					call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;FINISED - Parent resource to rebind:  resourcePath=&apos;||NVL(resourcePath,&apos;null&apos;)||CHR(10));
+				end if;
+			else
+				raise System.NotFoundException value &apos;The path=[&apos;||NVL(resourcePath,&apos;null&apos;)||&apos;] and type=[&apos;||NVL(resourceType,&apos;null&apos;)||&apos;] does not exist.&apos;;
+			end if;
+		 	-- END getRebindableResource and rebindCheckPathExists code combined logic:
+		END FOR;
+	else
+		set success = 0;
+		if (UPPER(debug) = &apos;Y&apos;) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Resource does not exist.  Starting folder=[&apos;||NVL(startingResourceFolder,&apos;null&apos;)||&apos;]&apos;);
+		end if;
+	end if;
+END
+</attribute>
+  <attribute name="creationDate" type="LONG">1369417729294</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573161757946</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:4:Customized" type="STRING">datatype.changed</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">11/259</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>System</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">17/177</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>System</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/229</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>System</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

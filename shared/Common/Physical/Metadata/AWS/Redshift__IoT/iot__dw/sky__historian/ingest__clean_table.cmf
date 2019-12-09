@@ -1,0 +1,581 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="ingest_clean" path="/shared/Common/Physical/Metadata/AWS/Redshift_IoT/iot_dw/sky_historian/ingest_clean" type="TABLE" subtype="DATABASE_TABLE" changeToken="0" tableType="TABLE">
+  <columns>
+    <column name="geo" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="h" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="id" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="o" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="t" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_carbon_firstinstalldate" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_carbon_liferemaining" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_carbon_serial" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_hepa_firstinstalldate" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_hepa_liferemaining" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_hepa_serial" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_modeautototal" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_modemanualtotal" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_modenightmanualtotal" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_modestandbytotal" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_modeturbototal" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_level1timetotal" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_level2timetotal" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_level3timetotal" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_level4timetotal" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_level5timetotal" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_timeontotal" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_prefilter_liferemaining" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_errorcode" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_eventtype" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_filtertype" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_timesincelastconnection" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_display_fanspeedindicatormax" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_dust_dirtremovedsample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_dust_dustlevelavg" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_dust_dustlevelmax" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_dust_dustlevelmin" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_dust_level1timesample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_dust_level2timesample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_dust_level3timesample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_dust_level4timesample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_dust_level5timesample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_modeautototalsample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_modecurrent" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_modemanualsample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_modenightmanualsample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_modestandbysample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_modeturbosample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_level1timesample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_level2timesample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_level3timesample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_level4timesample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_level5timesample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_rpmavg" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_rpmmax" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_rpmmin" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_motor_timeonsample" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="firmware_version" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="message_type" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="hardware_version" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_display_fanspeedindicatorcurrent" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_display_fanspeedindicatorprevious" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="thing_type" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="body_hash" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cohort" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="locale" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="geo_region" nullable="true">
+      <datatype name="varchar" extendedName="varchar(19)" subType="DATASOURCE_TYPE" type="STRING" maxLength="19"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="insert_time" nullable="true">
+      <datatype name="timestamp" extendedName="timestamp" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="source" nullable="true">
+      <datatype name="varchar" extendedName="varchar(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="p" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="t_valid" nullable="true">
+      <datatype name="int4" extendedName="int4" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="geo_valid" nullable="true">
+      <datatype name="int4" extendedName="int4" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_currentcleanairvalue" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_potentialnewcleanairvalue" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sky_autocalsampleperiodcounter" nullable="true">
+      <datatype name="varchar" extendedName="varchar(256)" subType="DATASOURCE_TYPE" type="STRING" maxLength="256"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <attribute name="c:0:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:10:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:11:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:12:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:13:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:14:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:15:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:16:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:17:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:18:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:19:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:1:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:20:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:21:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:22:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:23:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:24:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:25:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:26:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:27:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:28:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:29:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:2:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:30:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:31:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:32:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:33:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:34:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:35:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:36:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:37:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:38:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:39:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:3:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:40:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:41:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:42:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:43:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:44:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:45:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:46:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:47:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:48:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:49:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:4:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:50:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:51:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:52:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:53:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:54:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:55:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:56:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:57:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:58:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:59:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:5:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:60:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:61:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:62:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:63:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:64:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:65:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:66:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:67:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:68:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:69:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:6:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:7:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:8:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:9:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="creationDate" type="LONG">1551470842058</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1551470842058</attribute>
+</metadata>

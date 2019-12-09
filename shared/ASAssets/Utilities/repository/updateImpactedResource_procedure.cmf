@@ -1,0 +1,351 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="updateImpactedResource" path="/shared/ASAssets/Utilities/repository/updateImpactedResource" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>updateImpactedResource:
+
+	This is a procedure is used to update a single impacted resource.  The main objective is to workaround issues in CIS that
+	are fixable by simply opening, modifying and saving a resource.  Typical issues that this can repair are views or
+	procedures that are impacted after import into CIS.  Typical error messages might be &quot;session may not be null&quot; or
+	&quot;session is closed&quot;.  This procedure will not attempt to fix views or procedures that contain an impact level of &quot;SYNTAX_ERROR&quot; .
+ 
+	Input:
+		debug - Y=debug on, N=debug off
+		resourcePath - CIS resource to be interrogated for impact level
+			Values: e.g. /shared/examples/LookupProduct
+		resourceType - the type of resources
+			Values: e.g. TABLE or PROCEDURE.  Any other type is not supported
+	Output:
+		success	- true(1) or false(0)
+	Exceptions:  ex
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2013.3		07/31/2013		Mike Tinius			6.0.0			Best Practices 7.3:  created new
+	2017.2		03/06/2017		Mike Tinius			7.0.5			Added code to add or remove a space to force a change to the resource. Moved from Best Practices to Utilities.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="resourcePath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="resourceType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="success" direction="OUT" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="message" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/services/databases/system/DUAL" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="DUMMY">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="path">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="changeid">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="version">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="introspectState">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactMessage">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="scriptText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="childCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="dataSourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateSqlScript" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="scripttext" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateSqlTable" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="inScripttext" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* updateImpactedResource:
+
+	This procedure is used to update a single impacted resource.  The main objective is to work around issues in CIS that
+	are fixable by simply opening, modifying and saving a resource.  Typical issues that this can repair are views or
+	procedures that are impacted after import into CIS.  Typical error messages might be &quot;session may not be null&quot; or
+	&quot;session is closed&quot;.  This procedure will not attempt to fix views or procedures that contain an impact level of &quot;SYNTAX_ERROR&quot;.
+ 
+	Input:
+		debug - Y=debug on, N=debug off
+		resourcePath - CIS resource to be interrogated for impact level
+			Values: e.g. /shared/examples/LookupProduct
+		resourceType - the type of resources
+			Values: e.g. TABLE or PROCEDURE.  Any other type is not supported
+	Output:
+		success	- true(1) or false(0)
+		message - the exception message is returned or null if success=1.
+
+	Exceptions:  ex - exceptions are caught and logged to the CIS log and 0 is returned
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2013.3		07/31/2013		Mike Tinius			6.0.0			Best Practices 7.3:  created new
+	2017.2		03/06/2017		Mike Tinius			7.0.5			Added code to add or remove a space to force a change to the resource. Moved from Best Practices to Utilities.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE updateImpactedResource(
+	IN debug					CHAR(1),
+	IN resourcePath 			LONGVARCHAR, 
+	IN resourceType				VARCHAR,
+	OUT success					BIT,
+	OUT message					LONGVARCHAR
+)
+BEGIN
+	DECLARE moduleName			VARCHAR(255) DEFAULT &apos;updateImpactedResource&apos;;
+	DECLARE impactLevel			VARCHAR;
+	DECLARE scriptText			LONGVARCHAR;
+	DECLARE createResponse 		XML;
+	DECLARE faultResponse		XML;
+	DECLARE lastChar			CHAR(1);
+	DECLARE ex					EXCEPTION;
+
+	SET success = 1;
+	BEGIN
+		IF (resourceType is not null and (resourceType = &apos;TABLE&apos; or resourceType = &apos;PROCEDURE&apos;) ) THEN
+			FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor(resourcePath, resourceType) DO
+				SET impactLevel = r.impactLevel;
+				SET message = &apos;&apos;;
+				-- This is a best effort at fixing an issue.  If there truly is an error than catch it, log it and move on.
+				CASE impactLevel
+					WHEN &apos;NONE&apos; THEN
+						-- Set message
+						SET message = &apos;No impact for resource=[&apos;||NVL(resourcePath,&apos;null&apos;)||&apos;]&apos;;
+					WHEN &apos;SYNTAX_ERROR&apos; THEN
+						-- Don&apos;t even try to fix a syntax error
+						SET message = &apos;Cannot update impacted resource with a SYNTAX_ERROR for resource=[&apos;||NVL(resourcePath,&apos;null&apos;)||&apos;]  and impact level=[&apos;||NVL(impactLevel,&apos;null&apos;);
+					ELSE
+						-- Read in the sript text
+						SET scriptText = r.scriptText;
+
+						-- Add a space at the end of the resource if there is no space or remove the space if one exists so that there will never be more than one space.
+						--   This functionality was added to resolve the &quot;session may not be null&quot; issue that is only resolved when the resource changes from its
+						--	 its original context and then saved again.
+						SELECT {OPTION IGNORE_TRAILING_SPACES=&quot;FALSE&quot;} SUBSTRING(scriptText, length(scriptText), 1) c INTO lastChar
+							FROM /services/databases/system/dual;
+						IF (lastChar = &apos; &apos;) THEN
+							SELECT {OPTION IGNORE_TRAILING_SPACES=&quot;FALSE&quot;} substring(scriptText, 1, length(scriptText) - 1) c INTO scriptText
+								FROM /services/databases/system/dual;
+						ELSE
+							SET scriptText = scriptText || &apos; &apos;;
+						END IF;
+
+						-- Try to fix other errors.  In particular errors such as &quot;Session may not be null&quot; or &quot;Session is closed&quot; can be fixed.
+						IF (r.&quot;type&quot; = &apos;TABLE&apos; and r.subtype = &apos;SQL_TABLE&apos;) THEN
+							-- Write out the script text for TABLE
+							call /shared/ASAssets/Utilities/repository/updateSqlTable(resourcePath,scriptText,success,createResponse,faultResponse);
+
+							IF (faultResponse is not null) THEN
+								RAISE ex VALUE CAST(faultResponse AS LONGVARCHAR);
+							END IF;
+					
+							-- Set message
+							SET message = &apos;Update impacted resource complete for resource=[&apos;||NVL(resourcePath,&apos;null&apos;)||&apos;]&apos;;
+						
+						elseIF (r.&quot;type&quot; = &apos;PROCEDURE&apos; and r.subtype = &apos;SQL_SCRIPT_PROCEDURE&apos;) THEN
+							-- Write out the script text for TABLE
+							call /shared/ASAssets/Utilities/repository/updateSqlScript(resourcePath,scriptText,success,createResponse,faultResponse);
+
+							IF (faultResponse is not null) THEN
+								RAISE ex VALUE CAST(faultResponse AS LONGVARCHAR);
+							END IF;
+					
+							-- Set message
+							SET message = &apos;Update impacted resource complete for resource=[&apos;||NVL(resourcePath,&apos;null&apos;)||&apos;]&apos;;
+						else
+							-- Set message
+							SET message = &apos;Cannot update a resource of type=[&apos;||NVL(resourceType,&apos;null&apos;)||&apos;] subtype=[&apos;||NVL(r.subtype,&apos;null&apos;)||&apos;] for resource=[&apos;||NVL(resourcePath,&apos;null&apos;)||&apos;]&apos;;
+						END IF;
+				END CASE;
+				IF (debug = &apos;Y&apos;) THEN
+					-- Print message
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, message);
+				END IF;
+			END FOR;
+		ELSE
+			IF (debug = &apos;Y&apos;) THEN
+				-- Print result
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Cannot update a resource of type=[&apos;||NVL(resourceType,&apos;null&apos;)||&apos;] for resource=[&apos;||NVL(resourcePath,&apos;null&apos;)||&apos;]&apos;);
+			END IF;
+		END IF;
+		SET message = null;
+	EXCEPTION
+		ELSE
+			SET message = &apos;Exception occurred while updating impacted resource=[&apos;||NVL(resourcePath,&apos;null&apos;)||&apos;]   ERROR=&apos;||NVL(CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR),&apos;null&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, message);
+			SET success = 0;
+	END;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564746296549</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

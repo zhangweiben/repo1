@@ -1,0 +1,48 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="India_Coupon_Cache_Policy_Post_Refresh" path="/shared/Common/Business/Business/India_Coupon/India_Coupon_Cache_Policy_Post_Refresh" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters></parameters>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/Common/Business/Business/India_Coupon/Step4_Cache_PC_Order_data" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="waveYearMonth" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Business/India_Coupon/Step5_Get_Redemption_Model_Scores" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="waveYearMonth" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="batchSize" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">PROCEDURE India_Coupon_Cache_Policy_Post_Refresh()
+BEGIN	 
+    DECLARE yearMonth INT;
+    
+    SET yearMonth = CAST(FORMAT_DATE(CURRENT_DATE, &apos;yyyymm&apos;) AS INT);
+    
+	CALL /shared/Common/Business/Business/India_Coupon/Step4_Cache_PC_Order_data(yearMonth);
+	CALL /shared/Common/Business/Business/India_Coupon/Step5_Get_Redemption_Model_Scores(yearMonth, 25);
+END</attribute>
+  <attribute name="creationDate" type="LONG">1571691000602</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30105</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1571707850534</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30105</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1571691000602</attribute>
+</metadata>

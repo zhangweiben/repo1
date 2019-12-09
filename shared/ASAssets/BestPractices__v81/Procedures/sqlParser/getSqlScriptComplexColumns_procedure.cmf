@@ -1,0 +1,303 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getSqlScriptComplexColumns" path="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/getSqlScriptComplexColumns" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="resourcePath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="resourceType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="subType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="columnAliasVect" direction="OUT" nullable="true">
+      <datatype name="columnAliasVect" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </itemDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="resultVector" direction="OUT" nullable="true">
+      <datatype name="resultVector" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="SqlScriptV2Row" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="SqlScriptV2Row" type="TREE" refId="1">
+            <element name="derivedColumn">
+              <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+            </element>
+            <element name="sourceAlias">
+              <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+            </element>
+            <element name="sourceColumn">
+              <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+            </element>
+            <element name="columnAlias">
+              <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+            </element>
+            <element name="columnType">
+              <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+            </element>
+            <element name="sourceExpression">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="sourceExpressionNoCast">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="sourceColumnList">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="functionList">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="sourcePath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/parseSqlScriptComplex" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="subType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="derivedColumn">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="sourceAlias">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="sourceColumn">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="columnAlias">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="columnType">
+            <datatype type="STRING" maxLength="4096"/>
+          </element>
+          <element name="sourceExpression">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="sourceExpressionNoCast">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="sourceColumnList">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="functionList">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="sourcePath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*	
+	getSqlScriptComplexColumns - Extract complex SQL statements and break them down to simple SQL statements.
+		Split the SQL statements on these keywords:	UNION ALL|UNION|EXCEPT ALL|EXCEPT|INTERSECT ALL|INTERSECT
+		This method returns a vector of unique columns.  
+
+		Note: The invoking &quot;parseSqlScriptComplex&quot; method may return a duplicate &quot;columnAlias&quot; columns
+		      when the column is derived from multiple &quot;sourceColumn&quot;s.   This method will resolve those
+			  duplicates into a unique set of &quot;columnAlias&quot; columns.
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	11/11/2011		Mike Tinius			5.2.0			Created new
+	03/15/2013		Mike Tinius			5.2.0			Modifications for Best Practices 7.0
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE getSqlScriptComplexColumns(
+	IN	resourcePath		LONGVARCHAR,
+	IN  resourceType		VARCHAR,
+	IN	subType				VARCHAR,
+	OUT columnAliasVect		VECTOR(VARCHAR(4000)),
+	OUT resultVector		VECTOR (/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.SqlScriptV2Row)
+/*	/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.SqlScriptV2Row	(
+		derivedColumn				BIT,		  -- Determine whether this column is derived or not. 1=derived, 0=not derived
+		sourceAlias 				VARCHAR(4000),-- The physical/source view (alias) name (a.k.a. table name) 
+		sourceColumn 				VARCHAR(4000),-- The physical/source column name
+		columnAlias 				VARCHAR(4000),-- The logical column (alias) name
+		columnType					VARCHAR,	  -- The logical column type
+		sourceExpression 			LONGVARCHAR,  -- complete source expression as defined in the view
+		sourceExpressionNoCast		LONGVARCHAR,  -- source expression with no outer cast 
+		sourceColumnList			LONGVARCHAR,  -- The list of physical/source columns used in the expression
+		functionList				LONGVARCHAR,  -- list of functions used by the view
+		sourcePath 					LONGVARCHAR   -- path to the source view (parent view)
+	)
+Example vector output from a Formatting Layer Customers which points to a physical metadata table CUSTOMERS:
+{
+{[NULL] ,CUSTOMERS ,CUSTOMER_ID ,CustomerId ,INTEGER ,CAST(CUSTOMERS.CUSTOMER_ID AS INTEGER) ,CUSTOMERS.CUSTOMER_ID ,CUSTOMERS.CUSTOMER_ID ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,COMPANY_NAME ,CompanyName ,VARCHAR(50) ,CAST(CUSTOMERS.COMPANY_NAME AS VARCHAR(50)) ,CUSTOMERS.COMPANY_NAME ,CUSTOMERS.COMPANY_NAME ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,CONTACT_FIRST_NAME ,ContactFirstName ,VARCHAR(30) ,CAST(CUSTOMERS.CONTACT_FIRST_NAME AS VARCHAR(30)) ,CUSTOMERS.CONTACT_FIRST_NAME ,CUSTOMERS.CONTACT_FIRST_NAME ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,CONTACT_LAST_NAME ,ContactLastName ,VARCHAR(50) ,CAST(CUSTOMERS.CONTACT_LAST_NAME AS VARCHAR(50)) ,CUSTOMERS.CONTACT_LAST_NAME ,CUSTOMERS.CONTACT_LAST_NAME ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,BILLING_ADDRESS ,BillingAddress ,VARCHAR(255) ,CAST(CUSTOMERS.BILLING_ADDRESS AS VARCHAR(255)) ,CUSTOMERS.BILLING_ADDRESS ,CUSTOMERS.BILLING_ADDRESS ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,CITY ,City ,VARCHAR(50) ,CAST(CUSTOMERS.CITY AS VARCHAR(50)) ,CUSTOMERS.CITY ,CUSTOMERS.CITY ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,STATE_OR_PROVINCE ,StateOrProvince ,VARCHAR(20) ,CAST(CUSTOMERS.STATE_OR_PROVINCE AS VARCHAR(20)) ,CUSTOMERS.STATE_OR_PROVINCE ,CUSTOMERS.STATE_OR_PROVINCE ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,POSTAL_CODE ,PostalCode ,VARCHAR(20) ,CAST(CUSTOMERS.POSTAL_CODE AS VARCHAR(20)) ,CUSTOMERS.POSTAL_CODE ,CUSTOMERS.POSTAL_CODE ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,COUNTRY_REGION ,CountryRegion ,VARCHAR(50) ,CAST(CUSTOMERS.COUNTRY_REGION AS VARCHAR(50)) ,CUSTOMERS.COUNTRY_REGION ,CUSTOMERS.COUNTRY_REGION ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,CONTACT_TITLE ,ContactTitle ,VARCHAR(50) ,CAST(CUSTOMERS.CONTACT_TITLE AS VARCHAR(50)) ,CUSTOMERS.CONTACT_TITLE ,CUSTOMERS.CONTACT_TITLE ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,PHONE_NUMBER ,PhoneNumber ,VARCHAR(30) ,CAST(CUSTOMERS.PHONE_NUMBER AS VARCHAR(30)) ,CUSTOMERS.PHONE_NUMBER ,CUSTOMERS.PHONE_NUMBER ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,FAX_NUMBER ,FaxNumber ,VARCHAR(30) ,CAST(CASE CUSTOMERS.FAX_NUMBER  WHEN &apos;&apos;  THEN NULL ELSE CUSTOMERS.FAX_NUMBER  END AS VARCHAR(30)) ,CASE CUSTOMERS.FAX_NUMBER  WHEN &apos;&apos;  THEN NULL ELSE CUSTOMERS.FAX_NUMBER  END ,CUSTOMERS.FAX_NUMBER ,CAST^CASE ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS ,MOD_DT ,ModifiedDate ,TIMESTAMP ,CAST(CUSTOMERS.MOD_DT AS TIMESTAMP) ,CUSTOMERS.MOD_DT ,CUSTOMERS.MOD_DT ,CAST ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS},
+{[NULL] ,CUSTOMERS , ,CurrentDate ,DATE ,CAST(CURRENT_DATE() AS DATE) ,CURRENT_DATE() , ,CAST^CURRENT_DATE ,/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO/CUSTOMERS}
+}
+	)*/
+)
+BEGIN
+	DECLARE moduleName		VARCHAR DEFAULT &apos;getSqlScriptComplexColumns&apos;;
+	DECLARE debug			CHAR(1) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.debugSqlParser1;
+	DECLARE i				INTEGER DEFAULT 1;
+	DECLARE rowNum			INTEGER;
+	DECLARE resultRecord	/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.SqlScriptV2Row;
+	DECLARE columnNameVect	VECTOR(VARCHAR(4000));
+	DECLARE idx1,idx2		INTEGER;
+
+	set resultVector = VECTOR[(null)];
+	set columnNameVect = VECTOR[&apos;&apos;];
+	set columnAliasVect = VECTOR[(null)];
+	for r as select * from /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/parseSqlScriptComplex(resourcePath, resourceType, subType) do
+		set rowNum = i;
+		if (debug = &apos;Y&apos;) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;row=&apos;||i||&apos; Top of loop:&apos;);
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;row=&apos;||i||&apos;   sourceColumnList=&apos;||NVL(r.sourceColumnList,&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;row=&apos;||i||&apos;       sourceColumn=&apos;||NVL(r.sourceColumn,&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;row=&apos;||i||&apos;        columnAlias=&apos;||NVL(r.columnAlias,&apos;null&apos;));
+		end if;
+
+		-- The reason for the logic to look back one position in the list is that a derived column such as a concat may have
+		-- more than one physical column in the expression.  Each column is listed separately and the connection to those
+		-- column is the &quot;logical&quot; column alias.  The last column in the list is returned.
+		if (i &gt; 1) then -- Subsequent columns in the list
+			-- Check the last previousl column alias and current column alias
+			if (resultVector[i-1].columnAlias = r.columnAlias) then
+				-- When EQUAL, set the previous and current to emppty
+				set resultVector[i-1].sourceColumn = &apos;&apos;;
+				set resultVector[i].sourceColumn = &apos;&apos;;
+				set columnNameVect[i-1] = &apos;&apos;;
+				set columnNameVect[i] = &apos;&apos;;
+				if (debug = &apos;Y&apos;) then
+					call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;row=&apos;||i||&apos;  resolved sourceColumn duplicate.&apos;);
+				end if;
+			else
+				set resultVector[i] = r;
+				set columnAliasVect[i] = r.columnAlias;
+				set idx1 = POSITION(&apos;^&apos; IN r.sourceColumnList);
+				set idx2 = FIND_INDEX(r.sourceColumn, columnNameVect);
+				if (idx1 &gt; 0 or idx2 &gt; 0) then
+					set resultVector[i].sourceColumn = &apos;&apos;;
+					set columnNameVect[i] = &apos;&apos;;
+				else
+					set columnNameVect[i] = r.sourceColumn;
+				end if;
+				set resultVector = EXTEND(resultVector,1);
+				set columnNameVect = EXTEND(columnNameVect,1);
+				set columnAliasVect = EXTEND(columnAliasVect,1);
+				set i = i + 1;
+			end if;
+		else -- First column in the list is captured
+			set columnNameVect[i] = r.sourceColumn;
+			set resultVector[i] = r;
+			set columnAliasVect[i] = r.columnAlias;
+			set resultVector = EXTEND(resultVector,1);
+			set columnNameVect = EXTEND(columnNameVect,1);
+			set columnAliasVect = EXTEND(columnAliasVect,1);
+			set i = i + 1;
+		end if;
+
+		if (debug = &apos;Y&apos;) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;row=&apos;||rowNum||&apos; Bottom of loop:&apos;);
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;row=&apos;||rowNum||&apos;   resultVector[i].sourceColumn=&apos;||NVL(resultVector[rowNum].sourceColumn,&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;row=&apos;||rowNum||&apos;                 columnNameVect=&apos;||NVL(columnAliasVect[rowNum],&apos;null&apos;));
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;row=&apos;||rowNum||&apos;                columnAliasVect=&apos;||NVL(columnAliasVect[rowNum],&apos;null&apos;));
+		end if;
+	end for;
+	set resultVector = TRUNCATE(resultVector,1);
+	set columnNameVect = TRUNCATE(columnNameVect,1);
+	set columnAliasVect = TRUNCATE(columnAliasVect,1);
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:3:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:4:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

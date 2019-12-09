@@ -1,0 +1,261 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="retrieveNewColumnList" path="/shared/ASAssets/BestPractices_v81/Procedures/retrieveName/retrieveNewColumnList" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="inProjectFolderName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inGreatGrandParentName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inGrandParentName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inParentName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inContainerName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="resultCursor" direction="OUT" nullable="true">
+      <datatype name="resultCursor" type="TABLE" refId="1">
+        <element name="datasourceName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="projectFolderName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="greatGrandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="grandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="parentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="containerName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="physicalName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="physicalType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="resourceNum">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="logicalName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="logicalType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="annotation">
+          <datatype name="VARCHAR" type="STRING" maxLength="32767"/>
+        </element>
+        <element name="logicalTransformation">
+          <datatype name="VARCHAR" type="STRING" maxLength="1024"/>
+        </element>
+        <element name="physicalNameEncoded">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* retrieveNewColumnList:
+	-- Composite Best Practices --
+	This procedure is targeted at return only the &quot;new&quot; columns defined in the Common Model spreadsheet for a given 
+	container name.  It is predicated on the resourceName being null and the container name not being null.  This 
+	concept allows the procedure to locate fields for a view that are new constants or derived but do not have a 1 to 1 
+	correspondence with the source view.
+ 
+	Input:
+		inProjectFolderName - the name of the project folder (defaultValue.basePath)(projectName)
+		inGreatGrandParentName - the name of the great grand parent of the parent 	(dataSourcename)
+		inGrandParentName - the name of the grand parent of the parent 				(catalogName)
+		inParentName - the name of the parent of the container 						(schemaName)
+		inContainer - the parent of the &quot;inResourceName&quot; or resource. 				(viewName)
+			Values: any text without blanks in it
+	Output:
+		resultCursor [pCommon_Model_Union.CommonModelType] - a cursor of rows containing all new fields associated with the incoming container name.
+			datasourceName 			VARCHAR(255), 
+			projectFolderName 		VARCHAR(255), 
+			greatGrandParentName 	VARCHAR(255), 
+			grandParentName 		VARCHAR(255), 
+			parentName 				VARCHAR(255), 
+			containerName 			VARCHAR(255), 
+			resourceName 			VARCHAR(255),
+			resourceNum				INTEGER, 
+			logicalName 			VARCHAR(255), 
+			logicalType 			VARCHAR(255), 
+			annotation 				VARCHAR(32767), 
+			logicalTransformation 	VARCHAR(32767),
+			resourceNameEncoded		VARCHAR(255)
+	Exceptions:  none
+
+	Modified Date:	Updated By:			CSW Version:	Reason:
+	06/15/2010		Mike Tinius			5.2.0			Created new
+	03/04/2013		Mike Tinius			5.2.0			modified to fix issue with duplicate response because the inContainer was not qualified with a parent
+	03/15/2013		Mike Tinius			5.2.0			Modifications for Best Practices 7.0
+	04/15/2013		Mike Tinius			5.2.0			Added replaceSymbol() to convert annotation text with &lt;TAB&gt;&lt;CR&gt;&lt;LF&gt; to real values
+ 	06/24/2013		Mike Tinius			6.0.0			7.2: Multiple instances of Best Practices supported
+	10/10/2013		Mike Tinius			6.1.0			8.0: Added datasourceName, projectFolderName, greatGrandParent and grandParentName
+	11/25/2014		Mike Tinius			6.2.6			B.P. 8.1.5: Fixed issue when any of the input names contain a single quote which is caused by a path having a single quote.														
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE retrieveNewColumnList(
+	IN  inProjectFolderName			VARCHAR,
+	IN  inGreatGrandParentName		VARCHAR,
+	IN  inGrandParentName			VARCHAR,
+	IN  inParentName				VARCHAR,
+	IN  inContainerName				VARCHAR,
+	IN  debug						CHAR(1),
+	OUT resultCursor				CURSOR /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.CommonModelType
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;    &apos;||&apos;retrieveNewColumnList&apos;;
+	DECLARE sqlStatement			LONGVARCHAR;
+	DECLARE notEmpty				INTEGER DEFAULT 0;
+	DECLARE commonModelViewPath		VARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.commonModelViewPath;
+	DECLARE commonModelRow			/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.CommonModelType;
+	DECLARE	commonModelCursor 		CURSOR /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.CommonModelType;
+	DECLARE resourceName			VARCHAR(4000);
+
+	if (debug = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, 
+			&apos;inProjectFolderName=[&apos;||NVL(inProjectFolderName,&apos;null&apos;)||
+			&apos;]  inGreatGrandParentName=[&apos;||NVL(inGreatGrandParentName,&apos;null&apos;)||
+			&apos;]  inGrandParentName=[&apos;||NVL(inGrandParentName,&apos;null&apos;)||
+			&apos;]  inParentName=[&apos;||NVL(inParentName,&apos;null&apos;)||
+			&apos;]  inContainerName=[&apos;||NVL(inContainerName,&apos;null&apos;)||
+			&apos;]  commonModelViewPath=[&apos;||NVL(commonModelViewPath,&apos;null&apos;)||&apos;]&apos;);
+	end if;
+
+	-- Construct the base SQL statement
+	set sqlStatement = &apos;SELECT * FROM &apos;||commonModelViewPath||&apos; WHERE &apos;;
+
+	set sqlStatement = sqlStatement || &apos;(physicalName IS NULL OR length(physicalName) = 0) AND logicalName IS NOT NULL AND length(logicalName) &gt; 0&apos;;
+	/***********************************
+	 * Construct the where clause
+	 ***********************************/
+	-- AND projectFolderName
+	if (inProjectFolderName IS NOT NULL AND LENGTH(&apos;|&apos;||inProjectFolderName||&apos;|&apos;) &gt; 2) then  --notEmpty
+		set resourceName = inProjectFolderName;
+		if (INSTR(resourceName, &apos;&apos;&apos;&apos;) &gt; 0) then
+			set resourceName = REPLACE(resourceName, &apos;&apos;&apos;&apos;, &apos;&apos;&apos;&apos;&apos;&apos;);
+		end if;
+		set sqlStatement = sqlStatement || &apos; AND REPLACE(projectFolderName,&apos;&apos;&quot;&apos;&apos;,&apos;&apos;&apos;&apos;) = &apos;||&apos;&apos;&apos;&apos;||REPLACE(resourceName,&apos;&quot;&apos;,&apos;&apos;)||&apos;&apos;&apos; &apos;;
+	end if;
+	-- AND greatGrandParentName
+	if (inGreatGrandParentName IS NOT NULL AND LENGTH(&apos;|&apos;||inGreatGrandParentName||&apos;|&apos;) &gt; 2) then  --notEmpty
+		set resourceName = inGreatGrandParentName;
+		if (INSTR(resourceName, &apos;&apos;&apos;&apos;) &gt; 0) then
+			set resourceName = REPLACE(resourceName, &apos;&apos;&apos;&apos;, &apos;&apos;&apos;&apos;&apos;&apos;);
+		end if;
+		set sqlStatement = sqlStatement || &apos; AND REPLACE(greatGrandParentName,&apos;&apos;&quot;&apos;&apos;,&apos;&apos;&apos;&apos;) = &apos;||&apos;&apos;&apos;&apos;||REPLACE(resourceName,&apos;&quot;&apos;,&apos;&apos;)||&apos;&apos;&apos; &apos;;
+	end if;
+	-- AND grandParentName
+	if (inGrandParentName IS NOT NULL AND LENGTH(&apos;|&apos;||inGrandParentName||&apos;|&apos;) &gt; 2) then  --notEmpty
+		set resourceName = inGrandParentName;
+		if (INSTR(resourceName, &apos;&apos;&apos;&apos;) &gt; 0) then
+			set resourceName = REPLACE(resourceName, &apos;&apos;&apos;&apos;, &apos;&apos;&apos;&apos;&apos;&apos;);
+		end if;
+		set sqlStatement = sqlStatement || &apos; AND REPLACE(grandParentName,&apos;&apos;&quot;&apos;&apos;,&apos;&apos;&apos;&apos;) = &apos;||&apos;&apos;&apos;&apos;||REPLACE(resourceName,&apos;&quot;&apos;,&apos;&apos;)||&apos;&apos;&apos; &apos;;
+	end if;
+	-- AND parentName
+	if (inParentName IS NOT NULL AND LENGTH(&apos;|&apos;||inParentName||&apos;|&apos;) &gt; 2) then  --notEmpty
+		set resourceName = inParentName;
+		if (INSTR(resourceName, &apos;&apos;&apos;&apos;) &gt; 0) then
+			set resourceName = REPLACE(resourceName, &apos;&apos;&apos;&apos;, &apos;&apos;&apos;&apos;&apos;&apos;);
+		end if;
+		set sqlStatement = sqlStatement || &apos; AND REPLACE(parentName,&apos;&apos;&quot;&apos;&apos;,&apos;&apos;&apos;&apos;) = &apos;||&apos;&apos;&apos;&apos;||REPLACE(resourceName,&apos;&quot;&apos;,&apos;&apos;)||&apos;&apos;&apos; &apos;;
+	end if;
+	-- AND containerName
+	if (inContainerName IS NOT NULL AND LENGTH(&apos;|&apos;||inContainerName||&apos;|&apos;) &gt; 2) then  --notEmpty
+		set resourceName = inContainerName;
+		if (INSTR(resourceName, &apos;&apos;&apos;&apos;) &gt; 0) then
+			set resourceName = REPLACE(resourceName, &apos;&apos;&apos;&apos;, &apos;&apos;&apos;&apos;&apos;&apos;);
+		end if;
+		set sqlStatement = sqlStatement || &apos; AND REPLACE(containerName,&apos;&apos;&quot;&apos;&apos;,&apos;&apos;&apos;&apos;) = &apos;||&apos;&apos;&apos;&apos;||REPLACE(resourceName,&apos;&quot;&apos;,&apos;&apos;)||&apos;&apos;&apos; &apos;;
+	end if;
+	-- ORDER BY
+	set sqlStatement = sqlStatement || &apos; ORDER BY resourceNum&apos;;
+
+	CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, sqlStatement);
+	open resultCursor for sqlStatement;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564515679068</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

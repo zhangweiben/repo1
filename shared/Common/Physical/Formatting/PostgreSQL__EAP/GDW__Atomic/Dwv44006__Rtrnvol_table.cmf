@@ -1,0 +1,306 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Dwv44006_Rtrnvol" path="/shared/Common/Physical/Formatting/PostgreSQL_EAP/GDW_Atomic/Dwv44006_Rtrnvol" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="etl_insert_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_msg_create_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_uniq_id" nullable="true">
+      <datatype type="STRING" maxLength="480"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_act_cd" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_aff_cd" nullable="true">
+      <datatype type="STRING" maxLength="480"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_orgnl_source_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="480"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_source_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="480"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_targt_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="480"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_cntry_cd" nullable="true">
+      <datatype type="STRING" maxLength="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="interface_type" nullable="true">
+      <datatype type="STRING" maxLength="480"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_nbr" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bns_per" nullable="true">
+      <datatype type="DECIMAL" maxDigits="6" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_nbr" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="inv_nbr" nullable="true">
+      <datatype type="STRING" maxLength="11"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="trx_source" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="whse" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="trx_seq" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="vol_type" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="tax_type" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="vol" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_user_id" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_gdw_dwsatm01/dwv44006_rtrnvol" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="etl_insert_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="intgrt_msg_create_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="intgrt_uniq_id">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="intgrt_act_cd">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="intgrt_aff_cd">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="intgrt_orgnl_source_sys_id">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="intgrt_source_sys_id">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="intgrt_targt_sys_id">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="intgrt_cntry_cd">
+        <datatype type="STRING" maxLength="6"/>
+      </element>
+      <element name="interface_type">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="aff_nbr">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="bns_per">
+        <datatype type="DECIMAL" maxDigits="6" maxFractionalDigits="0"/>
+      </element>
+      <element name="distb_nbr">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="inv_nbr">
+        <datatype type="STRING" maxLength="11"/>
+      </element>
+      <element name="trx_source">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="whse">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="trx_seq">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="0"/>
+      </element>
+      <element name="vol_type">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="tax_type">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="vol">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="insrt_proc_nm">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="insrt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="updt_user_id">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="updt_proc_nm">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="updt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(dwv44006_rtrnvol.etl_insert_dt AS TIMESTAMP) AS etl_insert_dt,
+	CAST(dwv44006_rtrnvol.intgrt_msg_create_dt AS TIMESTAMP) AS intgrt_msg_create_dt,
+	CAST(dwv44006_rtrnvol.intgrt_uniq_id AS VARCHAR(480)) AS intgrt_uniq_id,
+	CAST(dwv44006_rtrnvol.intgrt_act_cd AS VARCHAR(60)) AS intgrt_act_cd,
+	CAST(dwv44006_rtrnvol.intgrt_aff_cd AS VARCHAR(480)) AS intgrt_aff_cd,
+	CAST(dwv44006_rtrnvol.intgrt_orgnl_source_sys_id AS VARCHAR(480)) AS intgrt_orgnl_source_sys_id,
+	CAST(dwv44006_rtrnvol.intgrt_source_sys_id AS VARCHAR(480)) AS intgrt_source_sys_id,
+	CAST(dwv44006_rtrnvol.intgrt_targt_sys_id AS VARCHAR(480)) AS intgrt_targt_sys_id,
+	CAST(dwv44006_rtrnvol.intgrt_cntry_cd AS VARCHAR(6)) AS intgrt_cntry_cd,
+	CAST(dwv44006_rtrnvol.interface_type AS VARCHAR(480)) AS interface_type,
+	CAST(dwv44006_rtrnvol.aff_nbr AS VARCHAR(3)) AS aff_nbr,
+	CAST(dwv44006_rtrnvol.bns_per AS NUMERIC(6,0)) AS bns_per,
+	CAST(dwv44006_rtrnvol.distb_nbr AS NUMERIC(11,0)) AS distb_nbr,
+	CAST(dwv44006_rtrnvol.inv_nbr AS VARCHAR(11)) AS inv_nbr,
+	CAST(dwv44006_rtrnvol.trx_source AS VARCHAR(3)) AS trx_source,
+	CAST(dwv44006_rtrnvol.whse AS VARCHAR(8)) AS whse,
+	CAST(dwv44006_rtrnvol.trx_seq AS NUMERIC(5,0)) AS trx_seq,
+	CAST(dwv44006_rtrnvol.vol_type AS VARCHAR(3)) AS vol_type,
+	CAST(dwv44006_rtrnvol.tax_type AS VARCHAR(2)) AS tax_type,
+	CAST(dwv44006_rtrnvol.vol AS NUMERIC(15,2)) AS vol,
+	CAST(dwv44006_rtrnvol.insrt_proc_nm AS VARCHAR(240)) AS insrt_proc_nm,
+	CAST(dwv44006_rtrnvol.insrt_dt AS TIMESTAMP) AS insrt_dt,
+	CAST(dwv44006_rtrnvol.updt_user_id AS VARCHAR(50)) AS updt_user_id,
+	CAST(dwv44006_rtrnvol.updt_proc_nm AS VARCHAR(240)) AS updt_proc_nm,
+	CAST(dwv44006_rtrnvol.updt_dt AS TIMESTAMP) AS updt_dt 
+FROM
+	/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_gdw_dwsatm01/dwv44006_rtrnvol dwv44006_rtrnvol</attribute>
+  <attribute name="creationDate" type="LONG">1570036722418</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1570037303482</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1570036722418</attribute>
+</metadata>

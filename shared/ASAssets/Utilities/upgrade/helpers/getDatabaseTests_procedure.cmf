@@ -1,0 +1,296 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getDatabaseTests" path="/shared/ASAssets/Utilities/upgrade/helpers/getDatabaseTests" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>getDatabaseTests:
+
+	This view returns default regression testing entries that can be used with JMeter regression suite for upgrade
+	testing. It returns queries for all published views for all virtual database, except the &apos;system&apos; or &apos;examples&apos;
+	databases
+
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2015.4		11/02/2015		Tony Young			7.0.2			Created new
+
+	(c) 2017 TIBCO Software Inc. All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="Skip Execution">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="Test Name">
+          <datatype name="VARCHAR" type="STRING" maxLength="1000"/>
+        </element>
+        <element name="Test Query">
+          <datatype name="VARCHAR" type="STRING" maxLength="32768"/>
+        </element>
+        <element name="Test Plan">
+          <datatype name="VARCHAR" type="STRING" maxLength="1000"/>
+        </element>
+        <element name="Service Name">
+          <datatype name="VARCHAR" type="STRING" maxLength="1000"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/services/databases/system/ALL_COLUMNS" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="COLUMN_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="COLUMN_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DATA_TYPE">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ORDINAL_POSITION">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="JDBC_DATA_TYPE">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="COLUMN_LENGTH">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="COLUMN_PRECISION">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="COLUMN_SCALE">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="COLUMN_RADIX">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="NULLABLE">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="IS_NULLABLE">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="TABLE_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="TABLE_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SCHEMA_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="SCHEMA_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CATALOG_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="CATALOG_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DATASOURCE_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="DATASOURCE_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ANNOTATION">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="OWNER_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="OWNER">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="PARENT_PATH">
+        <datatype type="STRING" minLength="21" maxLength="1043"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/services/databases/system/ALL_TABLES" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="TABLE_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="TABLE_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="TABLE_TYPE">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SCHEMA_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="SCHEMA_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CATALOG_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="CATALOG_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DATASOURCE_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="DATASOURCE_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="GUID">
+        <datatype type="STRING" maxLength="36"/>
+      </element>
+      <element name="ANNOTATION">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="OWNER_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="OWNER">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="PARENT_PATH">
+        <datatype type="STRING" minLength="20" maxLength="789" trailingSpaces="false"/>
+      </element>
+      <element name="TABLE_CREATOR_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="TABLE_CREATION_TIMESTAMP">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="TABLE_MODIFIER_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="TABLE_MODIFICATION_TIMESTAMP">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/upgrade/helpers/returnColumnOrderingString" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="numCols" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="orderByString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+  getDatabaseTests:
+
+	This view returns default regression testing entries that can be used with JMeter regression suite for upgrade
+	testing. It returns queries for all published views for all virtual database, except the &apos;system&apos; or &apos;examples&apos;
+	databases
+
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2015.4		11/02/2015		Tony Young			7.0.2			Created new
+
+	(c) 2017 TIBCO Software Inc. All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE getDatabaseTests(
+	OUT result			PIPE (
+		&quot;Skip Execution&quot;	VARCHAR,
+		&quot;Test Name&quot;			VARCHAR(1000),
+		&quot;Test Query&quot;		VARCHAR(32768),
+		&quot;Test Plan&quot;			VARCHAR(1000),
+		&quot;Service Name&quot;		VARCHAR(1000)
+	)
+)
+BEGIN
+	DECLARE testQuery		VARCHAR(32768);
+	DECLARE columnOrder		VARCHAR(4000);
+
+	FOR r AS 
+		SELECT *
+		FROM 
+		(
+		SELECT
+			&quot;Skip Execution&quot;,
+			&quot;Test Name&quot;,
+			&quot;Test Query&quot;,
+			&quot;Test Plan&quot;,
+			&quot;Service Name&quot;,
+			COUNT(COLUMN_ID) column_count
+		FROM
+			(SELECT 
+				&apos;//&apos; &quot;Skip Execution&quot;,
+				&apos;T&apos; || T.TABLE_ID &quot;Test Name&quot;,
+				&apos;SELECT * FROM &apos; || 
+				CASE
+					WHEN T.CATALOG_NAME IS NOT NULL THEN
+						&apos;&quot;&apos; || T.CATALOG_NAME || &apos;&quot;.&quot;&apos; || T.SCHEMA_NAME || &apos;&quot;.&quot;&apos; || T.TABLE_NAME || &apos;&quot;&apos;
+					WHEN T.SCHEMA_NAME IS NOT NULL THEN
+						&apos;&quot;&apos; || T.SCHEMA_NAME || &apos;&quot;.&quot;&apos; || T.TABLE_NAME || &apos;&quot;&apos;
+					ELSE
+						&apos;&quot;&apos; || T.TABLE_NAME || &apos;&quot;&apos;
+					END AS &quot;Test Query&quot;,
+				&apos;PLAN_&apos; || T.DATASOURCE_NAME &quot;Test Plan&quot;,
+				T.DATASOURCE_NAME &quot;Service Name&quot;,
+				C.COLUMN_ID
+			FROM      
+				/services/databases/system/ALL_TABLES T INNER JOIN
+				/services/databases/system/ALL_COLUMNS C ON T.TABLE_ID = C.TABLE_ID
+			WHERE
+				T.DATASOURCE_NAME NOT IN (&apos;system&apos;,&apos;examples&apos;)) d
+		GROUP BY
+			&quot;Skip Execution&quot;,
+			&quot;Test Name&quot;,
+			&quot;Test Query&quot;,
+			&quot;Test Plan&quot;,
+			&quot;Service Name&quot;
+		) as DATA
+		ORDER BY
+			&quot;Test Plan&quot;, &quot;Test Name&quot;
+	DO
+		CALL /shared/ASAssets/Utilities/upgrade/helpers/returnColumnOrderingString(r.column_count, columnOrder);
+		SET testQuery = r.&quot;Test Query&quot; || &apos; &apos; || columnOrder || &apos; FETCH FIRST 10000 ROWS ONLY&apos;;
+		INSERT INTO result VALUES (r.&quot;Skip Execution&quot;, r.&quot;Test Name&quot;, testQuery, r.&quot;Test Plan&quot;, r.&quot;Service Name&quot;);
+	END FOR;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1554512084398</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564694004249</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1554512084398</attribute>
+</metadata>

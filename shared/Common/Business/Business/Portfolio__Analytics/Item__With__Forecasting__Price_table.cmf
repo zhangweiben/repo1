@@ -1,0 +1,421 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Item_With_Forecasting_Price" path="/shared/Common/Business/Business/Portfolio_Analytics/Item_With_Forecasting_Price" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_no" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="base_7_item_no" nullable="true">
+      <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dmand_corr_from_corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dmand_corr_from_base_7_item_no" nullable="true">
+      <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dmand_corr_last_use_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cntry_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_bus_ln_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_ctgry_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_sub_ctgry_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_brand_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_eng_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_sub_brand_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_fmly_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_ind_cut_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_grp_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_base_item_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="calen_yr4" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="calen_mo" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="mo_yr_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dcost_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dcost_bdgt_usd_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="29" maxFractionalDigits="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="bv_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="nbv_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pv_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmab_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmab_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="7"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmad_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmad_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="7"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amab_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amab_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="7"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amad_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amad_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="7"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="exchg_bdgt_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Business/Business/Pricing/Monthly_Pricing" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="item_no">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="base_7_item_no">
+        <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      </element>
+      <element name="calen_yr4">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="calen_mo">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="mo_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="dcost_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="bv_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="nbv_amt">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="4"/>
+      </element>
+      <element name="pv_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="cmab_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="cmab_pct">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="7"/>
+      </element>
+      <element name="cmad_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="cmad_pct">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="7"/>
+      </element>
+      <element name="amab_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="amab_pct">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="7"/>
+      </element>
+      <element name="amad_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="amad_pct">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="7"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/Forecasting/Current_Budget_Exchange_Rate" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cntry_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="exchg_bdgt_pct">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="8"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/General/Base_Item_Distinct" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="item_no">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="base_7_item_no">
+        <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      </element>
+      <element name="dmand_corr_from_corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="dmand_corr_from_item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="dmand_corr_from_base_7_item_no">
+        <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      </element>
+      <element name="dmand_corr_last_use_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="cntry_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="item_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="glbl_bus_ln_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_sub_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="item_eng_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="item_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="glbl_sub_brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_prdct_fmly_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="glbl_prdct_ind_cut_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="glbl_prdct_grp_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_base_item_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    Base_Item_Distinct.corp_cd, 
+    Base_Item_Distinct.item_no, 
+    Base_Item_Distinct.base_7_item_no, 
+    Base_Item_Distinct.dmand_corr_from_corp_cd, 
+    Base_Item_Distinct.dmand_corr_from_base_7_item_no, 
+    Base_Item_Distinct.dmand_corr_last_use_dt, 
+    Base_Item_Distinct.cntry_key_no, 
+    Base_Item_Distinct.item_key_no, 
+    Base_Item_Distinct.glbl_bus_ln_desc, 
+    Base_Item_Distinct.glbl_ctgry_desc, 
+    Base_Item_Distinct.glbl_sub_ctgry_desc, 
+    Base_Item_Distinct.glbl_brand_desc, 
+    Base_Item_Distinct.item_eng_desc, 
+    Base_Item_Distinct.item_desc, 
+    Base_Item_Distinct.glbl_sub_brand_desc, 
+    Base_Item_Distinct.glbl_prdct_fmly_desc, 
+    Base_Item_Distinct.glbl_prdct_ind_cut_desc, 
+    Base_Item_Distinct.glbl_prdct_grp_desc, 
+    Base_Item_Distinct.glbl_base_item_desc, 
+    Monthly_Pricing.calen_yr4, 
+    Monthly_Pricing.calen_mo, 
+    Monthly_Pricing.mo_yr_key_no, 
+    Monthly_Pricing.dcost_amt, 
+    Monthly_Pricing.dcost_amt * Current_Budget_Exchange_Rate.exchg_bdgt_pct dcost_bdgt_usd_amt, 
+    Monthly_Pricing.bv_amt, 
+    Monthly_Pricing.nbv_amt, 
+    Monthly_Pricing.pv_amt, 
+    Monthly_Pricing.cmab_amt, 
+    Monthly_Pricing.cmab_pct, 
+    Monthly_Pricing.cmad_amt, 
+    Monthly_Pricing.cmad_pct, 
+    Monthly_Pricing.amab_amt, 
+    Monthly_Pricing.amab_pct, 
+    Monthly_Pricing.amad_amt, 
+    Monthly_Pricing.amad_pct, 
+    Current_Budget_Exchange_Rate.exchg_bdgt_pct
+FROM      
+    /shared/Common/Business/Logical/Forecasting/Current_Budget_Exchange_Rate Current_Budget_Exchange_Rate INNER JOIN 
+        /shared/Common/Business/Business/Pricing/Monthly_Pricing Monthly_Pricing INNER JOIN 
+            /shared/Common/Business/Logical/General/Base_Item_Distinct Base_Item_Distinct
+        ON Base_Item_Distinct.corp_cd = Monthly_Pricing.corp_cd AND 
+            substring(TRIM(upper(Base_Item_Distinct.item_no)), 1, length(TRIM(Monthly_Pricing.item_no))) = TRIM(upper(Monthly_Pricing.item_no))
+    ON Monthly_Pricing.corp_cd = Current_Budget_Exchange_Rate.corp_cd
+WHERE
+    Monthly_Pricing.calen_yr4 &gt;= YEAR(current_date) - 5</attribute>
+  <attribute name="cacheLastTracking" type="STRING">/shared/EAP/Physical/Metadata/OnPremises/Oracle_GDW/USJHEK1/cache_tracking</attribute>
+  <attribute name="creationDate" type="LONG">1556922396977</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="BYTE_ARRAY">EIEJBAAAAAUQUQYBAA8ATQBvAG4AdABoAGwAeQBfAFAAcgBpAGMAaQBuAGcGAgAPAE0AbwBuAHQAaABsAHkAXwBQAHIAaQBjAGkAbgBnAwv/////Awr/////Awz/////CxEABgAGAHMAaABhAHIAZQBkAAYAQwBvAG0AbQBvAG4ACABCAHUAcwBpAG4AZQBzAHMACABCAHUAcwBpAG4AZQBzAHMABwBQAHIAaQBjAGkAbgBnAA8ATQBvAG4AdABoAGwAeQBfAFAAcgBpAGMAaQBuAGf//xBRBgEAHABDAHUAcgByAGUAbgB0AF8AQgB1AGQAZwBlAHQAXwBFAHgAYwBoAGEAbgBnAGUAXwBSAGEAdABlBgIAHABDAHUAcgByAGUAbgB0AF8AQgB1AGQAZwBlAHQAXwBFAHgAYwBoAGEAbgBnAGUAXwBSAGEAdABlAwv/////Awr/////Awz/////CxEABgAGAHMAaABhAHIAZQBkAAYAQwBvAG0AbQBvAG4ACABCAHUAcwBpAG4AZQBzAHMABwBMAG8AZwBpAGMAYQBsAAsARgBvAHIAZQBjAGEAcwB0AGkAbgBnABwAQwB1AHIAcgBlAG4AdABfAEIAdQBkAGcAZQB0AF8ARQB4AGMAaABhAG4AZwBlAF8AUgBhAHQAZf//EFEGAQASAEIAYQBzAGUAXwBJAHQAZQBtAF8ARABpAHMAdABpAG4AYwB0BgIAEgBCAGEAcwBlAF8ASQB0AGUAbQBfAEQAaQBzAHQAaQBuAGMAdAML/////wMK/////wMM/////wsRAAYABgBzAGgAYQByAGUAZAAGAEMAbwBtAG0AbwBuAAgAQgB1AHMAaQBuAGUAcwBzAAcATABvAGcAaQBjAGEAbAAHAEcAZQBuAGUAcgBhAGwAEgBCAGEAcwBlAF8ASQB0AGUAbQBfAEQAaQBzAHQAaQBuAGMAdP//EFMGCQAFAEkATgBOAEUAUgMNAAAAAAMOAAAAAggPEGEBBQABBgAIARBiBgcAAQA9AQUACAMQQQYBAAcAYwBvAHIAcABfAGMAZAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAADBAQAAAAAAAAAAwETAf//AwsAAAAC//8IBBBBBgEABwBjAG8AcgBwAF8AYwBkBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAMEBAAAAAAAAAADARMB//8DCwAAAAD/////CAIQYgYHAAEAPQEFAAgDEEIGAQAJAHMAdQBiAHMAdAByAGkAbgBnBgIAAAEJAAESAAkNAAAAAxBCBgEABABUAFIASQBNBgIAAAEJAAESAAkNAAAAARBCBgEABQB1AHAAcABlAHIGAgAAAQkAARIACQ0AAAABEEEGAQAHAGkAdABlAG0AXwBuAG8GAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAADwETAf//AwsAAAAC////////EEMGAgAACg4QGQYCAAcASQBOAFQARQBHAEUAUgMSAAAAAQQHAAAAAAAAAAEEBgAAAAAAAAAB//8LAAH//xBCBgEABgBsAGUAbgBnAHQAaAYCAAABCQABEgAJDQAAAAEQQgYBAAQAVABSAEkATQYCAAABCQABEgAJDQAAAAEQQQYBAAcAaQB0AGUAbQBfAG4AbwYCAAAGA///BgT//wMK/////wgMEBsGAgAHAFYAQQBSAEMASABBAFIDEgAAAAEEBAAAAAAAAAAMARMB//8DCwAAAAD//////////wgEEEIGAQAEAFQAUgBJAE0GAgAAAQkAARIACQ0AAAABEEIGAQAFAHUAcABwAGUAcgYCAAABCQABEgAJDQAAAAEQQQYBAAcAaQB0AGUAbQBfAG4AbwYCAAAGA///BgT//wMK/////wgMEBsGAgAHAFYAQQBSAEMASABBAFIDEgAAAAEEBAAAAAAAAAAMARMB//8DCwAAAAD///////////////8QUwYJAAUASQBOAE4ARQBSAw0AAAABAw4AAAADCA8QYgYHAAEAPQEFAAgDEEEGAQAHAGMAbwByAHAAXwBjAGQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAwQEAAAAAAAAAAMBEwH//wMLAAAAAP//CAQQQQYBAAcAYwBvAHIAcABfAGMAZAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAADBAQAAAAAAAAAAwETAf//AwsAAAAB////////AwUAAAACCAIQMQYB//8BAgEBBgABAwABBAABBQADBwAAAAAICBBiBgcAAgA+AD0BBQAIAxBBBgEACQBjAGEAbABlAG4AXwB5AHIANAYCAAAGA///BgT//wMK/////wgMEBkDEgAAAAEEB/////+AAAAABAYAAAAAf///////AwsAAAAA//8IBBBCBgEAAQAtBgIAAAEJAAESAAkNAAAAAhBCBgEABABZAEUAQQBSBgIAAAEJAAESAAkNAAAAARBCBgEADABjAHUAcgByAGUAbgB0AF8AZABhAHQAZQYCAAABCQABEgAJDQAAAAD/////EEMGAgAACg4QGQYCAAcASQBOAFQARQBHAEUAUgMSAAAAAQQHAAAAAAAAAAUEBgAAAAAAAAAF//8LAAX///////8HCQAAAAEAAAAECQoAAAAkEEEGAQAHAGMAbwByAHAAXwBjAGQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAwQEAAAAAAAAAAMBEwH//wMLAAAAAv//EEEGAQAHAGkAdABlAG0AXwBuAG8GAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAADwETAf//AwsAAAAC//8QQQYBAA4AYgBhAHMAZQBfADcAXwBpAHQAZQBtAF8AbgBvBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQE7AAQEAAAAAAAAAAwBEwH//wMLAAAAAv//EEEGAQAXAGQAbQBhAG4AZABfAGMAbwByAHIAXwBmAHIAbwBtAF8AYwBvAHIAcABfAGMAZAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAADBAQAAAAAAAAAAwETAf//AwsAAAAC//8QQQYBAB4AZABtAGEAbgBkAF8AYwBvAHIAcgBfAGYAcgBvAG0AXwBiAGEAcwBlAF8ANwBfAGkAdABlAG0AXwBuAG8GAgAABgP//wYE//8DCv////8IDBAbAxIAAAABATsABAQAAAAAAAAADAETAf//AwsAAAAC//8QQQYBABYAZABtAGEAbgBkAF8AYwBvAHIAcgBfAGwAYQBzAHQAXwB1AHMAZQBfAGQAdAYCAAAGA///BgT//wMK/////wgMEBYDEgAAAAH//wMLAAAAAv//EEEGAQAMAGMAbgB0AHIAeQBfAGsAZQB5AF8AbgBvBgIAAAYD//8GBP//Awr/////CAwQGQMSAAAAAQQHgAAAAAAAAAD//wMLAAAAAv//EEEGAQALAGkAdABlAG0AXwBrAGUAeQBfAG4AbwYCAAAGA///BgT//wMK/////wgMEBkDEgAAAAEEB4AAAAAAAAAA//8DCwAAAAL//xBBBgEAEABnAGwAYgBsAF8AYgB1AHMAXwBsAG4AXwBkAGUAcwBjBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAGQBEwH//wMLAAAAAv//EEEGAQAPAGcAbABiAGwAXwBjAHQAZwByAHkAXwBkAGUAcwBjBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAGQBEwH//wMLAAAAAv//EEEGAQATAGcAbABiAGwAXwBzAHUAYgBfAGMAdABnAHIAeQBfAGQAZQBzAGMGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAAZAETAf//AwsAAAAC//8QQQYBAA8AZwBsAGIAbABfAGIAcgBhAG4AZABfAGQAZQBzAGMGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAAAZAETAf//AwsAAAAC//8QQQYBAA0AaQB0AGUAbQBfAGUAbgBnAF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAEsARMB//8DCwAAAAL//xBBBgEACQBpAHQAZQBtAF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAEsARMB//8DCwAAAAL//xBBBgEAEwBnAGwAYgBsAF8AcwB1AGIAXwBiAHIAYQBuAGQAXwBkAGUAcwBjBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAGQBEwH//wMLAAAAAv//EEEGAQAUAGcAbABiAGwAXwBwAHIAZABjAHQAXwBmAG0AbAB5AF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAEsARMB//8DCwAAAAL//xBBBgEAFwBnAGwAYgBsAF8AcAByAGQAYwB0AF8AaQBuAGQAXwBjAHUAdABfAGQAZQBzAGMGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAQAAAAAAAABLAETAf//AwsAAAAC//8QQQYBABMAZwBsAGIAbABfAHAAcgBkAGMAdABfAGcAcgBwAF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAABkARMB//8DCwAAAAL//xBBBgEAEwBnAGwAYgBsAF8AYgBhAHMAZQBfAGkAdABlAG0AXwBkAGUAcwBjBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQEAAAAAAAAAGQBEwH//wMLAAAAAv//EEEGAQAJAGMAYQBsAGUAbgBfAHkAcgA0BgIAAAYD//8GBP//Awr/////CAwQGQMSAAAAAQQH/////4AAAAAEBgAAAAB///////8DCwAAAAD//xBBBgEACABjAGEAbABlAG4AXwBtAG8GAgAABgP//wYE//8DCv////8IDBAZAxIAAAABBAf/////gAAAAAQGAAAAAH///////wMLAAAAAP//EEEGAQAMAG0AbwBfAHkAcgBfAGsAZQB5AF8AbgBvBgIAAAYD//8GBP//Awr/////CAwQGQMSAAAAAQQHgAAAAAAAAAD//wMLAAAAAP//EEEGAQAJAGQAYwBvAHMAdABfAGEAbQB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEgMQAAAABP//AwsAAAAA//8QQgYBAAEAKgYCABIAZABjAG8AcwB0AF8AYgBkAGcAdABfAHUAcwBkAF8AYQBtAHQBCQABEgAJDQAAAAIQQQYBAAkAZABjAG8AcwB0AF8AYQBtAHQGAgAABgP//wYE//8DCv////8IDBAXAxIAAAABAw4AAAASAxAAAAAE//8DCwAAAAD//xBBBgEADgBlAHgAYwBoAGcAXwBiAGQAZwB0AF8AcABjAHQGAgAABgP//wYE//8DCv////8IDBAXAxIAAAABAw4AAAAKAxAAAAAI//8DCwAAAAH/////EEEGAQAGAGIAdgBfAGEAbQB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEgMQAAAABP//AwsAAAAA//8QQQYBAAcAbgBiAHYAXwBhAG0AdAYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAABMDEAAAAAT//wMLAAAAAP//EEEGAQAGAHAAdgBfAGEAbQB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEgMQAAAABP//AwsAAAAA//8QQQYBAAgAYwBtAGEAYgBfAGEAbQB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEgMQAAAABP//AwsAAAAA//8QQQYBAAgAYwBtAGEAYgBfAHAAYwB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEwMQAAAAB///AwsAAAAA//8QQQYBAAgAYwBtAGEAZABfAGEAbQB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEgMQAAAABP//AwsAAAAA//8QQQYBAAgAYwBtAGEAZABfAHAAYwB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEwMQAAAAB///AwsAAAAA//8QQQYBAAgAYQBtAGEAYgBfAGEAbQB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEgMQAAAABP//AwsAAAAA//8QQQYBAAgAYQBtAGEAYgBfAHAAYwB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEwMQAAAAB///AwsAAAAA//8QQQYBAAgAYQBtAGEAZABfAGEAbQB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEgMQAAAABP//AwsAAAAA//8QQQYBAAgAYQBtAGEAZABfAHAAYwB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEwMQAAAAB///AwsAAAAA//8QQQYBAA4AZQB4AGMAaABnAF8AYgBkAGcAdABfAHAAYwB0BgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAACgMQAAAACP//AwsAAAAB/////wkGAAAABRCCAwoAAAEYAwsAAAAeAwwAAADhAw0AAAFk//8QggMKAAAAHgMLAAAAHgMMAAAAyAMNAAAAyP//EIIDCgAAAh4DCwAAAB0DDAAAAVQDDQAAAbz//xCCAwr/////Awv/////Awz/////Aw3///////8QggMK/////wML/////wMM/////wMN////////CAMQcQMBAAAACwMCAAAAMgkDAAACJhB0AwYAAAAA//8QcgYE/////xBzAwUAAAAC//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAH//xByBgT/////EHMDBQAAAAL//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAAv//EHIGBP////8QcwMFAAAAAv//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAD//8QcgYE/////xBzAwUAAAAC//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAT//xByBgT/////EHMDBQAAAAL//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAABf//EHIGBP////8QcwMFAAAAAv//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAG//8QcgYE/////xBzAwUAAAAC//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAf//xByBgT/////EHMDBQAAAAL//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAACP//EHIGBP////8QcwMFAAAAAv//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAJ//8QcgYE/////xBzAwUAAAAC//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAr//xByBgT/////EHMDBQAAAAL//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAC///EHIGBP////8QcwMFAAAAAv//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAM//8QcgYE/////xBzAwUAAAAC//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAA3//xByBgT/////EHMDBQAAAAL//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAADv//EHIGBP////8QcwMFAAAAAv//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAP//8QcgYE/////xBzAwUAAAAC//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABD//xByBgT/////EHMDBQAAAAL//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAEf//EHIGBP////8QcwMFAAAAAv//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAS//8QcgYE/////xBzAwUAAAAC//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABP//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2BggAMwBNAG8AbgB0AGgAbAB5AF8AUAByAGkAYwBpAG4AZwAuAGMAYQBsAGUAbgBfAHkAcgA0ACAAPgA9ACAAWQBFAEEAUgAoAGMAdQByAHIAZQBuAHQAXwBkAGEAdABlACkAIAAtACAANf//EHb//xB2//8Qdv//EHQDBgAAABT//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAFf//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAW//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABf//xByBgQAEgBkAGMAbwBzAHQAXwBiAGQAZwB0AF8AdQBzAGQAXwBhAG0AdP//EHP//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAGP//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAZ//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABr//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAG///EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAc//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAB3//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAHv//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAf//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAACD//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAIf//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAi//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAACP//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv///////w==</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1556922396977</attribute>
+</metadata>

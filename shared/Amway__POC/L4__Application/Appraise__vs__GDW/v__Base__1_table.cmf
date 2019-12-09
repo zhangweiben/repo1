@@ -1,0 +1,332 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="v_Base_1" path="/shared/Amway_POC/L4_Application/Appraise_vs_GDW/v_Base_1" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="p_Promo_No" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="pd_PROMO_ITEM_NO" nullable="true">
+      <datatype type="STRING" minLength="12" maxLength="12"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Appraise_Item_No" nullable="true">
+      <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CMAB_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="A_PV" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="A_BV" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="A_DC" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="sd_Dmand_Qty" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="sd_Calen_Yr4" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="sd_Calen_Mo" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="G_DC" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="G_PV" nullable="true">
+      <datatype type="DECIMAL" maxDigits="31" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="G_BV" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Amway_POC/L4_Application/Baseline_Use_Case/v_Baseline_2_TEST" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="GLBL_BASE_ITEM_NO">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="GLBL_BASE_ITEM_DESC">
+        <datatype type="STRING" maxLength="1000"/>
+      </element>
+      <element name="ORD_MO_YR_KEY_NO">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="AMWAY_CNTRY_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="CNTRY_NM">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="PV1">
+        <datatype type="DECIMAL" maxDigits="25" maxFractionalDigits="4"/>
+      </element>
+      <element name="Promo_Sys_Date">
+        <datatype type="STRING" trailingSpaces="false"/>
+      </element>
+      <element name="revenue">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="DC_x_sd_Dmand_Qty">
+        <datatype type="DECIMAL" maxDigits="27" maxFractionalDigits="4"/>
+      </element>
+      <element name="calc_Percent_Diff">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="p_Promo_No">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="p_Promo_Title_Nm">
+        <datatype type="STRING" minLength="50" maxLength="50"/>
+      </element>
+      <element name="p_Promo_Desc_Txt">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="p_Promo_Obj_Cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="p_Promo_Obj_Txt">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="p_Promo_Strt_Dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="p_Promo_End_Dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="pd_CORP_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="pd_PROMO_ITEM_NO">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="pd_ITEM_NO">
+        <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      </element>
+      <element name="pd_Item_Type_Cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="pd_DCOST_AMT">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="pf_CALEN_YR4">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="pf_CALEN_MO">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="pf_PROMO_QTY">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="pf_FCAST_APPLIED">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="sd_Calen_Yr4">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="sd_Calen_Mo">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="sd_Dmand_Qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="sd_CalenYr_x_12_Plus_Calen_Mo">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="CORP_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_PFX">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_BASE">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="AMWAY_SKU_SFX">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="Appraise_Item_No">
+        <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      </element>
+      <element name="Appraise_Base_7_Item_No">
+        <datatype type="STRING" maxLength="7" trailingSpaces="false"/>
+      </element>
+      <element name="SKU_CD">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="BUSINESS_CD">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="PV">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="BV">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="DC">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="SRLVAT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="SR">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="NON_BV">
+        <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAB">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAB_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="AMAD">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAD_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CMAB">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CMAB_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CMAD">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CMAD_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="ADDED_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="CHANGED_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="EFF_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="CASE_QTY">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="LTU_CONV_FLG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Amway_POC/L4_Application/GDW_DC/v_GDW_DC_Final_2" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="GLBL_BASE_ITEM_NO">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="GLBL_BASE_ITEM_DESC">
+        <datatype type="STRING" maxLength="1000"/>
+      </element>
+      <element name="ORD_MO_YR_KEY_NO">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="AMWAY_CNTRY_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="PV">
+        <datatype type="DECIMAL" maxDigits="31" maxFractionalDigits="4"/>
+      </element>
+      <element name="BV">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="revenue">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="qty">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="NetDc">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    v_Baseline_2_TEST.p_Promo_No, 
+    v_Baseline_2_TEST.pd_PROMO_ITEM_NO, 
+    v_Baseline_2_TEST.Appraise_Item_No, 
+    v_Baseline_2_TEST.CMAB_PCT, 
+    v_Baseline_2_TEST.PV A_PV, 
+    v_Baseline_2_TEST.BV A_BV, 
+    v_Baseline_2_TEST.DC A_DC, 
+    v_Baseline_2_TEST.sd_Dmand_Qty, 
+    v_Baseline_2_TEST.sd_Calen_Yr4, 
+    v_Baseline_2_TEST.sd_Calen_Mo, 
+    v_GDW_DC_Final_2.NetDc G_DC, 
+    v_GDW_DC_Final_2.PV G_PV, 
+    v_GDW_DC_Final_2.BV G_BV
+FROM      
+    /shared/Amway_POC/L4_Application/GDW_DC/v_GDW_DC_Final_2 v_GDW_DC_Final_2 INNER JOIN 
+        /shared/Amway_POC/L4_Application/Baseline_Use_Case/v_Baseline_2_TEST v_Baseline_2_TEST
+    ON ((v_GDW_DC_Final_2.GLBL_BASE_ITEM_NO = v_Baseline_2_TEST.GLBL_BASE_ITEM_NO AND 
+        v_GDW_DC_Final_2.GLBL_BASE_ITEM_DESC = v_Baseline_2_TEST.GLBL_BASE_ITEM_DESC) AND 
+        v_GDW_DC_Final_2.ORD_MO_YR_KEY_NO = v_Baseline_2_TEST.ORD_MO_YR_KEY_NO) AND 
+        v_GDW_DC_Final_2.AMWAY_CNTRY_CD = v_Baseline_2_TEST.AMWAY_CNTRY_CD
+ORDER BY 
+    v_Baseline_2_TEST.Appraise_Item_No ASC, 
+    v_Baseline_2_TEST.sd_Calen_Yr4 ASC, 
+    v_Baseline_2_TEST.sd_Calen_Mo ASC</attribute>
+  <attribute name="creationDate" type="LONG">1534437449092</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1534441830305</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="BYTE_ARRAY">EIEJBAAAAAMQUQYBABEAdgBfAEIAYQBzAGUAbABpAG4AZQBfADIAXwBUAEUAUwBUBgIAEQB2AF8AQgBhAHMAZQBsAGkAbgBlAF8AMgBfAFQARQBTAFQDC/////8DCgABOlUDDP////8LEQAFAAYAcwBoAGEAcgBlAGQACQBBAG0AdwBhAHkAXwBQAE8AQwAOAEwANABfAEEAcABwAGwAaQBjAGEAdABpAG8AbgARAEIAYQBzAGUAbABpAG4AZQBfAFUAcwBlAF8AQwBhAHMAZQARAHYAXwBCAGEAcwBlAGwAaQBuAGUAXwAyAF8AVABFAFMAVP//EFEGAQAQAHYAXwBHAEQAVwBfAEQAQwBfAEYAaQBuAGEAbABfADIGAgAQAHYAXwBHAEQAVwBfAEQAQwBfAEYAaQBuAGEAbABfADIDC/////8DCgABYCcDDP////8LEQAFAAYAcwBoAGEAcgBlAGQACQBBAG0AdwBhAHkAXwBQAE8AQwAOAEwANABfAEEAcABwAGwAaQBjAGEAdABpAG8AbgAGAEcARABXAF8ARABDABAAdgBfAEcARABXAF8ARABDAF8ARgBpAG4AYQBsAF8AMv//EFMGCQAFAEkATgBOAEUAUgMNAAAAAQMOAAAAAAgPEGEBBQABBgAIARBhAQUAAQYACAEQYQEFAAEGAAgBEGIGBwABAD0BBQAIAxBBBgEAEQBHAEwAQgBMAF8AQgBBAFMARQBfAEkAVABFAE0AXwBOAE8GAgAABgP//wYE//8DCv////8DCwAAAAH//wgEEEEGAQARAEcATABCAEwAXwBCAEEAUwBFAF8ASQBUAEUATQBfAE4ATwYCAAAGA///BgT//wMK/////wMLAAAAAP////8IAhBiBgcAAQA9AQUACAMQQQYBABMARwBMAEIATABfAEIAQQBTAEUAXwBJAFQARQBNAF8ARABFAFMAQwYCAAAGA///BgT//wMK/////wMLAAAAAf//CAQQQQYBABMARwBMAEIATABfAEIAQQBTAEUAXwBJAFQARQBNAF8ARABFAFMAQwYCAAAGA///BgT//wMK/////wMLAAAAAP///////wgCEGIGBwABAD0BBQAIAxBBBgEAEABPAFIARABfAE0ATwBfAFkAUgBfAEsARQBZAF8ATgBPBgIAAAYD//8GBP//Awr/////AwsAAAAB//8IBBBBBgEAEABPAFIARABfAE0ATwBfAFkAUgBfAEsARQBZAF8ATgBPBgIAAAYD//8GBP//Awr/////AwsAAAAA////////CAIQYgYHAAEAPQEFAAgDEEEGAQAOAEEATQBXAEEAWQBfAEMATgBUAFIAWQBfAEMARAYCAAAGA///BgT//wMK/////wMLAAAAAf//CAQQQQYBAA4AQQBNAFcAQQBZAF8AQwBOAFQAUgBZAF8AQwBEBgIAAAYD//8GBP//Awr/////AwsAAAAA//////////8DBQAAAAEIAhAxBgH//wECAQEGAAEDAAEEAAEFAAMHAAAAAAcJAAAAAQAAAAIJCgAAAA0QQQYBAAoAcABfAFAAcgBvAG0AbwBfAE4AbwYCAAAGA///BgT//wMK/////wgMEBkDEgAAAAEEB/////+AAAAABAYAAAAAf///////AwsAAAAA//8QQQYBABAAcABkAF8AUABSAE8ATQBPAF8ASQBUAEUATQBfAE4ATwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAAMBAQAAAAAAAAADAETAf//AwsAAAAA//8QQQYBABAAQQBwAHAAcgBhAGkAcwBlAF8ASQB0AGUAbQBfAE4AbwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEBOwAEBAAAAAAAAAAMARMB//8DCwAAAAD//xBBBgEACABDAE0AQQBCAF8AUABDAFQGAgAABgP//wYE//8DCv////8IDBAXAxIAAAABAw4AAAAOAxAAAAAG//8DCwAAAAD//xBBBgEAAgBQAFYGAgAEAEEAXwBQAFYGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAABIDEAAAAAT//wMLAAAAAP//EEEGAQACAEIAVgYCAAQAQQBfAEIAVgYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEgMQAAAABP//AwsAAAAA//8QQQYBAAIARABDBgIABABBAF8ARABDBgP//wYE//8DCv////8IDBAXAxIAAAABAw4AAAASAxAAAAAE//8DCwAAAAD//xBBBgEADABzAGQAXwBEAG0AYQBuAGQAXwBRAHQAeQYCAAAGA///BgT//wMK/////wgMEBkDEgAAAAEEB/////+AAAAABAYAAAAAf///////AwsAAAAA//8QQQYBAAwAcwBkAF8AQwBhAGwAZQBuAF8AWQByADQGAgAABgP//wYE//8DCv////8IDBAZAxIAAAABBAf///////+AAAQGAAAAAAAAf////wMLAAAAAP//EEEGAQALAHMAZABfAEMAYQBsAGUAbgBfAE0AbwYCAAAGA///BgT//wMK/////wgMEBkDEgAAAAEEB////////4AABAYAAAAAAAB/////AwsAAAAA//8QQQYBAAUATgBlAHQARABjBgIABABHAF8ARABDBgP//wYE//8DCv////8IDBAYAxIAAAAB//8DCwAAAAH//xBBBgEAAgBQAFYGAgAEAEcAXwBQAFYGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAAB8DEAAAAAT//wMLAAAAAf//EEEGAQACAEIAVgYCAAQARwBfAEIAVgYD//8GBP//Awr/////CAwQGAMSAAAAAf//AwsAAAAB/////wkGAAAAAxCCAwoAAABNAwsAAAAcAwwAAAH7Aw0AAAJ5//8QggMKAAADOQMLAAAAGwMMAAABXwMNAAAA8///EIIDCv////8DC/////8DDP////8DDf///////wgDEHEDAQAAAAsDAgAAADIJAwAAAiYQdAMGAAAAAP//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAB//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAL//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYLAAkAQQBzAGMAZQBuAGQAaQBuAGf//xB3AwoAAAAB//8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAA///EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAE//8QcgYEAAQAQQBfAFAAVv//EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAABf//EHIGBAAEAEEAXwBCAFb//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAb//xByBgQABABBAF8ARABD//8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAH//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAj//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYLAAkAQQBzAGMAZQBuAGQAaQBuAGf//xB3AwoAAAAC//8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAACf//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4BgsACQBBAHMAYwBlAG4AZABpAG4AZ///EHcDCgAAAAP//xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAK//8QcgYEAAQARwBfAEQAQ///EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAC///EHIGBAAEAEcAXwBQAFb//xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAz//xByBgQABABHAF8AQgBW//8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv///////w==</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1534437449092</attribute>
+</metadata>

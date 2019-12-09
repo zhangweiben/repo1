@@ -1,0 +1,604 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Master_Hierarchy" path="/shared/Common/Application/Published/DE/Portfolio_Hierarchy/Master_Hierarchy" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="AMWAY_CNTRY_CD" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RGN_DESC" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SUB_RGN_DESC" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_SHORT_NM" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_SHORT_NM" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="BASE_7_ITEM_NO" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TO_BASE_7_ITEM_NO" nullable="true">
+      <datatype type="STRING" maxLength="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="FC_CLASS_CD_STRING" nullable="true">
+      <datatype type="STRING" maxLength="8000"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="FC_INTRO_CD_STRING" nullable="true">
+      <datatype type="STRING" maxLength="8000"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ITEM_DESC" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_BUS_LN_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_CTGRY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_ALT_CTGRY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_SUB_CTGRY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_PRDCT_IND_CUT_DESC" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_BRAND_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_SUB_BRAND_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_BRAND_FLG" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="3" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="COUNT_SKU" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="3" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="LAST_ORD_DATE" nullable="true">
+      <datatype type="DATE"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Cache/Physical/Metadata/PostgreSQL_Cache" type="DATA_SOURCE">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/Master_Hierarchy0" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="AMWAY_CNTRY_CD">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="SUB_RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="AFF_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="CNTRY_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="TO_BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="FC_CLASS_CD_STRING">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+      <element name="FC_INTRO_CD_STRING">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+      <element name="ITEM_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BUS_LN_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_ALT_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_SUB_CTGRY_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_PRDCT_IND_CUT_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_SUB_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_BRAND_FLG">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="COUNT_SKU">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="LAST_ORD_DATE">
+        <datatype type="DATE"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/Master_Hierarchy1" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="AMWAY_CNTRY_CD">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="SUB_RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="AFF_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="CNTRY_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="TO_BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="FC_CLASS_CD_STRING">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+      <element name="FC_INTRO_CD_STRING">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+      <element name="ITEM_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BUS_LN_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_ALT_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_SUB_CTGRY_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_PRDCT_IND_CUT_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_SUB_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_BRAND_FLG">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="COUNT_SKU">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="LAST_ORD_DATE">
+        <datatype type="DATE"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/Master_Hierarchy2" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="AMWAY_CNTRY_CD">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="SUB_RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="AFF_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="CNTRY_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="TO_BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="FC_CLASS_CD_STRING">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+      <element name="FC_INTRO_CD_STRING">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+      <element name="ITEM_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BUS_LN_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_ALT_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_SUB_CTGRY_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_PRDCT_IND_CUT_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_SUB_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_BRAND_FLG">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="COUNT_SKU">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="LAST_ORD_DATE">
+        <datatype type="DATE"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Business/Portfolio_Hierarchy/Master_Hierarchy" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="AMWAY_CNTRY_CD">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="SUB_RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="AFF_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="CNTRY_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="TO_BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="FC_CLASS_CD_STRING">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+      <element name="FC_INTRO_CD_STRING">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+      <element name="ITEM_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BUS_LN_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100" trailingSpaces="false"/>
+      </element>
+      <element name="GLBL_ALT_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100" trailingSpaces="false"/>
+      </element>
+      <element name="GLBL_SUB_CTGRY_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_PRDCT_IND_CUT_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_SUB_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_BRAND_FLG">
+        <datatype type="STRING" minLength="2" maxLength="3" trailingSpaces="false"/>
+      </element>
+      <element name="COUNT_SKU">
+        <datatype type="STRING" minLength="2" maxLength="3" trailingSpaces="false"/>
+      </element>
+      <element name="LAST_ORD_DATE">
+        <datatype type="DATE"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    UPPER(Master_Hierarchy.AMWAY_CNTRY_CD) AS AMWAY_CNTRY_CD, 
+    UPPER(Master_Hierarchy.RGN_DESC) AS RGN_DESC, 
+    UPPER(Master_Hierarchy.SUB_RGN_DESC) AS SUB_RGN_DESC, 
+    UPPER(Master_Hierarchy.AFF_SHORT_NM) AS AFF_SHORT_NM, 
+    UPPER(Master_Hierarchy.CNTRY_SHORT_NM) AS CNTRY_SHORT_NM, 
+    CAST(Master_Hierarchy.BASE_7_ITEM_NO AS VARCHAR(30)) AS BASE_7_ITEM_NO, 
+    Master_Hierarchy.TO_BASE_7_ITEM_NO,
+    Master_Hierarchy.FC_CLASS_CD_STRING,
+    Master_Hierarchy.FC_INTRO_CD_STRING, 
+    UPPER(Master_Hierarchy.ITEM_DESC) AS ITEM_DESC, 
+    UPPER(Master_Hierarchy.GLBL_BUS_LN_DESC) AS GLBL_BUS_LN_DESC, 
+    UPPER(Master_Hierarchy.GLBL_CTGRY_DESC) AS GLBL_CTGRY_DESC,
+	UPPER(Master_Hierarchy.GLBL_ALT_CTGRY_DESC) AS GLBL_ALT_CTGRY_DESC,
+    UPPER(Master_Hierarchy.GLBL_SUB_CTGRY_DESC) AS GLBL_SUB_CTGRY_DESC, 
+    UPPER(Master_Hierarchy.GLBL_PRDCT_IND_CUT_DESC) AS GLBL_PRDCT_IND_CUT_DESC,
+    UPPER(Master_Hierarchy.GLBL_BRAND_DESC) AS GLBL_BRAND_DESC, 
+    UPPER(Master_Hierarchy.GLBL_SUB_BRAND_DESC) AS GLBL_SUB_BRAND_DESC, 
+    Master_Hierarchy.GLBL_BRAND_FLG, 
+    Master_Hierarchy.COUNT_SKU, 
+    Master_Hierarchy.LAST_ORD_DATE
+FROM      
+    /shared/Common/Business/Business/Portfolio_Hierarchy/Master_Hierarchy Master_Hierarchy</attribute>
+  <attribute name="cacheBucketMode" type="STRING">AUTO_GEN</attribute>
+  <attribute name="cacheBucketPrefix" type="STRING">Master_Hierarchy</attribute>
+  <attribute name="cacheBucketSchema" type="STRING">cache</attribute>
+  <attribute name="cacheClearRule" type="STRING">MANUAL</attribute>
+  <attribute name="cacheConfigured" type="BOOLEAN">true</attribute>
+  <attribute name="cacheDeltaLoader" type="NULL"/>
+  <attribute name="cacheDropCreateIdx" type="BOOLEAN">true</attribute>
+  <attribute name="cacheEnabled" type="BOOLEAN">true</attribute>
+  <attribute name="cacheIncremental" type="BOOLEAN">false</attribute>
+  <attribute name="cacheLastTracking" type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/cache_tracking</attribute>
+  <attribute name="cacheNumBuckets" type="INTEGER">3</attribute>
+  <attribute name="cachePostRefreshCallback" type="NULL"/>
+  <attribute name="cachePreRefreshCallback" type="NULL"/>
+  <attribute name="cachePullBasedIncremental" type="BOOLEAN">false</attribute>
+  <attribute name="cacheRefreshMode" type="STRING">SCHEDULED</attribute>
+  <attribute name="cacheSnapshotLoader" type="NULL"/>
+  <attribute name="cacheStorageSource" type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache</attribute>
+  <attribute name="cacheStorageTargets" type="MAP">
+    <item>
+      <key type="STRING">result</key>
+      <value type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/Master_Hierarchy0</value>
+    </item>
+    <item>
+      <key type="STRING">result2</key>
+      <value type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/Master_Hierarchy2</value>
+    </item>
+    <item>
+      <key type="STRING">result1</key>
+      <value type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/Master_Hierarchy1</value>
+    </item>
+  </attribute>
+  <attribute name="cacheStorageType" type="STRING">DATA_SOURCE_OTPS</attribute>
+  <attribute name="creationDate" type="LONG">1565642814830</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1574783786453</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="rbsFilterProcedure" type="STRING"/>
+  <attribute name="rbsFilteredTablePath" type="STRING">/shared/EAP/Application/Published/DE/Portfolio_Hierarchy/Master_Hierarchy</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1565642814830</attribute>
+  <trigger>
+    <security>
+      <owner user="nobody" domain="composite"/>
+    </security>
+    <dependency target="/lib/resource/RefreshResourceCache" type="PROCEDURE">
+      <datatype name="Tree" type="TREE" refId="1"></datatype>
+    </dependency>
+    <dependency target="/shared/Common/Application/Published/DE/Portfolio_Hierarchy/Master_Hierarchy" type="TABLE">
+      <datatype type="TABLE" refId="1">
+        <element name="AMWAY_CNTRY_CD">
+          <datatype type="STRING" maxLength="3"/>
+        </element>
+        <element name="RGN_DESC">
+          <datatype type="STRING" maxLength="30"/>
+        </element>
+        <element name="SUB_RGN_DESC">
+          <datatype type="STRING" maxLength="30"/>
+        </element>
+        <element name="AFF_SHORT_NM">
+          <datatype type="STRING" maxLength="30"/>
+        </element>
+        <element name="CNTRY_SHORT_NM">
+          <datatype type="STRING" maxLength="30"/>
+        </element>
+        <element name="BASE_7_ITEM_NO">
+          <datatype type="STRING" maxLength="30"/>
+        </element>
+        <element name="TO_BASE_7_ITEM_NO">
+          <datatype type="STRING" maxLength="12"/>
+        </element>
+        <element name="FC_CLASS_CD_STRING">
+          <datatype type="STRING" maxLength="8000"/>
+        </element>
+        <element name="FC_INTRO_CD_STRING">
+          <datatype type="STRING" maxLength="8000"/>
+        </element>
+        <element name="ITEM_DESC">
+          <datatype type="STRING" maxLength="300"/>
+        </element>
+        <element name="GLBL_BUS_LN_DESC">
+          <datatype type="STRING" maxLength="100"/>
+        </element>
+        <element name="GLBL_CTGRY_DESC">
+          <datatype type="STRING" maxLength="100" trailingSpaces="false"/>
+        </element>
+        <element name="GLBL_ALT_CTGRY_DESC">
+          <datatype type="STRING" maxLength="100" trailingSpaces="false"/>
+        </element>
+        <element name="GLBL_SUB_CTGRY_DESC">
+          <datatype type="STRING" maxLength="300"/>
+        </element>
+        <element name="GLBL_PRDCT_IND_CUT_DESC">
+          <datatype type="STRING" maxLength="300"/>
+        </element>
+        <element name="GLBL_BRAND_DESC">
+          <datatype type="STRING" maxLength="100"/>
+        </element>
+        <element name="GLBL_SUB_BRAND_DESC">
+          <datatype type="STRING" maxLength="100"/>
+        </element>
+        <element name="GLBL_BRAND_FLG">
+          <datatype type="STRING" minLength="2" maxLength="3" trailingSpaces="false"/>
+        </element>
+        <element name="COUNT_SKU">
+          <datatype type="STRING" minLength="2" maxLength="3" trailingSpaces="false"/>
+        </element>
+        <element name="LAST_ORD_DATE">
+          <datatype type="DATE"/>
+        </element>
+      </datatype>
+    </dependency>
+    <attribute name="actionProperties" type="MAP">
+      <item>
+        <key type="STRING">PATH</key>
+        <value type="STRING">/lib/resource/RefreshResourceCache</value>
+      </item>
+      <item>
+        <key type="STRING">PARAMETERS</key>
+        <value type="STRING">&apos;/shared/Common/Application/Published/DE/Portfolio_Hierarchy/Master_Hierarchy&apos;,&apos;TABLE&apos;</value>
+      </item>
+    </attribute>
+    <attribute name="actionType" type="STRING">PROCEDURE</attribute>
+    <attribute name="conditionSchedule" type="MAP">
+      <item>
+        <key type="STRING">period</key>
+        <value type="INTEGER">2</value>
+      </item>
+      <item>
+        <key type="STRING">recurringDay</key>
+        <value type="INTEGER">-1</value>
+      </item>
+      <item>
+        <key type="STRING">count</key>
+        <value type="INTEGER">1</value>
+      </item>
+      <item>
+        <key type="STRING">fromTimeInADay</key>
+        <value type="LONG">-1</value>
+      </item>
+      <item>
+        <key type="STRING">mode</key>
+        <value type="STRING">CALENDAR</value>
+      </item>
+      <item>
+        <key type="STRING">lastRunTime</key>
+        <value type="LONG">1574764200000</value>
+      </item>
+      <item>
+        <key type="STRING">lastScheduledTime</key>
+        <value type="LONG">1574764200000</value>
+      </item>
+      <item>
+        <key type="STRING">endTimeInADay</key>
+        <value type="LONG">-1</value>
+      </item>
+      <item>
+        <key type="STRING">startTime</key>
+        <value type="LONG">1566207000000</value>
+      </item>
+      <item>
+        <key type="STRING">interval</key>
+        <value type="INTEGER">0</value>
+      </item>
+      <item>
+        <key type="STRING">endTime</key>
+        <value type="LONG">0</value>
+      </item>
+      <item>
+        <key type="STRING">isCluster</key>
+        <value type="BOOLEAN">true</value>
+      </item>
+    </attribute>
+    <attribute name="conditionType" type="STRING">TIMER</attribute>
+    <attribute name="creationDate" type="LONG">1566244114035</attribute>
+    <attribute name="creatorUserDomain" type="STRING">na</attribute>
+    <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+    <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+    <attribute name="enabled" type="BOOLEAN">true</attribute>
+    <attribute name="isChildTrigger" type="BOOLEAN">true</attribute>
+    <attribute name="lastModifiedDate" type="LONG">1574783786453</attribute>
+    <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+    <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+    <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+    <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1566244114035</attribute>
+  </trigger>
+</metadata>

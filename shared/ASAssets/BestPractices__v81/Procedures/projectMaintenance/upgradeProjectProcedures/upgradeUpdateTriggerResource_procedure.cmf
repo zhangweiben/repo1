@@ -1,0 +1,1550 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="upgradeUpdateTriggerResource" path="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/upgradeUpdateTriggerResource" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="upgradeVectorRow" direction="IN" nullable="true">
+      <datatype name="upgradeVector" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="upgradeType" type="TREE" refId="1">
+            <element name="bestPracticesVersionFrom">
+              <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+            </element>
+            <element name="bestPracticesVersionTo">
+              <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+            </element>
+            <element name="resourceAction">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="resourcePath">
+              <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+            </element>
+            <element name="resourceType">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="srcResource">
+              <datatype name="srcResource" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <datatype name="resourceType" referenceDefinitionSet="/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitions" referenceType="resourceType" type="TREE" refId="2">
+                    <element name="path">
+                      <datatype name="VARCHAR" referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+                    </element>
+                    <element name="type">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                  </datatype>
+                </itemDatatype>
+              </datatype>
+            </element>
+            <element name="dstResource">
+              <datatype name="dstResource" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <reference refId="2"/>
+                </itemDatatype>
+              </datatype>
+            </element>
+            <element name="updateStruct">
+              <datatype name="updateStruct" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <datatype name="updateType" type="TREE" refId="3">
+                    <element name="updateAction">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                    <element name="occurrence">
+                      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                    </element>
+                    <element name="numLines">
+                      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                    </element>
+                    <element name="keyTextVerify">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                    <element name="searchText">
+                      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+                    </element>
+                    <element name="replaceText">
+                      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+                    </element>
+                  </datatype>
+                </itemDatatype>
+              </datatype>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+    </parameter>
+    <parameter name="success" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/escapeSearchText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inSearchText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="searchText" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getLatestCopy_scripts" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="scriptsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="scriptsPathCopy" direction="OUT">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getNumOccurrences" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inScriptText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inSearchText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="numOccurrences" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getParameterNum" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="parameters" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="parameterNum" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="trimParam" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="parameterValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitionsRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor_ActionAttributes" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="actionType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="value">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceListRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creationDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="creationDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="creatorUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creatorUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="lastModifiedDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="lastModifiedUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="folderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="folderPath" direction="OUT">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateTrigger" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="enabled" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="conditionType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="actionType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="triggerAttrVect" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="TriggerType" type="TREE" refId="2">
+              <element name="trName">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="trValue">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="attributeVect" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="AttributeType" type="TREE" refId="3">
+              <element name="attrName">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="attrType">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="attrValue">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="4"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="4"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/TextUtils/RegexReplace" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="Input Text" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Regular Expression" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Replacement Text" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseInputText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseOutput" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="trimText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="includeDelimiter" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="object">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getDelimitedOccurrence" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOccurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inTrimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/modifyConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="constantsValue" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	upgradeUpdateTriggerResource:
+
+	This procedure is invoked by &quot;upgradeProject&quot; when the resource action=&quot;updateTrigger&quot;.  This procedure updates all of 
+		the triggers found in a destination path and type.  This procedure uses the &quot;updateStruct&quot; vector to provide additional direction
+		when updating trigger paths and parameters in place such as &quot;replacePath&quot; and &quot;replaceParam&quot;.
+
+	Input: 
+		debug - &apos;Y&apos;=debug, &apos;N&apos;=do not debug
+		upgradeVectorRow - This is a single row from the upgradeVector which is defined below
+	Output:
+		success - 1=success, 0=fail
+	Exceptions: ex - throw an exception upon error
+
+	-----------------------------------------------------------------------------
+	The following defines the structures that are used for upgrading a project:
+	-----------------------------------------------------------------------------
+	DECLARE PUBLIC TYPE upgradeType ROW(
+		bestPracticesVersion	DOUBLE,					-- version of the best practices where the change is being applied
+		resourceAction			VARCHAR					-- action to take on the resource: 
+														--		     copy - copy srcResource to dstResource.  srcResource and dstResource required.  updateStruct is null.
+														--	                if resource type is CONTAINER then copy all resources
+														--	                if resource type is not CONTAINER then copy specific resource
+														--		copyLeave - copy srcResource to _Copy_#.  srcResource is required.  dstResource and updateStruct are null.
+														--	                Creates a copy of a resource and leaves the original in place. 
+														--	                The copy detects other copies an increments the number as needed in the format of _Copy_#
+														--	   copyRename - copy srcResource to _Copy_#.  srcResource is required.  dstResource and updateStruct are null.
+														--	                Creates a copy of a resource and renames the original to it.  The original is no longer present.
+														--	                The copy detects other copies an increments the number as needed in the format of _Copy_#
+														--	 copyChildren - copy the children of srcResource to dstResource.  srcResource and dstResource required.  updateStruct is null.
+														--	                Only copying from CONTAINER to CONTAINER is allowed.
+														--		   update - update dstResource using updateStruct.  srcResource is null.
+														--  updateTrigger - update all trigger resources found starting at dstResource using updateStruct.  srcResource is null.
+														--					 dstResource can be a single trigger or folder of triggers.
+														--	   updateCrud - update CRUD resources specified by dstResource using updateStruct.  srcResource is null.
+														--		   delete - delete dstResource.  srcResource and updateStruct are null.
+														--		     move - move srcResource to dstResource.  updateStruct is null.
+														--     moveCustom - move all custom scripts from srcResource folder to the specified dstResource folder. updateStruct is null.
+														--                  a custom resource is determined by finding a resource in dstResource that is not in the DataAbstraction_GENERIC_Template.
+														--         rebind - rebind srcResource to dstResource using startingFolder.  updateStruct is null.
+		resourcePath			VARCHAR(4000),			-- resource path of the resource or starting folder to be used with rebind action otherwise null.
+		resourceType			VARCHAR,				-- resource type of the resource to be used with rebind action otherwise null.
+		srcResource				VECTOR(resourceType), 	-- source reource is always a vector of 1
+		srcResource				VECTOR(resourceType), 	-- source reource is always a vector of 1
+		dstResource				VECTOR(resourceType),	-- destination resource may be an unbounded vector
+		updateStruct			VECTOR(updateType),		-- this structure is used when the resourceAction=update otherwise null
+	);
+	DECLARE PUBLIC TYPE resourceType 	ROW(
+		&quot;path&quot;		TypeDefinitions.pathType,	-- Path to resource
+		&quot;type&quot;		VARCHAR(255)				-- Resoruce type
+	);
+	DECLARE PUBLIC TYPE updateType ROW(
+		updateAction			VARCHAR,			-- update Action: 			replace, replaceBefore, replaceAfter [all actions are performed on a given resource]
+																				replace - replace the &quot;searchText&quot; with the &quot;replaceText&quot; value and verify with &quot;keyTextVerify&quot;.
+																				replaceBefore - replace the &quot;searchText&quot; on the &quot;numLines&quot; before the &quot;searchText&quot;.
+																				replaceAfter - replace the &quot;searchText&quot; on the &quot;numLines&quot; after the &quot;searchText&quot;.
+													-- updateTrigger Action: 	replacePath, replaceParam, fixParam [All actions are performed on a given trigger resource]
+																				replacePath - replace the trigger parameter path.
+																				replaceParam - replace the trigger parameter text.
+																				fixParam - fix the parameters single quotes.
+		occurrence				INTEGER,			-- The occurrence of the searchText to act upon.  0=take action on all occurrences
+		numLines				INTEGER,			-- If updateAction=replaceBefore or replaceAfter, then then perform that action by searching
+													--   for the number of lines CHR(10) either before or after and placing the text at that location.
+		keyTextVerify			VARCHAR,			-- This is short unique text from the replaceText variable that allows the code to verify if the replace has already been done.
+		searchText				LONGVARCHAR,		-- The text to search for.  
+													-- If multiple occurrences are found the action may be taken according to the defined occurrence.
+													-- If the searchText is not found then no action is taken.
+		replaceText				LONGVARCHAR			-- The text to replace given the update action.
+	);
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	05/14/2010		Mike Tinius			6.0.0			Created new
+	04/23/2014		Mike Tinius			6.2.0			B.P 8.1.2/8.1.3 - Added &quot;fixParam&quot; which checks for a balance in single quotes in the parameter section.
+	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	03/02/2018		Mike Tinius			7.0.5			Replaced RegexSplit with extractDelimitedText
+	03/14/2019		Mike Tinius			7.0.8			B.P. 2019.102: Removed projectPath as it was not referenced in the code.
+	07/30/2019		Mike Tinius			7.0.8			B.P. 2019.300: Added restoreParam capability.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE upgradeUpdateTriggerResource(	
+	IN debug				CHAR(1),	
+	-- This is a single row from the upgradeVector	
+	IN	upgradeVectorRow 	/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.upgradeVector, 
+	OUT success				INTEGER
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;upgradeUpdateTriggerResource&apos;;
+	DECLARE debug2					CHAR(1) DEFAULT &apos;N&apos;; -- second level of debug
+	DECLARE triggerVect				VECTOR(/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitionsRecursive.resourceTreeType);
+	DECLARE i,j,k					INTEGER DEFAULT 1;
+	DECLARE fromVersion				DOUBLE;
+	DECLARE toVersion				DOUBLE;
+	DECLARE procedurePath			LONGVARCHAR;
+	DECLARE procedureParams			LONGVARCHAR;
+	DECLARE updateTrigger			BOOLEAN;
+	DECLARE displayLen				INTEGER DEFAULT 150;
+	DECLARE dstPath					VARCHAR(4000);
+	DECLARE dstType					VARCHAR;
+	DECLARE subtype					VARCHAR;
+	DECLARE displayAction			VARCHAR;
+	DECLARE updateAction			VARCHAR;
+	DECLARE numLines				INTEGER;
+	DECLARE occurrence				INTEGER;
+	DECLARE numOccurrence			INTEGER;
+	DECLARE displayText				LONGVARCHAR;
+	DECLARE prependMessage			VARCHAR(4000);
+	DECLARE eol						VARCHAR DEFAULT chr(10);
+	DECLARE createResponse 			XML;
+	DECLARE faultResponse			XML;
+	DECLARE scriptText				LONGVARCHAR;
+	DECLARE searchText				LONGVARCHAR;
+	DECLARE replaceText				LONGVARCHAR;
+	DECLARE keyTextVerify			VARCHAR(4000);
+	DECLARE keyTextVerifyCount		INTEGER;
+	DECLARE searchTextCount			INTEGER;
+	DECLARE message					LONGVARCHAR;
+	DECLARE paramValue				VARCHAR(4000);
+    DECLARE TYPE TriggerType ROW (
+        trName 		VARCHAR, 
+        trValue 	LONGVARCHAR
+    );
+	DECLARE triggerAttrVect			VECTOR(TriggerType);
+	DECLARE resourceExists			BOOLEAN;
+	DECLARE ex						EXCEPTION;
+	-- Added for &quot;restoreParm&quot; action
+	DECLARE scriptsPath				VARCHAR(4000);
+	DECLARE scriptsPathCopy			VARCHAR(4000);
+	DECLARE triggerPathCopy			VARCHAR(4000);
+	DECLARE procedureParamsCopy		LONGVARCHAR;
+	DECLARE currParam				LONGVARCHAR;
+	DECLARE paramMod				LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE paramSingle				LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE paramCopy				LONGVARCHAR;
+	DECLARE resourceName			VARCHAR;
+	DECLARE parentPath				VARCHAR(4000);
+	DECLARE resExists				BOOLEAN;
+	DECLARE constantList			LONGVARCHAR;
+	DECLARE constantName			VARCHAR;
+	DECLARE constantValue			LONGVARCHAR;
+	DECLARE constantDef				LONGVARCHAR;
+	DECLARE constantUpdated			BOOLEAN DEFAULT false;
+	DECLARE tempPath1				VARCHAR(4000);
+	DECLARE tempName1, tempName2	VARCHAR;
+	DECLARE defaultValuesPath		VARCHAR(4000);
+	DECLARE defaultValuesCopyPath	VARCHAR(4000);
+	DECLARE docConstantsPath		VARCHAR(4000);
+	DECLARE ch						CHAR(1);
+	DECLARE pos						INTEGER;
+	DECLARE subLayerPartialPath		LONGVARCHAR;
+
+
+	/***************************************************************
+	 * Loop through the vector.  The dstResource vector is the only
+	 *    vector that matters when deleting a target destination resource. 
+	 ***************************************************************/
+	WHILE (i &lt;= CARDINALITY(upgradeVectorRow[1].dstResource)) DO
+
+		-- Make sure the dstResource is not null
+		if (upgradeVectorRow[1].dstResource is null) then
+			raise ex value moduleName||&apos;:  UPDATETRIGGER ACTION: The dstResource[&apos;||i||&apos;] vector may not be null.&apos;;
+		end if;
+
+		-- Get the from and to version
+		set fromVersion = upgradeVectorRow[1].bestPracticesVersionFrom;	-- &quot;From&quot; version of the best practices where the change is coming from
+		set toVersion = upgradeVectorRow[1].bestPracticesVersionTo;		-- &quot;To&quot; version of the best practices where the change is being applied
+
+		-- Get the destination path information
+		set dstPath = upgradeVectorRow[1].dstResource[i].&quot;path&quot;;
+		set dstType = upgradeVectorRow[1].dstResource[i].&quot;type&quot;;
+
+		-- Validate that the destination information is not empty
+		if ( (dstPath IS NULL OR LENGTH(&apos;|&apos;||dstPath||&apos;|&apos;) = 2) or  --Empty
+			 (dstType IS NULL OR LENGTH(&apos;|&apos;||dstType||&apos;|&apos;) = 2) ) then  --Empty
+			raise ex value moduleName||&apos;:  UPDATETRIGGER ACTION: The following dstResource[&apos;||i||&apos;] vector entries may be null or empty: dstPath, dstType&apos;;
+		end if;
+
+		BEGIN INDEPENDENT TRANSACTION
+
+		-- Verify the source path exists.
+		call /lib/resource/ResourceExists(dstPath, dstType, null, resourceExists);
+		if (NOT resourceExists) then
+			raise ex value moduleName||&apos;:  UPDATETRIGGER ACTION:  The dstResource[&apos;||i||&apos;] vector entry path does not exist=&apos;||NVL(dstPath,&apos;null&apos;);
+		end if;
+
+		set prependMessage = moduleName||&apos;:  UPDATETRIGGER ACTION: Error with vector entry[&apos;||i||&apos;].  Error=&apos;;
+
+
+		IF (dstType = &apos;TRIGGER&apos;) THEN
+			set triggerVect = VECTOR[(null)];
+			call /shared/ASAssets/Utilities/string/getDelimitedOccurrence(dstPath, &apos;R&apos;, &apos;/&apos;, 1, 1, triggerVect[1].name);
+			set triggerVect[1].resPath = dstPath;
+			set triggerVect[1].resType = dstType;
+			set triggerVect[1].subType = &apos;NONE&apos;;
+		ELSE
+			set j = 0;
+			-- Retrieve the list of resources in the destination container
+			FOR r as SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceListRecursive(dstPath, dstType) DO
+				if (r.resType = &apos;TRIGGER&apos;) then
+					if (j = 0) then
+						set triggerVect = VECTOR[(null)];
+					else
+						set triggerVect = EXTEND(triggerVect, 1);
+					end if;
+					set j = j + 1;
+					set triggerVect[j].name = r.name;
+					set triggerVect[j].resPath = r.resPath;
+					set triggerVect[j].resType = r.resType;
+					set triggerVect[j].subType = r.subtype;
+				end if;
+			END FOR;
+		END IF;
+
+		set j = 1;
+		WHILE (j &lt;= CARDINALITY(triggerVect)) DO
+			-- Only update resources that are triggers
+			if (triggerVect[j].resType = &apos;TRIGGER&apos;) then
+				set updateTrigger = false;
+
+				if (UPPER(debug2) = &apos;Y&apos;) THEN
+					call print(moduleName||&apos; :  ------------------------------------------------------------------&apos;);
+					call print(moduleName||&apos; :  trigger path=&apos;||NVL(triggerVect[j].resPath,&apos;null&apos;));
+				end if;
+
+				FOR s AS SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_ActionAttributes(triggerVect[j].resPath, triggerVect[j].resType) DO
+					IF (s.name is not null and s.name = &apos;PATH&apos;) then
+						set procedurePath = s.&quot;value&quot;;
+						if (UPPER(debug2) = &apos;Y&apos;) THEN
+							call print(moduleName||&apos; :  Attribute procedurePath:&apos;||NVL(procedurePath,&apos;null&apos;));
+						end if;
+					END IF;
+					IF (s.name is not null and s.name = &apos;PARAMETERS&apos;) then
+						set procedureParams = s.&quot;value&quot;;
+						if (UPPER(debug2) = &apos;Y&apos;) THEN
+							call print(moduleName||&apos; :  Attribute procedureParams:&apos;||NVL(procedureParams,&apos;null&apos;));
+						end if;
+					END IF;
+				END FOR;
+
+				-- Loop through all of the modifications (&quot;replacePath&quot; and/or &quot;replaceParam&quot;) before updating
+				set k = 1;
+				WHILE (k &lt;= CARDINALITY(upgradeVectorRow[1].updateStruct)) DO
+
+					set updateAction = upgradeVectorRow[1].updateStruct[k].updateAction;
+					set numLines = upgradeVectorRow[1].updateStruct[k].numLines;
+					set occurrence = upgradeVectorRow[1].updateStruct[k].occurrence;
+					if (occurrence is null) then
+						raise ex value moduleName||&apos;:  The upgradeVectorRow[1].updateStruct[&apos;||j||&apos;].occurrence may not be null.&apos;;
+					end if;
+					set keyTextVerify = upgradeVectorRow[1].updateStruct[k].keyTextVerify;
+					set searchText = upgradeVectorRow[1].updateStruct[k].searchText;
+					set replaceText = upgradeVectorRow[1].updateStruct[k].replaceText;
+
+					if (UPPER(debug2) = &apos;Y&apos;) THEN
+						call print(moduleName||&apos; : &apos;);
+						call print(moduleName||&apos; :   updateAction:&apos;||NVL(updateAction,&apos;null&apos;));
+						call print(moduleName||&apos; :       numLines:&apos;||NVL(cast(numLines as varchar),&apos;null&apos;));
+						call print(moduleName||&apos; :     occurrence:&apos;||NVL(cast(occurrence as varchar),&apos;null&apos;));
+						call print(moduleName||&apos; :  keyTextVerify:&apos;||NVL(keyTextVerify,&apos;null&apos;));
+						call print(moduleName||&apos; :     searchText:&apos;||NVL(searchText,&apos;null&apos;));
+						call print(moduleName||&apos; :    replaceText:&apos;||NVL(replaceText,&apos;null&apos;));
+					end if;
+
+					-- Replace the trigger path
+					if (UPPER(updateAction) = UPPER(&apos;replacePath&apos;)) then
+						set scriptText = procedurePath;
+						set displayAction = &apos;Replace Path&apos;;
+
+						-- Verify if the target already contains the replacement text by checking the key text verify string against the script text
+						call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getNumOccurrences(debug, scriptText, searchText, searchTextCount);
+						if (UPPER(debug2) = &apos;Y&apos;) THEN
+							call print(moduleName||&apos; :  before procedurePath=&apos;||NVL(scriptText,&apos;null&apos;));
+							call print(moduleName||&apos; :  searchTextCount:&apos;||NVL(cast(searchTextCount as varchar),&apos;null&apos;)||&apos;  searchText=&apos;||NVL(searchText,&apos;null&apos;));
+						end if;
+
+						-- If not key text verify text was found then continue
+						if (searchTextCount &gt; 0) then
+							-- Escape any regex search characters
+							call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/escapeSearchText(searchText,searchText);
+
+							set displayText = substring(searchText,1,displayLen);
+							if (UPPER(debug) = &apos;Y&apos;) then
+								call print(moduleName||&apos; :  updateAction=[&apos;||NVL(updateAction,&apos;null&apos;)||&apos;]  escape searchText=&apos;||NVL(displayText,&apos;null&apos;));
+							end if;
+							set displayText = substring(replaceText,1,displayLen);
+							if (UPPER(debug) = &apos;Y&apos;) then
+								call print(moduleName||&apos; :  updateAction=[&apos;||NVL(updateAction,&apos;null&apos;)||&apos;]        replaceText=&apos;||NVL(displayText,&apos;null&apos;));
+							end if;
+
+							-- Perform the regex replace
+							call /shared/ASAssets/Utilities/string/TextUtils/RegexReplace(scriptText, searchText, NVL(replaceText,&apos;null&apos;), occurrence, scriptText);
+							set updateTrigger = true;
+							if (UPPER(debug2) = &apos;Y&apos;) THEN
+								call print(moduleName||&apos; :  after procedurePath=&apos;||NVL(scriptText,&apos;null&apos;));
+							end if;
+						end if;
+
+						-- Set the procedurePath with the replaced text
+						set procedurePath = scriptText;
+					end if;
+
+					-- Replace the trigger parameters
+					if (UPPER(updateAction) = UPPER(&apos;replaceParam&apos;)) then
+						set scriptText = procedureParams;
+						set displayAction = &apos;Replace Param&apos;;
+
+						-- Verify if the target already contains the replacement text by checking the key text verify string against the script text
+						call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getNumOccurrences(debug, scriptText, searchText, searchTextCount);
+						if (UPPER(debug2) = &apos;Y&apos;) THEN
+							call print(moduleName||&apos; :  before procedureParams=&apos;||NVL(scriptText,&apos;null&apos;));
+							call print(moduleName||&apos; :  searchTextCount:&apos;||NVL(cast(searchTextCount as varchar),&apos;null&apos;)||&apos;  searchText=&apos;||NVL(searchText,&apos;null&apos;));
+						end if;
+
+						-- If not key text verify text was found then continue
+						if (searchTextCount &gt; 0) then
+							-- Escape any regex search characters
+							call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/escapeSearchText(searchText,searchText);
+
+							set displayText = substring(searchText,1,displayLen);
+							if (UPPER(debug) = &apos;Y&apos;) then
+								call print(moduleName||&apos; :  updateAction=[&apos;||NVL(updateAction,&apos;null&apos;)||&apos;]  escape searchText=&apos;||NVL(displayText,&apos;null&apos;));
+							end if;
+							set displayText = substring(replaceText,1,displayLen);
+							if (UPPER(debug) = &apos;Y&apos;) then
+								call print(moduleName||&apos; :  updateAction=[&apos;||NVL(updateAction,&apos;null&apos;)||&apos;]        replaceText=&apos;||NVL(displayText,&apos;null&apos;));
+							end if;
+
+							-- Perform the regex replace
+							call /shared/ASAssets/Utilities/string/TextUtils/RegexReplace(scriptText, searchText, NVL(replaceText,&apos;null&apos;), occurrence, scriptText);
+							set updateTrigger = true;
+							if (UPPER(debug2) = &apos;Y&apos;) THEN
+								call print(moduleName||&apos; :  after procedureParams=&apos;||NVL(scriptText,&apos;null&apos;));
+							end if;
+						end if;
+
+						-- Set the procedureParams with the replaced text
+						set procedureParams = scriptText;
+					end if;
+
+					-- Fix the trigger parameter single quotes
+					if (UPPER(updateAction) = UPPER(&apos;fixParam&apos;)) then
+						set scriptText = procedureParams;
+						set displayAction = &apos;Fix Param&apos;;
+
+						-- Only proceed if a single quote is found in the text
+						if (POSITION(&apos;&apos;&apos;&apos; IN scriptText) &gt; 0) then
+							set procedureParams = null;
+							-- Check for balanced single quotes around each parameter value
+							for r as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(scriptText, &apos;,&apos;,0,0,0,1,0) do
+								set paramValue = r.object;
+								-- If the param value is only a single quote then set it to 2 single quotes.
+								if (paramValue = &apos;&apos;&apos;&apos;) then
+									set paramValue = &apos;&apos;&apos;&apos;||&apos;&apos;&apos;&apos;;
+								end if;
+								-- Insure there is a initial quote
+								if (SUBSTRING(paramValue,1,1) != &apos;&apos;&apos;&apos;) then
+									set paramValue = &apos;&apos;&apos;&apos;||paramValue;
+								end if;
+								-- Insure there is a final quote
+								if (SUBSTRING(paramValue,LENGTH(paramValue),1) != &apos;&apos;&apos;&apos;) then
+									set paramValue = paramValue||&apos;&apos;&apos;&apos;;
+								end if;
+								if (procedureParams is null) then
+									set procedureParams = paramValue;
+								else
+									set procedureParams = procedureParams || &apos;,&apos;||paramValue;
+								end if;
+							end for;
+							set updateTrigger = true;
+							if (UPPER(debug2) = &apos;Y&apos;) THEN
+								call print(moduleName||&apos; :  procedureParams=&apos;||NVL(procedureParams,&apos;null&apos;));
+							end if;
+						else
+							-- Set the procedureParams with the replaced text
+							set procedureParams = scriptText;						
+						end if;
+					end if;
+
+					-- Restore the trigger parameters from the old copy if applicable
+					if (UPPER(updateAction) = UPPER(&apos;restoreParam&apos;)) then
+						set displayAction = &apos;Restore Param&apos;;
+						-- Only supporting restoring triggers starting at the &quot;from&quot; version Best Practices 8.1 through 2019.2.  
+						if (fromVersion &gt;= 8.1 and fromVersion &lt;= 2019.2) then
+							-- Only supporting restoring triggers where the to &quot;to&quot; version Best Practices 2019.3 and higher.
+							if (toVersion &gt;= 2019.3) then
+								SET paramMod = &apos;&apos;;
+								-- The search text part of the vector holds the scripts source path
+								SET scriptsPath = searchText;
+								-- Get the latest copy of the scripts path that was made during this upgrade.
+								CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getLatestCopy_scripts(scriptsPath, scriptsPathCopy);
+
+								IF (scriptsPathCopy IS NOT NULL) THEN
+									CAll /lib/resource/ResourceExists(scriptsPathCopy || &apos;/Documentation&apos;, &apos;CONTAINER&apos;, null, resExists);
+								END IF;
+
+								IF (scriptsPathCopy IS NOT NULL AND resExists) THEN
+
+									-- Get the corresponding trigger for the scripts copy path
+									SET triggerPathCopy = scriptsPathCopy || &apos;/Documentation/&apos;||triggerVect[j].name;
+
+									-- Determine if the trigger exists
+									CAll /lib/resource/ResourceExists(triggerPathCopy, &apos;TRIGGER&apos;, null, resExists);
+									IF (resExists) THEN
+										SET procedureParamsCopy = null;
+										FOR s AS SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_ActionAttributes(triggerPathCopy, &apos;TRIGGER&apos;) DO
+											IF (s.name is not null and s.name = &apos;PARAMETERS&apos;) then
+												SET procedureParamsCopy = s.&quot;value&quot;;
+												if (UPPER(debug2) = &apos;Y&apos;) THEN
+													call print(moduleName||&apos; :  Attribute procedureParamsCopy:&apos;||NVL(procedureParamsCopy,&apos;null&apos;));
+												end if;
+											END IF;
+										END FOR;
+
+										IF (procedureParamsCopy IS NOT NULL) THEN
+											-- Set the defaultValues Path
+											SET defaultValuesPath = scriptsPath || &apos;/Constants/defaultValues&apos;;
+											-- Set the documentation constants path
+											SET docConstantsPath = scriptsPath || &apos;/Documentation/constants&apos;;
+
+											/*********************************
+											 * PARAMETER procedurePath
+											 *********************************/
+											-- Modify the procedurePath=/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/_scripts/Documentation/documentationDriverWrapper
+											--		to scriptsPath || &apos;/Documentation/documentationDriverWrapper
+											set procedurePath = scriptsPath || &apos;/Documentation/documentationDriverWrapper&apos;;
+
+											/*********************************
+											 * PARAMETER 1 and 2
+											 *********************************/
+											-- Get the current trigger parameter 1 [defaultValuesLayerConstantName]
+											CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getParameterNum(procedureParams, 1, 1, currParam);
+											IF (UPPER(currParam) = &apos;NULL&apos; OR LENGTH(currParam) = 0) THEN
+												SET currParam = &apos;NULL&apos;;
+												SET constantValue = &apos;NULL&apos;;
+											ELSE
+												-- Get the actual value for the current trigger 1 parameter - get the constant value from defaultValues.&lt;constantName&gt;
+												CALL /shared/ASAssets/Utilities/string/getConstantV2(defaultValuesPath, currParam, 1, constantValue);
+											END IF;
+
+											-- Get the scripts copy trigger parameter 1 [in_resourcePath]
+											CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getParameterNum(procedureParamsCopy, 1, 1, paramCopy);
+											IF (UPPER(paramCopy) = &apos;NULL&apos; OR LENGTH(paramCopy) = 0) THEN
+												SET paramCopy = &apos;NULL&apos;;
+											END IF;
+
+											-- Normalize the values with no double quotes
+											SET constantValue = REPLACE(constantValue, &apos;&quot;&apos;, &apos;&apos;);
+											SET paramCopy = REPLACE(paramCopy, &apos;&quot;&apos;, &apos;&apos;);
+
+											-- Compare the trigger value current and copy values
+											-- Modify Parameter 1 and Parameter 2
+											IF (constantValue = paramCopy) THEN
+												IF (constantValue = &apos;NULL&apos;) THEN
+													SET paramSingle = &apos;&apos;&apos;&apos; || &apos;&apos; || &apos;&apos;&apos;&apos; || &apos;,&apos;|| &apos;&apos;&apos;&apos; || &apos;&apos; || &apos;&apos;&apos;&apos;;
+												ELSE
+													SET paramSingle = &apos;&apos;&apos;&apos; || currParam || &apos;&apos;&apos;&apos; || &apos;,&apos;|| &apos;&apos;&apos;&apos; || &apos;&apos; || &apos;&apos;&apos;&apos;;
+												END IF;
+											ELSE
+												IF (currParam = &apos;NULL&apos; AND paramCopy &lt;&gt; &apos;NULL&apos;) THEN
+													SET paramSingle = &apos;&apos;&apos;&apos; || paramCopy || &apos;&apos;&apos;&apos; || &apos;,&apos;|| &apos;&apos;&apos;&apos; || &apos;&apos; || &apos;&apos;&apos;&apos;;
+
+												ELSEIF (currParam &lt;&gt; &apos;NULL&apos; AND paramCopy = &apos;NULL&apos;) THEN
+													SET paramSingle = &apos;&apos;&apos;&apos; || currParam || &apos;&apos;&apos;&apos; || &apos;,&apos;|| &apos;&apos;&apos;&apos; || &apos;&apos; || &apos;&apos;&apos;&apos;;
+
+												ELSE
+													SET pos = INSTR(paramCopy, currParam);
+													IF (pos &gt; 0) THEN
+														SET subLayerPartialPath = REPLACE(paramCopy, currParam, &apos;&apos;);
+														SET paramSingle = &apos;&apos;&apos;&apos; || currParam || &apos;&apos;&apos;&apos; || &apos;,&apos;|| &apos;&apos;&apos;&apos; || subLayerPartialPath || &apos;&apos;&apos;&apos;;
+													ELSE
+														SET paramSingle = &apos;&apos;&apos;&apos; || currParam || &apos;&apos;&apos;&apos; || &apos;,&apos;|| &apos;&apos;&apos;&apos; || &apos;&apos; || &apos;&apos;&apos;&apos;;
+													END IF;
+												END IF;
+											END IF;
+											SET paramMod = paramMod || paramSingle;
+											IF (UPPER(debug2) = &apos;Y&apos;) THEN
+												CALL print(moduleName||&apos; :  Params 1 &amp; 2=[&apos;||NVL(paramSingle,&apos;null&apos;)||&apos;]&apos;);
+											END IF;
+
+
+											/*********************************
+											 * PARAMETER 3
+											 *********************************/
+											-- Get the current trigger parameter 3 [documentationFileName]
+											CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getParameterNum(procedureParams, 3, 1, currParam);
+											IF (UPPER(currParam) = &apos;NULL&apos; OR LENGTH(currParam) = 0) THEN
+												SET currParam = &apos;NULL&apos;;
+											END IF;
+
+											-- Get the scripts copy trigger parameter 3 [in_filePath]
+											CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getParameterNum(procedureParamsCopy, 3, 1, paramCopy);
+											IF (UPPER(paramCopy) = &apos;NULL&apos; OR LENGTH(paramCopy) = 0) THEN
+												SET paramCopy = &apos;NULL&apos;;
+											END IF;
+
+											-- Modify Parameter 3
+											IF (paramCopy IS NOT NULL AND LENGTH(paramCopy) &gt; 0 AND paramCopy &lt;&gt; &apos;NULL&apos;) THEN
+												-- Normalize the path using forward slashes and extract the file name and parent path.
+												--		e.g. resourceName=doc_applicationPublishedPath.txt    parentPath=c:/temp/_lab
+												CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(REPLACE(paramCopy, &apos;\&apos;, &apos;/&apos;), &apos;E&apos;, resourceName, parentPath);
+
+												-- Set the parameter to just the file resource name
+												--		e.g. resourceName=doc_applicationPublishedPath.txt
+												SET paramSingle = &apos;&apos;&apos;&apos; || resourceName || &apos;&apos;&apos;&apos;;
+												IF (UPPER(debug2) = &apos;Y&apos;) THEN
+													CALL print(moduleName||&apos; :  Param 3=[&apos;||NVL(paramSingle,&apos;null&apos;)||&apos;]&apos;);
+												END IF;
+
+												IF (NOT constantUpdated) THEN
+													-- Modify the /Documentation/constants procedure with the updated parentFilePath
+													-- 	set parentFilePath			= &apos;c:/temp&apos;||REPLACE(projectName, &apos; &apos;, &apos;_&apos;);
+													--  Replace the parent path string that occurrs before the ||REPLACE in the string above.
+													--  Get the &quot;parentFilePath&quot; definition.
+													--		e.g. &apos;c:/temp&apos;||REPLACE(projectName, &apos; &apos;, &apos;_&apos;)
+													CALL /shared/ASAssets/Utilities/string/getConstantV2(docConstantsPath, &apos;parentFilePath&apos;, 2, constantDef);
+													SET pos = INSTR(constantDef, &apos;||&apos;);
+													IF (pos &gt; 0) THEN
+														-- Get the name at the end of the parent path which originated from the parameter of the trigger copy.
+														--		e.g. parentPath=c:/temp/_lab
+														--		e.g. tempName1=_lab
+														CALL /shared/ASAssets/Utilities/string/getDelimitedOccurrence(parentPath, &apos;R&apos;, &apos;/&apos;, 1, 1, tempName1);
+
+
+														-- Get the actual value for &quot;parentFilePath&quot;
+														--		e.g. c:/temp/_lab
+														CALL /shared/ASAssets/Utilities/string/getConstantV2(docConstantsPath, &apos;parentFilePath&apos;, 1, constantValue);
+														-- Get the name at the end of the path
+														--		e.g. _lab
+														CALL /shared/ASAssets/Utilities/string/getDelimitedOccurrence(constantValue, &apos;R&apos;, &apos;/&apos;, 1, 1, tempName2);
+
+
+														-- Compare the names.  If they are the same then don&apos;t duplicate the name from the parent path
+														IF (tempName1 = tempName2) THEN
+															-- Extract the parent path one more time in order to create a root folder where the child node is not duplicated.
+															--		e.g. tempName1=_lab    =    tempName2=_lab
+															--		e.g. parentPath=c:/temp/_lab   --&gt;   parentPath=c:/temp
+															CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(parentPath, &apos;E&apos;, resourceName, parentPath);
+															--		e.g. &apos;c:/temp&apos;||||REPLACE(projectName, &apos; &apos;, &apos;_&apos;)
+															SET constantValue = &apos;&apos;&apos;&apos;||parentPath||&apos;&apos;&apos;&apos;||SUBSTRING(constantDef, pos);
+														ELSE
+															-- Take the parent folder as is since the child nodes do not match
+															--		e.g. tempName1=temp    =    tempName2=_lab
+															--		e.g. &apos;c:/temp&apos;||||REPLACE(projectName, &apos; &apos;, &apos;_&apos;)
+															SET constantValue = &apos;&apos;&apos;&apos;||parentPath||&apos;&apos;&apos;&apos;||SUBSTRING(constantDef, pos);
+														END IF;
+														-- Modify the constants with the parent file path.
+														CALL /shared/ASAssets/Utilities/string/modifyConstant(docConstantsPath, &apos;parentFilePath&apos;, constantValue);
+														IF (UPPER(debug2) = &apos;Y&apos;) THEN
+															CALL print(moduleName||&apos; :  Param 3: modify /Documentation/constant.parentFilePath=&apos;||NVL(constantValue,&apos;null&apos;));
+														END IF;
+													ELSE
+														-- Modify the constants with the parent file path.
+														SET parentPath = &apos;&apos;&apos;&apos;||parentPath||&apos;&apos;&apos;&apos;;
+														CALL /shared/ASAssets/Utilities/string/modifyConstant(docConstantsPath, &apos;parentFilePath&apos;, parentPath);
+														IF (UPPER(debug2) = &apos;Y&apos;) THEN
+															CALL print(moduleName||&apos; :  Param 3: modify /Documentation/constant.parentFilePath=&apos;||NVL(parentPath,&apos;null&apos;));
+														END IF;
+													END IF;
+													-- Only update the constants once for the first trigger processed.
+													SET constantUpdated = true;
+												END IF;
+											ELSE
+												IF (currParam IS NULL OR currParam = &apos;NULL&apos;) THEN
+													SET paramSingle = &apos;&apos;&apos;&apos; || &apos;&apos; || &apos;&apos;&apos;&apos;;
+												ELSE
+													SET paramSingle = &apos;&apos;&apos;&apos; || currParam || &apos;&apos;&apos;&apos;;
+												END IF;
+												IF (UPPER(debug2) = &apos;Y&apos;) THEN
+													CALL print(moduleName||&apos; :  Param 3=[&apos;||NVL(paramSingle,&apos;null&apos;)||&apos;]&apos;);
+												END IF;
+											END IF;
+											SET paramMod = paramMod || &apos;,&apos; || paramSingle;
+
+											/*********************************
+											 * PARAMETER 4
+											 *********************************/
+											-- Get the current trigger parameter 4 [in_switches]
+											CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getParameterNum(procedureParams, 4, 1, currParam);
+											IF (UPPER(currParam) = &apos;NULL&apos; OR LENGTH(currParam) = 0) THEN
+												SET currParam = &apos;NULL&apos;;
+											END IF;
+
+											-- Get the scripts copy trigger parameter 7 [in_switches]
+											CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getParameterNum(procedureParamsCopy, 7, 1, paramCopy);
+											IF (UPPER(paramCopy) = &apos;NULL&apos; OR LENGTH(paramCopy) = 0) THEN
+												SET paramCopy = &apos;NULL&apos;;
+											END IF;
+
+											-- Modify Parameter 4
+											IF (paramCopy IS NOT NULL AND LENGTH(paramCopy) &gt; 0 AND paramCopy &lt;&gt; &apos;NULL&apos;) THEN
+												SET paramSingle = &apos;&apos;&apos;&apos; || paramCopy || &apos;&apos;&apos;&apos;;
+											ELSEIF (currParam IS NOT NULL AND LENGTH(currParam) &gt; 0 AND currParam &lt;&gt; &apos;NULL&apos;) THEN
+												SET paramSingle = &apos;&apos;&apos;&apos; || currParam || &apos;&apos;&apos;&apos;;
+											ELSE
+												SET paramSingle = &apos;&apos;&apos;&apos; || &apos;&apos; || &apos;&apos;&apos;&apos;;
+											END IF;
+											SET paramMod = paramMod || &apos;,&apos; || paramSingle;
+											IF (UPPER(debug2) = &apos;Y&apos;) THEN
+												CALL print(moduleName||&apos; :  Param 4=[&apos;||NVL(paramSingle,&apos;null&apos;)||&apos;]&apos;);
+											END IF;
+
+											/*********************************
+											 * PARAMETER 5
+											 *********************************/
+											-- Get the current trigger parameter 5 [in_excludeKeywordsInPathList]
+											CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getParameterNum(procedureParams, 5, 1, currParam);
+											IF (UPPER(currParam) = &apos;NULL&apos; OR LENGTH(currParam) = 0) THEN
+												SET currParam = &apos;NULL&apos;;
+											END IF;
+
+											-- Get the scripts copy trigger parameter 8 [in_excludeKeywordsInPathList]
+											CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getParameterNum(procedureParamsCopy, 8, 1, paramCopy);
+											IF (UPPER(paramCopy) = &apos;NULL&apos; OR LENGTH(paramCopy) = 0) THEN
+												SET paramCopy = &apos;NULL&apos;;
+											END IF;
+
+											-- Modify Parameter 5
+											IF (paramCopy IS NOT NULL AND LENGTH(paramCopy) &gt; 0 AND paramCopy &lt;&gt; &apos;NULL&apos;) THEN
+												SET paramSingle = &apos;&apos;&apos;&apos; || paramCopy || &apos;&apos;&apos;&apos;;
+											ELSEIF (currParam IS NOT NULL AND LENGTH(currParam) &gt; 0 AND currParam &lt;&gt; &apos;NULL&apos;) THEN
+												SET paramSingle = &apos;&apos;&apos;&apos; || currParam || &apos;&apos;&apos;&apos;;
+											ELSE
+												SET paramSingle = &apos;&apos;&apos;&apos; || &apos;&apos; || &apos;&apos;&apos;&apos;;
+											END IF;
+											SET paramMod = paramMod || &apos;,&apos; || paramSingle;
+											IF (UPPER(debug2) = &apos;Y&apos;) THEN
+												CALL print(moduleName||&apos; :  Param 5=[&apos;||NVL(paramSingle,&apos;null&apos;)||&apos;]&apos;);
+											END IF;
+
+											/*********************************
+											 * PARAMETER 6
+											 *********************************/
+											-- Get the current trigger parameter 6 [in_excludePathsList]
+											CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getParameterNum(procedureParams, 6, 1, currParam);
+											IF (UPPER(currParam) = &apos;NULL&apos; OR LENGTH(currParam) = 0) THEN
+												SET currParam = &apos;NULL&apos;;
+											END IF;
+
+											-- Get the scripts copy trigger parameter 9 [in_excludePathsList]
+											CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getParameterNum(procedureParamsCopy, 9, 1, paramCopy);
+											IF (UPPER(paramCopy) = &apos;NULL&apos; OR LENGTH(paramCopy) = 0) THEN
+												SET paramCopy = &apos;NULL&apos;;
+											END IF;
+
+											-- Modify Parameter 6
+											IF (paramCopy IS NOT NULL AND LENGTH(paramCopy) &gt; 0 AND paramCopy &lt;&gt; &apos;NULL&apos;) THEN
+												SET paramSingle = &apos;&apos;&apos;&apos; || paramCopy || &apos;&apos;&apos;&apos;;
+											ELSEIF (currParam IS NOT NULL AND LENGTH(currParam) &gt; 0 AND currParam &lt;&gt; &apos;NULL&apos;) THEN
+												SET paramSingle = &apos;&apos;&apos;&apos; || currParam || &apos;&apos;&apos;&apos;;
+											ELSE
+												SET paramSingle = &apos;&apos;&apos;&apos; || &apos;&apos; || &apos;&apos;&apos;&apos;;
+											END IF;
+											SET paramMod = paramMod || &apos;,&apos; || paramSingle;
+											IF (UPPER(debug2) = &apos;Y&apos;) THEN
+												CALL print(moduleName||&apos; :  Param 6=[&apos;||NVL(paramSingle,&apos;null&apos;)||&apos;]&apos;);
+											END IF;
+
+											-- The trigger procedure parameters have changed so set the trigger to be updated with the modified parameters.
+											SET procedureParams = paramMod;
+											SET updateTrigger = true;
+											if (UPPER(debug2) = &apos;Y&apos;) THEN
+												call print(moduleName||&apos; :  procedureParams=[&apos;||NVL(procedureParams,&apos;null&apos;)||&apos;]&apos;);
+											end if;
+										END IF;
+									ELSE
+										IF (UPPER(debug) = &apos;Y&apos;) THEN
+											CALL PRINT(moduleName||&apos; : updateAction=[&apos;||NVL(updateAction,&apos;null&apos;)||&apos;]  The &quot;trigger&quot;=&apos;||NVL(triggerVect[j].name,&apos;null&apos;)||&apos; does not exist.  Current &quot;trigger&quot; was not updated.&apos;);
+										END IF;
+									END IF;
+								ELSE
+									IF (UPPER(debug) = &apos;Y&apos;) THEN
+										CALL PRINT(moduleName||&apos; : updateAction=[&apos;||NVL(updateAction,&apos;null&apos;)||&apos;]  The &quot;scriptsPathCopy&quot; does not exist.  Current &quot;trigger&quot; was not updated.&apos;);
+									END IF;
+								END IF;
+							ELSE
+								if (UPPER(debug) = &apos;Y&apos;) then
+									call print(moduleName||&apos; :  updateAction=[&apos;||NVL(updateAction,&apos;null&apos;)||&apos;]  &quot;To&quot; Version is out of range.  Must be 2019.3 or higher. toVersion=&apos;||NVL(cast(toVersion as varchar),&apos;null&apos;));
+								end if;
+							end if;
+						ELSE
+							if (UPPER(debug) = &apos;Y&apos;) then
+								call print(moduleName||&apos; :  updateAction=[&apos;||NVL(updateAction,&apos;null&apos;)||&apos;]  &quot;From&quot; Version is out of range. Must be between 8.1 and 2019.2.  fromVersion=&apos;||NVL(cast(fromVersion as varchar),&apos;null&apos;));
+							end if;
+						end if;
+					end if;
+
+					-- update the trigger
+					if (updateTrigger) then
+						set message = &apos;      UPDATED: updateAction=[&apos;||RPAD(displayAction,14,&apos; &apos;)||&apos;]  &apos;||LPAD(&apos;[&apos;||triggerVect[j].resType||&apos;]&apos;,11,&apos; &apos;)||LPAD(&apos;[&apos;||triggerVect[j].subtype||&apos;]&apos;,30,&apos; &apos;)||&apos; dstPath=&apos;||triggerVect[j].resPath;
+						if (UPPER(debug) = &apos;Y&apos;) then
+							call print(moduleName||&apos; : &apos;||message);
+						end if;
+						set message = &apos;      UPDATED: procedurePath=[&apos;||NVL(procedurePath,&apos;null&apos;)||&apos;]&apos;;
+						if (UPPER(debug) = &apos;Y&apos;) THEN
+							call print(moduleName||&apos; : &apos;||message);
+						end if;
+						set message = &apos;      UPDATED: procedureParams=[&apos;||NVL(procedureParams,&apos;null&apos;)||&apos;]&apos;;
+						if (UPPER(debug) = &apos;Y&apos;) THEN
+							call print(moduleName||&apos; : &apos;||message);
+						end if;
+
+						-- Set up the trigger vector to be passed into updateTrigger()
+						SET triggerAttrVect = VECTOR[
+							(&apos;procedurePath&apos;, 			procedurePath),
+							(&apos;procedureParams&apos;, 		procedureParams),
+							(&apos;procedureExhaustCursors&apos;, &apos;0&apos;),
+							(&apos;maxEventsQueued&apos;, 		&apos;1&apos;)
+						];
+
+						-- Update the trigger
+						CALL /shared/ASAssets/Utilities/repository/updateTrigger(
+								triggerVect[j].resPath, -- fullResourcePath
+								0, 						-- enabled
+								&apos;TIMER&apos;, 				-- conditionType
+								&apos;PROCEDURE&apos;, 			-- actionType,
+								triggerAttrVect,
+								NULL, 					-- attributeVect,		
+								success,
+								createResponse,
+								faultResponse
+							);
+
+						if (faultResponse is not null or success = 0) then
+							set message = &apos;        ERROR: updateAction=[&apos;||RPAD(displayAction,14,&apos; &apos;)||&apos;]  &apos;||LPAD(&apos;[&apos;||triggerVect[j].resType||&apos;]&apos;,11,&apos; &apos;)||LPAD(&apos;[&apos;||triggerVect[j].subtype||&apos;]&apos;,30,&apos; &apos;)||&apos; dstPath=&apos;||triggerVect[j].resPath;
+							if (UPPER(debug) = &apos;Y&apos;) then
+								call print(moduleName||&apos; : &apos;||message);
+							end if;
+							raise ex value moduleName||&apos;:  &apos;||cast(faultResponse as longvarchar);
+						end if;
+					else
+						set message = &apos;    INSPECTED: updateAction=[&apos;||RPAD(displayAction,14,&apos; &apos;)||&apos;]  &apos;||LPAD(&apos;[&apos;||triggerVect[j].resType||&apos;]&apos;,11,&apos; &apos;)||LPAD(&apos;[&apos;||triggerVect[j].subtype||&apos;]&apos;,30,&apos; &apos;)||&apos; dstPath=&apos;||triggerVect[j].resPath;
+						if (UPPER(debug) = &apos;Y&apos;) then
+							call print(moduleName||&apos; : &apos;||message);
+						end if;
+					end if;
+
+					set k = k + 1;
+				END WHILE;
+			end if;
+			set j = j + 1;
+		END WHILE;
+
+		EXCEPTION
+			ELSE raise ex value moduleName||&apos;:  &apos;||cast(CURRENT_EXCEPTION.TRACE as longvarchar);
+		END;
+
+		set i = i + 1;
+	END WHILE;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573161757946</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:0:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">11/236</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/309</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/237</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">18/642</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">13/287</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">13/244</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">13/288</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">13/326</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">13/325</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">13/748</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">13/706</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/340</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/273</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/274</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/386</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/275</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/276</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/741</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/302</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">19/424</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/347</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">19/521</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">19/584</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">13/250</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">21/571</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">18/677</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">16/687</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/270</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/271</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/272</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">13/710</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">18/492</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">18/670</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">13/714</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/298</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/697</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">21/564</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">18/614</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/336</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/692</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">17/682</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

@@ -1,0 +1,686 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Cosmetic_SKU_Prices" path="/shared/Common/Business/Logical/Pricing/Cosmetic_SKU_Prices" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cosmetic_sku_pfx" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cosmetic_sku_base" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cosmetic_sku_sfx" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sku_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="business_cd" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pv" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="bv" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dc" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="srlvat" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sr" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="non_bv" nullable="true">
+      <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amab" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amab_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amad" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amad_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmab" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmab_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmad" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmad_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="added_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="changed_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="effective_date" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="case_qty" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ltu_conv_flg" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ltu_conv_mult_qty" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cosmetic_lead" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/Appraise/Gpt001_Sku_Master" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="amway_sku_pfx">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="amway_sku_base">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="amway_sku_sfx">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="sku_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="frt_rate_cd">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="sales_outlet_cd">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="i_source_cd">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="make_buy_cd">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="unit_cd">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="status_cd">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="business_cd">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="category_cd">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="sku_desc">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="effective_date">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="case_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="available_as_each">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="unit_qty">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="markup_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="weight">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="duty_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="vat_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="alcohol_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="npi_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="npi_mfg_cost">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="price_list_major">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="price_list_minor">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="pv">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="bv">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="dc">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="dcivat">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="sr">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="srlvat">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="factory_cost">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="bdgt_factory_cost">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="factory_cost_byout">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="bdgt_factory_cost_byout">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="unit_forecast">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="unit_forecast_lnr">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="bdgt_unit_forecast">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="bdgt_unit_forecast_lnr">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="export_price">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="export_freight">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="xfr_duty_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="xfr_duty_amt">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+      </element>
+      <element name="xfr_royal_amt">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+      </element>
+      <element name="xfr_adu_amt">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+      </element>
+      <element name="cost_of_sale">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="bv_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="assoc_skipped">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="added_who">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="added_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="changed_who">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="changed_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="sku_comments">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="royalty_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="npi_xfr_price">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="creative_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="pack_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="abc_mad">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="abc_op_mgn">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="abc_op_mgn_alloc">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="save_sku_from_bill">
+        <datatype type="STRING" minLength="18" maxLength="18"/>
+      </element>
+      <element name="amway_sku_std">
+        <datatype type="STRING" minLength="15" maxLength="15"/>
+      </element>
+      <element name="cosmetic_lead">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="mf_extract_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="cos_bill">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="hybrid_sku">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="sku_std_ovrrd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="bv_dc_ratio">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="kit_sku">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="file_num">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="ea_dist_exp_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="cs_dist_exp_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="user_dfine_0_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="user_dfine_1_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="user_dfine_2_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="user_dfine_3_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="user_dfine_4_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="user_dfine_5_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="user_dfine_6_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="user_dfine_7_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="user_dfine_8_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="user_dfine_9_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="bdgt_prod_forecast">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="prod_recp_id">
+        <datatype type="STRING" minLength="18" maxLength="18"/>
+      </element>
+      <element name="lc_cmab_srchg_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="std_cost_src_cd">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="hybrd_cost_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="reas_chng_desc">
+        <datatype type="STRING" minLength="15" maxLength="15"/>
+      </element>
+      <element name="meas_cr_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="ada_mrgn_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="meas_cr_eff_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="meas_cr_src_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="sell_mult_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="ltu_conv_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ltu_conv_mult_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="price_ctgry_grp_cd">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="rtail_prft_pct">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="4"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/Appraise/Gpt065_Cosmetic_Master" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="amway_sku_pfx">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="amway_sku_base">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="amway_sku_sfx">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="cosmetic_sku_pfx">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="cosmetic_sku_base">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="cosmetic_sku_sfx">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="sku_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="unit_forecast">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="unit_forecast_lnr">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="bdgt_unit_forecast">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="bdgt_unit_forecast_lnr">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="factory_cost">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="bdgt_factory_cost">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="sku_desc">
+        <datatype type="STRING" minLength="40" maxLength="40"/>
+      </element>
+      <element name="added_who">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="added_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="forecast_sum">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="changed_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="changed_who">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="pend_wgtd_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="bdgt_forecast_sum">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="bdgt_prod_forecast">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="export_price">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="std_cost_src_cd">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="hybrd_cost_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="ada_mrgn_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="meas_cr_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/Appraise/Gpt073_Master_Margins" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="amway_sku_pfx">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="amway_sku_base">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="amway_sku_sfx">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="sku_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="royalty">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="ada_margin">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="amab">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="amab_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="amad">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="amad_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="cmab">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="cmab_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="cmad">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="cmad_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="meas_cr_lc_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="cntrb_grs_prft_lc_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="cntrb_mab_lc_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="cntrb_mab_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="cntrb_mad_lc_amt">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="cntrb_mad_pct">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="changed_dt">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT
+    Gpt065_Cosmetic_Master.corp_cd, 
+    Gpt065_Cosmetic_Master.cosmetic_sku_pfx, 
+    Gpt065_Cosmetic_Master.cosmetic_sku_base, 
+    Gpt065_Cosmetic_Master.cosmetic_sku_sfx, 
+    CAST(&apos;M&apos; AS CHAR(1)) sku_cd, 
+    Gpt001_Sku_Master.business_cd, 
+    Gpt001_Sku_Master.pv, 
+    Gpt001_Sku_Master.bv, 
+    Gpt001_Sku_Master.dc, 
+    Gpt001_Sku_Master.srlvat, 
+    Gpt001_Sku_Master.sr, 
+    Gpt001_Sku_Master.sr - Gpt001_Sku_Master.bv non_bv, 
+    Gpt073_Master_Margins.amab, 
+    Gpt073_Master_Margins.amab_pct, 
+    Gpt073_Master_Margins.amad, 
+    Gpt073_Master_Margins.amad_pct, 
+    Gpt073_Master_Margins.cmab, 
+    Gpt073_Master_Margins.cmab_pct, 
+    Gpt073_Master_Margins.cmad, 
+    Gpt073_Master_Margins.cmad_pct, 
+    Gpt001_Sku_Master.added_dt, 
+    Gpt001_Sku_Master.changed_dt, 
+    Gpt001_Sku_Master.effective_date, 
+    Gpt001_Sku_Master.case_qty, 
+    Gpt001_Sku_Master.ltu_conv_flg, 
+    Gpt001_Sku_Master.ltu_conv_mult_qty, 
+    Gpt001_Sku_Master.cosmetic_lead
+FROM      
+    /shared/Common/Physical/Formatting/Appraise/Gpt073_Master_Margins Gpt073_Master_Margins INNER JOIN 
+        /shared/Common/Physical/Formatting/Appraise/Gpt001_Sku_Master Gpt001_Sku_Master INNER JOIN 
+            /shared/Common/Physical/Formatting/Appraise/Gpt065_Cosmetic_Master Gpt065_Cosmetic_Master
+        ON Gpt001_Sku_Master.corp_cd = Gpt065_Cosmetic_Master.corp_cd AND 
+            Gpt001_Sku_Master.amway_sku_pfx = Gpt065_Cosmetic_Master.amway_sku_pfx AND 
+            Gpt001_Sku_Master.amway_sku_base = Gpt065_Cosmetic_Master.amway_sku_base AND 
+            Gpt001_Sku_Master.amway_sku_sfx = Gpt065_Cosmetic_Master.amway_sku_sfx AND 
+            Gpt001_Sku_Master.sku_cd = Gpt065_Cosmetic_Master.sku_cd
+    ON Gpt001_Sku_Master.corp_cd = Gpt073_Master_Margins.corp_cd AND 
+        Gpt001_Sku_Master.amway_sku_pfx = Gpt073_Master_Margins.amway_sku_pfx AND 
+        Gpt001_Sku_Master.amway_sku_base = Gpt073_Master_Margins.amway_sku_base AND 
+        Gpt001_Sku_Master.amway_sku_sfx = Gpt073_Master_Margins.amway_sku_sfx AND 
+        Gpt001_Sku_Master.sku_cd = Gpt073_Master_Margins.sku_cd</attribute>
+  <attribute name="creationDate" type="LONG">1553524670799</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1553524670799</attribute>
+</metadata>

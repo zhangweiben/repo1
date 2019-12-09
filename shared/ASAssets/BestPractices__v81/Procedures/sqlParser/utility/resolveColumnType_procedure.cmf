@@ -1,0 +1,219 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="resolveColumnType" path="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/resolveColumnType" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="inSourceColumn" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="columnAlias" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inResColumnTypeList" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="columnNameSearchTag" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="columnTypeSearchTag" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="codingListColumns" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="columnType" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inWord" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractBiDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="searchTerm" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="openingDelim" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="closingDelim" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOccurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inTrimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inCaseSensitive" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	resolveColumnType - Resolve the column type for the given column.
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	11/11/2011		Mike Tinius			5.2.0			Created new
+	03/15/2013		Mike Tinius			5.2.0			Modifications for Best Practices 7.0
+	11/20/2014		Mike Tinius			6.2.6			8.1.5: Added &apos;P D S&apos; to the getCodedString(&apos;D&apos;, &apos;P D S&apos;, ...) invocation because of a change to getCodedString.
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE resolveColumnType(
+	IN  inSourceColumn  		VARCHAR,
+	IN  columnAlias				VARCHAR,
+	IN	inResColumnTypeList		LONGVARCHAR,
+	IN  columnNameSearchTag 	VARCHAR,
+	IN  columnTypeSearchTag		VARCHAR,
+	IN  codingListColumns		LONGVARCHAR,
+	OUT columnType				VARCHAR
+)
+BEGIN
+	DECLARE moduleName			VARCHAR DEFAULT &apos;resolveColumnType&apos;;
+	DECLARE sourceColumn		VARCHAR DEFAULT inSourceColumn;
+	DECLARE resColumnTypeList	LONGVARCHAR DEFAULT inResColumnTypeList;
+	DECLARE debug				CHAR(1) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.debugSqlParser3;
+	DECLARE pos					INTEGER;
+	DECLARE columnName			VARCHAR DEFAULT &apos;&apos;;
+	DECLARe columnTypeUsed		VARCHAR DEFAULT &apos;&apos;;
+	DECLARE resColumnName		VARCHAR(4000);
+	DECLARE startTime			TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+	DECLARE duration			INTERVAL MINUTE TO SECOND;
+	DECLARE seconds				DECIMAL(32,3);
+	DECLARE debugTime			CHAR(1) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.debugTime;
+
+	call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(sourceColumn, debug, sourceColumn);
+	if (debug = &apos;Y&apos;) then
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;in   sourceColumn=&apos;||NVL(sourceColumn,&apos;null&apos;));
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;in   columnAlias=&apos;||NVL(columnAlias,&apos;null&apos;));
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;in   inResColumnTypeList=&apos;||NVL(inResColumnTypeList,&apos;null&apos;));
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;in   columnNameSearchTag=&apos;||NVL(columnNameSearchTag,&apos;null&apos;));
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;in   columnTypeSearchTag=&apos;||NVL(columnTypeSearchTag,&apos;null&apos;));
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;in   codingListColumns=&apos;||NVL(codingListColumns,&apos;null&apos;));
+	end if;
+
+	-- Get the columnType from the current resourcePath
+	set columnType = null;
+	if (columnAlias IS NOT NULL AND LENGTH(&apos;|&apos;||columnAlias||&apos;|&apos;) &gt; 2) then  --notEmpty
+		set columnName = columnAlias;
+
+		set columnTypeUsed = &apos;columnAlias&apos;;
+		if (debug = &apos;Y&apos;) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;out  columnTypeUsed=&apos;||columnTypeUsed||&apos;    columnName=&apos;||NVL(columnName,&apos;null&apos;));
+		end if;
+		set pos = POSITION(columnNameSearchTag||&apos;[&apos;||columnName||&apos; &apos;||columnTypeSearchTag IN resColumnTypeList);
+		--call print(&apos;pos=&apos;||pos||&apos;  &apos;||columnNameSearchTag||&apos;[&apos;||columnName||&apos; &apos;||columnTypeSearchTag);
+		if (pos &gt; 0) then
+			-- Set the string so it starts with the found column.  This allows extractBiDelimitedText to select the first occurrence.
+			set resColumnTypeList = SUBSTRING(resColumnTypeList, pos, LENGTH(resColumnTypeList));
+			call /shared/ASAssets/Utilities/string/extractBiDelimitedText(resColumnTypeList, columnNameSearchTag, &apos;[&apos;, &apos;]&apos;, 1, 0, 1, resColumnName);
+			call /shared/ASAssets/Utilities/string/extractBiDelimitedText(resColumnName, columnTypeSearchTag, &apos;{&apos;, &apos;}&apos;, 1, 0, 1, columnType);
+		end if;
+	else
+		if (sourceColumn IS NOT NULL AND LENGTH(&apos;|&apos;||sourceColumn||&apos;|&apos;) &gt; 2) then  --notEmpty
+			set columnName = sourceColumn;
+
+			set columnTypeUsed = &apos;sourceColumn&apos;;
+			if (debug = &apos;Y&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;out  columnTypeUsed=&apos;||columnTypeUsed||&apos;    columnName=&apos;||NVL(columnName,&apos;null&apos;));
+			end if;
+			set pos = POSITION(columnNameSearchTag||&apos;[&apos;||columnName||&apos; &apos;||columnTypeSearchTag IN resColumnTypeList);
+			if (pos &gt; 0) then
+				-- Set the string so it starts with the found column.  This allows extractBiDelimitedText to select the first occurrence.
+				set resColumnTypeList = SUBSTRING(resColumnTypeList, pos, LENGTH(resColumnTypeList));
+				call /shared/ASAssets/Utilities/string/extractBiDelimitedText(resColumnTypeList, columnNameSearchTag, &apos;[&apos;, &apos;]&apos;, 1, 0, 1, resColumnName);
+				call /shared/ASAssets/Utilities/string/extractBiDelimitedText(resColumnName, columnTypeSearchTag, &apos;{&apos;, &apos;}&apos;, 1, 0, 1, columnType);
+			end if;
+		end if;
+	end if;
+
+	set duration = CURRENT_TIMESTAMP - startTime;
+	set seconds = EXTRACT(SECONDS FROM duration);
+	if (seconds &gt; .03 and debugTime = &apos;Y&apos;) then
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debugTime,&apos;duration=&apos;||cast(duration as varchar)||&apos;  columnType=&apos;||NVL(columnType,&apos;null&apos;)||&apos;  columnTypeUsed=&apos;||columnTypeUsed||&apos;  columnName=&apos;||columnName);
+	end if;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

@@ -1,0 +1,77 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="_RELEASE_NOTES" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/_RELEASE_NOTES" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <parameters></parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="Script" type="STRING">/*
+	History of changes.   The most recent changes are first.
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	--------------	------------------	------------	-------
+	01/30/2015		Mike Tinius			6.2.6			Added &apos;getPrivilegeDatasourceToScriptMapping&apos; which maps a datasource type to a formatting view or script which invokes that datasource connection.
+														Added &apos;updateResourcePrivilegesDriverV3&apos; which contains the Datasource parameter.  
+														Added Datasource parameter to existing published procedures that are not as widely used.
+	11/18/2014		Mike Tinius			6.2.6			Updated all published procedures to use scalar output variables to coordinate with PDTool capabilities to display output variables.
+	... many changes that were not tracked
+	Mar 2014		Mike Tinius			6.2.6			Created new
+	01/15/2016		Mike Tinius			7.0.2			updateResourcePrivilegesDriverV3
+														1. added additional parameters to updatePrivilegeCategory. 
+														2. Fixed bug where 1st privilege was not being applied because it was getting the LINK COLUMN instead of the 1st level lineage view.
+														3. Retrieve columns from system.COLUMN_NAMES instead of the procedure getBasicResourceCursor_SQL_TABLE.
+	01/18/2016		Mike Tinius			7.0.2			validatePrivilegesDriver
+														1. Fixed validatePrivilegesDriver to retrieve 1st level lineage privileges instead of LINK COLUMN privileges.
+														2. Added validatePrivilegesDriver feature to get privileges outside the intended list and throw an exception based on whether they were not revoked properly.
+														3. Fixed bug to not throw an error on resources not found.  Added bypassErrors=[0|1]
+	02/02/2016		Mike Tinius			7.0.2			validatePrivilegesDriver
+														1. Fixed bug to not throw an error on resources not found. 
+	05/24/2016		Mike Tinius			7.0.3			Added procedure getCurrentTimestamp to workaround a bug introduced by 7.0.3 server when setting CURRENT_TIMESTAMP.
+
+	06/30/2016		Mike Tinius			7.0.3			Modified Revoke All code to only set actual Privileges and not inherited privileges since inherited cannot be changed.
+														Modified insertNewPrivileges_MBUPI to return more message output.
+														Modified get_Composite_Resource_Privileges to be able to handle a comma-separate list of Resource_Path with wild-card &quot;%&quot;.
+	07/16/2016		Mike Tinius			7.0.3			Moved &quot;insertNewPrivileges_MBUPI&quot; to the MBU_PROCESS_INSIGHT folder.
+														Did a major overhaul to improve performance and reduce the memory usage by removing all use of vector&apos;s.
+	01/31/2017		Mike Tinius			7.0.4			Removed all references to removeDoubleQuotes, emptyStr, convertYN, returnFolderNameAndFolderPath, and getDelimitedOccurrence in order to reduce the the number of procedure calls.
+															Put in conditional logic to directly call RegexReplace only when required instead of removeDoubleQuotes.
+	02/07/2017		Mike Tinius			7.0.4			Removed all but two occurrences of RegexSplit to reduce the number of iterations of invoked procedures.	 
+															RegexSplit is still used in updatePrivilegeReadFoldersV4 and validatePrivilegesDriverV4 due to logic requirements.	
+															Deprecated updateResourcePrivilegesDriverV3 and get_Composite_Resource_Privileges and related Helpers procedures.											  
+	03/09/2017		Mike Tinius			7.0.4			Modified vPrivileges_All_Excel_Load and vGroups_All_Excel.  Added AND LENGTH(TRIM(columnname)) &gt; 0 for both to filter out blank rows with spaces in key columns.
+															For vPrivileges_All_Excel_Load, moved the where clause filter from outside the UNION to inside the UNION and placed on all three SELECT statements.
+	04/12/2017		Mike Tinius			7.0.4			Modified &quot;ModifyPrivileges&quot; to add table maintenance for various supporting tables in the database.
+	05/03/2017		Mike Tinius			7.0.5			Added &quot;Name Type&quot; filter to various procedures.  Changed SheetType to Organization in various vPrivileges_... views.
+	05/16/2017		Mike Tinius			7.0.5			Adapted for Data Abstraction Best Practices.
+*/
+PROCEDURE &quot;_RELEASE_NOTES&quot;()
+BEGIN
+END</attribute>
+  <attribute name="creationDate" type="LONG">1416336939726</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1513891747563</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

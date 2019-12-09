@@ -1,0 +1,266 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Amw_Onlineresource" path="/shared/Common/Physical/Formatting/Sales_Support/Amw_Onlineresource" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="amw_onlineresourceid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amw_businessaffiliationid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amw_onlineresourcename" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amw_url" nullable="true">
+      <datatype type="STRING" maxLength="250"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="createdby" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="createdon" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="createdonbehalfby" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="importsequencenumber" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="modifiedby" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="modifiedon" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="modifiedonbehalfby" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="overriddencreatedon" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ownerid" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="owningbusinessunit" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="owningteam" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="owninguser" nullable="true">
+      <datatype type="STRING" minLength="36" maxLength="36"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="statecode" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="statuscode" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="timezoneruleversionnumber" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="utcconversiontimezonecode" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="versionnumber" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes>
+    <index name="PK__amw_onli__914D868783EEC3F5" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="amw_onlineresourceid" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/Azure/SQLServer_Sales_Support/RMB07001_SALES_SPRT_PRD_DYNMC_APP/dbo/amw_onlineresource" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="amw_onlineresourceId" nullable="false">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="amw_BusinessAffiliationid">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="amw_OnlineResourceName">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="amw_URL">
+        <datatype type="STRING" maxLength="250"/>
+      </element>
+      <element name="CreatedBy">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="CreatedOn">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="CreatedOnBehalfBy">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="ImportSequenceNumber">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="ModifiedBy">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="ModifiedOn">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="ModifiedOnBehalfBy">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="OverriddenCreatedOn">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="OwnerId">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="OwningBusinessUnit">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="OwningTeam">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="OwningUser">
+        <datatype type="STRING" minLength="36" maxLength="36"/>
+      </element>
+      <element name="statecode">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="statuscode">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="TimeZoneRuleVersionNumber">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="UTCConversionTimeZoneCode">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="VersionNumber">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	amw_onlineresource.amw_onlineresourceId amw_onlineresourceid,
+	CAST(amw_onlineresource.amw_BusinessAffiliationid AS CHAR(36)) AS amw_businessaffiliationid,
+	CAST(amw_onlineresource.amw_OnlineResourceName AS VARCHAR(100)) AS amw_onlineresourcename,
+	CAST(amw_onlineresource.amw_URL AS VARCHAR(250)) AS amw_url,
+	CAST(amw_onlineresource.CreatedBy AS CHAR(36)) AS createdby,
+	CAST(amw_onlineresource.CreatedOn AS TIMESTAMP) AS createdon,
+	CAST(amw_onlineresource.CreatedOnBehalfBy AS CHAR(36)) AS createdonbehalfby,
+	CAST(amw_onlineresource.ImportSequenceNumber AS INTEGER) AS importsequencenumber,
+	CAST(amw_onlineresource.ModifiedBy AS CHAR(36)) AS modifiedby,
+	CAST(amw_onlineresource.ModifiedOn AS TIMESTAMP) AS modifiedon,
+	CAST(amw_onlineresource.ModifiedOnBehalfBy AS CHAR(36)) AS modifiedonbehalfby,
+	CAST(amw_onlineresource.OverriddenCreatedOn AS TIMESTAMP) AS overriddencreatedon,
+	CAST(amw_onlineresource.OwnerId AS CHAR(36)) AS ownerid,
+	CAST(amw_onlineresource.OwningBusinessUnit AS CHAR(36)) AS owningbusinessunit,
+	CAST(amw_onlineresource.OwningTeam AS CHAR(36)) AS owningteam,
+	CAST(amw_onlineresource.OwningUser AS CHAR(36)) AS owninguser,
+	CAST(amw_onlineresource.statecode AS INTEGER) AS statecode,
+	CAST(amw_onlineresource.statuscode AS INTEGER) AS statuscode,
+	CAST(amw_onlineresource.TimeZoneRuleVersionNumber AS INTEGER) AS timezoneruleversionnumber,
+	CAST(amw_onlineresource.UTCConversionTimeZoneCode AS INTEGER) AS utcconversiontimezonecode,
+	CAST(amw_onlineresource.VersionNumber AS BIGINT) AS versionnumber 
+FROM
+	/shared/Common/Physical/Metadata/Azure/SQLServer_Sales_Support/RMB07001_SALES_SPRT_PRD_DYNMC_APP/dbo/amw_onlineresource amw_onlineresource</attribute>
+  <attribute name="creationDate" type="LONG">1567127000360</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1567127000360</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1567127000360</attribute>
+</metadata>

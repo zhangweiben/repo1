@@ -1,0 +1,663 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="updateResourcesSqlTableV2" path="/shared/ASAssets/Utilities/repository/updateResourcesSqlTableV2" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>updateResourcesSqlTableV2:
+
+	-- CIS Repository Helper Procedure --
+	This procedure is used to update the content of a SQL Table View including the indexes for that VIEW. 
+	In order to achieve this, an array of the columns and their types along with an array of the sql indexes
+	are passed into this procedure.
+
+	This procedure uses XML for the columnList, sqlIndexList and foreignKeyList instead of a vector.
+ 
+	Input:
+		fullResourcePath - Full resource path which includes the path and the resource name  
+			Values: e.g. /shared/Utilities/repository/examples/source/view1
+		scripttext - SQL Table text to be updated  
+			Values: sql table script
+		annotation - View annotation
+		columnList - a definition of sql columns and definitions
+					childResourceType ROW (
+						resourceName 		VARCHAR, 
+						resourcePath 		VARCHAR(4096), 
+						resourceType 		VARCHAR, 
+						columnName 			VARCHAR, 
+						columnType 			VARCHAR,
+						annotation			LONGVARCHAR
+					);
+	SET columnList = 
+		&apos;        &lt;resource:columns&gt;&apos;||CHR(10)||
+		&apos;            &lt;resource:column&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:name&gt;&apos;||CAST(XMLTEXT(TRIM(NVL(columnName,&apos;  &apos;))) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:dataType&gt;&apos;||CHR(10)||
+		&apos;                    &lt;common:sqlType xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&gt;&apos;||CHR(10)||
+		&apos;                        &lt;common:definition&gt;&apos;||CAST(XMLTEXT(TRIM(NVL(columnType,&apos;  &apos;))) AS LONGVARCHAR)||&apos;&lt;/common:definition&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/common:sqlType&gt;&apos;||CHR(10)||
+		&apos;                &lt;/resource:dataType&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:annotation&gt;&apos;||CAST(XMLTEXT(TRIM(NVL(annotation,&apos;  &apos;))) AS LONGVARCHAR)||&apos;&lt;/resource:annotation&gt;&apos;||CHR(10)||
+		&apos;            &lt;/resource:column&gt;&apos;||CHR(10)||
+		&apos;        &lt;/resource:columns&gt;&apos;||CHR(10)||
+		&apos;&apos;;
+
+		sqlIndexList - a definition of sql indexes
+					sqlIndexType ROW (
+						sqlIndexName 		VARCHAR(255), 
+						sqlIndexType 		VARCHAR(255), 
+						sqlIndexUnique 		VARCHAR(255), -- true or false
+						sqlIndexColName 	VARCHAR(255), 
+						sqlIndexColOrder 	VARCHAR(255)
+					);
+	SET sqlIndexList =
+		&apos;        &lt;resource:sqlIndexes&gt;&apos;||CHR(10)||
+		&apos;            &lt;resource:index&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:type&gt;&apos;||CAST(XMLTEXT(sqlIndexType) AS LONGVARCHAR)||&apos;&lt;/resource:type&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:unique&gt;&apos;||CAST(XMLTEXT(sqlIndexUnique) AS LONGVARCHAR)||&apos;&lt;/resource:unique&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:columns&gt;&apos;||CHR(10)||
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexColName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:order&gt;&apos;||CAST(XMLTEXT(sqlIndexColOrder) AS LONGVARCHAR)||&apos;&lt;/resource:order&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+		-- If it is a multi-column key then add more &lt;column&gt; nodes here:
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexColName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:order&gt;&apos;||CAST(XMLTEXT(sqlIndexColOrder) AS LONGVARCHAR)||&apos;&lt;/resource:order&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+
+		&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+		&apos;            &lt;/resource:index&gt;&apos;||CHR(10)||
+		&apos;        &lt;/resource:sqlIndexes&gt;&apos;||CHR(10)||
+		&apos;&apos;;
+
+		foreignKeyList - a definition of foreign keys
+					foreignKeyType ROW (
+						fkName 					VARCHAR(255), --name of the foreign key
+						fkPrimaryKeyName 		VARCHAR(255), --name of the primary key index
+						fkPrimaryKeyTable 		VARCHAR(255), --fully qualified path to the primary table
+						fkForeignKeyColumnName 	VARCHAR(255), --column name in the foreign table
+						fkPrimaryKeyColumnName 	VARCHAR(255)  --matching column name in the primary table
+					);
+	SET foreignKeyList =
+		&apos;        &lt;resource:sqlForeignKeys&gt;&apos;||CHR(10)||
+		&apos;            &lt;resource:foreignKey&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:name&gt;&apos;||CAST(XMLTEXT(fkName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:primaryKeyName&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyName&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:primaryKeyTable&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyTable) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyTable&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:columns&gt;&apos;||CHR(10)||
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:foreignKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkForeignKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:foreignKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:primaryKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+		-- If multiple foreign key columns then add more &lt;column&gt; nodes here:
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:foreignKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkForeignKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:foreignKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:primaryKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+
+		&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+		&apos;            &lt;/resource:foreignKey&gt;&apos;||CHR(10)||
+		&apos;        &lt;/resource:sqlForeignKeys&gt;&apos;||CHR(10)||
+		&apos;&apos;;
+
+	Output:
+		success	- true(1) or false(0)
+			Values: 1 or 0
+		createResponse - XML response representing what was created.
+			Values: Create Response XML value
+		faultResponse - null if succesful otherwise contains a fault resposne.
+			Values: Fault Resposne XML value
+
+	Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2010.3		08/02/2010		Mike Tinius			5.1.0			Created new
+	2013.2		03/15/2013		Mike Tinius			5.2.0			modified to provide &quot;annotation&quot; on input and added CAST(XMLTEXT() As LONGVARCHAR) around variables.
+	2015.2		04/08/2015		Mike Tinius			6.2.0			Updated to update index and foreign key information.
+	2019.200	04/04/2019		Mike Tinius			7.0.8			Changed custom functions to explicit paths.
+	2019.200	05/14/2019		Mike Tinius			7.0.8			New V2: Create a new version updateResourcesSqlTableV2 from updateResourcesSqlTable
+																	and modified to remove VECTOR input and use LONGVARCHAR with formatted XML.  Vector input has been linked to memory leaks.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="fullResourcePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="inScripttext" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="annotation" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="inColumnList" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="inSqlIndexList" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="inForeignKeyList" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="success" direction="OUT" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="createResponse" direction="OUT" nullable="true">
+      <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+        <schemaDatatype>
+          <datatype name="XML" type="TREE" refId="1"></datatype>
+        </schemaDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="faultResponse" direction="OUT" nullable="true">
+      <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+        <schemaDatatype>
+          <datatype name="XML" type="TREE" refId="1"></datatype>
+        </schemaDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/services/webservices/system/admin/resource/operations/updateResources" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="updateResources" direction="IN">
+        <datatype name="updateResources" extendedName="{http://www.compositesw.com/services/system/admin/resource}updateResources" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}updateResources" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}updateResources">
+          <schemaDatatype>
+            <datatype name="updateResources" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="updateResourcesRequest" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="2">
+              <element name="resources" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="resourceList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="3">
+                  <element name="resource" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                    <datatype name="resource" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="4">
+                      <element name="name" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="subtype" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceSubType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="id" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="changeId" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                      </element>
+                      <element name="version" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="introspectState" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="introspectState" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="ownerDomain" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="ownerName" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="impactLevel" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="impactLevel" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="impactMessage" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="enabled" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                      </element>
+                      <element name="lockState" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="lockState" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="5">
+                          <element name="lockOwnerDomain" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="lockOwnerName" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="lockCreateTime" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="dateTime" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="DATETIME"/>
+                          </element>
+                          <element name="lockParentPath" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="hints" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="6">
+                          <element name="hint" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                            <datatype name="attribute" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="7">
+                              <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="type" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="attributeType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="value" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="valueList" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="attributeTypeValueList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="8">
+                                  <element name="item" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                    <datatype name="attributeTypeValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="9">
+                                      <element name="type" namespace="http://www.compositesw.com/services/system/util/common">
+                                        <datatype name="attributeType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                      </element>
+                                      <element name="value" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                      </element>
+                                      <element name="valueList" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <reference refId="8"/>
+                                      </element>
+                                      <element name="valueMap" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeTypeValueMap" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="10">
+                                          <element name="entry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                            <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="11">
+                                              <element name="key" namespace="http://www.compositesw.com/services/system/util/common">
+                                                <reference refId="9"/>
+                                              </element>
+                                              <element name="value" namespace="http://www.compositesw.com/services/system/util/common">
+                                                <reference refId="9"/>
+                                              </element>
+                                            </datatype>
+                                          </element>
+                                        </datatype>
+                                      </element>
+                                      <element name="valueArray" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeSimpleValueList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="12">
+                                          <element name="item" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                            <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                          </element>
+                                        </datatype>
+                                      </element>
+                                    </datatype>
+                                  </element>
+                                </datatype>
+                              </element>
+                              <element name="valueMap" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <reference refId="10"/>
+                              </element>
+                              <element name="valueArray" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <reference refId="12"/>
+                              </element>
+                              <element name="unset" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                              </element>
+                            </datatype>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="annotation" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="attributes" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="attributeList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="13">
+                          <element name="attribute" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                            <reference refId="7"/>
+                          </element>
+                        </datatype>
+                      </element>
+                    </datatype>
+                  </element>
+                </datatype>
+              </element>
+              <element name="detail" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="detailLevel" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="updateResourcesResponse" direction="OUT">
+        <datatype name="updateResourcesResponse" extendedName="{http://www.compositesw.com/services/system/admin/resource}updateResourcesResponse" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}updateResourcesResponse" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}updateResourcesResponse">
+          <schemaDatatype>
+            <datatype name="updateResourcesResponse" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="updateResourcesResponse" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="14">
+              <element name="resources" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <reference refId="3"/>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="fault" direction="OUT">
+        <datatype name="fault" extendedName="{http://www.compositesw.com/services/system/util/common}fault" namespace="http://www.compositesw.com/services/system/util/common" referenceDefinitionSet="/services/webservices/system/util/common/operations/CommonSchema" referenceType="{http://www.compositesw.com/services/system/util/common}fault" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/util/common}fault">
+          <schemaDatatype>
+            <datatype name="fault" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="fault" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="ELEMENT_DECL" type="TREE" refId="15">
+              <element name="errorEntry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                <datatype name="messageEntry" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="16">
+                  <element name="code" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="message" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="detail" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="severity" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="messageSeverity" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/_debug" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="folderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="folderPath" direction="OUT">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/xml/unescapeXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inStr" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outStr" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	updateResourcesSqlTableV2:
+
+	-- CIS Repository Helper Procedure --
+	This procedure is used to update the content of a SQL Table View including the indexes for that VIEW. 
+	In order to achieve this, an array of the columns and their types along with an array of the sql indexes
+	are passed into this procedure.
+
+	This procedure uses XML for the columnList, sqlIndexList and foreignKeyList instead of a vector.
+ 
+	Input:
+		fullResourcePath - Full resource path which includes the path and the resource name  
+			Values: e.g. /shared/Utilities/repository/examples/source/view1
+		scripttext - SQL Table text to be updated  
+			Values: sql table script
+		annotation - View annotation
+		columnList - an XML definition of sql columns and definitions
+	SET columnList = 
+		&apos;        &lt;resource:columns&gt;&apos;||CHR(10)||
+		&apos;            &lt;resource:column&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:name&gt;&apos;||CAST(XMLTEXT(TRIM(NVL(columnName,&apos;  &apos;))) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:dataType&gt;&apos;||CHR(10)||
+		&apos;                    &lt;common:sqlType xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&gt;&apos;||CHR(10)||
+		&apos;                        &lt;common:definition&gt;&apos;||CAST(XMLTEXT(TRIM(NVL(columnType,&apos;  &apos;))) AS LONGVARCHAR)||&apos;&lt;/common:definition&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/common:sqlType&gt;&apos;||CHR(10)||
+		&apos;                &lt;/resource:dataType&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:annotation&gt;&apos;||CAST(XMLTEXT(TRIM(NVL(annotation,&apos;  &apos;))) AS LONGVARCHAR)||&apos;&lt;/resource:annotation&gt;&apos;||CHR(10)||
+		&apos;            &lt;/resource:column&gt;&apos;||CHR(10)||
+		&apos;        &lt;/resource:columns&gt;&apos;||CHR(10)||
+		&apos;&apos;;
+
+		sqlIndexList - an XML definition of sql indexes
+	SET sqlIndexList =
+		&apos;        &lt;resource:sqlIndexes&gt;&apos;||CHR(10)||
+		&apos;            &lt;resource:index&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:type&gt;&apos;||CAST(XMLTEXT(sqlIndexType) AS LONGVARCHAR)||&apos;&lt;/resource:type&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:unique&gt;&apos;||CAST(XMLTEXT(sqlIndexUnique) AS LONGVARCHAR)||&apos;&lt;/resource:unique&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:columns&gt;&apos;||CHR(10)||
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexColName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:order&gt;&apos;||CAST(XMLTEXT(sqlIndexColOrder) AS LONGVARCHAR)||&apos;&lt;/resource:order&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+		-- If it is a multi-column key then add more &lt;column&gt; nodes here:
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexColName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:order&gt;&apos;||CAST(XMLTEXT(sqlIndexColOrder) AS LONGVARCHAR)||&apos;&lt;/resource:order&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+
+		&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+		&apos;            &lt;/resource:index&gt;&apos;||CHR(10)||
+		&apos;        &lt;/resource:sqlIndexes&gt;&apos;||CHR(10)||
+		&apos;&apos;;
+
+		foreignKeyList - an XML definition of foreign keys
+	SET foreignKeyList =
+		&apos;        &lt;resource:sqlForeignKeys&gt;&apos;||CHR(10)||
+		&apos;            &lt;resource:foreignKey&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:name&gt;&apos;||CAST(XMLTEXT(fkName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:primaryKeyName&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyName&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:primaryKeyTable&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyTable) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyTable&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:columns&gt;&apos;||CHR(10)||
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:foreignKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkForeignKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:foreignKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:primaryKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+		-- If multiple foreign key columns then add more &lt;column&gt; nodes here:
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:foreignKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkForeignKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:foreignKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:primaryKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+
+		&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+		&apos;            &lt;/resource:foreignKey&gt;&apos;||CHR(10)||
+		&apos;        &lt;/resource:sqlForeignKeys&gt;&apos;||CHR(10)||
+		&apos;&apos;;
+
+	Output:
+		success	- true(1) or false(0)
+			Values: 1 or 0
+		createResponse - XML response representing what was created.
+			Values: Create Response XML value
+		faultResponse - null if succesful otherwise contains a fault resposne.
+			Values: Fault Resposne XML value
+
+	Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2010.3		08/02/2010		Mike Tinius			5.1.0			Created new
+	2013.2		03/15/2013		Mike Tinius			5.2.0			modified to provide &quot;annotation&quot; on input and added CAST(XMLTEXT() As LONGVARCHAR) around variables.
+	2015.2		04/08/2015		Mike Tinius			6.2.0			Updated to update index and foreign key information.
+	2019.200	04/04/2019		Mike Tinius			7.0.8			Changed custom functions to explicit paths.
+	2019.200	05/14/2019		Mike Tinius			7.0.8			New V2: Create a new version updateResourcesSqlTableV2 from updateResourcesSqlTable
+																	and modified to remove VECTOR input and use LONGVARCHAR with formatted XML.  Vector input has been linked to memory leaks.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE updateResourcesSqlTableV2(
+	IN fullResourcePath 	VARCHAR(4096),
+    IN inScripttext 		LONGVARCHAR,
+	IN annotation			LONGVARCHAR, -- view annotation
+	IN inColumnList			LONGVARCHAR, -- XML formatted column list
+	IN inSqlIndexList		LONGVARCHAR, -- XML formatted sql index list
+	IN inForeignKeyList		LONGVARCHAR, -- XML formatted sql foreign key list
+	OUT success				BIT,
+	OUT createResponse 		XML,
+	OUT faultResponse		XML
+    )
+    BEGIN
+	DECLARE moduleName		VARCHAR DEFAULT &apos;updateResourcesSqlTable()&apos;;
+	DECLARE debug			CHAR(1) DEFAULT /shared/ASAssets/Utilities/repository/&quot;_debug&quot;.debug;
+	DECLARE pos1, pos2		INTEGER;
+	DECLARE scripttext		LONGVARCHAR DEFAULT inScripttext;
+	DECLARE resourceName	VARCHAR;
+	DECLARE resourcePath	/shared/ASAssets/Utilities/TypeDefinitions.pathType;
+	DECLARE resourceType	VARCHAR DEFAULT &apos;TABLE&apos;;
+	DECLARE resourceSubType	VARCHAR DEFAULT &apos;SQL_TABLE&apos;;
+	DECLARE tableType		VARCHAR DEFAULT &apos;VIEW&apos;;
+	DECLARE lastIndexName	VARCHAR DEFAULT &apos;&apos;;
+	DECLARE lastFKName		VARCHAR DEFAULT &apos;&apos;;
+	DECLARE beginIndex		BOOLEAN DEFAULT false;
+	DECLARE uniqueIndex		VARCHAR;
+	DECLARE createInput 	LONGVARCHAR;
+	DECLARE columnList		LONGVARCHAR DEFAULT &apos;&apos;; -- XML formatted column list
+	DECLARE sqlIndexList	LONGVARCHAR DEFAULT &apos;&apos;; -- XML formatted sql index list
+	DECLARE foreignKeyList	LONGVARCHAR DEFAULT &apos;&apos;; -- XML formatted sql foreign key list
+	DECLARE namespaceTag	VARCHAR;
+
+	-- Unescape any of the esaped values in valuePair
+	CALL /shared/ASAssets/Utilities/&quot;xml&quot;/unescapeXML(scripttext, scripttext);
+
+	SET success = 1;
+	-- Extract the resource name from the full resource path
+	CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(fullResourcePath,&apos;E&apos;,resourceName,resourcePath);
+
+	IF (inColumnList IS NOT NULL AND LENGTH(inColumnList) &gt; 0) THEN
+		SET columnList = inColumnList;
+		-- Get the namespace tag=ns1 from [&lt;ns1: and &lt;/ns1:] and replace it with [&lt;resource: and &lt;/resource:]
+		SET pos1 = INSTR(columnList, &apos;&lt;&apos;);
+		SET pos2 = INSTR(columnList, &apos;:&apos;);
+		IF (pos1 &gt; 0 AND pos2 &gt; 0) THEN
+			SET namespaceTag = SUBSTRING(columnList, pos1+1, pos2-pos1-1);
+			IF (namespaceTag &lt;&gt; &apos;resource&apos;) THEN
+				SET columnList = REPLACE(columnList, &apos;&lt;&apos;||namespaceTag||&apos;:&apos;, &apos;&lt;resource:&apos;);
+				SET columnList = REPLACE(columnList, &apos;&lt;/&apos;||namespaceTag||&apos;:&apos;, &apos;&lt;/resource:&apos;);
+			END IF;
+		END IF;
+	END IF;
+
+	IF (inSqlIndexList IS NOT NULL AND LENGTH(inSqlIndexList) &gt; 0) THEN
+		SET sqlIndexList = inSqlIndexList;
+		-- Get the namespace tag=ns1 from [&lt;ns1: and &lt;/ns1:] and replace it with [&lt;resource: and &lt;/resource:]
+		SET pos1 = INSTR(sqlIndexList, &apos;&lt;&apos;);
+		SET pos2 = INSTR(sqlIndexList, &apos;:&apos;);
+		IF (pos1 &gt; 0 AND pos2 &gt; 0) THEN
+			SET namespaceTag = SUBSTRING(sqlIndexList, pos1+1, pos2-pos1-1);
+			IF (namespaceTag &lt;&gt; &apos;resource&apos;) THEN
+				SET sqlIndexList = REPLACE(sqlIndexList, &apos;&lt;&apos;||namespaceTag||&apos;:&apos;, &apos;&lt;resource:&apos;);
+				SET sqlIndexList = REPLACE(sqlIndexList, &apos;&lt;/&apos;||namespaceTag||&apos;:&apos;, &apos;&lt;/resource:&apos;);
+			END IF;
+		END IF;
+	END IF;
+
+	IF (inForeignKeyList IS NOT NULL AND LENGTH(inForeignKeyList) &gt; 0) THEN
+		SET foreignKeyList = inForeignKeyList;
+		-- Get the namespace tag=ns1 from [&lt;ns1: and &lt;/ns1:] and replace it with [&lt;resource: and &lt;/resource:]
+		SET pos1 = INSTR(foreignKeyList, &apos;&lt;&apos;);
+		SET pos2 = INSTR(foreignKeyList, &apos;:&apos;);
+		IF (pos1 &gt; 0 AND pos2 &gt; 0) THEN
+			SET namespaceTag = SUBSTRING(foreignKeyList, pos1+1, pos2-pos1-1);
+			IF (namespaceTag &lt;&gt; &apos;resource&apos;) THEN
+				SET foreignKeyList = REPLACE(foreignKeyList, &apos;&lt;&apos;||namespaceTag||&apos;:&apos;, &apos;&lt;resource:&apos;);
+				SET foreignKeyList = REPLACE(foreignKeyList, &apos;&lt;/&apos;||namespaceTag||&apos;:&apos;, &apos;&lt;/resource:&apos;);
+			END IF;
+		END IF;
+	END IF;
+
+	SET createInput =
+	&apos;&lt;?xml version=&quot;1.0&quot;?&gt;&apos;||CHR(10)||
+	&apos;&lt;resource:updateResources xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot;&gt;&apos;||CHR(10)||
+	&apos;  &lt;resource:resources&gt;&apos;||CHR(10)||
+	&apos;    &lt;resource:resource xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:type=&quot;resource:tableResource&quot;&gt;&apos;||CHR(10)||
+	&apos;        &lt;resource:name&gt;&apos;||CAST(XMLTEXT(resourceName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+	&apos;        &lt;resource:path&gt;&apos;||CAST(XMLTEXT(fullResourcePath) AS LONGVARCHAR)||&apos;&lt;/resource:path&gt;&apos;||CHR(10)||
+	&apos;        &lt;resource:type&gt;&apos;||CAST(XMLTEXT(resourceType) AS LONGVARCHAR)||&apos;&lt;/resource:type&gt;&apos;||CHR(10)||
+	&apos;        &lt;resource:subtype&gt;&apos;||CAST(XMLTEXT(resourceSubType) AS LONGVARCHAR)||&apos;&lt;/resource:subtype&gt;&apos;||CHR(10)||
+	&apos;        &lt;resource:ownerDomain&gt;composite&lt;/resource:ownerDomain&gt;&apos;||CHR(10)||
+	&apos;        &lt;resource:ownerName&gt;admin&lt;/resource:ownerName&gt;&apos;||CHR(10)||
+	&apos;        &lt;resource:impactLevel&gt;NONE&lt;/resource:impactLevel&gt;&apos;||CHR(10)||
+	&apos;        &lt;resource:enabled&gt;true&lt;/resource:enabled&gt;&apos;||CHR(10)||
+	&apos;        &lt;resource:annotation&gt;&apos;||CAST(XMLTEXT(TRIM(NVL(annotation,&apos;  &apos;))) AS LONGVARCHAR)||&apos;&lt;/resource:annotation&gt;&apos;||CHR(10)||
+	columnList||
+	&apos;        &lt;resource:tableType&gt;&apos;||tableType||&apos;&lt;/resource:tableType&gt;&apos;||CHR(10)||
+	&apos;        &lt;resource:explicitlyDesigned&gt;false&lt;/resource:explicitlyDesigned&gt;&apos;||CHR(10)||
+    &apos;       &lt;resource:sqlText&gt;&apos;||CAST(XMLTEXT(scripttext) AS LONGVARCHAR)||&apos;&lt;/resource:sqlText&gt;&apos;||CHR(10)||
+	sqlIndexList||
+	foreignKeyList||
+	&apos;    &lt;/resource:resource&gt;&apos;||CHR(10)||
+	&apos;  &lt;/resource:resources&gt;&apos;||CHR(10)||
+	&apos;  &lt;resource:detail&gt;FULL&lt;/resource:detail&gt;&apos;||CHR(10)||
+	&apos;&lt;/resource:updateResources&gt;&apos;||CHR(10)||
+	&apos;&apos;;
+
+	if (UPPER(debug) = &apos;Y&apos;) then
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,createInput);
+	end if;
+
+	-- Invoke the API to update the resource
+	call /services/webservices/system/admin/resource/operations/updateResources(createInput, createResponse, faultResponse);
+	if (faultResponse is not null) then
+		set success = 0;
+	end if;
+    END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564747170797</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:3:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:4:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:5:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:6:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:7:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:8:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

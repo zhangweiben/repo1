@@ -1,0 +1,291 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="parseInterval" path="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/parseInterval" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="inColumnExpression" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="outColumnExpression" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inCodingType" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inEncodingActions" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="codingList" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inModuleNameInvoking" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inDebug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inStringName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	parseInterval - parse the column expression for interval phrase and set them to blank
+		They are set to blank becuase there is no relevant columns present within INTERVAL expressions.
+		Interval periods, YEAR, MONTH, DAY, HOUR, MINUTE, SECOND
+
+	IN
+		inColumnExpression - the incoming column expression
+	OUT
+		outColumnExpression - the outgoing column expression with no INTERVAL statements present
+
+	Exceptions:  none
+INTERVAL &apos;90&apos; HOUR / 10   &quot;nsmsgdiskflush-interval&quot;,
+
+	DESCRIPTION
+	-----------
+	A space separates the day value from the hour value. A colon separates the hours, minutes, and 
+	second values from each other. 
+	A decimal place separates the fractional seconds from the seconds.
+	If no precision is given, a default leading precision of 2 is specified.
+		INTERVAL &apos;3&apos; DAY
+	The interval day literal has the following syntax:
+		INTERVAL &apos;dd hh:mm:ss.nn&apos; DAY TO SECOND
+		INTERVAL &apos;dd hh:mm&apos; DAY TO MINUTE
+		INTERVAL &apos;dd hh&apos; DAY TO HOUR
+		INTERVAL &apos;dd&apos; DAY
+		INTERVAL &apos;hh&apos; HOUR
+		INTERVAL &apos;mm&apos; MINUTE
+		INTERVAL &apos;ss.nn&apos; SECOND
+
+		INTERVAL &apos;3&apos; DAY(2)
+	The two expressions above are equivalent. The maximum leading precision is 9.
+	A default fractional precision of 6 is specified if seconds are involved. 
+	The fractional precision limits the number of decimal places to the right of the decimal place. 
+	Unlike the leading precision, digits will be automatically truncated if the fractional precision is exceeded.
+		INTERVAL &apos;3&apos; minute(3) to seconds(6)
+		INTERVAL &apos;3&apos; minute(3) to seconds
+	The two expressions above are equivalent. If second is the unit of measurement, 
+	then the precision is specified with the syntax:
+		INTERVAL &apos;3.99&apos; second(2, 6)
+	A comma separates the leading precision from the fractional precision. 9 digits is the maximum fractional precision. 
+	0 is a valid fractional precision
+		INTERVAL &apos;9:59&apos; minutes to second(0)
+	The expression above will truncate any fractional seconds.
+
+		EXAMPLES:
+			INTERVAL &apos;3&apos; minutes
+			INTERVAL &apos;3&apos; minute(3) to seconds(6)
+			INTERVAL &apos;3&apos; minute(3) to seconds
+			INTERVAL &apos;3.99&apos; second(2, 6)
+			INTERVAL &apos;9:59&apos; minutes to second(0)
+			-INTERVAL &apos;3&apos; MONTH
+			INTERVAL &apos;-3&apos; MONTH
+			INTERVAL -&apos;3&apos; MONTH
+			-INTERVAL -&apos;-3&apos; MONTH
+
+	INTERVAL YEAR
+	INTERVAL YEAR represents a unit of time that is measured in months and years. It may be
+	expressed in years only, months only, or both year and months.
+	INTEVAL YEAR is not compatible with INTERVAL DAY because a year may consist of either
+	365 days or 366 days in a leap year. A month can consist of either 28, 29, 30 or 31 days.
+	Syntax - INTERVAL YEAR
+		INTERVAL &apos;12&apos; YEAR [TO MONTH]
+		INTERVAL &apos;3&apos; MONTH
+	If year-month is the unit of measurement, the syntax is
+		INTERVAL &apos;2-11&apos; YEAR TO MONTH
+	A dash separates the year and month values. The month value must not exceed 11 months. 
+	Negative intervals may be represented in three ways:
+		-INTERVAL &apos;3&apos; MONTH
+		INTERVAL &apos;-3&apos; MONTH
+		INTERVAL -&apos;3&apos; MONTH
+	In fact, all three may be used at once
+		-INTERVAL -&apos;-3&apos; MONTH
+	which results in a -3 month interval.
+	A default precision of 2 is assigned if none is specified. For example,
+		INTERVAL &apos;99&apos; year(2)
+		INTERVAL &apos;99&apos; year
+	Both expressions above are the same. The precision is a number indicating the maximum number of digits in the leading number. 
+	For example, the expression below is invalid because the precision is exceeded by the five digits in the year value.
+		INTERVAL &apos;20001&apos; year(4)
+	If it is a year-month interval, the precision only applies to the year
+		INTERVAL &apos;200-09&apos; year(3) to month
+	The month is limited to values below 12 in a year-month interval. 
+	The maximum number of years is 999,999,999. Therefore the precision is limited to 9 digits.
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	11/11/2011		Mike Tinius			5.2.0			Created new
+	03/15/2013		Mike Tinius			5.2.0			Modifications for Best Practices 7.0
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE parseInterval(
+	IN	inColumnExpression	LONGVARCHAR, -- The column text to pars
+	OUT	outColumnExpression	LONGVARCHAR 
+)
+BEGIN
+	DECLARE moduleName		VARCHAR DEFAULT &apos;parseInterval&apos;;
+	DECLARE debug			CHAR(1) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.debugSqlParser3;
+	DECLARE intervalPos		INTEGER;
+	DECLARE endIntervalPos	INTEGER;
+	DECLARE quoteBeg		INTEGER;
+	DECLARE leftParenBeg	INTEGER;
+	DECLARE i 				INTEGER;
+	DECLARE ch				CHAR(1);
+	DECLARE encodedDash		VARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedOpSub;
+	DECLARE encodedSpace	VARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedSpace;
+	DECLARE encodingOn		BOOLEAN DEFAULT false;
+
+	set outColumnExpression = inColumnExpression;
+
+	set intervalPos = POSITION(&apos;-INTERVAL&apos; IN UPPER(outColumnExpression));
+	IF (intervalPos = 0) THEN
+		set intervalPos = POSITION(&apos;INTERVAL&apos; IN UPPER(outColumnExpression));
+	END IF;
+	IF (intervalPos &gt; 1) then
+		/* Encode spaces and dashes inside double quotes
+			IN  codingType			CHAR(1),	-- The type of coding to perform. E=encode special characters, D=decode special characters
+			IN  encodingActions		VARCHAR,	-- A directive on which action to take. P=encode between Parenthesis, D=encode between double quotes, S=encode between single quotes.
+			IN  codingList			VARCHAR,	-- A comma separate list of encoded values to encode or decode.  e.g. _0020,_002c,_002e
+			IN  inString			LONGVARCHAR,-- The string to encode or decode
+			IN  debug				CHAR(1),	-- Debug: Y or N
+			OUT outString			LONGVARCHAR -- The resulting string */
+		set encodingOn = true;
+		call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;E&apos;,&apos;D&apos;,encodedDash||&apos;,&apos;||encodedSpace, outColumnExpression, moduleName, &apos;N&apos;, &apos;outColumnExpression&apos;, outColumnExpression);
+
+		-- If the character immediately to the 1st position on the left of the -INTERVAL or INTERVAL keyword is not a space then the keyword is embedded within the name of the column
+		set ch = SUBSTRING(outColumnExpression, intervalPos - 1, 1);
+		if (ch is not null and ch != &apos; &apos;) then
+			set intervalPos = 0;
+		end if;
+	END IF;
+	WHILE(intervalPos &gt; 0) DO
+		set leftParenBeg = 0;
+		set endIntervalPos = 0;
+		set i = intervalPos;
+		if (debug = &apos;Y&apos;) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;parseInterval:: len=&apos;||LENGTH(outColumnExpression)||&apos;  intervalPos=&apos;||intervalPos);
+		end if;
+		WHILE (i &lt;= LENGTH(outColumnExpression) and endIntervalPos = 0) DO
+			set ch = SUBSTRING(outColumnExpression,i,1);
+			CASE ch
+				WHEN &apos;,&apos; THEN 
+					IF (leftParenBeg = 0) THEN
+						set endIntervalPos = i;
+					END IF;
+				WHEN &apos;(&apos; THEN set leftParenBeg = i;
+				WHEN &apos;)&apos; THEN
+					IF (leftParenBeg &gt; 0) THEN
+						set leftParenBeg = 0;
+					else
+						set endIntervalPos = i;
+					END IF;
+				WHEN &apos;|&apos; THEN
+					IF (SUBSTRING(outColumnExpression,i+1,1) = &apos;|&apos;) THEN
+						set endIntervalPos = i;
+					END IF;
+				ELSE
+			END CASE;
+			if (debug = &apos;Y&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;parseInterval:: ch=[&apos;||NVL(ch,&apos;null&apos;)||&apos;]  i=&apos;||i||&apos;   leftParenBeg=&apos;||leftParenBeg||&apos;  endIntervalPos=&apos;||endIntervalPos);
+			end if;
+			set i = i + 1;
+		END WHILE;
+		IF (endIntervalPos &gt; 0) THEN
+			set outColumnExpression = SUBSTRING(outColumnExpression,1,intervalPos-1)||SUBSTRING(outColumnExpression,endIntervalPos,LENGTH(outColumnExpression));
+		else
+			set outColumnExpression = SUBSTRING(outColumnExpression,1,intervalPos-1);
+		END IF;
+		set intervalPos = POSITION(&apos;-INTERVAL &apos; IN UPPER(outColumnExpression));
+		IF (intervalPos = 0) THEN
+			set intervalPos = POSITION(&apos;INTERVAL &apos; IN UPPER(outColumnExpression));
+		END IF;
+		IF (intervalPos &gt; 1) then
+			set ch = SUBSTRING(outColumnExpression, intervalPos - 1, 1);
+			if (ch is not null and ch != &apos; &apos;) then
+				set intervalPos = 0;
+			end if;	
+		END IF;
+	END WHILE;
+	if (encodingOn) then
+		-- Decode the encoded values back to original characters
+		call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;D&apos;,&apos;D&apos;,encodedDash||&apos;,&apos;||encodedSpace, outColumnExpression, moduleName, &apos;N&apos;, &apos;outColumnExpression&apos;, outColumnExpression);
+	end if;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1554898246902</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

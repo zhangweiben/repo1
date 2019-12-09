@@ -1,0 +1,457 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="upgradeRebindResource" path="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/upgradeRebindResource" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="upgradeVectorRow" direction="IN" nullable="true">
+      <datatype name="upgradeVector" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="upgradeType" type="TREE" refId="1">
+            <element name="bestPracticesVersionFrom">
+              <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+            </element>
+            <element name="bestPracticesVersionTo">
+              <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+            </element>
+            <element name="resourceAction">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="resourcePath">
+              <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+            </element>
+            <element name="resourceType">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="srcResource">
+              <datatype name="srcResource" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <datatype name="resourceType" referenceDefinitionSet="/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitions" referenceType="resourceType" type="TREE" refId="2">
+                    <element name="path">
+                      <datatype name="VARCHAR" referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+                    </element>
+                    <element name="type">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                  </datatype>
+                </itemDatatype>
+              </datatype>
+            </element>
+            <element name="dstResource">
+              <datatype name="dstResource" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <reference refId="2"/>
+                </itemDatatype>
+              </datatype>
+            </element>
+            <element name="updateStruct">
+              <datatype name="updateStruct" type="ARRAY" maxLength="0">
+                <itemDatatype>
+                  <datatype name="updateType" type="TREE" refId="3">
+                    <element name="updateAction">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                    <element name="occurrence">
+                      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                    </element>
+                    <element name="numLines">
+                      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                    </element>
+                    <element name="keyTextVerify">
+                      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+                    </element>
+                    <element name="searchText">
+                      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+                    </element>
+                    <element name="replaceText">
+                      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+                    </element>
+                  </datatype>
+                </itemDatatype>
+              </datatype>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="success" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/rebindFolder" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="startingResourceFolder" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="rebindFromFolder" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="rebindToFolder" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/rebindResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="rebindVector" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="rebindVector" type="TREE" refId="2">
+              <element name="oldPath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="oldType">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="newPath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="newType">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="3"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="3"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	upgradeRebindResource:
+
+	This procedure is invoked by &quot;upgradeProject&quot; when the resource action=&quot;rebind&quot;.  This procedure rebinds a resource
+		from a source path and type to a destination path and type.  If the resource is a folder, then all contents
+		are copied otherwise just the specified resource is copied.
+
+	Input: 
+		debug - &apos;Y&apos;=debug, &apos;N&apos;=do not debug
+		upgradeVectorRow - This is a single row from the upgradeVector which is defined below
+	Output:
+		success - 1=success, 0=fail
+	Exceptions: ex - throw an exception upon error
+
+	-----------------------------------------------------------------------------
+	The following defines the structures that are used for upgrading a project:
+	-----------------------------------------------------------------------------
+	DECLARE PUBLIC TYPE upgradeType ROW(
+		bestPracticesVersion	DOUBLE,					-- version of the best practices where the change is being applied
+		resourceAction			VARCHAR					-- action to take on the resource: 
+														--		     copy - copy srcResource to dstResource.  srcResource and dstResource required.  updateStruct is null.
+														--	                if resource type is CONTAINER then copy all resources
+														--	                if resource type is not CONTAINER then copy specific resource
+														--		copyLeave - copy srcResource to _Copy_#.  srcResource is required.  dstResource and updateStruct are null.
+														--	                Creates a copy of a resource and leaves the original in place. 
+														--	                The copy detects other copies an increments the number as needed in the format of _Copy_#
+														--	   copyRename - copy srcResource to _Copy_#.  srcResource is required.  dstResource and updateStruct are null.
+														--	                Creates a copy of a resource and renames the original to it.  The original is no longer present.
+														--	                The copy detects other copies an increments the number as needed in the format of _Copy_#
+														--	 copyChildren - copy the children of srcResource to dstResource.  srcResource and dstResource required.  updateStruct is null.
+														--	                Only copying from CONTAINER to CONTAINER is allowed.
+														--		   update - update dstResource using updateStruct.  srcResource is null.
+														--  updateTrigger - update all trigger resources found starting at dstResource using updateStruct.  srcResource is null.
+														--					 dstResource can be a single trigger or folder of triggers.
+														--	   updateCrud - update CRUD resources specified by dstResource using updateStruct.  srcResource is null.
+														--		   delete - delete dstResource.  srcResource and updateStruct are null.
+														--		     move - move srcResource to dstResource.  updateStruct is null.
+														--     moveCustom - move all custom scripts from srcResource folder to the specified dstResource folder. updateStruct is null.
+														--                  a custom resource is determined by finding a resource in dstResource that is not in the DataAbstraction_GENERIC_Template.
+														--         rebind - rebind srcResource to dstResource using startingFolder.  updateStruct is null.
+		resourcePath			VARCHAR(4000),			-- resource path of the resource or starting folder to be used with rebind action otherwise null.
+		resourceType			VARCHAR,				-- resource type of the resource to be used with rebind action otherwise null.
+		srcResource				VECTOR(resourceType), 	-- source reource is always a vector of 1
+		dstResource				VECTOR(resourceType),	-- destination resource may be an unbounded vector
+		updateStruct			VECTOR(updateType),		-- this structure is used when the resourceAction=update otherwise null
+	);
+	DECLARE PUBLIC TYPE resourceType 	ROW(
+		&quot;path&quot;		TypeDefinitions.pathType,	-- Path to resource
+		&quot;type&quot;		VARCHAR(255)				-- Resoruce type
+	);
+	DECLARE PUBLIC TYPE updateType ROW(
+		updateAction			VARCHAR,			-- update Action: 			replace, replaceBefore, replaceAfter [all actions are performed on a given resource]
+													-- updateTrigger Action: 	replacePath, replaceParam, fixParam [All actions are performed on a given trigger resource]
+		occurrence				INTEGER,			-- The occurrence of the searchText to act upon.  0=take action on all occurrences
+		numLines				INTEGER,			-- If updateAction=replaceBefore or replaceAfter, then then perform that action by searching
+													--   for the number of lines CHR(10) either before or after and placing the text at that location.
+		keyTextVerify			VARCHAR,			-- This is short unique text from the replaceText variable that allows the code to verify if the replace has already been done.
+		searchText				LONGVARCHAR,		-- The text to search for.  
+													-- If multiple occurrences are found the action may be taken according to the defined occurrence.
+													-- If the searchText is not found then no action is taken.
+		replaceText				LONGVARCHAR			-- The text to replace given the update action.
+	);
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	05/14/2010		Mike Tinius			6.0.0			Created new
+	03/14/2019		Mike Tinius			7.0.8			B.P. 2019.102: Removed projectPath as it was not referenced in the code.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE upgradeRebindResource(
+	IN  debug				CHAR(1),	
+	-- This is a single row from the upgradeVector
+	IN	upgradeVectorRow 	/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.upgradeVector,
+	OUT success				INTEGER
+)
+BEGIN
+	DECLARE moduleName			VARCHAR DEFAULT &apos;upgradeRebindResource&apos;;
+	DECLARE srcPath				VARCHAR(4000);
+	DECLARE srcType				VARCHAR;
+	DECLARE dstPath				VARCHAR(4000);
+	DECLARE dstType				VARCHAR;
+	DECLARE resourcePath		VARCHAR(4000);
+	DECLARE resourceType		VARCHAR;
+	DECLARE resourceName		VARCHAR;
+	DECLARE rebindVector 		/shared/ASAssets/Utilities/repository/definitions/RepositoryDefinitions.rebindVector;
+	DECLARE i					INTEGER DEFAULT 1;
+	DECLARE faultResponse		XML;
+	DECLARE prependMessage		VARCHAR(4000);
+	DECLARE createResponse 		XML;
+	DECLARE resExists			BOOLEAN;
+	DECLARE ex					EXCEPTION;
+
+	/***************************************************************
+	 * Loop through the vector.  The srcResource vector and dstResource 
+	 *    vector must have exactly the same number of rows.
+	 ***************************************************************/
+	WHILE (i &lt;= CARDINALITY(upgradeVectorRow[1].srcResource)) DO
+
+		-- Make sure the resourcePath is not null
+		if (upgradeVectorRow[1].resourcePath is null) then
+			raise ex value moduleName||&apos;:  REBIND ACTION: The resourcePath may not be null.&apos;;
+		end if;
+		-- Make sure the resourceType is not null
+		if (upgradeVectorRow[1].resourceType is null) then
+			raise ex value moduleName||&apos;:  REBIND ACTION: The resourceType may not be null.&apos;;
+		end if;
+		-- Make sure the srcResource is not null
+		if (upgradeVectorRow[1].srcResource is null) then
+			raise ex value moduleName||&apos;:  REBIND ACTION: The srcResource[&apos;||i||&apos;] vector may not be null.&apos;;
+		end if;
+		-- Make sure the dstResource is not null
+		if (upgradeVectorRow[1].dstResource is null) then
+			raise ex value moduleName||&apos;:  REBIND ACTION: The dstResource[&apos;||i||&apos;] vector may not be null.&apos;;
+		end if;
+
+		-- Set the starting folder
+		set resourcePath = upgradeVectorRow[1].resourcePath;
+		set resourceType = upgradeVectorRow[1].resourceType;
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  resourcePath=&apos;||NVL(resourcePath,&apos;null&apos;)); 
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  resourceType=&apos;||NVL(resourceType,&apos;null&apos;)); 
+
+		-- Check to see if the resource exists before rebinding
+		-- Some folders may not exist which is OK.
+		call /lib/resource/ResourceExists(resourcePath, resourceType, null, resExists);
+
+		if (not resExists) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  REBIND ACTION: WARNING STARTING RESOURCE PATH DOES NOT EXIST.&apos;); 
+		else
+			-- Get the source path information
+			set srcPath = upgradeVectorRow[1].srcResource[i].&quot;path&quot;;
+			set srcType = upgradeVectorRow[1].srcResource[i].&quot;type&quot;;
+			-- Get the destination path information
+			set dstPath = upgradeVectorRow[1].dstResource[i].&quot;path&quot;;
+			set dstType = upgradeVectorRow[1].dstResource[i].&quot;type&quot;;
+
+			-- Validate that the source information is not empty
+			if ( (srcPath IS NULL OR LENGTH(&apos;|&apos;||srcPath||&apos;|&apos;) = 2) or  --Empty
+				 (srcType IS NULL OR LENGTH(&apos;|&apos;||srcType||&apos;|&apos;) = 2) ) then  --Empty
+				raise ex value moduleName||&apos;:  REBIND ACTION: The following srcResource[&apos;||i||&apos;] vector entries may be null or empty: srcPath, srcType&apos;;
+			end if;
+			-- Validate that the destination information is not empty
+			if ( (dstPath IS NULL OR LENGTH(&apos;|&apos;||dstPath||&apos;|&apos;) = 2) or  --Empty
+				 (dstType IS NULL OR LENGTH(&apos;|&apos;||dstType||&apos;|&apos;) = 2) ) then  --Empty
+				raise ex value moduleName||&apos;:  REBIND ACTION: The following dstResource[&apos;||i||&apos;] vector entries may be null or empty: dstPath, dstType&apos;;
+			end if;
+
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  srcPath=&apos;||srcPath); 
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  srcType=&apos;||srcType); 
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  dstPath=&apos;||dstPath); 
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  dstType=&apos;||dstType); 
+
+			set prependMessage = moduleName||&apos;:  REBIND ACTION: Error with vector entry[&apos;||i||&apos;].  Error=&apos;;
+
+			/*****************************************************************************************
+			 * SCENARIO 1 - Rebind src CONTAINER to dst NON-CONTAINER 	(folder to resource) - illegal, throw an exception
+			 *****************************************************************************************/
+			if (srcType = &apos;CONTAINER&apos; and dstType != &apos;CONTAINER&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  SCENARIO 1 - Rebind src CONTAINER to dst NON-CONTAINER 	(folder to resource) - illegal, throw an exception&apos;); 
+
+				raise ex value prependMessage||&apos;It is illegal to rebind a folder full of resources to a single resource object.&apos;||
+					&apos;   source path=&apos;||NVL(srcPath,&apos;null&apos;)||&apos;   destination path=&apos;||NVL(dstPath,&apos;null&apos;);
+			end if;
+
+			/*****************************************************************************************
+			 * SCENARIO 2 - Rebind src CONTAINER to dst CONTAINER			(folder to folder)
+			 *****************************************************************************************/
+			if (srcType = &apos;CONTAINER&apos; and dstType = &apos;CONTAINER&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  SCENARIO 2 - Rebind src CONTAINER to dst CONTAINER			(folder to folder)&apos;); 
+
+				BEGIN INDEPENDENT TRANSACTION
+					-- Rebind the all the folder resources from the source folder to the destination folder
+					CALL /shared/ASAssets/Utilities/repository/rebindFolder(resourcePath,srcPath,dstPath,success,faultResponse);
+					if (faultResponse is not null) then
+						raise ex value CAST(faultResponse as LONGVARCHAR);
+					end if;
+					set success = 1;
+				EXCEPTION
+					ELSE raise ex value cast(CURRENT_EXCEPTION.TRACE as longvarchar);
+				END;
+			end if;
+
+			/*****************************************************************************************
+			 * SCENARIO 3 - Rebind src NON-CONTAINER to dst NON-CONTAINER (resource to resource)
+			 *****************************************************************************************/
+			if (srcType != &apos;CONTAINER&apos; and dstType != &apos;CONTAINER&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  SCENARIO 3 - Rebind src NON-CONTAINER to dst NON-CONTAINER (resource to resource)&apos;); 
+
+				-- Setup the rebind vector for a resource
+				set rebindVector = VECTOR[(srcPath, srcType, dstPath, dstType)];
+
+				BEGIN INDEPENDENT TRANSACTION
+					-- Rebind the source resource with overwrite to the destination path and resource name
+					call /shared/ASAssets/Utilities/repository/rebindResource(resourcePath, resourceType, rebindVector, success, createResponse, faultResponse);
+					if (faultResponse is not null) then
+						raise ex value CAST(faultResponse as LONGVARCHAR);
+					end if;
+					set success = 1;
+				EXCEPTION
+					ELSE raise ex value cast(CURRENT_EXCEPTION.TRACE as longvarchar);
+				END;
+
+			end if;
+
+			/*****************************************************************************************
+			 * SCENARIO 4 - Rebind src NON-CONTAINER to dst CONTAINER 	(resource to folder) - illegal, throw an exception
+			 *****************************************************************************************/
+			if (srcType != &apos;CONTAINER&apos; and dstType = &apos;CONTAINER&apos;) then
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  SCENARIO 4 - Rebind src NON-CONTAINER to dst CONTAINER 	(resource to folder) - illegal, throw an exception&apos;); 
+
+				raise ex value prependMessage||&apos;It is illegal to rebind a resource to a folder.&apos;||
+					&apos;   source path=&apos;||NVL(srcPath,&apos;null&apos;)||&apos;   destination path=&apos;||NVL(dstPath,&apos;null&apos;);
+			end if;
+		end if;
+
+		set i = i + 1;
+	END WHILE;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573161757946</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:0:Customized" type="STRING">datatype.changed;datatype.changed</attribute>
+  <attribute name="p:1:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

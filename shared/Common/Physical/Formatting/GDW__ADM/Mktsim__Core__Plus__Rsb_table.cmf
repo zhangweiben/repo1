@@ -1,0 +1,152 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Mktsim_Core_Plus_Rsb" path="/shared/Common/Physical/Formatting/GDW_ADM/Mktsim_Core_Plus_Rsb" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="mo_yr_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cntry_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="abo_comm_crcy_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="local_imc_type_cd" nullable="true">
+      <datatype type="STRING" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bns_pct" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cust_comm_curcy_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cust_bv_lc_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_cust_count" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rsb_amt_lcl" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/OnPremises/Oracle_GDW/AIU4517/MKTSIM_CORE_PLUS_RSB" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="MO_YR_KEY_NO" nullable="false">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="CNTRY_KEY_NO" nullable="false">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ABO_COMM_CRCY_KEY_NO">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="IMC_NO">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="IMC_KEY_NO" nullable="false">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="LOCAL_IMC_TYPE_CD">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="BNS_PCT">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="CUST_COMM_CURCY_KEY_NO">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="CUST_BV_LC_AMT">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ORD_CUST_COUNT">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="RSB_AMT_LCL">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(MKTSIM_CORE_PLUS_RSB.MO_YR_KEY_NO AS DOUBLE) AS mo_yr_key_no,
+	CAST(MKTSIM_CORE_PLUS_RSB.CNTRY_KEY_NO AS DOUBLE) AS cntry_key_no,
+	CAST(MKTSIM_CORE_PLUS_RSB.ABO_COMM_CRCY_KEY_NO AS DOUBLE) AS abo_comm_crcy_key_no,
+	CAST(MKTSIM_CORE_PLUS_RSB.IMC_NO AS DOUBLE) AS imc_no,
+	CAST(MKTSIM_CORE_PLUS_RSB.IMC_KEY_NO AS DOUBLE) AS imc_key_no,
+	CAST(MKTSIM_CORE_PLUS_RSB.LOCAL_IMC_TYPE_CD AS VARCHAR(5)) AS local_imc_type_cd,
+	CAST(MKTSIM_CORE_PLUS_RSB.BNS_PCT AS DOUBLE) AS bns_pct,
+	CAST(MKTSIM_CORE_PLUS_RSB.CUST_COMM_CURCY_KEY_NO AS DOUBLE) AS cust_comm_curcy_key_no,
+	CAST(MKTSIM_CORE_PLUS_RSB.CUST_BV_LC_AMT AS DOUBLE) AS cust_bv_lc_amt,
+	CAST(MKTSIM_CORE_PLUS_RSB.ORD_CUST_COUNT AS DOUBLE) AS ord_cust_count,
+	CAST(MKTSIM_CORE_PLUS_RSB.RSB_AMT_LCL AS DOUBLE) AS rsb_amt_lcl 
+FROM
+	/shared/Common/Physical/Metadata/OnPremises/Oracle_GDW/AIU4517/MKTSIM_CORE_PLUS_RSB MKTSIM_CORE_PLUS_RSB</attribute>
+  <attribute name="creationDate" type="LONG">1566501509029</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566501772251</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1566501509029</attribute>
+</metadata>

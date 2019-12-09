@@ -1,0 +1,57 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="apicall" path="/shared/Common/Physical/Metadata/REST/India_Redemption_model/apicall" type="PROCEDURE" subtype="OPERATION" changeToken="0">
+  <parameters>
+    <parameter name="rawdata" direction="IN" nullable="unknown">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="content-type" direction="IN" nullable="unknown">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="output" direction="OUT" nullable="unknown">
+      <datatype name="Wrapper" referenceDefinitionSet="/shared/Common/Physical/Metadata/REST/India_Redemption_model/apicallDefinitions" referenceType="Wrapper" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="Wrapper">
+        <schemaDatatype>
+          <datatype name="Wrapper" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="ELEMENT_DECL" anonymous="true" type="TREE" refId="1">
+            <element name="WrapperItem">
+              <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="2">
+                <element name="volume_imc">
+                  <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                </element>
+                <element name="vol_imc_key_no">
+                  <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                </element>
+                <element name="preds">
+                  <datatype name="float" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="FLOAT"/>
+                </element>
+                <element name="decile">
+                  <datatype name="byte" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="short" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-128" maxValue="127"/>
+                </element>
+              </datatype>
+            </element>
+          </datatype>
+        </schemaDatatype>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/REST/India_Redemption_model/apicallDefinitions" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <attribute name="bindingModel" type="STRING">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?&gt;&lt;bindingModel&gt;&lt;portBindings&gt;&lt;portBinding xsi:type=&quot;restfulPortBinding&quot; serviceName=&quot;apicall&quot; jsonWrappedTable=&quot;true&quot; jsonWrappedCursor=&quot;true&quot; jsonValidateXml=&quot;true&quot; jsonUseProcParamName=&quot;false&quot; jsonFieldAsString=&quot;false&quot; jsonBareValue=&quot;false&quot; enabled=&quot;false&quot; bindingStyles=&quot;&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;&lt;operationBindings&gt;&lt;operationBinding xsi:type=&quot;restfulProcedureBinding&quot; operationPathTemplate=&quot;/&quot; httpMethod=&quot;POST&quot; resourceName=&quot;apicall&quot; requestWrapperQName=&quot;&quot; parameterStyle=&quot;BARE&quot; responseWrapperQName=&quot;&quot;&gt;&lt;parameterBindings&gt;&lt;parameterBinding xsi:type=&quot;restfulParameterBinding&quot; xml=&quot;false&quot; parameterFormat=&quot;JSON&quot; nulLable=&quot;false&quot; bindingLocation=&quot;entity&quot; name=&quot;[rawdata]&quot; inOut=&quot;IN&quot; dataType=&quot;LONGVARCHAR&quot; isUrl=&quot;false&quot; location=&quot;Body&quot; maxLength=&quot;2147483647&quot;/&gt;&lt;parameterBinding xsi:type=&quot;restfulParameterBinding&quot; xml=&quot;false&quot; parameterFormat=&quot;JSON&quot; nulLable=&quot;false&quot; bindingLocation=&quot;httpheader&quot; name=&quot;content-type&quot; inOut=&quot;IN&quot; dataType=&quot;VARCHAR&quot; isUrl=&quot;false&quot; location=&quot;HTTP Header&quot; maxLength=&quot;255&quot;/&gt;&lt;parameterBinding xsi:type=&quot;restfulParameterBinding&quot; xml=&quot;false&quot; parameterFormat=&quot;XML&quot; nulLable=&quot;false&quot; bindingLocation=&quot;entity&quot; name=&quot;output&quot; definitionName=&quot;Wrapper&quot; inOut=&quot;OUT&quot; dataType=&quot;DEFINITION&quot; isUrl=&quot;false&quot; location=&quot;Body&quot; definitionStr=&quot;shared/Common/Physical/Metadata/REST/India_Redemption_model/apicallDefinitions/&amp;quot;Wrapper&amp;quot;&quot;/&gt;&lt;/parameterBindings&gt;&lt;/operationBinding&gt;&lt;/operationBindings&gt;&lt;/portBinding&gt;&lt;/portBindings&gt;&lt;/bindingModel&gt;</attribute>
+  <attribute name="creationDate" type="LONG">1568730482619</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30105</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="execTimeout" type="LONG">0</attribute>
+  <attribute name="httpLocation" type="STRING">http://10.133.246.1//</attribute>
+  <attribute name="httpVerb" type="STRING">POST</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573574369228</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30105</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1568730482619</attribute>
+  <attribute name="timeout" type="LONG">0</attribute>
+</metadata>

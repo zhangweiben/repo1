@@ -1,0 +1,400 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getCodedString" path="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="inCodingType" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inEncodingActions" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="codingList" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inString" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="inModuleNameInvoking" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inDebug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inStringName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="outString" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/TextUtils/RegexReplace" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="Input Text" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Regular Expression" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Replacement Text" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseInputText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseOutput" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="trimText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="includeDelimiter" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="object">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	getCodedString - Perform encoding or decoding of special characters within double quoted, single quoted or parenthesis pair strings
+
+	Input:
+		codingType		- The type of coding to perform. E=encode special characters, D=decode special characters
+			e.g. when codingType=E then encode from /a/b/&quot;1_002e3_0020c&quot;/&quot;_0020d_0020&quot;/&quot;1_002c2_0021&quot;/&quot;_0020_0021_0020_0025_0020_0028_0020_0029_0020_002a_0020_002b_0020_002d_0020_002f_0020&quot;
+			e.g. when codingType=D then decode from /a/b/&quot;1.3 c&quot;/&quot; d &quot;/&quot;1,2!&quot;/&quot; ! % ( ) * + - / &quot;
+		encodingAction	- A directive on which action to take. 
+							P=encode/decode between Parenthesis, 
+							D=encode/decode between double quotes, 
+							S=encode/decode between single quotes, 
+							null when codingType=D (this parameter is ignored)
+		codingList		- A comma separate list of encoded values to encode or decode.  e.g. _0020,_002c,_002e
+		inString		- The string to encode or decode
+	Output:
+		outString		- The resulting string
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	10/28/2013		Mike Tinius			6.2.0			8.0: new.  Perform a string encode or decode of special characters
+	11/20/2014		Mike Tinius			6.2.6			8.1.5: Added implementation for DECODE to recognize encodingActions=P,D,S
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE getCodedString(
+	IN  inCodingType							CHAR(1),	-- The type of coding to perform. E=encode special characters, D=decode special characters
+	IN  inEncodingActions						VARCHAR,	-- A directive on which action to take.  A space or comma separated list of directives below:
+																--   P=encode/decode between Parenthesis
+																--   D=encode/decode between double quotes
+																--   S=encode/decode between single quotes
+																--   N=encode/decode anywhere in the string
+	IN  codingList							VARCHAR,	-- A comma separate list of encoded values to encode or decode.  e.g. _0020,_002c,_002e
+	IN  inString							LONGVARCHAR,-- The string to encode or decode
+	IN  inModuleNameInvoking				VARCHAR,	-- The module from which this script is being invoked.
+	IN  inDebug								CHAR(1),	-- Debug: Y or N
+	IN  inStringName						VARCHAR,	-- The name or type of inString being encoded/decoded to be used for debugging purposes.
+	OUT outString							LONGVARCHAR -- The resulting string
+)
+BEGIN
+	DECLARE moduleName						VARCHAR DEFAULT &apos;getCodedString&apos;;
+	DECLARE debug							CHAR(1) DEFAULT inDebug;
+	DECLARE codingType						CHAR(1) DEFAULT UPPER(inCodingType);
+	DECLARE encodingActions					VARCHAR DEFAULT UPPER(inEncodingActions);
+	DECLARE moduleNameInvoking				VARCHAR DEFAULT NVL(inModuleNameInvoking,&apos;null&apos;);
+	DECLARE newline							VARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.newline;
+	DECLARE regexSize						INTEGER DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.regexSize;
+	DECLARE encodingAction					CHAR(1); -- P D S
+	DECLARE actualValue						VARCHAR;
+	DECLARE codedValue						VARCHAR;
+	DECLARE escapeValueList					VARCHAR DEFAULT &apos;&quot;&quot;$^\&apos;&apos;&apos;;
+	-- Append the actual value to this string.  This is not the encoded value.
+	-- encodingAction=P
+	DECLARE regexReplacePatternParentheses	VARCHAR DEFAULT &apos;(?=[^()]{0,&apos;||regexSize||&apos;}\))&apos;;
+	-- encodingAction=DQ
+	DECLARE regexReplacePatternDoubleQuote 	VARCHAR DEFAULT &apos;(?=[^&quot;]{0,&apos;||regexSize||&apos;}&quot;(?:[^&quot;\r\n]{0,&apos;||regexSize||&apos;}&quot;[^&quot;]{0,&apos;||regexSize||&apos;}&quot;){0,&apos;||regexSize||&apos;}[^&quot;\r\n]{0,&apos;||regexSize||&apos;}$)&apos;;
+	-- encodingAction=SQ
+	DECLARE regexReplacePatternSingleQuote 	VARCHAR DEFAULT &apos;(?=[^&apos;&apos;]{0,&apos;||regexSize||&apos;}&apos;&apos;(?:[^&apos;&apos;\r\n]{0,&apos;||regexSize||&apos;}&apos;&apos;[^&apos;&apos;]{0,&apos;||regexSize||&apos;}&apos;&apos;){0,&apos;||regexSize||&apos;}[^&apos;&apos;\r\n]{0,&apos;||regexSize||&apos;}$)&apos;;
+	DECLARE regexPattern					VARCHAR(4000);
+	DECLARE startTime						TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+	DECLARE duration						INTERVAL MINUTE TO SECOND;
+	DECLARE seconds							DECIMAL(32,3);
+	DECLARE debugTime						CHAR(1) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.debugTime;
+	DECLARE defaultActionType				VARCHAR DEFAULT &apos;NO_ACTION:&apos;;
+	DECLARE actionType						VARCHAR DEFAULT defaultActionType;
+	DECLARE inStringTemp					LONGVARCHAR;
+	DECLARE encodedDoubleDoubleQuote		VARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedDoubleDoubleQuote;
+
+	set outString = inString;
+	if (outString is not null and LENGTH(outString) &gt; 0) then
+
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,&apos;ORIGINAL: codingType=[&apos;||codingType||&apos;]  encodingActions=[&apos;||encodingActions||&apos;]  inStringName=&apos;||inStringName||&apos; inString=[&apos;||inString||&apos;]  codingList=[&apos;||codingList||&apos;]&apos;);
+
+			-- Loop through the coding list
+			for r as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(codingList, &apos;,&apos;,0,0,0,1,0) do
+				set codedValue = r.object;
+				CASE codedValue
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedSpace 			THEN set actualValue = &apos; &apos;;	-- _0020 = space
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedComma 			THEN set actualValue = &apos;,&apos;;	-- _002C = comma
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedPeriod 			THEN set actualValue = &apos;.&apos;;	-- _002E = period
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedPipe	 			THEN set actualValue = &apos;|&apos;;	-- _007C = pipe
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedOpFact 			THEN set actualValue = &apos;!&apos;;	-- _0021 = factorial operator
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedDollar 			THEN set actualValue = &apos;$&apos;;	-- _0024 = dollar sign
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedOpMod 			THEN set actualValue = &apos;%&apos;;	-- _0025 = modulo operator
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedLParen 			THEN set actualValue = &apos;(&apos;;	-- _0028 = left parenthesis
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedRParen 			THEN set actualValue = &apos;)&apos;;	-- _0029 = right parenthesis
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedOpMult 			THEN set actualValue = &apos;*&apos;;	-- _002A = multiplication operator
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedOpAdd 			THEN set actualValue = &apos;+&apos;;	-- _002B = addition operator
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedOpSub 			THEN set actualValue = &apos;-&apos;;	-- _002D = substraction operator
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedOpDiv 			THEN set actualValue = &apos;/&apos;;	-- _002F = division operator
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedQuestionMark 		THEN set actualValue = &apos;?&apos;;	-- _003F = question mark
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedLeftBracket 		THEN set actualValue = &apos;[&apos;;	-- _005B = left square bracket
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedBackslash			THEN set actualValue = &apos;\&apos;;	-- _005C = backslash
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedRightBracket		THEN set actualValue = &apos;]&apos;;	-- _005D = right square bracket
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedCarat 			THEN set actualValue = &apos;^&apos;;	-- _005E = carat
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedLeftCurlyBracket 	THEN set actualValue = &apos;{&apos;;	-- _007B = left curly bracket
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedRightCurlyBracket THEN set actualValue = &apos;}&apos;;	-- _007D = right curly bracket
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedSingleQuote 		THEN set actualValue = &apos;&apos;&apos;&apos;;-- _0027 = single quote
+					WHEN /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/encodedValues.encodedDoubleDoubleQuote	THEN set actualValue = &apos;&quot;&quot;&apos;;-- _0022_0022 = Double double quote
+					ELSE
+				END CASE;
+				-- Perform an encoding of the string
+				/************************
+				 * ENCODE codingType=&apos;E&apos;
+				 ***********************/
+				if (codingType = &apos;E&apos;) then
+					if (POSITION(actualValue IN outString) &gt; 0) then
+						if (POSITION(&apos;N&apos; IN encodingActions) = 0) then
+							if (actualValue = &apos;&quot;&quot;&apos;) then
+								set actualValue = &apos;&quot;\&quot;&apos;;
+							end if;
+						end if;
+						/* ENCODE list of encoding values between left parens and right parens */
+						if (POSITION(&apos;P&apos; IN encodingActions) &gt; 0 AND (POSITION(&apos;(&apos; IN outString) &gt; 0 or POSITION(&apos;)&apos; IN outString) &gt; 0)) then
+							set regexPattern = &apos;\&apos;||actualValue||regexReplacePatternParentheses;
+							set actionType = &apos;ENCODE:P():&apos;;
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; actual=[&apos;||actualValue||&apos;]  code=[&apos;||codedValue||&apos;]  regexPattern=&apos;||regexPattern);
+							end if;
+							call /shared/ASAssets/Utilities/string/TextUtils/RegexReplace(outString, regexPattern, codedValue, 0, outString);
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; outString=[&apos;||outString||&apos;]&apos;);
+							end if;
+						end if;
+
+						/* ENCODE list of encoding values between double quotes */
+						if (POSITION(&apos;D&apos; IN encodingActions) &gt; 0 AND POSITION(&apos;&quot;&apos; IN outString) &gt; 0) then
+							set regexPattern = &apos;\&apos;||actualValue||regexReplacePatternDoubleQuote;
+							set actionType = &apos;ENCODE:D&quot;&quot;:&apos;;
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; actual=[&apos;||actualValue||&apos;]  code=[&apos;||codedValue||&apos;]  regexPattern=&apos;||regexPattern);
+							end if;
+							call /shared/ASAssets/Utilities/string/TextUtils/RegexReplace(outString, regexPattern, codedValue, 0, outString);
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; outString=[&apos;||outString||&apos;]&apos;);
+							end if;
+						end if;
+
+						/* ENCODE list of encoding values between single quotes except when the encoded value is a single quote */
+						if (POSITION(&apos;S&apos; IN encodingActions) &gt; 0 AND POSITION(&apos;&apos;&apos;&apos; IN outString) &gt; 0 AND actualValue != &apos;&apos;&apos;&apos;) then
+							set regexPattern = &apos;\&apos;||actualValue||regexReplacePatternSingleQuote;
+							set actionType = &apos;ENCODE:S&apos;&apos;&apos;&apos;:&apos;;
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; actual=[&apos;||actualValue||&apos;]  code=[&apos;||codedValue||&apos;]  regexPattern=&apos;||regexPattern);
+							end if;
+							call /shared/ASAssets/Utilities/string/TextUtils/RegexReplace(outString, regexPattern, codedValue, 0, outString);
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; outString=[&apos;||outString||&apos;]&apos;);
+							end if;
+						end if;
+
+						/* ENCODE list of encoding values between left parens and right parens */
+						if (POSITION(&apos;N&apos; IN encodingActions) &gt; 0 AND POSITION(actualValue IN outString) &gt; 0) then
+							set regexPattern = &apos;\&apos;||actualValue;
+							set actionType = &apos;ENCODE:N:&lt;ANY&gt;:&apos;;
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; actual=[&apos;||actualValue||&apos;]  code=[&apos;||codedValue||&apos;]  regexPattern=&apos;||regexPattern);
+							end if;
+							call /shared/ASAssets/Utilities/string/TextUtils/RegexReplace(outString, regexPattern, codedValue, 0, outString);
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; outString=[&apos;||outString||&apos;]&apos;);
+							end if;
+						end if;
+					end if;
+				else
+				/************************
+				 * DECODE codingType=&apos;D&apos;
+				 ***********************/
+				-- Perform a decoding of the string
+					if (POSITION(codedValue IN outString) &gt; 0) then
+						-- If the encoding action is &quot;NOT&quot; N and the actualValue is in the escape list for actualValues then escape it otherwise don&apos;t
+						if (POSITION(&apos;N&apos; IN encodingActions) = 0) then
+							if (POSITION(actualValue IN escapeValueList) &gt; 0) then
+								if (actualValue = &apos;&quot;&quot;&apos;) then
+									set actualValue = &apos;\&quot;\&quot;&apos;;
+								else
+									set actualValue = &apos;\&apos;||actualValue;
+								end if;
+							end if;
+						end if;
+
+						/* DECODE list of encoding values between left parens and right parens */
+						if (POSITION(&apos;D&apos; IN encodingActions) &gt; 0 AND POSITION(&apos;&quot;&apos; IN outString) &gt; 0) then
+
+							set regexPattern = codedValue||regexReplacePatternDoubleQuote;
+							set actionType = &apos;DECODE:D&quot;&quot;:&apos;;
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; actual=[&apos;||actualValue||&apos;]  code=[&apos;||codedValue||&apos;]  regexPattern=&apos;||regexPattern);
+							end if;
+							call /shared/ASAssets/Utilities/string/TextUtils/RegexReplace(outString, regexPattern, actualValue, 0, outString);
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; outString=[&apos;||outString||&apos;]&apos;);
+							end if;
+						end if;
+
+						/* DECODE list of encoding values between double quotes */
+						if (POSITION(&apos;P&apos; IN encodingActions) &gt; 0 AND (POSITION(&apos;(&apos; IN outString) &gt; 0 OR POSITION(&apos;)&apos; IN outString) &gt; 0) ) then
+
+							set regexPattern = codedValue||regexReplacePatternParentheses;
+							set actionType = &apos;DECODE:P():&apos;;
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; actual=[&apos;||actualValue||&apos;]  code=[&apos;||codedValue||&apos;]  regexPattern=&apos;||regexPattern);
+							end if;
+							call /shared/ASAssets/Utilities/string/TextUtils/RegexReplace(outString, regexPattern, actualValue, 0, outString);
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; outString=[&apos;||outString||&apos;]&apos;);
+							end if;
+						end if;
+
+						/* DECODE list of encoding values between single quotes except when the encoded value is a single quote */
+						if (POSITION(&apos;S&apos; IN encodingActions) &gt; 0 AND POSITION(&apos;&apos;&apos;&apos; IN outString) &gt; 0 AND actualValue != &apos;&apos;&apos;&apos;) then
+
+							set regexPattern = codedValue||regexReplacePatternSingleQuote;
+							set actionType = &apos;DECODE:S&apos;&apos;&apos;&apos;:&apos;;
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; actual=[&apos;||actualValue||&apos;]  code=[&apos;||codedValue||&apos;]  regexPattern=&apos;||regexPattern);
+							end if;
+							call /shared/ASAssets/Utilities/string/TextUtils/RegexReplace(outString, regexPattern, actualValue, 0, outString);
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; outString=[&apos;||outString||&apos;]&apos;);
+							end if;
+						end if;
+
+						/* DECODE list of encoding values anywhere in the string */
+						if (POSITION(&apos;N&apos; IN encodingActions) &gt; 0 AND POSITION(codedValue IN outString) &gt; 0) then
+
+							set regexPattern = codedValue;
+							set actionType = &apos;DECODE:N&lt;ANY&gt;:&apos;;
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; actual=[&apos;||actualValue||&apos;]  code=[&apos;||codedValue||&apos;]  regexPattern=&apos;||regexPattern);
+							end if;
+							set outString = REPLACE(outString, regexPattern, actualValue);
+							if (debug = &apos;Y&apos;) then
+								call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debug,actionType||&apos; outString=[&apos;||outString||&apos;]&apos;);
+							end if;
+						end if;
+					end if;
+				end if;
+			end for;
+
+		if (actionType = defaultActionType and debug = &apos;Y&apos;) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,actionType||&apos; outString=[&apos;||outString|| &apos;]&apos;);
+		end if;
+	end if;
+	set duration = CURRENT_TIMESTAMP - startTime;
+	set seconds = EXTRACT(SECONDS FROM duration);
+	if (seconds &gt; .05 and debugTime = &apos;Y&apos;) then
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName||&apos;&lt;--&apos;||moduleNameInvoking,debugTime,actionType||&apos; duration=&apos;||cast(duration as varchar));
+	end if;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:1:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

@@ -1,0 +1,236 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="extractTime" path="/shared/ASAssets/Utilities/time/extractTime" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0" isFunction="true">
+  <annotation>extractTime:
+	This procedure takes an input string that is expected to contain a time value. It compares this string
+	against a (non-exhaustive) set of time formats, and extracts the time value.
+	The time formats supported in this procedure are defined as constants in DefaultValues.
+ 
+	Input:
+		inTimeStr - contains any varchar of length 255.  
+			Values: Any text value in a reasonable date or timestamp format such as ‘12:00:00’
+		isMandatory - contains any varchar of length 255.  
+			Values: 0 means not mandatory, 1 means mandatory. No other values accepted
+		debug - defines the debugging options for this procedure.  
+			Values: Y or T = debugging turned on, N or F = debugging turned off
+	Output:
+		extractTime - 1. contains a valid time
+				   2. null if isMandatory=0 and no time could be extracted
+				   3. Exception is thrown if isMandatory=1 and no timestamp could be extracted
+			Values: null or a time value such as 00:00:00
+
+	Exceptions:  InvalidTimeException
+			If isMandatory=0 and no format could be found then return null.
+			If isMandatory=1 and no format could be found then an exception is thrown.
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2010.3		08/02/2010		Mike Tinius			5.1.0			Created new.
+	2019.200	05/20/2019		Mike Tinius			7.0.8			Removed the use of VECTOR
+
+    (c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="inTimeStr" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="isMandatory" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="extractTime" direction="OUT" nullable="true">
+      <datatype name="TIME" type="TIME"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities" type="CONTAINER">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/ExceptionDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractTextList" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="separator" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="preserveDoubleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveSingleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveParenthesis" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveQualifier" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="trimResults" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="textExpression">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* extractTime:
+	This procedure takes an input string that is expected to contain a time value. It compares this string
+	against a (non-exhaustive) set of time formats, and extracts the time value.
+	The time formats supported in this procedure are defined as constants in DefaultValues.
+ 
+	Input:
+		inTimeStr - contains any varchar of length 255.  
+			Values: Any text value in a reasonable date or timestamp format such as ‘12:00:00’
+		isMandatory - contains any varchar of length 255.  
+			Values: 0 means not mandatory, 1 means mandatory. No other values accepted
+		debug - defines the debugging options for this procedure.  
+			Values: Y or T = debugging turned on, N or F = debugging turned off
+	Output:
+		extractTime - 1. contains a valid time
+				   2. null if isMandatory=0 and no time could be extracted
+				   3. Exception is thrown if isMandatory=1 and no timestamp could be extracted
+			Values: null or a time value such as 00:00:00
+
+	Exceptions:  InvalidTimeException
+			If isMandatory=0 and no format could be found then return null.
+			If isMandatory=1 and no format could be found then an exception is thrown.
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2010.3		08/02/2010		Mike Tinius			5.1.0			Created new.
+	2019.200	05/20/2019		Mike Tinius			7.0.8			Removed the use of VECTOR
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE extractTime(
+	IN inTimeStr 			VARCHAR(255), 
+    IN isMandatory 			SMALLINT,   -- 0 means not mandatory, 1 means mandatory. No other values accepted.
+	IN debug 				CHAR(1), -- true=&apos;Y&apos; and false=&apos;N&apos;	  
+	OUT extractTime		 	TIME
+)
+BEGIN
+ 	PATH /shared/ASAssets/Utilities;
+	DECLARE moduleName 			VARCHAR DEFAULT &apos;extractTime()&apos;;
+	DECLARE errorMessage		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE i					INTEGER DEFAULT 0;
+	DECLARE timeStr 			VARCHAR; 
+	DECLARE pattern				VARCHAR;
+	DECLARE timeFormatList		LONGVARCHAR DEFAULT
+					   &apos;hh24:mi:ss.ff|
+						hh24:mi:ss|
+						hh24:mi|
+						hh24&apos;;
+
+	set timeStr = TRIM(NVL(inTimeStr,&apos;  &apos;));
+	-- Initialize it.
+	SET extractTime = NULL;
+	SET pattern = &apos;&apos;;
+
+	IF (LENGTH(timeStr) &gt; 0) THEN
+	    dateLoop:
+		FOR r AS 
+			SELECT * FROM /shared/ASAssets/Utilities/string/extractTextList(REPLACE(timeFormatList,CHR(10), &apos;&apos;), &apos;|&apos;, 0, 0, 0, 0, 1)
+			WHERE textExpression IS NOT NULL AND LENGTH(TRIM(textExpression)) &gt; 0
+		DO
+			SET i = i + 1;
+			SET pattern = r.textExpression;
+			--CALL print(&apos;i=&apos;||i||&apos;  pattern=&apos;||NVL(pattern,&apos;null&apos;));
+	    	BEGIN
+				SET extractTime = PARSE_TIME(timeStr, pattern);
+				LEAVE dateLoop;
+	    	EXCEPTION
+				ELSE
+	    	END;
+		END FOR;
+	    IF (extractTime IS NULL) THEN
+			SET i = 0;
+			SET pattern = &apos;&apos;;
+	    END IF;
+	END IF;
+
+	IF (UPPER(debug) = &apos;Y&apos; or UPPER(debug) = &apos;T&apos;) THEN
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,
+			&apos;length=&apos;|| length(TRIM(NVL(inTimeStr,&apos;  &apos;))) || 
+			&apos;,  inTimeStr=&apos;||TRIM(NVL(inTimeStr,&apos;  &apos;)) || 
+			&apos;,  extractTime=&apos;||TRIM(NVL(CAST(extractTime AS VARCHAR),&apos;  &apos;)) || 
+			&apos;   Pattern[&apos;|| i || &apos;]=[&apos;|| pattern || &apos;]&apos;);	
+	END IF;
+	IF (extractTime is null) THEN
+		IF (isMandatory = 1) THEN
+			-- Mandatory means if we cannot extract a valid time, then we have to raise an exception.
+			SET errorMessage = &apos;ERROR: extractTime(): isMandatory=1. Unable to process date=[&apos;|| timeStr || &apos;]&apos;;
+	    	CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,&apos;Y&apos;,errorMessage);	
+			RAISE /shared/ASAssets/Utilities/ExceptionDefinitions.InvalidTimeException value errorMessage;
+		ELSE
+			-- Not mandatory means if we cannot produce a valid timestamp, just return NULL (which has been set already).
+			-- Do not raise exception here.
+			SET errorMessage = &apos;WARNING: extractTime(): isMandatory=0 or null. Unable to process this date=[&apos;|| timeStr || &apos;]. NULL value returned.&apos;;
+			IF (UPPER(debug) = &apos;Y&apos; or UPPER(debug) = &apos;T&apos;) THEN
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,errorMessage);
+			END IF;
+		END IF;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564693846640</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

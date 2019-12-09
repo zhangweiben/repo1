@@ -1,0 +1,306 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Award_Dim" path="/shared/Common/Business/Logical/Integration_Tables/Award_Dim" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="award_code" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="award_name" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="award_desc" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="award_number" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="award_alias_code" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="award_group_code" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="award_group_desc" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="proc_code" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="proc_name" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="proc_desc" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="top_up_code" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="detail_track_flag" nullable="true">
+      <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="calc_engn_result_id" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="tax_adj_allow_flag" nullable="true">
+      <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="add_to_pay_flag" nullable="true">
+      <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="add_to_earn_flag" nullable="true">
+      <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="manually_calc_engine_result_id" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="baseline_code" nullable="true">
+      <datatype type="STRING" maxLength="5"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="in_market_flag" nullable="true">
+      <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="manl_pts_allow_flag" nullable="true">
+      <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="s_audit_create_dtm" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="s_audit_create_user" nullable="true">
+      <datatype type="STRING" minLength="10" maxLength="10"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="s_audit_change_dtm" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="s_audit_change_user" nullable="true">
+      <datatype type="STRING" minLength="10" maxLength="10"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="s_audit_change_module_name" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/EAP/Integration_Tables/Award_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="award_code">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="award_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="award_desc">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="award_number">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="award_alias_code">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="award_group_code">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="award_group_desc">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="proc_code">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="proc_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="proc_desc">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="top_up_code">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="detail_track_flag">
+        <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      </element>
+      <element name="calc_engn_result_id">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="tax_adj_allow_flag">
+        <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      </element>
+      <element name="add_to_pay_flag">
+        <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      </element>
+      <element name="add_to_earn_flag">
+        <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      </element>
+      <element name="manually_calc_engine_result_id">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="baseline_code">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="in_market_flag">
+        <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      </element>
+      <element name="manl_pts_allow_flag">
+        <datatype type="DECIMAL" maxDigits="1" maxFractionalDigits="0"/>
+      </element>
+      <element name="s_audit_create_dtm">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="s_audit_create_user">
+        <datatype type="STRING" minLength="10" maxLength="10"/>
+      </element>
+      <element name="s_audit_change_dtm">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="s_audit_change_user">
+        <datatype type="STRING" minLength="10" maxLength="10"/>
+      </element>
+      <element name="s_audit_change_module_name">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	Award_Dim.award_code award_code,
+	Award_Dim.award_name award_name,
+	Award_Dim.award_desc award_desc,
+	Award_Dim.award_number award_number,
+	Award_Dim.award_alias_code award_alias_code,
+	Award_Dim.award_group_code award_group_code,
+	Award_Dim.award_group_desc award_group_desc,
+	Award_Dim.proc_code proc_code,
+	Award_Dim.proc_name proc_name,
+	Award_Dim.proc_desc proc_desc,
+	Award_Dim.top_up_code top_up_code,
+	Award_Dim.detail_track_flag detail_track_flag,
+	Award_Dim.calc_engn_result_id calc_engn_result_id,
+	Award_Dim.tax_adj_allow_flag tax_adj_allow_flag,
+	Award_Dim.add_to_pay_flag add_to_pay_flag,
+	Award_Dim.add_to_earn_flag add_to_earn_flag,
+	Award_Dim.manually_calc_engine_result_id manually_calc_engine_result_id,
+	Award_Dim.baseline_code baseline_code,
+	Award_Dim.in_market_flag in_market_flag,
+	Award_Dim.manl_pts_allow_flag manl_pts_allow_flag,
+	Award_Dim.s_audit_create_dtm s_audit_create_dtm,
+	Award_Dim.s_audit_create_user s_audit_create_user,
+	Award_Dim.s_audit_change_dtm s_audit_change_dtm,
+	Award_Dim.s_audit_change_user s_audit_change_user,
+	Award_Dim.s_audit_change_module_name s_audit_change_module_name 
+FROM
+	/shared/Common/Physical/Formatting/EAP/Integration_Tables/Award_Dim Award_Dim</attribute>
+  <attribute name="creationDate" type="LONG">1570198394872</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1570198881352</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1570198394872</attribute>
+</metadata>

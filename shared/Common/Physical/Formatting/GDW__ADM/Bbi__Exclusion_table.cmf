@@ -1,0 +1,86 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Bbi_Exclusion" path="/shared/Common/Physical/Formatting/GDW_ADM/Bbi_Exclusion" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="imc_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ibo_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bns_cust_id" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bbi_eligible_flg" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/OnPremises/Oracle_GDW/AIU4517/BBI_EXCLUSION" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="IMC_KEY_NO" nullable="false">
+        <datatype type="INTEGER" minValue="-99999999999" maxValue="99999999999"/>
+      </element>
+      <element name="AFF_NO">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      </element>
+      <element name="IBO_NO">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      </element>
+      <element name="BNS_CUST_ID">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      </element>
+      <element name="BBI_ELIGIBLE_FLG">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(BBI_EXCLUSION.IMC_KEY_NO AS BIGINT) AS imc_key_no,
+	CAST(BBI_EXCLUSION.AFF_NO AS DECIMAL(38,0)) AS aff_no,
+	CAST(BBI_EXCLUSION.IBO_NO AS DECIMAL(38,0)) AS ibo_no,
+	CAST(BBI_EXCLUSION.BNS_CUST_ID AS DECIMAL(38,0)) AS bns_cust_id,
+	CAST(BBI_EXCLUSION.BBI_ELIGIBLE_FLG AS DECIMAL(38,0)) AS bbi_eligible_flg 
+FROM
+	/shared/Common/Physical/Metadata/OnPremises/Oracle_GDW/AIU4517/BBI_EXCLUSION BBI_EXCLUSION</attribute>
+  <attribute name="creationDate" type="LONG">1568820366835</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1568824785121</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1568820366835</attribute>
+</metadata>

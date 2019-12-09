@@ -1,0 +1,286 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="searchAnnotations" path="/shared/ASAssets/Utilities/repository/searchAnnotations" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>searchStringInAnnotations:
+
+    This procedure is used to search a target string in the annotations of one or more resources contained under the resource identified by the value startPath.
+ 
+    Input:
+        startPath - CIS source folder path to assess and fix
+            Values: e.g. /shared/tmp/1folder/_folder/XML
+
+		startResourceType - the type of resource for the starting path.   
+			Values: e.g. CONTAINER or DATA_SOURCE.
+
+		searchStr - the string that is to be searched in the target resource.  
+			The string may contain multi-line text.
+ 
+    Output:
+		result PIPE (
+			resourceId		BIGINT,			-- The resource identifier
+			resourcePath 	VARCHAR(4000), 	-- The full path to the resource
+			resourceType 	VARCHAR(255),	-- The type of resource
+			subtype 		VARCHAR(255),	-- The sub-type of the resource
+			owner			VARCHAR(255),	-- The resource owner
+			ownerId			BIGINT,			-- The resource owner id
+			annotation		LONGVARCHAR		-- The resource text that where the keywordList was found
+		)
+
+    Exceptions:  /lib/util/System.IllegalArgumentException
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2018.100	12/21/2017		Mike Tinius			7.0.5			Created new
+
+	(c) 2017 TIBCO Software Inc. All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="startPath" direction="IN" nullable="true">
+      <datatype name="ResourcePath" referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="searchStr" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="caseSensitive" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="resourceId">
+          <datatype name="BIGINT" type="INTEGER"/>
+        </element>
+        <element name="resourcePath">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="resourceType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="subtype">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="owner">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="ownerId">
+          <datatype name="BIGINT" type="INTEGER"/>
+        </element>
+        <element name="len">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="annotation">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceDefs" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/_debug" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* searchAnnotations:
+
+    This procedure is used to search a target string in the annotations of one or more resources contained under the resource identified by the value startPath.
+	The search string may be multi-line text.  The input parameter &quot;caseSensitive&quot; allows the user to determine if they want to search for annotations using
+	case sensitivity.
+ 
+    Input:
+        startPath - CIS source folder path to assess and fix
+            Values: e.g. folder exact match: /shared/tmp/1folder/_folder/XML - use this scenario to only search for what is in this exact folder and no sub-folders.
+            Values: e.g. wildcard begin: %/1folder/_folder/XML
+            Values: e.g. wildcard end: /shared/tmp/1folder/_folder/XML% - use this scenario to iterate through sub-folders
+            Values: e.g. wildcard surrounding: %/1folder/_folder/XML%
+
+		searchStr - the string to search for in the target resource.
+			The string search is is case sensitive but is searched like a wildcard so the text can 
+				occur anywhere in the annotation.  The string may contain multi-line text.  
+			If this string is null then specifically search for null or empty annotations.
+
+		caseSensitive - 1/null [default]=Search for &quot;searchStr&quot; with case sensitivity. Use actual text as is.  0=Perform search with no case sensitivity.  
+
+    Output:
+		result PIPE (
+			resourceId		BIGINT,			-- The resource identifier
+			resourcePath 	VARCHAR(4000), 	-- The full path to the resource
+			resourceType 	VARCHAR(255),	-- The type of resource
+			subtype 		VARCHAR(255),	-- The sub-type of the resource
+			owner			VARCHAR(255),	-- The resource owner
+			ownerId			BIGINT,			-- The resource owner id
+			len				INTEGER,		-- The string length of the annotation
+			annotation		LONGVARCHAR		-- The resource text that where the keywordList was found
+		)
+
+    Exceptions:  ex
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2018.100	12/21/2017		Mike Tinius			7.0.5			Created new
+
+	(c) 2017 TIBCO Software Inc. All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE searchAnnotations
+(
+	IN startPath 				/lib/resource/ResourceDefs.ResourcePath, 
+	IN searchStr 				LONGVARCHAR, 	-- Can be any string including multi-line text.  If null, then search for null or empty annotations.
+	IN caseSensitive			BIT,			-- 1/null [default]=Search for &quot;searchStr&quot; with case sensitivity. Use actual text as is.  0=Perform search with no case sensitivity.  
+	OUT result PIPE (
+		resourceId		BIGINT,			-- The resource identifier
+		resourcePath 	VARCHAR(4000), 	-- The full path to the resource
+		resourceType 	VARCHAR(255),	-- The type of resource
+		subtype 		VARCHAR(255),	-- The sub-type of the resource
+		owner			VARCHAR(255),	-- The resource owner
+		ownerId			BIGINT,			-- The resource owner id
+		len				INTEGER,		-- The string length of the annotation
+		annotation		LONGVARCHAR		-- The resource text that where the keywordList was found
+	)
+)
+BEGIN
+	DECLARE moduleName		VARCHAR DEFAULT &apos;searchAnnotations&apos;;
+	DECLARE debug			CHAR(1) DEFAULT /shared/ASAssets/Utilities/repository/&quot;_debug&quot;.debug;
+	DECLARE annotation 		LONGVARCHAR DEFAULT NULL;
+	DECLARE resCur CURSOR (
+		resourceId		BIGINT,			-- The resource identifier
+		resourcePath 	VARCHAR(4000), 	-- The full path to the resource
+		resourceType 	VARCHAR(255),	-- The type of resource
+		subtype 		VARCHAR(255),	-- The sub-type of the resource
+		owner			VARCHAR(255),	-- The resource owner
+		ownerId			BIGINT,			-- The resource owner id
+		annotation		LONGVARCHAR		-- The resource text that where the keywordList was found
+	);
+	DECLARE resQuery 		LONGVARCHAR;
+	DECLARE len				INTEGER;
+	DECLARE actionType		VARCHAR;
+	DECLARE ex				EXCEPTION;
+
+	IF (startPath IS NULL OR LENGTH(TRIM(startPath)) = 0) THEN
+		RAISE ex VALUE moduleName||&apos; : EXCEPTION: The input parameter &quot;startPath&quot; may not be null or empty.&apos;;
+	END IF;
+	SET resQuery = &apos;
+        SELECT 
+          RESOURCE_ID resourceId,
+          PARENT_PATH || &apos;&apos;/&apos;&apos; || RESOURCE_NAME resourcePath,
+          CASE RESOURCE_TYPE 
+              WHEN &apos;&apos;DATASOURCE&apos;&apos; THEN &apos;&apos;DATA_SOURCE&apos;&apos;
+              ELSE RESOURCE_TYPE 
+          END resourceType,
+          RESOURCE_SUBTYPE subType,
+          OWNER owner,
+          OWNER_ID ownerId,
+          ANNOTATION annotation
+        FROM /services/databases/system/ALL_RESOURCES&apos;;
+
+	-- Check for wild cards in the startPath
+	IF (INSTR(startPath, &apos;%&apos;) = 0) THEN
+		SET resQuery = resQuery || &apos;
+        WHERE PARENT_PATH = &apos;&apos;&apos; || startPath || &apos;&apos;&apos;&apos;;
+	ELSE
+		SET resQuery = resQuery || &apos;
+        WHERE PARENT_PATH LIKE &apos;&apos;&apos; || startPath || &apos;&apos;&apos;&apos;;
+	END IF;
+	SET resQuery = resQuery || &apos;
+          AND RESOURCE_TYPE NOT IN (&apos;&apos;PARAMETER&apos;&apos;,&apos;&apos;INDEX&apos;&apos;,&apos;&apos;OTHER&apos;&apos;)&apos;;
+
+	-- Check for the search for null or empty annotations
+	IF (searchStr IS NOT NULL) THEN
+		-- Check for case sensitivity
+		IF (caseSensitive IS NOT NULL AND caseSensitive = 0) THEN
+			SET resQuery = resQuery || &apos;
+          AND LOWER(ANNOTATION) LIKE &apos;&apos;%&apos; || LOWER(searchStr) || &apos;%&apos;&apos;&apos;;
+			SET actionType = &apos;[Search: case insensitive] Found annotation&apos;;
+		ELSE
+			SET resQuery = resQuery || &apos;
+          AND ANNOTATION LIKE &apos;&apos;%&apos; || searchStr || &apos;%&apos;&apos;&apos;;
+			SET actionType = &apos;[Search: case sensitive] Found annotation&apos;;
+		END IF;
+	ELSE -- search for null or empty annotations
+		-- Add the search for null or empty annotations
+		SET resQuery = resQuery || &apos;
+          AND (ANNOTATION IS NULL OR (ANNOTATION IS NOT NULL AND LENGTH(TRIM(ANNOTATION)) = 0))&apos;;
+		SET actionType = &apos;[Search: null] Found annotation&apos;;
+	END IF;
+	SET resQuery = resQuery || &apos;
+        ORDER BY PARENT_PATH, RESOURCE_NAME&apos;;
+
+	IF (UPPER(debug) = &apos;Y&apos;) THEN
+		CALL PRINT(moduleName||&apos; : resQuery=&apos;||resQuery);
+	END IF;
+		
+	OPEN resCur for resQuery;
+
+	FOR res AS resCur DO
+		SET len = 0;
+		IF (res.annotation IS NOT NULL) THEN
+			SET len = LENGTH(res.annotation);
+		END IF;
+		INSERT INTO result VALUES (res.resourceId, res.resourcePath, res.resourceType, res.subType, res.owner, res.ownerId, len, res.annotation);
+		IF (UPPER(debug) = &apos;Y&apos;) THEN
+			CALL PRINT(moduleName||&apos; : &apos;||actionType||&apos; : resourceType=&apos;||res.resourceType||&apos;  resourcePath=&apos;||res.resourcePath);
+		END IF;
+	END FOR;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1380737206434</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564745946017</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">8/139</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/151</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

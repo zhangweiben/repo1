@@ -1,0 +1,205 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="vUsers_All_Excel" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Excel/vUsers_All_Excel" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>Modified Date:	Modified By:		CSW Version:	Reason:
+	05/16/2017		Mike Tinius			7.0.5			Adapted for Data Abstraction Best Practices.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <columns>
+    <column name="rownum" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="sheetRownum" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="datasource" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="sheetName" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Organization" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Project" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="SubProject" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="UserName" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Description" nullable="true">
+      <datatype type="STRING" maxLength="4000"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Domain" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Env Type" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Password" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Force" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1" trailingSpaces="false"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="GroupList" nullable="true">
+      <datatype type="STRING" maxLength="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="UserName_lowercase" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="IsActive" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1" trailingSpaces="false"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DS_EXCEL/Resource_Privileges_LOAD_DB.xlsx/User_List" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="Organization">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+      <element name="Project">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+      <element name="SubProject">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+      <element name="UserName">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+      <element name="Description">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+      <element name="Domain">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+      <element name="Env Type">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+      <element name="Password">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+      <element name="Force">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+      <element name="GroupList">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+      <element name="UserName_lowercase">
+        <datatype type="STRING" maxLength="32767"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT
+				CAST(null as INTEGER)						rownum, 
+				CAST(null as INTEGER)						sheetRownum, 
+				CAST(&apos;EXCEL&apos; as VARCHAR(255))				datasource,
+				CAST(&apos;User_List&apos; as VARCHAR(255)) 			sheetName, 
+				CAST(TRIM(Organization) AS VARCHAR(255))	Organization,
+				CAST(TRIM(Project) as VARCHAR(255)) 		Project, 
+				CAST(TRIM(SubProject) as VARCHAR(255)) 		SubProject, 
+				CAST(CASE
+					WHEN UserName IS NOT NULL AND LENGTH(TRIM(UserName)) &gt; 0 AND &quot;Domain&quot; IS NOT NULL AND LOWER(TRIM(&quot;Domain&quot;)) = &apos;composite&apos; THEN LOWER(UserName)
+					ELSE TRIM(UserName)
+				END AS VARCHAR(255))						UserName, 
+				CAST(TRIM(Description) as VARCHAR(4000))	Description, 
+				CAST(CASE 
+					WHEN &quot;Domain&quot; IS NULL OR LENGTH(TRIM(&quot;Domain&quot;)) = 0 OR LOWER(TRIM(&quot;Domain&quot;)) = &apos;composite&apos; THEN &apos;composite&apos;
+					ELSE TRIM(&quot;Domain&quot;)
+				END AS VARCHAR(255))						&quot;Domain&quot;, 
+				CAST(UPPER(TRIM(&quot;Env Type&quot;)) as VARCHAR(255)) &quot;Env Type&quot;, 
+				CAST(TRIM(Password)	as VARCHAR(255))		Password, 
+				CAST(CASE
+					WHEN Force IS NULL THEN 0
+					WHEN Force = &apos;1&apos; THEN Force
+					WHEN Force = &apos;0&apos; THEN Force
+					ELSE 0
+					END	AS CHAR(1))							Force, 
+				CAST(TRIM(GroupList) as LONGVARCHAR)		GroupList, 
+				CAST(UserName_lowercase AS VARCHAR) 		UserName_lowercase,
+				&apos;Y&apos;											IsActive
+FROM (
+				SELECT Organization, Project, SubProject, UserName, Description, &quot;Domain&quot;, &quot;Env Type&quot;, Password, Force, GroupList, CAST(UserName_lowercase AS VARCHAR) UserName_lowercase
+					FROM /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DS_EXCEL/&quot;Resource_Privileges_LOAD_DB.xlsx&quot;/User_List
+) U
+WHERE UserName IS NOT NULL AND LENGTH(TRIM(UserName)) &gt; 0</attribute>
+  <attribute name="creationDate" type="LONG">1415631580374</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+</metadata>

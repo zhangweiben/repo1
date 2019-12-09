@@ -1,0 +1,116 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="_CREATE_BEST_PRACTICES_VERSION" path="/shared/ASAssets/BestPractices_v81/_Help/_CREATE_BEST_PRACTICES_VERSION" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters></parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="Script" type="STRING">/*  _CREATE_BEST_PRACTICES_VERSION
+
+	=========================================================
+	Best Practices View Generation Scripts v8.1
+	=========================================================
+	Author:      Mike Tinius
+	Date:        05/20/2015
+	CSW Version: 6.2.x, 7.0.x
+
+	DEVELOPERS NOTE:  Steps for a Composite developer to create a new version of the Best Practices
+
+		1. In general, replace _vXX with actual version number such as _v81
+
+		2. Remember to edit the following resources:
+			a) Edit defaultValues
+			   /shared/ASAssets/BestPractices_vXX/_ProjectMaintenance/defaultValues
+				1) modify bestPracticesVersion
+				2) modify bestPracticesRootPath
+				
+			b) Edit Generic Template defaultValues
+			   /shared/ASAssets/BestPractices_vXX/DataAbstraction_GENERIC_Template/_scripts/Constants/defaultValues
+				Note: Only need to modify if changing to a new base version such as going from _v81 to _v82
+				1) modify bestPracticesVersion [generateProject() and upgradeProject() will automatically modify the target folder version]
+				2) modify basePath				[generateProject() and upgradeProject() will automatically modify the target folder path]
+
+				Note: For the sake of backward compatibility, BestPractices_v80 is still used with BestPractices_v81
+					  because the format of the excel/csv files have not changed.
+
+			c) Only perform these steps if the format of the excel/csv has changed from the v80 version.
+			   For v81 version the excel/csv has not changed since v80
+			   /shared/ASAssets/BestPractices_vXX/DataSource/CommonModelSources
+				1) Edit root path: C:\CompositeSoftware\BestPractices\BestPractices_vXX
+			   /shared/ASAssets/BestPractices_vXX/DataSource/CommonModelExcelSources
+				1) Edit root path: C:\CompositeSoftware\BestPractices\BestPractices_vXX
+
+		3. Create a copy of the file system BestPractices folder used by the CommonModelSources data source
+				Note: For the sake of backward compatibility, BestPractices_v80 is still used with BestPractices_v81
+					  because the format of the excel/csv files have not changed.
+
+				a) Only perform these steps if the format of the excel/csv has changed
+			   	   For v81 version the excel/csv has not changed since v80
+					1) Copy the previous BestPractices_vXY to BestPractices_vXX
+					2) For example, copy BestPractices_v73 to BestPractices_v80
+
+		4. Create an upgrade path for the new version in (XX is the version number):
+			/shared/ASAssets/BestPractices_vXX/Procedures/generateConfigure/vector_upgradeVersionVector
+				add a new line to the vector such as:
+								,(7.3, 				8.0)	-- Perform upgrade from 7.3 to 8.0
+
+			/shared/ASAssets/BestPractices_vXX/Procedures/generateConfigure/vector_masterUpgradeVector
+				These are the minimum actions that must be taken upon doing an upgrade.
+				-- 1. Make a copy of $PROJECT_PATH/_scripts/Constants
+				-- 2. Make a copy of $PROJECT_PATH/_scripts/Configure
+				-- 3. Make a copy of $PROJECT_PATH/_scripts/Documentation
+				-- 4. Make a copy of $PROJECT_PATH/_scripts/Generate
+				-- 5. Update PROJECT_PATH/_scripts/Constants/defaultValues
+				-- 6. Update PROJECT_PATH/_scripts/Documentation/constants
+				-- 7. Copy DataAbstraction_GENERIC_Template/_scripts/Generate to $PROJECT_PATH/_scripts/Generate
+				-- 8. Rebind PROJECT_PATH/_scripts
+
+	=========================================================
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE &quot;_CREATE_BEST_PRACTICES_VERSION&quot;()BEGIN END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1513897324970</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

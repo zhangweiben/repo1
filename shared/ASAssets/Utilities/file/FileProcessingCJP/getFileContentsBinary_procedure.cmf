@@ -1,0 +1,61 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getFileContentsBinary" path="/shared/ASAssets/Utilities/file/FileProcessingCJP/getFileContentsBinary" type="PROCEDURE" subtype="CUSTOM_PROCEDURE" changeToken="0" isFunction="true">
+  <annotation>/*
+ * Source File: GetFileContentsBinary.java
+ *
+ * Description: This Composite CJP returns the Binary contents of a file from the file system.
+ *
+ * Note: The import [import com.compositesw.extension.*] requires CIS_HOME\apps\extension\lib\csext.jar
+ * 
+ *	Input:
+ *		filePath - full path to a file to retrieve content.			Types.VARCHAR, DIRECTION_IN
+ *
+ *	Output: 
+ *		fileContent - binary file content. 							createLongVarBinary(&quot;fileContent&quot;, DIRECTION_OUT, 2147483647)
+ *
+ *	Exceptions:  CustomProcedureException, SQLException
+ 
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2010.3		08/06/2010		Mike Tinius			5.1.0			Created new
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+
+ */</annotation>
+  <parameters>
+    <parameter name="filePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" subType="DATASOURCE_TYPE" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="fileContent" direction="OUT" nullable="true">
+      <datatype name="LONGVARBINARY" subType="DATASOURCE_TYPE" type="BINARY" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="className" type="STRING">com.tibco.ps.utils.file.GetFileContentsBinary</attribute>
+  <attribute name="creationDate" type="LONG">1366122592839</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564684160064</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="selectionState" type="INTEGER">2</attribute>
+</metadata>

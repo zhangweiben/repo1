@@ -1,0 +1,445 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Intro_Program_Demand_Corrected_Skus" path="/shared/Common/Business/Logical/Forecasting/Intro_Program_Demand_Corrected_Skus" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_no" nullable="true">
+      <datatype type="STRING" minLength="12" maxLength="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="base_7_item_no" nullable="true">
+      <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="to_corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="to_item_no" nullable="true">
+      <datatype type="STRING" minLength="12" maxLength="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="to_base_7_item_no" nullable="true">
+      <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="last_use_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_desc_nm" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="anlys_desc_nm" nullable="true">
+      <datatype type="STRING" minLength="25" maxLength="25"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="intro_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="inact_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="stat_act_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_stat_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="prog_cd" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="prog_desc_nm" nullable="true">
+      <datatype type="STRING" minLength="25" maxLength="25"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="prog_class_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="prog_stat_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="itm_cd" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/Forecasting/Fft004_Fcast_Item" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="item_desc_nm">
+        <datatype type="STRING" minLength="30" maxLength="30"/>
+      </element>
+      <element name="anlys_desc_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="anlys_2desc_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="intro_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="anlys_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="dcost_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="bv_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="nbv_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="mab_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="mad_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="pv_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="stat_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="prt_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="price_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="mtd_dmand_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="mtd_dmand_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="perm_yr4">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="perm_mo">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="perm_fcast_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="each_pct">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="each_dcost_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="fcast_hold_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="fcast_prev_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="dmand_hold_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_fcast_hold">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_fcast_1bom">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_fcast_1eom">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_fcast_2bom">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_fcast_2eom">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="gains_mdl_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="gains_prev_mdl_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="gains_rview_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="gains_prev_rview">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="gains_mad_qty">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="1"/>
+      </element>
+      <element name="gains_prev_mad_qty">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="1"/>
+      </element>
+      <element name="gains_fcast_mad">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="1"/>
+      </element>
+      <element name="gains_rer_qty">
+        <datatype type="DECIMAL" maxDigits="4" maxFractionalDigits="2"/>
+      </element>
+      <element name="gains_lead_fcast">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="gains_recom_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="last_updt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="wgt_qty">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="3"/>
+      </element>
+      <element name="cs_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="daily_dmand_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="cmab_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="cmab_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="cmad_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="cmad_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="amab_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="amab_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="amad_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="amad_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="bv_bdgt_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="mtd_promo_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="fcast_xpr_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="mtd_ebiz_dmand_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="plan_item_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="stats_fcast_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ebiz_hold_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="promo_item_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="dcont_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="inact_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="stat_act_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="add_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="trnsfr_to_item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="trnsfr_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="rplac_item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="prev_item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="sugg_rtail_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="ltu_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="rebate_price_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="mtd_xplod_dmand_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="new_imprv_flg">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="where_fcast_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/Forecasting/Fft019_Intro" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="prog_cd">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="prog_desc_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="class_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="stat_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="itm_cd">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/Forecasting/Fft020_Intro_Item" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="prog_cd">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/Forecasting/Fft028_Dmand_Corr" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="to_corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="to_item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="last_use_dt">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    Dmand_Corr.corp_cd, 
+    Dmand_Corr.item_no, 
+    TRIM(substring(Dmand_Corr.item_no, 1, 7)) base_7_item_no, 
+    Dmand_Corr.to_corp_cd, 
+    Dmand_Corr.to_item_no, 
+    TRIM(substring(Dmand_Corr.to_item_no, 1, 7)) to_base_7_item_no, 
+    Dmand_Corr.last_use_dt, 
+    CAST(Fft004_Fcast_Item.item_desc_nm AS VARCHAR(50)) item_desc_nm, 
+    Fft004_Fcast_Item.anlys_desc_nm, 
+    Fft004_Fcast_Item.intro_dt, 
+    Fft004_Fcast_Item.inact_dt, 
+    Fft004_Fcast_Item.stat_act_dt, 
+    Fft004_Fcast_Item.stat_cd item_stat_cd, 
+    Fft019_Intro.prog_cd, 
+    Fft019_Intro.prog_desc_nm, 
+    Fft019_Intro.class_cd prog_class_cd, 
+    Fft019_Intro.stat_cd prog_stat_cd, 
+    Fft019_Intro.itm_cd
+FROM      
+    /shared/Common/Physical/Formatting/Forecasting/Fft028_Dmand_Corr Dmand_Corr INNER JOIN 
+        /shared/Common/Physical/Formatting/Forecasting/Fft004_Fcast_Item Fft004_Fcast_Item
+    ON Dmand_Corr.corp_cd = Fft004_Fcast_Item.corp_cd AND 
+        Dmand_Corr.item_no = Fft004_Fcast_Item.item_no INNER JOIN 
+        /shared/Common/Physical/Formatting/Forecasting/Fft020_Intro_Item Fft020_Intro_Item
+    ON Dmand_Corr.to_corp_cd = Fft020_Intro_Item.corp_cd AND 
+        Dmand_Corr.to_item_no = Fft020_Intro_Item.item_no INNER JOIN 
+        /shared/Common/Physical/Formatting/Forecasting/Fft019_Intro Fft019_Intro
+    ON Fft019_Intro.prog_cd = Fft020_Intro_Item.prog_cd
+WHERE
+    NOT (Dmand_Corr.corp_cd = Dmand_Corr.to_corp_cd AND 
+    TRIM(substring(Dmand_Corr.item_no, 1, 7)) = TRIM(substring(Dmand_Corr.to_item_no, 1, 7))) AND 
+    TRIM(Dmand_Corr.to_corp_cd) &lt;&gt; &apos;&apos; AND 
+    TRIM(Dmand_Corr.to_item_no) &lt;&gt; &apos;&apos;</attribute>
+  <attribute name="creationDate" type="LONG">1556119737175</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1556119737175</attribute>
+</metadata>

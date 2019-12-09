@@ -1,0 +1,517 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getConstantV2" path="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0" isFunction="true">
+  <annotation>getConstantV2:
+
+	This procedure subsumes the capabilities of getConstant and should be used going forward.
+
+	This procedure gets a constant value or the actual constant string from a dynamic constant path.  
+		Option 1: Return the value of the constant which was the original intent of this procedure.
+		Option 2: Return the definition string of the constant.
+	All results are returned as LONGVARCHAR. If the value is actually an integer THEN the application 
+		must take care of casting to the proper value.
+
+	Input:
+		constantsPath - The path to the constants file ending with procedure parenthesis ().                                                                                                                                                 i.e. /shared/PSAsSETs/Utilities/documentation/constants()
+		constantsName - The name of the constant.
+		optionReturn - option 1 [default and same as getConstant()] or option 2.
+ 			Option 1: Return the value of the constant which was the original intent of this procedure and the default behavior.
+				Assumption: somvar=/shared/myproject
+				Example: set optionName = somevar || &apos;/somefolder&apos;
+				Return: /shared/myproject/somefolder
+			Option 2: Return the definition string of the constant.
+				Example: set optionName = somevar || &apos;/somefolder&apos;
+				Return: somevar || &apos;/somefolder&apos;
+
+	Output:
+		outValue - The value of the constant or the definition of the constant.
+
+	Exceptions:  
+		/lib/util/System.IllegalArgumentException - Exception IF constantPath is not valid (null or resource not found).
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.4		08/28/2014		Mike Tinius			6.2.6			Created new
+	2019.200	04/04/2019		Mike Tinius			7.0.8			Changed custom functions to explicit paths.
+	2019.301	08/01/2019		Mike Tinius			7.0.8			Added CAST(constantName AS LONGVARCHAR) in projection to avoid exception when a constant is not a character type.
+																	Derived from getConstant() - added the ability to get the constant defintion as well as the value.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="constantsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="constantsName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="optionReturn" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="outValue" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/System" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/services/databases/system/DUAL" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="DUMMY">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getScriptText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inSubType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="scriptText" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/server/getServerAttribute" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="attributePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="keyValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractTextList" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="separator" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="preserveDoubleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveSingleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveParenthesis" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveQualifier" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="trimResults" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="textExpression">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	getConstantV2:
+
+	This procedure subsumes the capabilities of getConstant and should be used going forward.
+
+	This procedure gets a constant value or the actual constant string from a dynamic constant path.  
+		Option 1: Return the value of the constant which was the original intent of this procedure.
+		Option 2: Return the definition string of the constant.
+	All results are returned as LONGVARCHAR. If the value is actually an integer THEN the application 
+		must take care of casting to the proper value.
+
+	Input:
+		constantsPath - The path to the constants file ending with procedure parenthesis ().                                                                                                                                                 i.e. /shared/PSAsSETs/Utilities/documentation/constants()
+		constantsName - The name of the constant.
+		optionReturn - option 1 [default and same as getConstant()] or option 2.
+ 			Option 1: Return the value of the constant which was the original intent of this procedure and the default behavior.
+				Assumption: somvar=/shared/myproject
+				Example: set optionName = somevar || &apos;/somefolder&apos;
+				Return: /shared/myproject/somefolder
+			Option 2: Return the definition string of the constant.
+				Example: set optionName = somevar || &apos;/somefolder&apos;
+				Return: somevar || &apos;/somefolder&apos;
+
+	Output:
+		outValue - The value of the constant or the definition of the constant.
+
+	Exceptions:  
+		/lib/util/System.IllegalArgumentException - Exception IF constantPath is not valid (null or resource not found).
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.4		08/28/2014		Mike Tinius			6.2.6			Created new
+	2019.200	04/04/2019		Mike Tinius			7.0.8			Changed custom functions to explicit paths.
+	2019.301	08/01/2019		Mike Tinius			7.0.8			Added CAST(constantName AS LONGVARCHAR) in projection to avoid exception when a constant is not a character type.
+																	Derived from getConstant() - added the ability to get the constant defintion as well as the value.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE getConstantV2(
+	IN constantsPath		VARCHAR(4000),
+	IN constantsName		VARCHAR,
+	IN optionReturn			SMALLINT,
+	OUT outValue			LONGVARCHAR
+)
+BEGIN
+	-- Common variables
+	DECLARE moduleName						VARCHAR DEFAULT &apos;getConstant&apos;;
+	DECLARE debug							CHAR(1) DEFAULT &apos;N&apos;;
+	DECLARE constantsPath_					VARCHAR(4000) DEFAULT constantsPath;
+	DECLARE resExists						BOOLEAN;
+	DECLARE ex								EXCEPTION;
+	-- Option 1 variables
+	DECLARE sqlStatement					VARCHAR(4000);
+	DECLARE result							CURSOR (textVal LONGVARCHAR);
+	DECLARE sqlProjection					VARCHAR(4000);
+	DECLARE sqlFrom							VARCHAR(4000);
+	-- Option 2 variables
+	DECLARE scriptText						LONGVARCHAR;
+	DECLARE scriptTextMod					LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE line		 					LONGVARCHAR;
+	DECLARE lineNormalized					LONGVARCHAR;
+	DECLARE lineNum							INTEGER DEFAULT 0;
+	DECLARE pos, pos1, pos2					INTEGER;
+	DECLARE posBeg, posBegLen				INTEGER;
+	DECLARE posEnd							INTEGER;
+	DECLARE begLine							LONGVARCHAR;
+	DECLARE endLine							LONGVARCHAR;
+	DECLARE constantFound					BOOLEAN DEFAULT FALSE;
+	DECLARE igrnoreTrailingSpaces			BOOLEAN;
+	DECLARE igrnoreTrailingSpacesAttribute	VARCHAR DEFAULT &apos;/server/sql/language/ignoreTrailingSpaces&apos;;
+	DECLARE resultAttr						VARCHAR;
+	DECLARE success							BIT;
+	DECLARE createResponse 					XML;
+	DECLARE faultResponse					XML;
+
+	IF (constantsPath_ IS NULL OR LENGTH(constantsPath_) = 0) THEN
+		RAISE System.IllegalArgumentException VALUE &apos;The parameter &quot;constantsPath&quot; is null or empty.  Please provide a valid path.&apos;;
+	END IF;
+	IF (constantsName IS NULL OR LENGTH(constantsName) = 0) THEN
+		RAISE System.IllegalArgumentException VALUE &apos;The parameter &quot;constantsName&quot; is null or empty.  Please provide a valid constant.&apos;;
+	END IF;
+	CALL /lib/resource/ResourceExists(constantsPath_, &apos;PROCEDURE&apos;, null, resExists);
+	IF (NOT resExists) THEN
+		RAISE System.IllegalArgumentException VALUE &apos;The &quot;constantsPath=[&apos;||NVL(constantsPath_, &apos;null&apos;)||&apos;]&quot; does not exist.  Please provide a valid path.&apos;;
+	END IF;
+	IF (optionReturn IS NOT NULL AND optionReturn &lt;&gt; 1 AND optionReturn &lt;&gt; 2) THEN
+		RAISE System.IllegalArgumentException VALUE &apos;The &quot;optionReturn=[&apos;||NVL(CAST(optionReturn AS VARCHAR), &apos;null&apos;)||&apos;]&quot; is not valid.&apos;;
+	END IF;
+
+	-- Option 1: Return the value of the constant which was the original intent of this procedure.
+	IF (optionReturn IS NULL OR optionReturn = 1) THEN
+		-- Set up the sql projection list
+		IF (constantsName IS NOT NULL AND LENGTH(&apos;|&apos;||constantsName||&apos;|&apos;) &gt; 2) THEN
+			SET sqlProjection = &apos;CAST(&apos;||TRIM(constantsName)||&apos; AS LONGVARCHAR)&apos;;
+		ELSE
+			SET sqlProjection = &apos;null&apos;;
+		END IF;
+		-- Set up the SQL from clause
+		IF (constantsPath_ IS NOT NULL AND LENGTH(&apos;|&apos;||constantsPath_||&apos;|&apos;) &gt; 2) THEN
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(constantsPath_,null, sqlFrom);
+			SET sqlFrom = TRIM(sqlFrom);
+			-- Append procedure () at the end of the path IF it does not exist.
+			IF (POSITION(&apos;()&apos; IN constantsPath_) = 0) THEN
+				SET sqlFrom = sqlFrom || &apos;()&apos;;
+			END IF;
+		END IF;
+
+		-- Set up the SQL statement
+		SET sqlStatement = &apos;select &apos;|| sqlProjection || &apos; from &apos; || sqlFrom;
+		IF (UPPER(debug) = &apos;Y&apos;) THEN
+			call print(&apos;SQL:&apos;||sqlStatement);
+		END IF;
+
+		SET outValue = null;
+		OPEN result FOR sqlStatement;
+		FOR r AS result DO
+			SET outValue = r.textVal;
+		END FOR;
+
+	-- Option 2: Return the definition string of the constant.
+	ELSE
+		-- Get the script text
+		CALL /shared/ASAssets/Utilities/repository/getScriptText(constantsPath_, &apos;PROCEDURE&apos;, NULL, scriptText);
+
+		-- Get the server attribute trailing spaces setting
+		CALL /shared/ASAssets/Utilities/repository/server/getServerAttribute(igrnoreTrailingSpacesAttribute, resultAttr);
+		IF (resultAttr IS NULL) THEN
+			SET igrnoreTrailingSpaces = true;
+		END IF;
+		IF (LOWER(resultAttr) = &apos;true&apos; OR LOWER(resultAttr) = &apos;false&apos;) THEN
+			SET igrnoreTrailingSpaces = CAST(resultAttr AS BOOLEAN);
+		ELSE
+			SET igrnoreTrailingSpaces = &apos;true&apos;;
+		END IF;
+
+		-- Extract the script text procedure line by line to process it looking for constants to modify.
+		constantsLoop:
+		FOR r AS SELECT textExpression line FROM /shared/ASAssets/Utilities/string/extractTextList(scriptText, CHR(10), 0,0,0,0,0) DO
+			SET lineNum = lineNum + 1;
+			SET line = r.line;
+
+			-- Normalize the line in order to find the text without excessive white space [tabs, multiple spaces and carriage returns].
+			SET lineNormalized = UPPER(REPLACE(REPLACE(line, CHR(9), &apos; &apos;), CHR(13), &apos;&apos;));
+			-- Reduce the number of double spaces to a single space
+			IF (igrnoreTrailingSpaces) THEN
+				SELECT {OPTION IGNORE_TRAILING_SPACES=&quot;FALSE&quot;} INSTR(lineNormalized, &apos;  &apos;) INTO pos FROM /services/databases/system/DUAL;
+				WHILE (pos &gt; 0) DO
+					SET lineNormalized = REPLACE(lineNormalized, &apos;  &apos;, &apos; &apos;);
+					SELECT {OPTION IGNORE_TRAILING_SPACES=&quot;FALSE&quot;} INSTR(lineNormalized, &apos;  &apos;) INTO pos FROM /services/databases/system/DUAL;
+				END WHILE;
+			ELSE
+				SET pos = INSTR(lineNormalized, &apos;  &apos;);
+				WHILE (pos &gt; 0) DO
+					SET lineNormalized = REPLACE(lineNormalized, &apos;  &apos;, &apos; &apos;);
+					SET pos = INSTR(lineNormalized, &apos;  &apos;);
+				END WHILE;
+			END IF;
+
+			-- Locate the constantsName within the script text.  Use upper case to avoid the &quot;DECLARE PUBLIC VARIABLE_NAME&quot; being in lower case.
+			-- FORMAT: DECLARE PUBLIC variable_name	CONSTANT VARCHAR(4096) DEFAULT &apos;some value here&apos;;  -- Comment
+			SET pos1 = 0;
+			IF (INSTR(lineNormalized, &apos;DECLARE PUBLIC &apos;||UPPER(constantsName)) &gt; 0) THEN
+				IF (igrnoreTrailingSpaces) THEN
+					SELECT {OPTION IGNORE_TRAILING_SPACES=&quot;FALSE&quot;} INSTR(lineNormalized, &apos;DECLARE PUBLIC &apos;||UPPER(constantsName)||&apos; &apos;) INTO pos1 FROM /services/databases/system/DUAL;
+				ELSE
+					SET pos1 = INSTR(lineNormalized, &apos;DECLARE PUBLIC &apos;||UPPER(constantsName)||&apos; &apos;);
+				END IF;
+			END IF;
+			-- Locate the constantsName within the script text.  Use upper case to avoid the &quot;SET variable_name&quot; being in lower case.
+			-- Format: SET variable_name	= &apos;x&apos;;
+			SET pos2 = 0;
+			IF (INSTR(lineNormalized, &apos;SET &apos;||UPPER(constantsName)) &gt; 0) THEN
+				IF (igrnoreTrailingSpaces) THEN
+					SELECT {OPTION IGNORE_TRAILING_SPACES=&quot;FALSE&quot;} INSTR(lineNormalized, &apos;SET &apos;||UPPER(constantsName)||&apos; &apos;) INTO pos2 FROM /services/databases/system/DUAL;
+				ELSE
+					SET pos2 = INSTR(lineNormalized, &apos;SET &apos;||UPPER(constantsName)||&apos; &apos;);
+				END IF;
+			END IF;
+
+			IF (pos1 &gt; 0 OR pos2 &gt; 0) THEN
+				-- Get the actual position of SET or DECLARE in the original line.
+				SET pos1 = INSTR(UPPER(line), &apos;DECLARE&apos;);
+				SET pos2 = INSTR(UPPER(line), &apos;SET&apos;);
+				IF (UPPER(debug) = &apos;Y&apos;) THEN
+					CALL print(moduleName||&apos; lineNum=&apos;||lineNum||&apos;  &quot;DECLARE PUBLIC &apos;||constantsName||&apos;&quot; pos1=&apos;||pos1);
+					CALL print(moduleName||&apos; lineNum=&apos;||lineNum||&apos;  &quot;SET &apos;||constantsName||&apos;&quot; pos2=&apos;||pos2);
+					CALL print(moduleName||&apos; original line=[&apos;||line||&apos;]&apos;);
+				END IF;
+
+				-- If the &quot;DECLARE PUBLIC variable_name&quot; exists then continue
+				IF (pos1 &gt; 0) THEN
+					SET pos = pos1;
+					SET posBeg = INSTR(line, &apos;DEFAULT&apos;, pos);
+					SET posBegLen = LENGTH(&apos;DEFAULT&apos;);
+					SET posEnd = INSTR(line, &apos;;&apos;, pos);
+
+				-- ELSE the &quot;SET variable_name&quot; exists then continue
+				ELSE
+					SET pos = pos2;
+					SET posBeg = INSTR(line, &apos;=&apos;, pos);
+					SET posBegLen = LENGTH(&apos;=&apos;);
+					SET posEnd = INSTR(line, &apos;;&apos;, pos);
+				END IF;
+
+				-- Extract the beginning portion of the line.
+				SET begLine = SUBSTRING(line, 1, posBeg+posBegLen-1);
+				IF (UPPER(debug) = &apos;Y&apos;) THEN
+					CALL print(moduleName||&apos; begLine=[&apos;||begLine||&apos;]&apos;);
+				END IF;
+				-- Extract the end portion of the line
+				SET endLine = SUBSTRING(line, posEnd);
+				IF (UPPER(debug) = &apos;Y&apos;) THEN
+					CALL  print(moduleName||&apos; endLine=[&apos;||endLine||&apos;]&apos;);
+				END IF;
+				-- Extract the old value from the line
+				SET outValue = TRIM(SUBSTRING(line, posBeg+posBegLen, posEnd-posBeg-posBegLen));
+				IF (UPPER(debug) = &apos;Y&apos;) THEN
+					CALL  print(moduleName||&apos; definition=[&apos;||outValue||&apos;]&apos;);
+				END IF;
+				SET constantFound = TRUE;
+			END IF;
+		END FOR;
+
+		IF (NOT constantFound) THEN
+			RAISE ex VALUE &apos;The constant name &quot;&apos;||constantsName||&apos;&quot; could not be found.&apos;;
+		END IF;
+	END IF;
+END
+</attribute>
+  <attribute name="creationDate" type="LONG">1409259010734</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573155473170</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">11/201</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/91</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>System</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/199</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/101</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>System</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/200</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/222</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/125</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/232</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/94</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>System</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/227</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/98</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>System</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

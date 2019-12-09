@@ -1,0 +1,390 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="updatePrivilegesDriver" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/updatePrivilegesDriver" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <parameters>
+    <parameter name="Datasource" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Batch_Privileges" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="Environment_Name" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Organization" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Project" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="SubProject" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Sheet_Name" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Resource_Path" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="Resource_Type" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Name_" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Name_Type" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Domain_Name" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="preview" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="forceDomainAsComposite" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug1" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug1Console" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug1CISLog" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug1ReadOnly" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug1RevokeAll" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug2" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inBypassErrors" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="rowsProcessed" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="logOutput" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updateResourcePrivilegesDriverImplV4" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="datasource" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Batch_Privileges" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="Environment_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Organization" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Project" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SubProject" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Sheet_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Resource_Path" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Resource_Type" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Name_" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Name_Type" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Domain_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inPreview" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="forceDomainAsComposite" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inDebug1" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inDebug1Console" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inDebug1CISLog" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inDebug1ReadOnly" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inDebug1RevokeAll" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inDebug2" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inBypassErrors" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inModuleName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="rowsProcessed" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="logOutput" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* updatePrivilegesDriver:
+
+	This 2nd version of the procedure allows for more fine grained controll over debug output and the ability to skip resource path not exist errors but report them.
+
+	This procedure is used to update privileges by reading the privileges from an excel spreadsheet - Composite_Resource_Privileges_IM or _RISK.xlsx.
+		sheets: Privileges_shared 		- Update privileges for /shared
+			    Privileges_databases 	- Update privileges for /services/databases
+				Privileges_webservices 	- Update privileges for /services/webservices
+
+	Input:
+		Datasource		VARCHAR(255),	-- RECOMMENDED FILTER: the datasource where the privileges are stored.
+											If not parameter is provided the default value is used from defaultValues.datasource.  Possible values include:
+												EXCEL - Excel spreadsheet which gets uploaded to each CIS server.
+												DB_LLE - SQL Server database for lower level environments.  Basically it is used for testing purposes and developing new functionality.
+												DB_PROD - SQL Server production database.  This connection should always be used unless developing new functionality.
+		Batch_Privileges INTEGER,		-- REQUIRED_FILTER: 1=Batch all privileges for the same path, type and recursion setting. 0=Process each spreadsheet line separately (no batching).
+											When the resource path in the spreadsheet changes, a batch is executed.
+											When the resource type in the spreadsheet changes, a batch is executed.
+											When the recursion identifier in the spreadsheet changes, a batch is executed.  
+												A group of rows with like recursion may only be batched together otherwise the meaning of the privilege setting is not the same.
+		Environment_Name VARCHAR(255), 	-- REQUIRED FILTER: The Composite server environment in which to get/update privileges for: [DEV, TEST, UAT, PROD]
+		Organization	VARCHAR(255),	-- RECOMMENDED FILTER: The name of the organization such as ORG1 or ORG2
+		Project			VARCHAR(255),	-- RECOMMENDED FILTER: The name of the project that is hosted on CIS for this &quot;Env Type&quot;.  
+											This provides a filter for only applying privileges for the given project.  If left blank, all projects will be updated.
+		SubProject		VARCHAR(255),	-- RECOMMENDED FILTER: The name of the sub-project that is hosted on CIS for this &quot;Env Type&quot;.  
+											This provides a filter for only applying privileges for the given sub-project.  If left blank, all rows for the project will be updated.
+		Sheet_Name 		VARCHAR(255), 	-- OPTIONAL FILTER: The name of the Excel spreadsheet in which to get/update privileges from: [shared, databases, webservices]
+		Resource_Path 	LONGVARCHAR,	-- OPTIONAL FILTER: The resource path in which to get/update privileges.  It may contain a wildcard &quot;%&quot;.
+		Resource_Type 	VARCHAR(255),	-- OPTIONAL FILTER: The resource type in which to get/update privileges.  It is always upper case. 
+										--	E.g. DATA_SOURCE - a published datasource or physical metadata datasource.
+										--		 CONTAINER - a folder path, a catalog or schema path.
+										--		 COLUMN - a column from a table
+										--		 LINK - a published table or procedure.  If it resides in the path /services and points to a TABLE or PROCEDURE then it is a LINK.
+										--		 TABLE - a view in the /shared path.
+										--		 PROCEDURE a procedure in the /shared path.
+		Name_ 			VARCHAR(255), 	-- OPTIONAL FILTER: The user/group name in which to get/update privileges.
+		Name_Type		VARCHAR(255), 	-- OPTIONAL FILTER: Valid values are USER or GROUP
+		Domain_Name 	VARCHAR(255), 	-- OPTIONAL FILTER: The domain name in which to get/update privileges.
+		preview			CHAR(1),		-- N or null(default)=Do not preview.  Execute the privileges.  Y=preview what will get set but don&apos;t actually execute the privileges.
+		forceDomainAsComposite 	CHAR(1),-- OPTIONAL PARAM: Y=true, N=false. 
+										--    Provides a way to force a conversion of the group from an LDAP domain name like &quot;ldap&quot; to a the &quot;composite&quot; domain.  
+										--    This is useful when setting up the privileges for testing with composite groups that mirror the LDAP groups.  This way the spreadsheet does not have to be modified.
+										--    For example, the LDAP group Composite_Servicing_Dev is automatically converted to the composite domain group composite_servicing_dev.
+		inDebug1			CHAR(1),	-- N/Null=No debug, Y (default)=Debug for this procedure - basic messages
+		inDebug1Console		CHAR(1), 	-- N/Null (default)=No debug, Y=Debug console.  Determines whether to print the studio console window or not.
+		inDebug1CISLog		CHAR(1), 	-- N/Null (default)=No debug, Y=Debug log.  Determines whether to print to the CIS log or not.
+		inDebug1ReadOnly	CHAR(1),	-- N/Null (default)=No debug, Y=Debug for READ only messages
+		inDebug1RevokeAll	CHAR(1),	-- N/Null (default)=No debug, Y=Debug for Revoke All messages.
+		inDebug2			CHAR(1),	-- N/Null (default)=No debug, Y=Debug for 2nd and 3rd tier procedures (deep debug)
+		inBypassErrors		CHAR(1)		-- Bypass errors.  Throw exception when paths not found.
+										--   N/Null (default) Do not bypass errors.
+										--   Y=bypass resource not found errors but report them.
+	Output:
+		rowsProcessed	INTEGER			-- number of rows processed from the spreadsheet
+		logOutput		LONGVARCHAR		-- The output log that gets printed to the command line console is also output
+
+	Exceptions:  Exception may be thrown.
+
+	Modified Date: 	Modified By:		CSW Version:	Reason:
+	07/15/2016		Mike Tinius			7.0.3			Removed use of vectors to improve performance and reduce memory leak issues.
+	05/16/2017		Mike Tinius			7.0.5			Adapted for Data Abstraction Best Practices.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+---------------------------------------------------------------------------------
+/services/webservices/system/admin/resource/operations/updateResourcePrivileges:
+----------------------------------------------------------------------------------
+Set the privilege information for a list of resources.
+
+Only a user with GRANT privilege on a resource can modify the privileges for that
+resource.  The owner of a resource always has GRANT privilege, as do users with the
+MODIFY_ALL_RESOURCES right.
+
+When &quot;mode&quot; is &quot;OVERWRITE_APPEND&quot;, or is not supplied, privileges are applied on a
+per-user or per-group basis, so that updating privileges for one user or group does not
+alter privileges from any other user or group.  The privileges applied for a user or
+group replace the previous value for that user or group. When &quot;mode&quot; is &quot;SET_EXACTLY&quot;,
+all privileges on the resource are made to look exactly like the provided privileges.
+
+When &quot;updateRecursively&quot; is &quot;false&quot;, the privileges are applied only the specified
+resources.  When it is &quot;true&quot;, the privileges are recursively applied into any 
+CONTAINER or DATA_SOURCE resource specified.  When recursively applying privileges, 
+the privilege change is ignored for any resource the user lacks owner privileges for.
+
+Privileges that are not applicable for a given resource type are automatically stripped
+down to the set that is legal for each resource.  TABLE resources support NONE, READ,
+WRITE, SELECT, INSERT, UPDATE, and DELETE.  PROCEDURE resources support NONE, READ,
+WRITE, and EXECUTE.  All other resource types only support NONE, READ, and WRITE.
+
+The &quot;combinedPrivs&quot; and &quot;inheritedPrivs&quot; elements on each &quot;privilegeEntry&quot; will be
+ignored and can be left unset.
+
+Request Elements:
+    updateRecursively: If &quot;true&quot;, then all children of the given resources will
+       recursively be updated with the privileges assigned to their parent.
+    updateDependenciesRecursively: If &quot;true&quot;, then all dependencies of the given resources will
+       recursively be updated with the privileges assigned to their parent.
+    privilegeEntries: A list of resource names, types, and the privileges.
+    mode (optional): Determines whether privileges are merged with existing ones,
+       default is &quot;OVERWRITE_APPEND&quot;, which merges and does not update privileges for
+       users or groups not mentioned.  &quot;SET_EXACTLY&quot; makes privileges look exactly like
+       those provided in the call.
+
+Response Elements:
+    N/A
+
+Faults:
+    IllegalArgument: If any path is malformed or any type or privilege entry is illegal,
+       or mode is not one of the legal values.
+    NotAllowed: If an attempt is made to use this operation with an insufficient license.
+    NotFound: If a path refers to a resource that does not exist.
+    NotFound: If an unknown domain is provided.
+    NotFound: If an unknown user is provided.
+    NotFound: If an unknown group is provided.
+    Security: If for a given entry path the user does not have READ access on any item
+       in a path other than the last item, or does not have GRANT access on the last item.
+    Security: If the user does not have the ACCESS_TOOLS right.
+*/
+PROCEDURE updatePrivilegesDriver(
+	IN Datasource				VARCHAR(255),	-- RECOMMENDED FILTER: the datasource where the privileges are stored.
+	IN Batch_Privileges 		INTEGER,		-- REQUIRED_FILTER: 1=Batch all privileges for the same path and type, 0=Process each spreadsheet line separately (no batching).
+	IN Environment_Name 		VARCHAR(255), 	-- REQUIRED FILTER: The Composite server environment in which to get/update privileges for: [DEV, TEST, UAT, PROD]
+	IN Organization				VARCHAR(255),	-- RECOMMENDED FILTER: The name of the organization such as ORG1 or ORG2
+	IN Project					VARCHAR(255),	-- RECOMMENDED FILTER: The name of the project that is hosted on CIS for this &quot;Env Type&quot;.  This provides a filter for only applying privileges for the given project.  If left blank, all projects will be updated.
+	IN SubProject				VARCHAR(255),	-- RECOMMENDED FILTER: The name of the sub-project that is hosted on CIS for this &quot;Env Type&quot;.  This provides a filter for only applying privileges for the given sub-project.  If left blank, all rows for the sub-projects will be updated.
+	IN Sheet_Name 				VARCHAR(255), 	-- OPTIONAL FILTER: The name of the Excel spreadsheet in which to get/update privileges from: [Privileges_initialize, Privileges_shared, Privileges_databases, Privileges_webservices]
+	IN Resource_Path 			LONGVARCHAR,	-- OPTIONAL FILTER: The resource path in which to get/update privileges.  It may contain a wildcard &quot;%&quot;.
+	IN Resource_Type 			VARCHAR(255),	-- OPTIONAL FILTER: The resource type in which to get/update privileges.  It is always upper case. 
+												--  This will only be used when no &quot;Resource_Path&quot; or a single &quot;Resource_Path&quot; is provided.  
+												--  It is not used when a list of &quot;Resource_Path&quot; entries are provided.
+												--	E.g. DATA_SOURCE - a published datasource or physical metadata datasource.
+												--		 CONTAINER - a folder path, a catalog or schema path.
+												--		 COLUMN - a column from a table
+												--		 LINK - a published table or procedure.  If it resides in the path /services and points to a TABLE or PROCEDURE then it is a LINK.
+												--		 TABLE - a view in the /shared path.
+												--		 PROCEDURE a procedure in the /shared path.
+	IN Name_ 					VARCHAR(255), 	-- OPTIONAL FILTER: The user/group name in which to get/update privileges.
+    IN Name_Type				VARCHAR(255), 	-- OPTIONAL FILTER: Valid values are USER or GROUP
+	IN Domain_Name 				VARCHAR(255), 	-- OPTIONAL FILTER: The domain name in which to get/update privileges.
+	IN preview					CHAR(1),		-- N or null(default)=Do not preview.  Execute the privileges.  Y=preview what will get set but don&apos;t actually execute the privileges.
+	IN forceDomainAsComposite 	CHAR(1),		-- OPTIONAL PARAM: Y=true, N=false. 
+												--    Provides a way to force a conversion of the group from an LDAP domain name like &quot;ldap&quot; to a the &quot;composite&quot; domain.  
+												--    This is useful when setting up the privileges for testing with composite groups that mirror the LDAP groups.  This way the spreadsheet does not have to be modified.
+												--    For example, the LDAP group Composite_Servicing_Dev is automatically converted to the composite domain group composite_servicing_dev.
+	IN inDebug1					CHAR(1),		-- N/Null=No debug, Y (default)=Debug for this procedure - basic messages
+	IN inDebug1Console			CHAR(1), 		-- N/Null (default)=No debug, Y=Debug console.  Determines whether to print the studio console window or not.
+	IN inDebug1CISLog			CHAR(1), 		-- N/Null (default)=No debug, Y=Debug log.  Determines whether to print to the CIS log or not.
+	IN inDebug1ReadOnly			CHAR(1), 		-- N/Null (default)=No debug, Y=Debug for READ only messages
+	IN inDebug1RevokeAll		CHAR(1),		-- N/Null (default)=No debug, Y=Debug for Revoke All messages.
+
+	IN inDebug2					CHAR(1),		-- N/Null (default)=No debug, Y=Debug for 2nd and 3rd tier procedures (deep debug)
+	IN inBypassErrors			CHAR(1),		-- Bypass errors.  Throw exception when paths not found.
+												--   N/Null (default) Do not bypass errors.
+												--   Y=bypass resource not found errors but report them.
+	OUT rowsProcessed			INTEGER,		-- number of rows processed from the spreadsheet
+	OUT logOutput				LONGVARCHAR		-- The output log that gets printed to the command line console is also output
+)
+BEGIN
+	DECLARE moduleName 				VARCHAR DEFAULT &apos;updatePrivilegesDriver&apos;;
+	DECLARE datasource_				VARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.datasource;
+
+	IF (Datasource IS NOT NULL AND LENGTH(Datasource) &gt; 0) THEN
+		set datasource_ = Datasource;
+	END IF;
+
+	CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updateResourcePrivilegesDriverImplV4(
+			datasource_,
+			Batch_Privileges,
+			Environment_Name,
+			Organization,
+			Project,
+			SubProject,
+			Sheet_Name,
+			Resource_Path,
+			Resource_Type,
+			Name_,
+			Name_Type,
+			Domain_Name,
+			preview,
+			forceDomainAsComposite,
+			inDebug1,
+			inDebug1Console,
+			inDebug1CISLog,
+			inDebug1ReadOnly,
+			inDebug1RevokeAll,
+			inDebug2,
+			inBypassErrors,
+			moduleName,
+			rowsProcessed,
+			logOutput
+		);
+END</attribute>
+  <attribute name="creationDate" type="LONG">1386346747412</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1548250082990</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

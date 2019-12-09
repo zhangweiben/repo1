@@ -1,0 +1,221 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="test_copyResourcesPrivileges" path="/shared/ASAssets/Utilities/examples/repository/test_copyResourcesPrivileges" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+    (c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+
+</annotation>
+  <parameters>
+    <parameter name="choice" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="success" direction="OUT" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="faultResponse" direction="OUT" nullable="true">
+      <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+        <schemaDatatype>
+          <datatype name="XML" type="TREE" refId="1"></datatype>
+        </schemaDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/repository/copyResourcesPrivilegesV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="updatePrivilegesRecursively" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="copyPrivilegeMode" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inCopyPrivilegeEntries" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE test_copyResourcesPrivileges(
+	IN  choice			INTEGER,
+	OUT success			BIT,		-- true(1) or false(0)
+	OUT faultResponse	XML
+)
+BEGIN
+	-- Flag indicating whether to update the children of the given resources or not.
+	--		0 (false) or null - only update the given resource and not the children.
+	--		1 (true) - update children recursively
+	DECLARE updatePrivilegesRecursively	BIT;
+
+	-- Flag indicating the mode in which to copy privileges
+	-- 		null (default) - do not set any privileges at all
+	-- 		0 - set mode to &quot;OVERWRITE_APPEND&quot; - merges and does not update privileges for users or groups not mentioned.
+	-- 		1 - set the mode to &quot;SET_EXACTLY&quot; - makes privileges look exactly like those provided in the call.
+	DECLARE copyPrivilegeMode			INTEGER;
+
+	-- XML formatted string containing the copy privilege entry.  An example is shown below of how to set the input.
+	-- 		There can be mulitiple &quot;copyPrivilegeEntry&quot; XML entries indicating multiple sources each with a pairing 
+	--			of multiple destinations.
+	--		There is a single &lt;resource:srcResource&gt; entry.  There may be multiple &lt;resource:dstResource&gt; entries.
+	--		See documentation above for examples.
+	DECLARE copyPrivilegeEntries		LONGVARCHAR;
+
+
+	IF (choice = 1) THEN
+		set updatePrivilegesRecursively = 1;
+		set copyPrivilegeMode = 1;
+		set copyPrivilegeEntries = 
+&apos;  &lt;resource:copyPrivilegeEntry&gt;
+    &lt;resource:srcResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source&lt;/resource:path&gt;
+      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;
+    &lt;/resource:srcResource&gt;
+    &lt;resource:dstResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source/folder1&lt;/resource:path&gt;
+      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;
+    &lt;/resource:dstResource&gt;
+    &lt;resource:dstResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source/folder3&lt;/resource:path&gt;
+      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;
+    &lt;/resource:dstResource&gt;
+  &lt;/resource:copyPrivilegeEntry&gt;
+  &lt;resource:copyPrivilegeEntry&gt;
+    &lt;resource:srcResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source&lt;/resource:path&gt;
+      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;
+    &lt;/resource:srcResource&gt;
+    &lt;resource:dstResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source/ds_ordersCopy&lt;/resource:path&gt;
+      &lt;resource:type&gt;DATA_SOURCE&lt;/resource:type&gt;
+    &lt;/resource:dstResource&gt;
+  &lt;/resource:copyPrivilegeEntry&gt;
+&apos;;
+	END IF;
+
+	IF (choice = 2) THEN
+		set updatePrivilegesRecursively = 1;
+		set copyPrivilegeMode = 0;
+		set copyPrivilegeEntries = 
+&apos;  &lt;resource:copyPrivilegeEntry&gt;
+    &lt;resource:srcResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source&lt;/resource:path&gt;
+      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;
+    &lt;/resource:srcResource&gt;
+    &lt;resource:dstResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source/Advisory&lt;/resource:path&gt;
+      &lt;resource:type&gt;DATA_SOURCE&lt;/resource:type&gt;
+    &lt;/resource:dstResource&gt;
+    &lt;resource:dstResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source/proc1&lt;/resource:path&gt;
+      &lt;resource:type&gt;PROCEDURE&lt;/resource:type&gt;
+    &lt;/resource:dstResource&gt;
+  &lt;/resource:copyPrivilegeEntry&gt;
+  &lt;resource:copyPrivilegeEntry&gt;
+    &lt;resource:srcResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source&lt;/resource:path&gt;
+      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;
+    &lt;/resource:srcResource&gt;
+    &lt;resource:dstResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source/trigger1&lt;/resource:path&gt;
+      &lt;resource:type&gt;TRIGGER&lt;/resource:type&gt;
+    &lt;/resource:dstResource&gt;
+  &lt;/resource:copyPrivilegeEntry&gt;
+&apos;;
+	END IF;
+
+	IF (choice = 3) THEN
+		set updatePrivilegesRecursively = 0;
+		set copyPrivilegeMode = 1;
+		set copyPrivilegeEntries = 
+&apos;  &lt;resource:copyPrivilegeEntry&gt;
+    &lt;resource:srcResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source&lt;/resource:path&gt;
+      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;
+    &lt;/resource:srcResource&gt;
+    &lt;resource:dstResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source/proc1&lt;/resource:path&gt;
+      &lt;resource:type&gt;PROCEDURE&lt;/resource:type&gt;
+    &lt;/resource:dstResource&gt;
+  &lt;/resource:copyPrivilegeEntry&gt;
+&apos;;
+	END IF;
+
+	IF (choice = 4) THEN
+		set updatePrivilegesRecursively = 1;
+		set copyPrivilegeMode = 1;
+		set copyPrivilegeEntries = 
+&apos;  &lt;resource:copyPrivilegeEntry&gt;
+    &lt;resource:srcResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source&lt;/resource:path&gt;
+      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;
+    &lt;/resource:srcResource&gt;
+    &lt;resource:dstResource&gt;
+      &lt;resource:path&gt;/shared/ASAssets/Utilities/examples/repository/source&lt;/resource:path&gt;
+      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;
+    &lt;/resource:dstResource&gt;
+  &lt;/resource:copyPrivilegeEntry&gt;
+&apos;;
+	END IF;
+
+	IF (choice &lt;= 4) THEN
+		call /shared/ASAssets/Utilities/repository/copyResourcesPrivilegesV2(updatePrivilegesRecursively, copyPrivilegeMode, copyPrivilegeEntries, success, faultResponse);
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564075714164</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:1:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:2:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

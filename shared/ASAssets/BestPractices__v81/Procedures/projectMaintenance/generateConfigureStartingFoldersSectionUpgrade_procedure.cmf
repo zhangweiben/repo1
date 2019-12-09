@@ -1,0 +1,586 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateConfigureStartingFoldersSectionUpgrade" path="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/generateConfigureStartingFoldersSectionUpgrade" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="sourceProjectPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="procedureSection" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getDefaultValues60" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="basePath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="defaultValuesVector" direction="OUT">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="defaultValuesType" type="TREE" refId="2">
+              <element name="basePath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="typeDefinitionPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="typeDefinitionProcName">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="generationScriptsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="clientServicesPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="clientViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="clientViewsSubFolder">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="crudPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="clientPublishedPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="logicalViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="federatedViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="businessViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="formattingViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="physicalMetadataPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="physicalViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="genUniqueIDPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getPathType" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="layerType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="src_or_target" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="defaultValues60" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="defaultValuesType" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getDefaultValues60" referenceType="defaultValuesType" type="TREE" refId="2">
+              <element name="basePath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="typeDefinitionPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="typeDefinitionProcName">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="generationScriptsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="clientServicesPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="clientViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="clientViewsSubFolder">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="crudPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="clientPublishedPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="logicalViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="federatedViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="businessViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="formattingViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="physicalMetadataPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="physicalViewsPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="genUniqueIDPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="inVariableVector" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="inVariableVector" type="TREE" refId="3">
+              <element name="pathType">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="baseFolderName">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="remainderPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="outVariableVector" direction="OUT">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="outVariableVector" type="TREE" refId="4">
+              <element name="pathType">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="baseFolderName">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="remainderPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="pathType" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="baseFolderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="remainderPath" direction="OUT">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="variableVectorIdx" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getPathTypeVariable" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="pathType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="variableVector" direction="IN">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="variableVector" type="TREE" refId="2">
+              <element name="pathType">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="baseFolderName">
+                <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+              </element>
+              <element name="remainderPath">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="baseFolderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="remainderPath" direction="OUT">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="idx" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* generateConfigureStartingFoldersSectionUpgrade:
+
+	This procedure is used to generate the section text for each data source and transformation for ConfigureStartingFolders().
+	1.  Read the existing ConfigureStartingFolders() procedure.   Caveat -- it must not be impacted.  it has to be able to be executed.
+	2.  Generate the sections with the new variables:
+			(&apos;PM_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;PV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;FV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;LV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;EV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;BV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;CV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;CP_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;DB_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;CR_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;CT_FOLDER&apos;,&apos;&apos;,&apos;&apos;)
+	3.  Save the new ConfigureStartingfolders() procedure.
+
+	Input: 
+		sourceProjectPath - the parent resource path
+			e.g. /shared/PROJECT1
+	Output:
+		procedureSection - the procedure section text
+
+	Exceptions:  N/A
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	04/15/2013		Mike Tinius			5.2.0			Created new
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE generateConfigureStartingFoldersSectionUpgrade(
+		IN debug				CHAR(1),		-- Y=debug on, N=debug off
+		IN sourceProjectPath	VARCHAR(4000), 	-- the full path to a source project including the project name
+		OUT procedureSection	LONGVARCHAR
+)
+BEGIN
+	DECLARE moduleName					VARCHAR DEFAULT &apos;generateConfigureStartingFoldersSectionUpgrade&apos;;
+	DECLARE eol							VARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.eol;
+	DECLARE physicalPath				VARCHAR(4000);  		-- the base location of the physical metadata folder
+	DECLARE pathType					VARCHAR;
+	DECLARE sourcePathType				VARCHAR;
+	DECLARE targetPathType				VARCHAR;
+	DECLARE sourceRemainderPath			VARCHAR(4000);
+	DECLARE targetRemainderPath			VARCHAR(4000);
+	DECLARE sourceBaseFolderName		VARCHAR;
+	DECLARE targetBaseFolderName		VARCHAR;
+	DECLARE variableVectorIdx			INTEGER;
+	DECLARE variableBaseFolderName		VARCHAR;
+	DECLARE variableRemainderPath		VARCHAR(4000);
+	DECLARE ex							EXCEPTION;
+	-------------------------------------------------------------
+	-- Best Practices 6.0-6.6 ConfigureStartingFolders Location
+	-------------------------------------------------------------
+	-- View and CRUD Generation starting folders type definition
+	DECLARE TYPE startingFolderType60 ROW (
+		groupId				VARCHAR,
+		process 			BIT,
+		layerType			VARCHAR,
+		pathDerivation 		CHAR(1),
+		sourceFolderPath 	VARCHAR(4000),
+		sourceName			VARCHAR,
+		targetFolderPath 	VARCHAR(4000)
+	);
+	DECLARE configureStartingFolders60	VARCHAR(4000) DEFAULT sourceProjectPath||&apos;/generationScripts/Configure/ConfigureStartingFolders&apos;;
+	DECLARE startingFoldersVect			VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.startingFolderType) DEFAULT VECTOR[(null)];
+	DECLARE i, j, k						INTEGER DEFAULT 0;
+	DECLARE startingFoldersGroupVect	VECTOR(ROW(groupId VARCHAR(4000), startingFoldersVect VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.startingFolderType)));
+	DECLARE startingFolders60Curs		CURSOR startingFolderType60;
+	DECLARE startingFoldersSQL			VARCHAR(2048);
+	DECLARE groupId						VARCHAR DEFAULT null;
+	DECLARE layerType					VARCHAR;
+	DECLARE startingFolderSection		LONGVARCHAR;
+	DECLARE variableSection				LONGVARCHAR;
+	DECLARE insertSection				LONGVARCHAR;
+	DECLARE defaultValues60				VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getDefaultValues60.defaultValuesType);
+	DECLARE variableVector				VECTOR(ROW(pathType VARCHAR, baseFolderName VARCHAR, remainderPath VARCHAR(4000)));
+
+	call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getDefaultValues60(sourceProjectPath, defaultValues60);
+	if (defaultValues60 is null or CARDINALITY(defaultValues60) = 0) then
+		raise ex value &apos;Unable to obtain the defaultValues for project path=&apos;||NVL(sourceProjectPath,&apos;null&apos;);
+	end if;
+
+	set startingFoldersSQL = &apos;select * from &apos;||configureStartingFolders60||&apos;()&apos;;
+	open startingFolders60Curs for startingFoldersSQL;
+	for r as startingFolders60Curs do
+		if (groupId is null) then
+			-- initialize variables
+			set startingFoldersGroupVect = VECTOR[(null, startingFoldersVect)];
+			set groupId = &apos;&apos;;
+		end if;
+		if (r.groupId != groupId) then
+			-- after the first time through the loop do these things.
+			if (i &gt; 0) then
+				set startingFoldersVect = TRUNCATE(startingFoldersVect,1);
+				set startingFoldersGroupVect[i].startingFoldersVect = startingFoldersVect;		
+				set startingFoldersGroupVect = EXTEND(startingFoldersGroupVect,1);
+			end if;
+			set i = i + 1;
+			set groupId = r.groupId;
+			set startingFoldersGroupVect[i].groupId = groupId;
+			set startingFoldersVect = VECTOR[(null)];
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;ROW: &apos;||LPAD(i, 3, &apos; &apos;)||&apos;  Configure Start Folders groupId=&apos;||groupId);
+			set j = 1;
+		end if;
+		set startingFoldersVect[j].groupId = r.groupId;
+		set startingFoldersVect[j].process = r.process;
+		set startingFoldersVect[j].layerType = r.layerType;
+		set startingFoldersVect[j].pathDerivation = r.pathDerivation;
+		if (r.sourceName IS NULL OR LENGTH(&apos;|&apos;||r.sourceName||&apos;|&apos;) = 2) then  --Empty
+			set startingFoldersVect[j].sourceFolderPath = r.sourceFolderPath;
+		else
+			set startingFoldersVect[j].sourceFolderPath = r.sourceFolderPath || &apos;/&apos; || r.sourceName;
+		end if;
+		set startingFoldersVect[j].targetFolderPath = r.targetFolderPath;
+		set startingFoldersVect = EXTEND(startingFoldersVect,1);
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;   process=&apos;||NVL(cast(startingFoldersVect[j].process as varchar),&apos;null&apos;)||
+					&apos;  layerType=&apos;||NVL(startingFoldersVect[j].layerType,&apos;null&apos;)||
+					&apos;  pathDerivation=&apos;||NVL(startingFoldersVect[j].pathDerivation,&apos;null&apos;)||
+					&apos;  sourceFolderPath=&apos;||NVL(startingFoldersVect[j].sourceFolderPath,&apos;null&apos;)||
+					&apos;  targetFolderPath=&apos;||NVL(startingFoldersVect[j].targetFolderPath,&apos;null&apos;));
+		set j = j + 1;
+	end for;
+	-- Finish out the last entry
+	if (i &gt; 0) then
+		set startingFoldersVect = TRUNCATE(startingFoldersVect,1);
+		set startingFoldersGroupVect[i].startingFoldersVect = startingFoldersVect;		
+	end if;
+
+	set procedureSection = &apos;&apos;;
+	set i = 1;
+	while (i &lt;= CARDINALITY(startingFoldersGroupVect)) do
+
+		set groupId = startingFoldersGroupVect[i].groupId;
+		set startingFoldersVect = startingFoldersGroupVect[i].startingFoldersVect;
+
+		-- Add the data source to the ConfigureStarting Folders
+		if (groupId IS NOT NULL AND LENGTH(&apos;|&apos;||groupId||&apos;|&apos;) &gt; 2) then  --notEmpty
+			set startingFolderSection = &apos;
+---------------------------------------------------------------------
+-- SECTION: &apos;||groupId||&apos; VIEW GENERATION FOLDERS
+----------------------------------------------------------------------
+-- This example shows how to specify the Physical Metadata CIS datasource path for Oracle.
+-- Specify the full path all the way down to the Oracle Schema user folder.  This is the folder just above the tables.
+-- Comment out or removing SET and INSERT statements that are not needed.
+set groupId = &apos;&apos;&apos;||groupId||&apos;&apos;&apos;;&apos;||eol;
+		end if;
+
+		-- Initialize variables
+		set variableVector = VECTOR[
+			(&apos;PM_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;PV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;FV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;LV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;EV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;BV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;CV_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;CP_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;DB_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;CR_FOLDER&apos;,&apos;&apos;,&apos;&apos;),
+			(&apos;CT_FOLDER&apos;,&apos;&apos;,&apos;&apos;)
+			];
+		set insertSection = &apos;&apos;;
+		set j = 1;
+		while (j &lt;= CARDINALITY(startingFoldersVect)) do
+			set layerType = startingFoldersVect[j].layerType;
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;   PROCESSING:  groupId=&apos;||groupId||&apos;  layerType&apos;||NVL(layerType,&apos;null&apos;)||
+					&apos;  sourceFolderPath=&apos;||NVL(startingFoldersVect[j].sourceFolderPath,&apos;null&apos;)||
+					&apos;  targetFolderPath=&apos;||NVL(startingFoldersVect[j].targetFolderPath,&apos;null&apos;));
+
+/*	DECLARE PUBLIC TYPE defaultValuesType 	ROW (		-- comes from the &lt;project directory&gt;/constants/defaultValues
+		basePath				VARCHAR(4000),			-- basePath of this project directory being accessed
+		typeDefinitionPath		VARCHAR(4000),			-- path to the type definition procedure that is generated
+		typeDefinitionProcName	VARCHAR(255),			-- name of the type definition procedure that is generated
+		generationScriptsPath	VARCHAR(4000),			-- path to where the generation scripts are located.
+		clientServicesPath		VARCHAR(4000),			-- path to the Data Abstraction client services layer
+		clientViewsPath			VARCHAR(4000),			-- path to the Data Abstraction client views layer
+		clientViewsSubFolder	VARCHAR(4000),			-- subfolder to the Data Abstraction client views layer
+		crudPath				VARCHAR(4000),			-- path to the Data Abstraction CRUD procedures
+		clientPublishedPath		VARCHAR(4000),			-- path to the Data Abstraction client published layer
+		logicalViewsPath		VARCHAR(4000),			-- path to the Data Abstraction logical views layer
+		federatedViewsPath		VARCHAR(4000),			-- path to the Data Abstraction federated views layer
+		businessViewsPath		VARCHAR(4000),			-- path to the Data Abstraction business views layer
+		formattingViewsPath		VARCHAR(4000),			-- path to the Data Abstraction formatting views layer
+		physicalMetadataPath	VARCHAR(4000),			-- path to the Data Abstraction physical metadata layer
+		physicalViewsPath		VARCHAR(4000),			-- path to the Data Abstraction physical views layer
+		genUniqueIDPath			VARCHAR(4000)			-- path to the procedure that will generate a unique ID for the CRUD create procedure
+	);
+*/
+			-- Determine the source and target folder types
+			call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getPathType(layerType, &apos;S&apos;, startingFoldersVect[j].sourceFolderPath, defaultValues60, variableVector, variableVector, sourcePathType, sourceBaseFolderName, sourceRemainderPath, variableVectorIdx);
+			if (sourcePathType is null) then
+				set sourcePathType = &apos;null&apos;;
+			elseif (sourceRemainderPath IS NULL OR LENGTH(&apos;|&apos;||sourceRemainderPath||&apos;|&apos;) = 2) then  --Empty
+				set sourcePathType = sourceBaseFolderName;
+			end if;
+			call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getPathType(layerType, &apos;T&apos;, startingFoldersVect[j].targetFolderPath, defaultValues60, variableVector, variableVector, targetPathType, targetBaseFolderName, targetRemainderPath, variableVectorIdx);
+			if (targetPathType is null) then
+				set targetPathType = &apos;null&apos;;
+			elseif (targetRemainderPath IS NULL OR LENGTH(&apos;|&apos;||targetRemainderPath||&apos;|&apos;) = 2) then  --Empty
+				set targetPathType = targetBaseFolderName;
+			end if;
+
+			-- Construct the INSERT statements
+			case layerType
+				WHEN &apos;PM&apos; THEN
+					set insertSection = insertSection || &apos;-- Generate Physical_Metadata source path specified&apos;||eol;
+				WHEN &apos;PV&apos; THEN
+					set insertSection = insertSection || &apos;-- Generate CRUD operations from the CRUD source folder by designating it as the target folder.
+-- By generating from the Physical_Views it will insure that no new or derived columns are propagated.
+-- It is not permitted to perform a CRUD operation against a view with any derived columns present.
+--DEPRECATED: Generate Physical_Views from the Physical_Metadata source path specified&apos;||eol;
+				WHEN &apos;FV&apos; THEN
+					set insertSection = insertSection || &apos;-- Generate Formatting_Views from the Physical_Metadata source path specified&apos;||eol;
+				WHEN &apos;LV&apos; THEN
+					set insertSection = insertSection || &apos;-- Generate Logical_Views from the Formatting_Views source path specified&apos;||eol;
+				WHEN &apos;EV&apos; THEN
+					set insertSection = insertSection || &apos;-- Generate Federated_Views from the Logical_Views source path specified&apos;||eol;
+				WHEN &apos;BV&apos; THEN
+					set insertSection = insertSection || &apos;-- Generate Business_Views from the Logical_Views source path specified&apos;||eol;
+				WHEN &apos;CV&apos; THEN
+					set insertSection = insertSection || &apos;-- Generate Client_Views from the Business_Views source path specified
+--   Path introspection is recursive starting at a base folder.  
+--   When you want to generate views from multiple folders in a hierarchy, provide the least common denominator folder 
+--   as the base path and set the path derivation mode=&apos;&apos;D&apos;&apos; for derived which will traverse all sub-folders during generation. 
+--   When using &apos;&apos;D&apos;&apos;, Consider using base paths for source and target so directories are emulated exactly.&apos;||eol;
+				WHEN &apos;CP&apos; THEN
+					set insertSection = insertSection || &apos;-- Generate Client_Published from the Client_Views source path specified 
+--   Path introspection is recursive starting at a base folder.  
+--   When you want to generate views from multiple folders in a hierarchy, provide the least common denominator folder 
+--   as the base path and set the path derivation mode=&apos;&apos;D&apos;&apos; for derived which will traverse all sub-folders during generation. 
+--   When using &apos;&apos;D&apos;&apos;, Consider using base paths for source and target so directories are emulated exactly.&apos;||eol;
+				WHEN &apos;CR&apos; THEN
+					set insertSection = insertSection || &apos;-- Generate CRUD Services&apos;||eol;
+					set sourcePathType = &apos;CR_FOLDER&apos;;
+					set targetPathType = &apos;CT_FOLDER&apos;;
+				WHEN &apos;DB&apos; THEN
+					set insertSection = insertSection || &apos;-- Generate Published Database&apos;||eol;
+				ELSE
+			end case;
+			set insertSection = insertSection || &apos;INSERT INTO StartingFolderPipe VALUES (groupId,&apos;||startingFoldersVect[j].process||&apos;,&apos;&apos;&apos;||layerType||&apos;&apos;&apos;,&apos;&apos;&apos;||startingFoldersVect[j].pathDerivation||&apos;&apos;&apos;,&apos;||NVL(sourcePathType,&apos;null&apos;)||&apos;,&apos;||NVL(targetPathType,&apos;null&apos;)||&apos;);&apos;||eol||eol;
+			set j = j + 1;
+		end while;
+
+		set variableSection = &apos;&apos;;
+		set j = 1;
+		while (j &lt;= CARDINALITY(variableVector)) do
+			set pathType = variableVector[j].pathType;
+			call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getPathTypeVariable(pathType, variableVector, variableBaseFolderName, variableRemainderPath, variableVectorIdx);
+			set variableRemainderPath = NVL(variableRemainderPath,&apos;null&apos;);
+			set variableBaseFolderName = NVL(variableBaseFolderName,&apos;null&apos;);
+			case pathType
+				when &apos;PM_FOLDER&apos; then
+					set variableSection = variableSection || &apos;SET PM_FOLDER=physicalMetadataPath||&apos;&apos;&apos;||variableRemainderPath||&apos;&apos;&apos;;&apos;||eol;
+				when &apos;PV_FOLDER&apos; then
+					set variableSection = variableSection || &apos;SET PV_FOLDER=physicalViewsPath||&apos;&apos;&apos;||variableRemainderPath||&apos;&apos;&apos;;&apos;||eol;
+				when &apos;FV_FOLDER&apos; then
+					set variableSection = variableSection || &apos;SET FV_FOLDER=physicalFormattingPath||&apos;&apos;&apos;||variableRemainderPath||&apos;&apos;&apos;;&apos;||eol;
+				when &apos;LV_FOLDER&apos; then
+					set variableSection = variableSection || &apos;SET LV_FOLDER=businessLogicalPath||&apos;&apos;&apos;||variableRemainderPath||&apos;&apos;&apos;;&apos;||eol;
+				when &apos;EV_FOLDER&apos; then
+					set variableSection = variableSection || &apos;SET EV_FOLDER=federatedViewsPath||&apos;&apos;&apos;||variableRemainderPath||&apos;&apos;&apos;;&apos;||eol;
+				when &apos;BV_FOLDER&apos; then
+					set variableSection = variableSection || &apos;SET BV_FOLDER=businessBusinessPath||&apos;&apos;&apos;||variableRemainderPath||&apos;&apos;&apos;;&apos;||eol;
+				when &apos;CV_FOLDER&apos; then
+					set variableSection = variableSection || &apos;SET CV_FOLDER=applicationViewsPath||&apos;&apos;&apos;||variableRemainderPath||&apos;&apos;&apos;;&apos;||eol;
+				when &apos;CP_FOLDER&apos; then
+					set variableSection = variableSection || &apos;SET CP_FOLDER=applicationPublishedPath||&apos;&apos;&apos;||variableRemainderPath||&apos;&apos;&apos;;&apos;||eol;
+				when &apos;DB_FOLDER&apos; then
+					set variableSection = variableSection || &apos;SET DB_FOLDER=compositeDatabasePath||&apos;&apos;/&apos;||groupId||&apos;&apos;&apos;;&apos;||eol;
+				when &apos;CR_FOLDER&apos; then
+					if (variableBaseFolderName IS NOT NULL AND LENGTH(&apos;|&apos;||variableBaseFolderName||&apos;|&apos;) &gt; 2) then  --notEmpty
+						set variableSection = variableSection || &apos;SET CR_FOLDER=&apos;||variableBaseFolderName||&apos;||&apos;&apos;&apos;||variableRemainderPath||&apos;&apos;&apos;;&apos;||eol;
+					else
+						set variableSection = variableSection || &apos;SET CR_FOLDER=&apos;&apos;&apos;||variableRemainderPath||&apos;&apos;&apos;;&apos;||eol;
+					end if;
+				when &apos;CT_FOLDER&apos; then
+					set variableSection = variableSection || &apos;SET CT_FOLDER=crudPath||&apos;&apos;&apos;||variableRemainderPath||&apos;&apos;&apos;;&apos;||eol;
+				else
+			end case;
+			set j = j + 1;
+		end while;
+		set startingFolderSection = startingFolderSection || variableSection || eol;
+		set startingFolderSection = startingFolderSection || insertSection || eol;
+		set procedureSection = procedureSection || startingFolderSection;
+		set i = i + 1;
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Configure Starting Folders Section:&apos;);
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, startingFolderSection);
+	end while;
+
+END
+</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

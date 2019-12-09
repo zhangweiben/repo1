@@ -1,0 +1,842 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateConfigurationStartingFolders" path="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/generateConfigurationStartingFolders" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="scriptsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="excludeNames" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="message" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/generateConfigureStartingFoldersBody" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="scriptsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="procBody" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/generateConfigureStartingFoldersSection" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inRemainderPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="physicalPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="physicalType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inGroupId" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inGroupPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="procSection" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/getUtilitiesVersion" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="version" direction="OUT">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inWord" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/createResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceSubType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/createResourceCopy" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getChildResourcesCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="childResCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="isNullable">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="folderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="folderPath" direction="OUT">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateSqlScript" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="scripttext" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseInputText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseOutput" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="trimText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="includeDelimiter" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="object">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* generateConfigurationStartingFolders:
+
+	This procedure is used to generate a new ConfigureStartingFolders() procedure based on data sources
+	and transformations found in both the /Physical/Metadata and /Physical/Formatting/Transformations folders.  
+
+	Input: 
+		debug 				- Y=debug, N=do not debug
+		scriptsPath 		- the full project scripts path
+			e.g. /shared/PROJECT1
+
+[mtinius: 10/1/2013 - feature disabled]
+		excludeNames 		- comma separated list of data source path name segments to exclude from the name of the groupId such as &quot;dbo&quot; (MyDB.MyCat.dbo).
+								Some schema names like dbo contain no meaning and therefore the developer may wish to drop them from the groupId.
+								The implication of this is as follows:
+									1. The data source is still processed but the name is left out of the groupId.  
+									2. The container name specified in the exclude list is not created as a sub-folder.
+										The views are created in the next folder up instead.  This could result in collisions so wise use of this feature is recommended.
+
+	Output:
+		message - a resulting message 
+		(you must click refresh upon completion for Studio to recognize changes to the new project)
+
+	Exceptions:  ex
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	04/15/2013		Mike Tinius			5.2.0			Created new
+	09/16/2013		Mike Tinius			6.1.0			7.3.1: Added excludeNames to the input parameter.
+	03/28/2014		Mike Tinius			6.2.0			8.1.1: Modified how groups are created for Transformation Procedures.  The groupId is generated from the folder now.
+															   This resolved an error for both generateFormattingViews and generateDatasourceList that duplicated views for
+															   for multiple procedures found in a folder.  This actually simplifies the processing.   The limitation for this
+															   is that there should only be a single folder for a set of views.  There should not be sub-folders as this will
+															   cause duplication of generated views.  Keep the folders and contents flat.  The folder is akin to the datasource
+															   in the physical metadata layer.
+	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	03/02/2018		Mike Tinius			7.0.5			Replaced RegexSplit with extractDelimitedText
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+	07/30/2019		Mike Tinius			7.0.8			B.P. 2019.300: Modified to use getConstantV2().
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE generateConfigurationStartingFolders(
+	IN debug				CHAR(1),		-- Y=debug, N=do not debug
+	IN scriptsPath			VARCHAR(4000), 	-- the full path to a project scripts path.  e.g. /shared/PROJECT/_scripts.  Don&apos;t put double quotes around the path.
+	IN excludeNames			LONGVARCHAR,	-- comma separated list of data source path name segments to exclude from the name of the groupId such as /dbo
+	OUT message				LONGVARCHAR
+)
+BEGIN
+	DECLARE moduleName						VARCHAR DEFAULT &apos;generateConfigurationStartingFolders&apos;;
+	DECLARE procBody						LONGVARCHAR;
+	DECLARE procSection						LONGVARCHAR;
+	DECLARE configurePath					VARCHAR(4000) DEFAULT REPLACE(scriptsPath||&apos;/Configure/&apos;,&apos;//&apos;,&apos;/&apos;);
+	DECLARE constantsPath					VARCHAR(4000);
+	DECLARE defaultValuesPath				VARCHAR(4000);
+	DECLARE configureStartingFoldersPath	VARCHAR(4000);
+	DECLARE physicalMetadataPath			VARCHAR(4000);
+	DECLARE physicalFormattingTransformationPath VARCHAR(4000);
+	DECLARE physicalPath					VARCHAR(4000);
+	DECLARE physicalType					VARCHAR;
+	DECLARE resourceName					VARCHAR DEFAULT &apos;ConfigureStartingFolders&apos;;
+	DECLARE resourceNameCopy				VARCHAR;
+	DECLARE groupId							VARCHAR(4000) DEFAULT &apos;&apos;;
+	DECLARE groupPath						VARCHAR(4000) DEFAULT &apos;&apos;;
+	DECLARE i, idx, dsCount					INTEGER;
+	DECLARE version							DOUBLE;
+	DECLARE minVersion						DOUBLE DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.minVersion;
+	DECLARE success							BIT; -- true(1) or false(0)
+	DECLARE faultResponse 					XML;
+	DECLARE createResponse 					XML;
+	DECLARE sqlStatement					LONGVARCHAR;
+	DECLARE sqlStatementMetadata			LONGVARCHAR DEFAULT null;
+	DECLARE resourceRecursiveCurs			CURSOR(
+		name					VARCHAR(255),				-- name of the CIS resource
+		resPath					VARCHAR(4000),				-- full path of the CIS resource
+		resType					VARCHAR(255),				-- resource type
+		subType					VARCHAR(255),				-- resource sub type
+		physicalPath			VARCHAR(4000),
+		physicalType			VARCHAR
+	);
+	DECLARE cursGroupCount					CURSOR(groupid VARCHAR, groupCount INTEGER);
+    DECLARE basePath						VARCHAR(4000);
+	DECLARE parentPathVect					VECTOR(VARCHAR(4000));
+	DECLARE parentNameVect					VECTOR(VARCHAR(4000));
+	DECLARE parentNameCountVect				VECTOR(INTEGER);
+	DECLARE remainderPath					VARCHAR(4000);
+	DECLARE parentPath						VARCHAR(4000);
+	DECLARE dummyName						VARCHAR;
+	DECLARE ex								EXCEPTION;
+	DECLARE prevDataSourceName				VARCHAR;
+	DECLARE dataSourceName					VARCHAR;
+	DECLARE prevCatalogName					VARCHAR;
+	DECLARE catalogName						VARCHAR;
+	DECLARE prevSchemaName					VARCHAR;
+	DECLARE schemaName						VARCHAR;
+	DECLARE tablesFound						BOOLEAN;
+	DECLARE groupIdStack					VECTOR(VARCHAR) DEFAULT VECTOR[(&apos;&apos;),(&apos;&apos;),(&apos;&apos;),(&apos;&apos;),(&apos;&apos;),(&apos;&apos;),(&apos;&apos;),(&apos;&apos;),(&apos;&apos;),(&apos;&apos;)];
+	DECLARE groupIdStackPointer				INTEGER DEFAULT 0;
+	DECLARE stackLevel						INTEGER DEFAULT 0;
+	DECLARE prevStackLevel					INTEGER DEFAULT -1;
+	DECLARE excludeNames_					VARCHAR(4000) DEFAULT &apos;&apos;;
+	DECLARE procedureGroupList				LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE resourceExists					BOOLEAN;
+	DECLARE word							VARCHAR(4000);
+
+	/***************************************************************
+	 * Make sure the Utilities are up to date
+	 ***************************************************************/
+	call /shared/ASAssets/Utilities/getUtilitiesVersion(version);
+	if (version &lt;  minVersion) then
+		raise ex value &apos;Utilities &apos;||minVersion||&apos; or higher is required&apos;;
+	end if;
+
+	-- Apply reserved paths
+	call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(scriptsPath||&apos;/Constants&apos;, null, constantsPath);
+	set constantsPath = REPLACE(constantsPath||&apos;/&apos;,&apos;//&apos;,&apos;/&apos;);
+	set defaultValuesPath = REPLACE(constantsPath || &apos;/defaultValues&apos;, &apos;//&apos;, &apos;/&apos;);
+	call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(configurePath||&apos;ConfigureStartingFolders&apos;, null, configureStartingFoldersPath);
+
+	call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;result:     constantsPath=&apos;||NVL(constantsPath,&apos;null&apos;));
+	call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;result:     configureStartingFoldersPath=&apos;||NVL(configureStartingFoldersPath,&apos;null&apos;));
+	
+	BEGIN INDEPENDENT TRANSACTION
+		/***************************************************************
+		 * Don&apos;t continue if the project path does not exist
+		 ***************************************************************/
+		call /lib/resource/ResourceExists(REPLACE(scriptsPath,&apos;&quot;&apos;,&apos;&apos;), &apos;CONTAINER&apos;, null, resourceExists);
+		if (NOT resourceExists) then
+			raise ex value &apos;Resource does not exists for path=&apos;||NVL(scriptsPath,&apos;null&apos;);
+		end if;
+
+		-- Initialize the procedure body
+		call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/generateConfigureStartingFoldersBody(scriptsPath, procBody);
+
+		-- Get the project base path
+		CALL /shared/ASAssets/Utilities/string/getConstantV2(defaultValuesPath, &apos;basePath_&apos;, 1, basePath);
+		set basePath = REPLACE(basePath, &apos;&quot;&apos;, &apos;&apos;); -- Remove double quotes around path parts.
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;result:     basePath=&apos;||NVL(basePath,&apos;null&apos;));
+
+		-- Get the Physical Metadata path
+		CALL /shared/ASAssets/Utilities/string/getConstantV2(defaultValuesPath, &apos;physicalMetadataPath_&apos;, 1, physicalMetadataPath);
+		set physicalMetadataPath = REPLACE(physicalMetadataPath, &apos;&quot;&apos;, &apos;&apos;); -- Remove double quotes around path parts.
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;result:     physicalMetadataPath=&apos;||NVL(physicalMetadataPath,&apos;null&apos;));
+
+		-- Check to see if the resource exists before rebinding
+		-- Some folders may not exist which is OK.
+		call /lib/resource/ResourceExists(physicalMetadataPath, &apos;CONTAINER&apos;, null, resourceExists);
+		if (resourceExists) then
+			set sqlStatementMetadata = &apos;SELECT name, resPath, resType, subtype, physicalMetadataPath as physicalPath, &apos;&apos;PM&apos;&apos; as physicalType &apos;||CHR(10)||
+				&apos;FROM /shared/ASAssets/Utilities/repository/getResourceListRecursive(&apos;&apos;&apos;||physicalMetadataPath||&apos;&apos;&apos;, &apos;&apos;CONTAINER&apos;&apos;) &apos;||CHR(10)||
+				&apos;WHERE (resType = &apos;&apos;DATA_SOURCE&apos;&apos; OR subtype = &apos;&apos;CATALOG_CONTAINER&apos;&apos; OR subtype = &apos;&apos;SCHEMA_CONTAINER&apos;&apos; OR subtype = &apos;&apos;DIRECTORY_CONTAINER&apos;&apos;) &apos;||CHR(10)||
+				&apos;  AND subtype != &apos;&apos;WSDL_DATA_SOURCE&apos;&apos; AND subtype != &apos;&apos;XML_FILE_DATA_SOURCE&apos;&apos;&apos;;
+		else
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Path does not exist.  physicalMetadataPath=[&apos;||NVL(physicalMetadataPath,&apos;null&apos;)||&apos;]&apos;);
+		end if;
+
+		-- Get the Physical Formatting Transformation path
+		CALL /shared/ASAssets/Utilities/string/getConstantV2(defaultValuesPath, &apos;physicalFormattingTransformationPath_&apos;, 1, physicalFormattingTransformationPath);
+		set physicalFormattingTransformationPath = REPLACE(physicalFormattingTransformationPath, &apos;&quot;&apos;, &apos;&apos;); -- Remove double quotes around path parts.
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;result:     physicalFormattingTransformationPath=&apos;||NVL(physicalFormattingTransformationPath,&apos;null&apos;));
+
+		-- Check to see if the resource exists before rebinding
+		-- Some folders may not exist which is OK.
+		call /lib/resource/ResourceExists(physicalFormattingTransformationPath, &apos;CONTAINER&apos;, null, resourceExists);
+		if (resourceExists) then
+			if (sqlStatementMetadata is null) then
+				set sqlStatementMetadata = &apos;SELECT name, resPath, resType, subtype, physicalFormattingTransformationPath as physicalPath, &apos;&apos;PFT&apos;&apos; as physicalType &apos;||CHR(10)||
+				&apos;FROM /shared/ASAssets/Utilities/repository/getResourceListRecursive(&apos;&apos;&apos;||physicalFormattingTransformationPath||&apos;&apos;&apos;, &apos;&apos;CONTAINER&apos;&apos;) &apos;||CHR(10)||
+				&apos;WHERE resType = &apos;&apos;PROCEDURE&apos;&apos;&apos;;
+			else
+				set sqlStatementMetadata = sqlStatementMetadata || CHR(10)||
+					&apos;UNION&apos; ||CHR(10)||
+					&apos;SELECT name, resPath, resType, subtype, physicalFormattingTransformationPath as physicalPath, &apos;&apos;PFT&apos;&apos; as physicalType &apos;||CHR(10)||
+					&apos;FROM /shared/ASAssets/Utilities/repository/getResourceListRecursive(&apos;&apos;&apos;||physicalFormattingTransformationPath||&apos;&apos;&apos;, &apos;&apos;CONTAINER&apos;&apos;) &apos;||CHR(10)||
+					&apos;WHERE resType = &apos;&apos;PROCEDURE&apos;&apos;&apos;;
+			end if;
+		else
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Path does not exist.  physicalFormattingTransformationPath=[&apos;||NVL(physicalFormattingTransformationPath,&apos;null&apos;)||&apos;]&apos;);
+		end if;
+
+		if (sqlStatementMetadata is null) then
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;There are no physical metadata paths to analyze.  Configure starting folders will not be generated.&apos;);
+		else
+			-- Make sure the excludeNames has folder path separators before and after the text so that no partial paths are accepted.
+			for p as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(excludeNames,&apos;,&apos;,0,0,0,1,0) do
+				call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(REPLACE(p.object,&apos;/&apos;,&apos;&apos;), null, word);
+				set excludeNames_ = excludeNames_ || REPLACE(&apos;/&apos;||word||&apos;/&apos;,&apos;//&apos;,&apos;/&apos;)||&apos;,&apos;;
+			end for;
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;excludeNames=[&apos;||NVL(excludeNames_,&apos;null&apos;)||&apos;]&apos;);
+
+			-- Get a list of data sources from the physical metadata folder
+			set i = 0;
+			set dsCount = 1;
+			call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Execute sqlStatement:&apos;||CHR(10)||sqlStatementMetadata);
+			open resourceRecursiveCurs for sqlStatementMetadata;
+			for r as resourceRecursiveCurs do
+				if (r.name IS NOT NULL AND LENGTH(&apos;|&apos;||r.name||&apos;|&apos;) &gt; 2) then  --notEmpty
+					-- This is either the physicalMetadataPath or the physicalFormattingTransformationPath
+					set physicalPath = r.physicalPath;
+					-- This is the physial type: PM=physicalMetadataPath, PFT=physicalFormattingTransformationPath
+					-- This provides a way of generating the correct physical metadata path
+					set physicalType = r.physicalType;
+					-- Get the parent path for the given resource
+					call /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(r.resPath, &apos;E&apos;, dummyName, parentPath);
+					set groupId = &apos;&apos;;
+					set groupPath = &apos;&apos;;
+
+					call print(moduleName||&apos; : resName=&apos;||r.name||&apos;   resType=&apos;||r.resType||&apos;   resPath=&apos;||r.resPath);
+					call print(moduleName||&apos; : parentPath=&apos;||parentPath);
+					call print(moduleName||&apos; : physicalPath=&apos;||physicalPath);
+
+					if (r.resType = &apos;DATA_SOURCE&apos;) then
+						set remainderPath = REPLACE(r.resPath, physicalPath, &apos;&apos;);
+--						call print(moduleName||&apos; : remainderPath=&apos;||remainderPath);
+
+						set groupIdStackPointer = 0;
+						set stackLevel = 1;
+						set prevStackLevel = 0;
+						if (stackLevel &gt; prevStackLevel) then
+							set groupIdStackPointer = groupIdStackPointer + 1;
+						end if;
+						if (stackLevel &lt; prevStackLevel) then
+							set groupIdStackPointer = groupIdStackPointer - 1;
+						end if;
+--						call print(moduleName||&apos; : groupIdStackPointer=&apos;||groupIdStackPointer);
+						set groupIdStack[groupIdStackPointer] = r.name;
+
+						set tablesFound = false;
+						childLoop1:
+						for c as select * from /shared/ASAssets/Utilities/repository/getChildResourcesCursor(r.resPath, r.resType) where resourceType = &apos;TABLE&apos; and columnName is null do
+							set tablesFound = true;
+							leave childLoop1;
+						end for;
+
+						-- Determine if the data source name changed and there are tables under the data source resource
+						set i = 1;
+						while (i &lt;= groupIdStackPointer) do
+							if (LENGTH(groupId) &gt; 0) then
+								set groupId = groupId || &apos;.&apos;;
+								set groupPath = groupPath || &apos;/&apos;;
+							end if;
+							set groupId = groupId || groupIdStack[i];
+							set groupPath = groupPath || groupIdStack[i];
+							set i = i + 1;
+						end while;
+
+--						call print(moduleName||&apos; :     groupId=&apos;||groupId);
+--						call print(moduleName||&apos; :   groupPath=&apos;||groupPath);
+--						call print(moduleName||&apos; : tablesFound=&apos;||tablesFound);
+
+						if (tablesFound) then
+							-- Generate the procedure section for a data source
+							call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/generateConfigureStartingFoldersSection(remainderPath, physicalPath, physicalType, groupId, groupPath, procSection);
+							if (procSection IS NOT NULL AND LENGTH(&apos;|&apos;||procSection||&apos;|&apos;) &gt; 2) then  --notEmpty
+								set procBody = procBody || procSection;
+							end if;
+						end if;
+						set prevStackLevel = stackLevel;
+					end if;
+
+					if (r.subtype = &apos;CATALOG_CONTAINER&apos; or r.subtype = &apos;DIRECTORY_CONTAINER&apos;) then
+						set remainderPath = REPLACE(r.resPath, physicalPath, &apos;&apos;);
+--						call print(moduleName||&apos; : remainderPath=&apos;||remainderPath);
+
+						set tablesFound = false;
+						childLoop2:
+						for c as select * from /shared/ASAssets/Utilities/repository/getChildResourcesCursor(r.resPath, r.resType) where resourceType = &apos;TABLE&apos; and columnName is null do
+							set tablesFound = true;
+							leave childLoop2;
+						end for;
+
+						-- Determine if this portion of the path should be excluded from the groupId or not
+						if (POSITION(&apos;/&apos;||r.name||&apos;/&apos; IN excludeNames_) = 0) then
+							set stackLevel = 2;
+							if (stackLevel &gt; prevStackLevel) then
+								set groupIdStackPointer = groupIdStackPointer + 1;
+							end if;
+							if (stackLevel &lt; prevStackLevel) then
+								set groupIdStackPointer = groupIdStackPointer - 1;
+							end if;
+--							call print(moduleName||&apos; : groupIdStackPointer=&apos;||groupIdStackPointer);
+							set groupIdStack[groupIdStackPointer] = r.name;
+						else
+							set groupIdStack[groupIdStackPointer] = &apos;&apos;;
+						end if;
+
+						-- Determine if the data source name changed
+						set i = 1;
+						while (i &lt;= groupIdStackPointer) do
+							if (LENGTH(groupId) &gt; 0 and LENGTH(groupIdStack[i]) &gt; 0) then
+								set groupId = groupId || &apos;.&apos;;
+								set groupPath = groupPath || &apos;/&apos;;
+							end if;
+							set groupId = groupId || groupIdStack[i];
+							set groupPath = groupPath || groupIdStack[i];
+							set i = i + 1;
+						end while;
+
+--						call print(moduleName||&apos; :     groupId=&apos;||groupId);
+--						call print(moduleName||&apos; :   groupPath=&apos;||groupPath);
+--						call print(moduleName||&apos; : tablesFound=&apos;||tablesFound);
+
+						if (tablesFound) then
+							-- Generate the procedure section for a data source
+							call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/generateConfigureStartingFoldersSection(remainderPath, physicalPath, physicalType, groupId, groupPath, procSection);
+							if (procSection IS NOT NULL AND LENGTH(&apos;|&apos;||procSection||&apos;|&apos;) &gt; 2) then  --notEmpty
+								set procBody = procBody || procSection;
+							end if;
+						end if;
+						set prevStackLevel = stackLevel;
+					end if;
+
+					if (r.subtype = &apos;SCHEMA_CONTAINER&apos;) then
+						set remainderPath = REPLACE(r.resPath, physicalPath, &apos;&apos;);
+--						call print(moduleName||&apos; : remainderPath=&apos;||remainderPath);
+
+						set tablesFound = false;
+						childLoop3:
+						for c as select * from /shared/ASAssets/Utilities/repository/getChildResourcesCursor(r.resPath, r.resType) where resourceType = &apos;TABLE&apos; and columnName is null do
+							set tablesFound = true;
+							leave childLoop3;
+						end for;
+
+						-- Determine if this portion of the path should be excluded from the groupId or not
+						if (POSITION(&apos;/&apos;||r.name||&apos;/&apos; IN excludeNames_) = 0) then
+							set stackLevel = 3;
+							if (stackLevel &gt; prevStackLevel) then
+								set groupIdStackPointer = groupIdStackPointer + 1;
+							end if;
+							if (stackLevel &lt; prevStackLevel) then
+								set groupIdStackPointer = groupIdStackPointer - 1;
+							end if;
+--							call print(moduleName||&apos; : groupIdStackPointer=&apos;||groupIdStackPointer);
+							set groupIdStack[groupIdStackPointer] = r.name;
+						else
+							set groupIdStack[groupIdStackPointer] = &apos;&apos;;
+						end if;
+
+						-- Determine if the data source name changed
+						set i = 1;
+						while (i &lt;= groupIdStackPointer) do
+							if (LENGTH(groupId) &gt; 0 and LENGTH(groupIdStack[i]) &gt; 0) then
+								set groupId = groupId || &apos;.&apos;;
+								set groupPath = groupPath || &apos;/&apos;;
+							end if;
+							set groupId = groupId || groupIdStack[i];
+							set groupPath = groupPath || groupIdStack[i];
+							set i = i + 1;
+						end while;
+
+--						call print(moduleName||&apos; :     groupId=&apos;||groupId);
+--						call print(moduleName||&apos; :   groupPath=&apos;||groupPath);
+--						call print(moduleName||&apos; : tablesFound=&apos;||tablesFound);
+
+						if (tablesFound) then
+							-- Generate the procedure section for a data source
+							call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/generateConfigureStartingFoldersSection(remainderPath, physicalPath, physicalType, groupId, groupPath, procSection);
+							if (procSection IS NOT NULL AND LENGTH(&apos;|&apos;||procSection||&apos;|&apos;) &gt; 2) then  --notEmpty
+								set procBody = procBody || procSection;
+							end if;
+						end if;
+						set prevStackLevel = stackLevel;
+					end if;
+
+					if (r.resType = &apos;PROCEDURE&apos;) then
+						set remainderPath = REPLACE(parentPath, physicalFormattingTransformationPath, &apos;&apos;);
+--						call print(&apos;moduleName||&apos; : remainderPath=&apos;||remainderPath);
+
+						set groupPath = REPLACE(parentPath, physicalFormattingTransformationPath||&apos;/&apos;, &apos;&apos;);
+						set groupId = REPLACE(groupPath, &apos;/&apos;, &apos;.&apos;); -- mtinius 2014-03-28: GroupIds created at folder level instead of procedure name.
+
+--						call print(moduleName||&apos; :     groupId=&apos;||groupId);
+--						call print(moduleName||&apos; :   groupPath=&apos;||groupPath);
+
+						-- mtinius 2014-03-28: 
+						-- Track which groupIds are created so they are not duplicated for multiple procedures found in a single folder.
+						-- This insures a more simplistic approach by having 1 group per folder and a collection of transformation procedures.
+						if (POSITION(&apos;PROC_ENTRY:&apos;||groupId IN procedureGroupList) = 0) then
+							set procedureGroupList = procedureGroupList || &apos; PROC_ENTRY:&apos;||groupId;
+							-- Generate the procedure section for a data source
+							call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/generateConfigureStartingFoldersSection(remainderPath, physicalPath, physicalType, groupId, groupPath, procSection);
+							if (procSection IS NOT NULL AND LENGTH(&apos;|&apos;||procSection||&apos;|&apos;) &gt; 2) then  --notEmpty
+								set procBody = procBody || procSection;
+							end if;
+						end if;
+					end if;
+
+					call print(&apos;&apos;);
+				end if;
+			end for;
+		end if;
+	EXCEPTION
+		ELSE raise ex value cast(CURRENT_EXCEPTION.TRACE as longvarchar);
+	END;
+
+set procBody = procBody || &apos;
+END&apos;;
+
+	BEGIN INDEPENDENT TRANSACTION
+		-- Create a copy of the resource with mode=R to rename
+		call /shared/ASAssets/Utilities/repository/createResourceCopy(&apos;R&apos;, configureStartingFoldersPath, &apos;PROCEDURE&apos;, success);
+	EXCEPTION
+		ELSE raise ex value cast(CURRENT_EXCEPTION.TRACE as longvarchar);
+	END;
+
+	BEGIN INDEPENDENT TRANSACTION
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;createResource=&apos;||configurePath||resourceName);
+		-- Create a new ConfigureStartingFolders
+		call /shared/ASAssets/Utilities/repository/createResource(configurePath, resourceName, &apos;PROCEDURE&apos;,&apos;SQL_SCRIPT_PROCEDURE&apos;,success,createResponse,faultResponse);
+		if (faultResponse is not null) then
+			raise ex value cast(faultResponse as longvarchar);
+		end if;
+	EXCEPTION
+		ELSE raise ex value cast(CURRENT_EXCEPTION.TRACE as longvarchar);
+	END;
+
+	BEGIN INDEPENDENT TRANSACTION
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;updateSqlScript=&apos;||configureStartingFoldersPath);
+		-- Update the defaultValue procedure with the new script text
+		call /shared/ASAssets/Utilities/repository/updateSqlScript(configureStartingFoldersPath,procBody,success,createResponse,faultResponse);
+		if (faultResponse is not null) then
+			raise ex value cast(faultResponse as longvarchar);
+		end if;
+	EXCEPTION
+		ELSE raise ex value cast(CURRENT_EXCEPTION.TRACE as longvarchar);
+	END;
+
+	BEGIN INDEPENDENT TRANSACTION
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;validateSqlScript=&apos;||configureStartingFoldersPath);
+		set message = null;
+		set sqlStatement = &apos;select groupid, count(*) groupCount from &apos;||configureStartingFoldersPath||&apos;() where layerType = &apos;&apos;PM&apos;&apos; group by groupid&apos;;
+		open cursGroupCount for sqlStatement;
+		for r as cursGroupCount do
+			if (r.groupCount &gt; 1) then
+				if (message is null) then
+					set message = &apos;ERROR: Duplicate groupid&apos;&apos;s have been found in ConfigureStartingFolders.  Insure the data source name is unique across the project.  List of affected groupid&apos;&apos;s: &apos;;
+				else
+					set message = message || &apos;, &apos;;
+				end if;
+				set message = message || r.groupid;
+			end if;
+		end for;
+		if (message is not null) then
+			raise ex value message;
+		end if;
+	EXCEPTION
+		ELSE raise ex value cast(CURRENT_EXCEPTION.TRACE as longvarchar);
+	END;
+
+	-- Write out the final message to the user
+	set message = &apos;[&apos;||NVL(configurePath||resourceName,&apos;null&apos;)||&apos;] successfully configured.  Click the refresh button in Studio.&apos;;
+	call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, message);
+
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573160027349</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">11/402</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/223</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/224</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/222</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

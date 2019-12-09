@@ -1,0 +1,112 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateResourceListToCSV" path="/shared/ASAssets/BestPractices_v81/ManageAnnotations/generateResourceListToCSV" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <parameters>
+    <parameter name="startingPath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="csvFilePath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/ManageAnnotations/Helpers/generateResourceListToCSV" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="startingPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="csvFilePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	generateResourceListToCSV
+
+	This procedure is used to generate the table and column annotations to a CSV file on the CIS server.  The user
+	is responsible for downloading the file to their local workstation to work on the annotation list.
+
+	INPUT:
+		startingPath	LONGVARCHAR,	-- path to folder that is one level below the published data service folder.
+										-- Note: the startingPath may be a parent path as the procedure will recursively drill into child folder paths to find views.
+										-- The reason for one level below the published is because this is where Business Directory gets the 
+										--	column annotations.
+		csvFilePath		LONGVARCHAR,	-- /comp/compshared/DROP/&lt;your_ftp_folder&gt;/output.csv
+	OUTPUT:
+		OUT result		INTEGER			-- 0 (failure) or 1 (success)
+	EXCEPTION:	
+		may be thrown by CIS
+	DEPENDENCIES
+		requires the latest resource modified on 09/24/2016
+				/shared/ASAssets/Utilities/repository/updateResourceAnnotations
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	11/14/2016		Mike Tinius			7.0.4			Created new.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE generateResourceListToCSV(
+	IN startingPath		LONGVARCHAR,	-- path to folder that is one level below the published data service folder.
+										-- Note: the startingPath may be a parent path as the procedure will recursively drill into child folder paths to find views.
+										-- The reason for one level below the published is because this is where Business Directory gets the 
+										--	column annotations.
+	IN csvFilePath		LONGVARCHAR,	-- /comp/compshared/DROP/&lt;your_ftp_folder&gt;/output.csv
+	OUT result			INTEGER
+)
+BEGIN
+	call /shared/ASAssets/BestPractices_v81/ManageAnnotations/Helpers/generateResourceListToCSV(startingPath, csvFilePath, result);
+END</attribute>
+  <attribute name="creationDate" type="LONG">1474733736807</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserId" type="INTEGER">4005</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1513891747563</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">4005</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1474733736807</attribute>
+</metadata>

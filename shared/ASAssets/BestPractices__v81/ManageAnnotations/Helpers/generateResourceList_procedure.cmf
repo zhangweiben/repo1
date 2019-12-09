@@ -1,0 +1,440 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateResourceList" path="/shared/ASAssets/BestPractices_v81/ManageAnnotations/Helpers/generateResourceList" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <parameters>
+    <parameter name="startingPath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="DataSourceName">
+          <datatype name="VARCHAR" type="STRING" maxLength="500"/>
+        </element>
+        <element name="DataSourceType">
+          <datatype name="VARCHAR" type="STRING" maxLength="500"/>
+        </element>
+        <element name="DataSourceHostname">
+          <datatype name="VARCHAR" type="STRING" maxLength="500"/>
+        </element>
+        <element name="PhysicalName">
+          <datatype name="VARCHAR" type="STRING" maxLength="500"/>
+        </element>
+        <element name="PhysicalType">
+          <datatype name="VARCHAR" type="STRING" maxLength="500"/>
+        </element>
+        <element name="ResourcePath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="ResourceAnnotation">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="ColumnDependencies">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/GetColumnDependencies" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="columnFilter" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="ignoreCaches" direction="IN">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="recursively" direction="IN">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="columnDependencies" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="columnName">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="dependencyDatasourcePath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="dependencyDatasourceType">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="dependencyResourcePath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="dependencyResourceType">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="dependencyIdentifier">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="dependencyKind">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="derivationKind">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="cardinalityInfo">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="derivations">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="position">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/_scripts/Generate/generateDatasourceList" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="generateLogicalNames" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="generateMode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="resourceCaseRule" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="columnCaseRule" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="useAliasRule" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="resourcePrefix" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceSuffix" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="newColumnList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="generateUnsupportedColumnType" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="exactMatch" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="derivedFilterPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="excludeDsPathsList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="sourceResource" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="layerType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="groupIds" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="Data Source">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Project Folder Name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Great Grand Parent Name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Grand Parent Name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Parent Name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Container Name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Physical Name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Physical Type">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Logical Name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Logical Type">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Logical Transformation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="Logical Definition">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="Logical Path">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="Duration">
+            <datatype type="INTERVAL_DAY" intervalMode="INTERVAL_HOUR_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="path">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="changeid">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="version">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="introspectState">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactMessage">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="scriptText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="childCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="dataSourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getDataSourceAttributes" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="dataSourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="attrName">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="attrValue">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	11/14/2016		Mike Tinius			7.0.4			Created new.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE generateResourceList(
+	IN startingPath		LONGVARCHAR,			-- Path may be a container or a table/view path.
+	OUT result			PIPE (
+		DataSourceName			VARCHAR(500),	-- The physical datasource name
+		DataSourceType			VARCHAR(500),	-- The physical datasource type
+		DataSourceHostname		VARCHAR(500),	-- The physical datasource hostname or IP
+		PhysicalName			VARCHAR(500), 	-- The physical column name (a.k.a. source column name)
+		PhysicalType			VARCHAR(500), 	-- The physical type (a.k.a. source column native type)
+		ResourcePath			LONGVARCHAR,  	-- The resource Path (this is not dumped to the spreadsheet)
+		ResourceAnnotation		LONGVARCHAR,  	-- The resource annotation (a.k.a. view/table/column annotation)
+		ColumnDependencies		LONGVARCHAR		-- The column dependency list or null if resource is TABLE
+	)
+)
+BEGIN
+	DECLARE resExists			BOOLEAN;
+	DECLARE TYPE recType		ROW (
+		DataSourceName			VARCHAR(500),	-- The physical datasource name
+		DataSourceType			VARCHAR(500),	-- The physical datasource type
+		DataSourceHostname		VARCHAR(500),	-- The physical datasource hostname or IP
+		PhysicalName			VARCHAR(500), 	-- The physical column name (a.k.a. source column name)
+		PhysicalType			VARCHAR(500), 	-- The physical type (a.k.a. source column native type)
+		ResourcePath			LONGVARCHAR,  	-- The resource Path (this is not dumped to the spreadsheet)
+		ResourceAnnotation		LONGVARCHAR,  	-- The resource annotation (a.k.a. view/table/column annotation)
+		ColumnDependencies		LONGVARCHAR		-- The column dependency list or null if resource is TABLE
+	);
+	DECLARE rec					recType;
+	DECLARE i					INTEGER;
+	DECLARE message				LONGVARCHAR;
+	DECLARE resourceType		VARCHAR;
+	DECLARE remainderPath		LONGVARCHAR;
+	DECLARE ex					EXCEPTION;
+
+	-- Determine if the path exists
+	BEGIN
+		for r as select * from /shared/ASAssets/Utilities/repository/getBasicResourceCursor(startingPath, null) do
+			set resourceType = r.&quot;type&quot;;
+		end for;
+	EXCEPTION
+		ELSE
+			RAISE;
+	END;
+
+	-- Iterate over the list of columns for a container or view
+	for r as
+			SELECT 
+				&quot;Physical Name&quot; PhysicalName,
+				&quot;Physical Type&quot; PhysicalType,
+				&quot;Logical Path&quot;  ResourcePath,
+				&quot;Logical Definition&quot; ResourceAnnotation
+			FROM      
+			    /shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/&quot;_scripts&quot;/Generate/generateDatasourceList(
+					1, &apos;G&apos;, &apos;O&apos;, &apos;O&apos;, 0, NULL, NULL, NULL, 0, 1, NULL, NULL, startingPath, NULL, NULL)
+			WHERE &quot;Physical Name&quot; IS NOT NULL 
+			  AND &quot;Physical Type&quot; IS NOT NULL 
+			  AND &quot;Logical Path&quot; IS NOT NULL
+	do
+			set rec.PhysicalName = r.PhysicalName; 
+			set rec.PhysicalType = r.PhysicalType; 
+			set rec.ResourcePath = r.ResourcePath; 
+			set rec.ResourceAnnotation = r.ResourceAnnotation; 
+
+			-- Remove surrounding double quotes on the resource name
+			if (POSITION(&apos;&quot;&apos; IN rec.PhysicalName) = 1 and POSITION(&apos;&quot;&apos; IN REVERSE(rec.PhysicalName)) = 1) then
+				set rec.PhysicalName = SUBSTRING(rec.PhysicalName, 2, LENGTH(rec.PhysicalName) - 2);
+			end if;
+
+			-- Get the column dependencies if not a table
+			if (rec.PhysicalType &lt;&gt; &apos;TABLE&apos;) then
+				BEGIN
+					for c as select * from /lib/resource/GetColumnDependencies(rec.ResourcePath, rec.PhysicalName, true, true) do
+						set rec.ColumnDependencies = c.derivations;
+					end for;
+				EXCEPTION
+					ELSE
+						set message = CURRENT_EXCEPTION.message;
+						if (INSTR(UPPER(message), &apos;NOT AUTHORIZED&apos;) &gt; 0) then
+							set rec.ColumnDependencies = &apos;Access to column is NOT AUTHORIZED&apos;;
+						else
+							set rec.ColumnDependencies = SUBSTRING(message, 1, 255);
+						end if;
+				END;
+			else
+				set rec.ColumnDependencies = null;
+				-- Get the datasource name, type and hostname/IP
+				set i = 0;
+				dependencyLoop:
+				for c as select * from /lib/resource/GetColumnDependencies(rec.ResourcePath, null, true, true) do
+					set i = i + 1;
+					set rec.DataSourceName = SUBSTRING(c.dependencyDatasourcePath,INSTR(c.dependencyDatasourcePath, &apos;/&apos;, -1, 1)+1);
+					set rec.DataSourceType = c.dependencyDatasourceType;
+					-- Get the datasource hostname/IP
+					if (c.dependencyDatasourcePath IS NOT NULL and LENGTH(c.dependencyDatasourcePath) &gt; 0) then
+						datasourceLoop:
+						for d as select * from /shared/ASAssets/Utilities/repository/getDataSourceAttributes(c.dependencyDatasourcePath) do
+							if (d.attrName = &apos;urlIP&apos; or d.attrName = &apos;root&apos;) then
+								set rec.DataSourceHostname = d.attrValue;
+								leave dependencyLoop;
+							end if;
+						end for;
+					end if;
+					if (i &gt; 0) then
+						leave dependencyLoop;
+					end if;
+				end for;
+			end if;
+			-- Insert the TABLE or COLUMN record information
+			insert into result values (rec);
+	end for;
+
+END </attribute>
+  <attribute name="creationDate" type="LONG">1474733736807</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserId" type="INTEGER">4005</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573155476230</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">4005</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1474733736807</attribute>
+</metadata>

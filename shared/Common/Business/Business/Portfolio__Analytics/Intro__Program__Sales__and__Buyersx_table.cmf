@@ -1,0 +1,732 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Intro_Program_Sales_and_Buyersx" path="/shared/Common/Business/Business/Portfolio_Analytics/Intro_Program_Sales_and_Buyersx" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="base_7_item_no" nullable="true">
+      <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="to_corp_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="to_base_7_item_no" nullable="true">
+      <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="last_use_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_desc_nm" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="anlys_desc_nm" nullable="true">
+      <datatype type="STRING" minLength="25" maxLength="25"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="intro_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="inact_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="stat_act_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_stat_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="prog_cd" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="prog_desc_nm" nullable="true">
+      <datatype type="STRING" minLength="25" maxLength="25"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="prog_class_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="prog_stat_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="itm_cd" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="calen_yr4" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="calen_mo" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="mo_yr_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dmand_qty" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dc_sales_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="23" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dc_sales_budget_usd_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="34" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dcost_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dcost_budget_usd_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="24" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="bv_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="nbv_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pv_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmab_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmab_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmad_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cmad_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amab_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amab_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amad_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amad_pct" nullable="true">
+      <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="xport_cost_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="sugg_rtail_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="rebate_price_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cntry_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_bus_ln_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_sub_ctgry_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_brand_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_eng_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="item_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_sub_brand_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_fmly_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_ind_cut_desc" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_prdct_grp_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="glbl_base_item_desc" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ctc_imc_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_qty" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="pv_lc_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="31" maxFractionalDigits="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dc_sales_budget_usd_amt2" nullable="true">
+      <datatype type="DECIMAL" maxDigits="34" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="test_budget_usd_amt" nullable="true">
+      <datatype type="DECIMAL" maxDigits="49" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ibo_price_budgt_usd_amt" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Business/Business/General/Demand_Buyers" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="rgn_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="sub_rgn_desc">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="aff_short_nm">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="cntry_short_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="aff_id">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="glbl_bus_ln_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_sub_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_prdct_fmly_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="glbl_prdct_grp_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_base_item_desc">
+        <datatype type="STRING" maxLength="100" trailingSpaces="false"/>
+      </element>
+      <element name="item_desc">
+        <datatype type="STRING" maxLength="300" trailingSpaces="false"/>
+      </element>
+      <element name="item_eng_desc">
+        <datatype type="STRING" maxLength="300" trailingSpaces="false"/>
+      </element>
+      <element name="glbl_base_item_no">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="base_7_item_no">
+        <datatype type="STRING" maxLength="7" trailingSpaces="false"/>
+      </element>
+      <element name="ord_item_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="mo_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ctc_imc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="pv_lc_amt">
+        <datatype type="DECIMAL" maxDigits="25" maxFractionalDigits="4"/>
+      </element>
+      <element name="ibo_price_lc_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ibo_price_budgt_usd_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ord_qty">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/Forecasting/Intro_Program_Demand" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="base_7_item_no">
+        <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      </element>
+      <element name="to_corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="to_item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="to_base_7_item_no">
+        <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      </element>
+      <element name="last_use_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="item_desc_nm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="anlys_desc_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="intro_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="inact_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="stat_act_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="item_stat_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="prog_cd">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="prog_desc_nm">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="prog_class_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="prog_stat_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="itm_cd">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="calen_yr4">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="calen_mo">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="mo_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="dmand_qty">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="dc_sales_amt">
+        <datatype type="DECIMAL" maxDigits="23" maxFractionalDigits="2"/>
+      </element>
+      <element name="dc_sales_budget_usd_amt">
+        <datatype type="DECIMAL" maxDigits="34" maxFractionalDigits="10"/>
+      </element>
+      <element name="dcost_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="dcost_budget_usd_amt">
+        <datatype type="DECIMAL" maxDigits="24" maxFractionalDigits="10"/>
+      </element>
+      <element name="bv_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="nbv_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="pv_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="cmab_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="cmab_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="cmad_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="cmad_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="amab_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="amab_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="amad_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="amad_pct">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="2"/>
+      </element>
+      <element name="xport_cost_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="4"/>
+      </element>
+      <element name="sugg_rtail_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+      <element name="rebate_price_amt">
+        <datatype type="DECIMAL" maxDigits="13" maxFractionalDigits="2"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/General/Base_Item_Distinct" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="item_no">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="base_7_item_no">
+        <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      </element>
+      <element name="dmand_corr_from_corp_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="dmand_corr_from_item_no">
+        <datatype type="STRING" minLength="12" maxLength="12"/>
+      </element>
+      <element name="dmand_corr_from_base_7_item_no">
+        <datatype type="STRING" maxLength="12" trailingSpaces="false"/>
+      </element>
+      <element name="dmand_corr_last_use_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="cntry_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="item_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="glbl_bus_ln_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_sub_ctgry_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="item_eng_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="item_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="glbl_sub_brand_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_prdct_fmly_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="glbl_prdct_ind_cut_desc">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="glbl_prdct_grp_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="glbl_base_item_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    Intro_Program_Demand.corp_cd, 
+    Intro_Program_Demand.base_7_item_no, 
+    Intro_Program_Demand.to_corp_cd, 
+    Intro_Program_Demand.to_base_7_item_no, 
+    Intro_Program_Demand.last_use_dt, 
+    Intro_Program_Demand.item_desc_nm, 
+    Intro_Program_Demand.anlys_desc_nm, 
+    Intro_Program_Demand.intro_dt, 
+    Intro_Program_Demand.inact_dt, 
+    Intro_Program_Demand.stat_act_dt, 
+    Intro_Program_Demand.item_stat_cd, 
+    Intro_Program_Demand.prog_cd, 
+    Intro_Program_Demand.prog_desc_nm, 
+    Intro_Program_Demand.prog_class_cd, 
+    Intro_Program_Demand.prog_stat_cd, 
+    Intro_Program_Demand.itm_cd, 
+    Intro_Program_Demand.calen_yr4, 
+    Intro_Program_Demand.calen_mo, 
+    Intro_Program_Demand.mo_yr_key_no, 
+    Intro_Program_Demand.dmand_qty, 
+    Intro_Program_Demand.dc_sales_amt, 
+    Intro_Program_Demand.dc_sales_budget_usd_amt, 
+    Intro_Program_Demand.dcost_amt, 
+    Intro_Program_Demand.dcost_budget_usd_amt, 
+    Intro_Program_Demand.bv_amt, 
+    Intro_Program_Demand.nbv_amt, 
+    Intro_Program_Demand.pv_amt, 
+    Intro_Program_Demand.cmab_amt, 
+    Intro_Program_Demand.cmab_pct, 
+    Intro_Program_Demand.cmad_amt, 
+    Intro_Program_Demand.cmad_pct, 
+    Intro_Program_Demand.amab_amt, 
+    Intro_Program_Demand.amab_pct, 
+    Intro_Program_Demand.amad_amt, 
+    Intro_Program_Demand.amad_pct, 
+    Intro_Program_Demand.xport_cost_amt, 
+    Intro_Program_Demand.sugg_rtail_amt, 
+    Intro_Program_Demand.rebate_price_amt, 
+    Base_Item_Distinct.cntry_key_no, 
+    Base_Item_Distinct.glbl_bus_ln_desc, 
+    Base_Item_Distinct.glbl_sub_ctgry_desc, 
+    Base_Item_Distinct.glbl_brand_desc, 
+    Base_Item_Distinct.item_eng_desc, 
+    Base_Item_Distinct.item_desc, 
+    Base_Item_Distinct.glbl_sub_brand_desc, 
+    Base_Item_Distinct.glbl_prdct_fmly_desc, 
+    Base_Item_Distinct.glbl_prdct_ind_cut_desc, 
+    Base_Item_Distinct.glbl_prdct_grp_desc, 
+    Base_Item_Distinct.glbl_base_item_desc, 
+    Demand_Buyers.ctc_imc_key_no, 
+    SUM(Demand_Buyers.ord_qty) ord_qty, 		  
+	SUM(Demand_Buyers.pv_lc_amt) pv_lc_amt,
+	Intro_Program_Demand.dc_sales_budget_usd_amt dc_sales_budget_usd_amt2,
+    SUM(Demand_Buyers.ord_qty * Intro_Program_Demand.dcost_budget_usd_amt) test_budget_usd_amt,
+	SUM(Demand_Buyers.ibo_price_budgt_usd_amt) ibo_price_budgt_usd_amt
+FROM      
+    /shared/Common/Business/Business/General/Demand_Buyers Demand_Buyers INNER JOIN 
+        /shared/Common/Business/Logical/Forecasting/Intro_Program_Demand Intro_Program_Demand INNER JOIN 
+            /shared/Common/Business/Logical/General/Base_Item_Distinct Base_Item_Distinct
+        ON Intro_Program_Demand.corp_cd = Base_Item_Distinct.corp_cd AND 
+            RTRIM(UPPER(Intro_Program_Demand.base_7_item_no)) = RTRIM(UPPER(Base_Item_Distinct.base_7_item_no))
+    ON Base_Item_Distinct.item_key_no = Demand_Buyers.ord_item_key_no AND 
+        Intro_Program_Demand.mo_yr_key_no = Demand_Buyers.mo_yr_key_no
+GROUP BY
+    Intro_Program_Demand.corp_cd, 
+    Intro_Program_Demand.base_7_item_no, 
+    Intro_Program_Demand.to_corp_cd, 
+    Intro_Program_Demand.to_base_7_item_no, 
+    Intro_Program_Demand.last_use_dt, 
+    Intro_Program_Demand.item_desc_nm, 
+    Intro_Program_Demand.anlys_desc_nm, 
+    Intro_Program_Demand.intro_dt, 
+    Intro_Program_Demand.inact_dt, 
+    Intro_Program_Demand.stat_act_dt, 
+    Intro_Program_Demand.item_stat_cd, 
+    Intro_Program_Demand.prog_cd, 
+    Intro_Program_Demand.prog_desc_nm, 
+    Intro_Program_Demand.prog_class_cd, 
+    Intro_Program_Demand.prog_stat_cd, 
+    Intro_Program_Demand.itm_cd, 
+    Intro_Program_Demand.calen_yr4, 
+    Intro_Program_Demand.calen_mo, 
+    Intro_Program_Demand.mo_yr_key_no, 
+    Intro_Program_Demand.dmand_qty, 
+    Intro_Program_Demand.dc_sales_amt, 
+    Intro_Program_Demand.dc_sales_budget_usd_amt, 
+    Intro_Program_Demand.dcost_amt, 
+    Intro_Program_Demand.dcost_budget_usd_amt, 
+    Intro_Program_Demand.bv_amt, 
+    Intro_Program_Demand.nbv_amt, 
+    Intro_Program_Demand.pv_amt, 
+    Intro_Program_Demand.cmab_amt, 
+    Intro_Program_Demand.cmab_pct, 
+    Intro_Program_Demand.cmad_amt, 
+    Intro_Program_Demand.cmad_pct, 
+    Intro_Program_Demand.amab_amt, 
+    Intro_Program_Demand.amab_pct, 
+    Intro_Program_Demand.amad_amt, 
+    Intro_Program_Demand.amad_pct, 
+    Intro_Program_Demand.xport_cost_amt, 
+    Intro_Program_Demand.sugg_rtail_amt, 
+    Intro_Program_Demand.rebate_price_amt, 
+    Base_Item_Distinct.cntry_key_no, 
+    Base_Item_Distinct.glbl_bus_ln_desc, 
+    Base_Item_Distinct.glbl_sub_ctgry_desc, 
+    Base_Item_Distinct.glbl_brand_desc, 
+    Base_Item_Distinct.item_eng_desc, 
+    Base_Item_Distinct.item_desc, 
+    Base_Item_Distinct.glbl_sub_brand_desc, 
+    Base_Item_Distinct.glbl_prdct_fmly_desc, 
+    Base_Item_Distinct.glbl_prdct_ind_cut_desc, 
+    Base_Item_Distinct.glbl_prdct_grp_desc, 
+    Base_Item_Distinct.glbl_base_item_desc, 
+    Demand_Buyers.ctc_imc_key_no</attribute>
+  <attribute name="creationDate" type="LONG">1556725829149</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1568860912226</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1556725829149</attribute>
+</metadata>

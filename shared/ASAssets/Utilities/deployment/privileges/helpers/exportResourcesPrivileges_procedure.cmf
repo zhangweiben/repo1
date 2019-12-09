@@ -1,0 +1,351 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="exportResourcesPrivileges" path="/shared/ASAssets/Utilities/deployment/privileges/helpers/exportResourcesPrivileges" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>exportResourcesPrivileges:
+
+	This procecure performs the actual retrieval of the privileges and exports the XML format out to the file path that was passed in.
+
+	Input:
+		debug							CHAR(1),		-- Y=debug on, N=debug off
+		ownerPathList 					LONGVARCHAR, 	--  Comma-separated list of paths in the format of &apos;owner:domain:resourcePath:resourceType,&apos;
+		privilegeFilter 				VARCHAR(255), 	-- Only return privileges for the provided privilege filter.
+		includeColumns					BIT, 			-- 0=do not include column privileges,  1=include column privileges.
+		privilegeFileName				VARCHAR(4096) - The full TDV server path location to privileges.xml file.
+			e.g. /home/filedatasources/privileges/privileges.xml
+		resourceOwnershipFileName		VARCHAR(4096) - The full TDV server path location to the resource_ownership.txt file.
+			e.g. /home/filedatasources/privileges/resource_ownership.txt
+	Output:
+		invalidPathList					LONGVARCHAR   - A comm-separated list of paths from this procedure that are not valid [do not exist].
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.4		10/16/2014      Jeremy Akers        6.2.6           Created new
+	2019.200	05/30/2019		Mike Tinius			7.0.8			Modified
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="ownerPathList" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="privilegeFilter" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="includeColumns" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="privilegeFileName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="resourceOwnershipFileName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+    </parameter>
+    <parameter name="invalidPathList" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/deployment/privileges/helpers/getResourcesPrivileges" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ownerPathList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="privilegeFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="includeColumns" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="outXML" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/deployment/privileges/helpers/splitResourceType" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="ownerPathList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outPipe" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="rPath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="rType">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/file/FileProcessingCJP/createFileAscii" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="filePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="append" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="fileContent" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/TextUtils/FormatXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="UnformattedXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="FormattedXML" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	exportResourcesPrivileges:
+
+	This procecure performs the actual retrieval of the privileges and exports the XML format out to the file path that was passed in.
+
+	Input:
+		debug							CHAR(1),		-- Y=debug on, N=debug off
+		ownerPathList 					LONGVARCHAR, 	--  Comma-separated list of paths in the format of &apos;owner:domain:resourcePath:resourceType,&apos;
+		privilegeFilter 				VARCHAR(255), 	-- Only return privileges for the provided privilege filter.
+		includeColumns					BIT, 			-- 0=do not include column privileges,  1=include column privileges.
+		privilegeFileName				VARCHAR(4096) - The full TDV server path location to privileges.xml file.
+			e.g. /home/filedatasources/deployment/privileges/privileges.xml
+		resourceOwnershipFileName		VARCHAR(4096) - The full TDV server path location to the resource_ownership.txt file.
+			e.g. /home/filedatasources/deployment/privileges/resource_ownership.txt
+	Output:
+		invalidPathList					LONGVARCHAR   - A comm-separated list of paths from this procedure that are not valid [do not exist].
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.4		10/16/2014      Jeremy Akers        6.2.6           Created new
+	2019.200	05/30/2019		Mike Tinius			7.0.8			Modified
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE exportResourcesPrivileges(
+	IN debug							CHAR(1),		-- Y=debug on, N=debug off
+    IN ownerPathList 					LONGVARCHAR, 	-- Comma-separated list of paths in the format of &apos;owner:domain:resourcePath:resourceType,&apos;
+    IN privilegeFilter 					VARCHAR(255), 	-- Only return privileges for the provided privilege filter.
+    IN includeColumns 					BIT, 			-- 0=do not include column privileges,  1=include column privileges.
+    IN privilegeFileName 				VARCHAR(4096),	-- The full TDV server path location to privileges.xml file.
+    IN resourceOwnershipFileName	 	VARCHAR(4096),	-- The full TDV server path location to the resource_ownership.txt file.
+	OUT invalidPathList					LONGVARCHAR		-- If not null, then a comma-separated list of paths [path:type] that are invalid as they do not exist.
+    )
+BEGIN
+	DECLARE moduleName			VARCHAR DEFAULT &apos;exportResourcesPrivileges&apos;;
+	DECLARE i					INTEGER DEFAULT 0;
+	DECLARE privEntries 		LONGVARCHAR;
+	DECLARE privEntriesXML 		XML;
+	DECLARE ownershipEntries 	LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE validPathList		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE resExists			BOOLEAN;
+
+	if (UPPER(debug) = &apos;Y&apos;) then
+		call print(&apos;---------------- ownership ----------------&apos;);
+	end if;
+
+	-- Generate the resource ownership text file
+	for r as select * from /shared/ASAssets/Utilities/deployment/&quot;privileges&quot;/helpers/splitResourceType(ownerPathList) do
+		set i = i + 1;
+		if (UPPER(debug) = &apos;Y&apos;) then
+			call print(moduleName||&apos; : row=&apos;||i||&apos;  owner=&apos;||NVL(r.ownerName,&apos;[NULL]&apos;)||&apos;  domain=&apos;||NVL(r.ownerDomain,&apos;[NULL]&apos;)||&apos;  path=&apos;||NVL(r.rPath,&apos;[NULL]&apos;)||&apos;  type=&apos;||NVL(r.rType,&apos;[NULL]&apos;));
+		end if;
+
+		if (r.rPath is not null and length(trim(r.rPath)) &gt; 0 and r.rType is not null and length(trim(r.rType)) &gt; 0) then
+			-- Validate the path while looping through the list
+			call /lib/resource/ResourceExists(r.rPath, r.rType, null, resExists);
+			if (resExists) then
+				-- Create a valid path list
+				set validPathList = validPathList || r.ownerName || &apos;:&apos; || r.ownerDomain || &apos;:&apos; || r.rPath || &apos;:&apos; || r.rType || &apos;,&apos;;
+
+				-- Setup the ownership file
+				if (r.ownerName is null or length(trim(r.ownerName)) = 0) then
+					set ownershipEntries = ownershipEntries || &apos;null:&apos;;
+				else
+					set ownershipEntries = ownershipEntries || r.ownerName || &apos;:&apos;;
+				end if;
+				if (r.ownerDomain is null or length(trim(r.ownerDomain)) = 0) then
+					set ownershipEntries = ownershipEntries || &apos;null:&apos;;
+				else
+					set ownershipEntries = ownershipEntries || r.ownerDomain || &apos;:&apos;;
+				end if;
+				set ownershipEntries = ownershipEntries || r.rPath || &apos;:&apos;;
+				set ownershipEntries = ownershipEntries || r.rType || &apos;,&apos; || CHR(10);
+			else
+				if (invalidPathList is null) then
+					set invalidPathList = &apos;&apos;;
+				end if;
+				set invalidPathList = invalidPathList || NVL(r.rPath,&apos;null&apos;)|| &apos;:&apos; || NVL(r.rType,&apos;null&apos;)||&apos;,&apos;||CHR(10);
+			end if;
+		else
+			if (invalidPathList is null) then
+				set invalidPathList = &apos; &apos;;
+			end if;
+			set invalidPathList = invalidPathList || NVL(r.rPath,&apos;null&apos;)|| &apos;:&apos; || NVL(r.rType,&apos;null&apos;)||&apos;,&apos;||CHR(10);
+		end if;
+	end for;
+
+	-- Write resource ownership to a file
+	call /shared/ASAssets/Utilities/file/FileProcessingCJP/createFileAscii(resourceOwnershipFileName, 0, ownershipEntries);
+	if (UPPER(debug) = &apos;Y&apos;) then
+		call print(moduleName||&apos; : resourceOwnershipFileName=&apos;||NVL(resourceOwnershipFileName,&apos;null&apos;)||&apos;  ownershipEntries:&apos;||CHR(10)||NVL(ownershipEntries,&apos;[NULL]&apos;));
+		call print(&apos;&apos;);
+	end if;
+
+	if (UPPER(debug) = &apos;Y&apos;) then
+		call print(&apos;---------------- privileges ----------------&apos;);
+		call print(moduleName||&apos; : privilege validPathList=&apos;||NVL(validPathList,&apos;[NULL]&apos;));
+	end if;
+
+	-- Derive privileges
+	CALL /shared/ASAssets/Utilities/deployment/&quot;privileges&quot;/helpers/getResourcesPrivileges(debug, validPathList, privilegeFilter, includeColumns, privEntriesXML);
+	-- Format the XML
+	CALL /shared/ASAssets/Utilities/string/TextUtils/FormatXML(CAST(privEntriesXML AS LONGVARCHAR), privEntries);
+	-- Write privileges to an XML file
+	CALL /shared/ASAssets/Utilities/file/FileProcessingCJP/createFileAscii(privilegeFileName, 0, privEntries);
+	if (UPPER(debug) = &apos;Y&apos;) then
+		call print(moduleName||&apos; : privilegeFileName=&apos;||NVL(privilegeFileName,&apos;null&apos;)||&apos;  privEntries:&apos;||CHR(10)||NVL(privEntries,&apos;[NULL]&apos;));
+	end if;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1559248683896</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564683405543</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">8/58</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/111</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/110</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/121</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/105</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/106</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/65</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1559248683896</attribute>
+</metadata>

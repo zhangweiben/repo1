@@ -1,0 +1,345 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getDefaultValuesXML" path="/shared/ASAssets/BestPractices_v81/Procedures/getDefaultValuesXML" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="scriptsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="defaultValuesXML" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	getDefaultValuesXML:
+	-- Data Virtualization Best Practices --
+	Set the defaultValuesXML with the values from the /Constants/defaultValues().
+ 
+	Input:
+		basePath - Path to the base project directory  
+	Output:
+		defaultValuesXML - a XML containing the default values for the project.
+
+	-- defaultValues type definition structure
+	defaultValuesType 	ROW (							-- comes from the &lt;project directory&gt;/_scripts/Constants/defaultValues
+	Output:
+		bestPracticesVersion_				 - The Best Practices version being used in the project
+		basePath_							 - The starting full base path for this project including the folder that designates the version of the project.
+		configureScriptsPath_				 - Identifies the configure scripts folder.
+		constantsScriptsPath_				 - Identifies the constants scripts folder.
+		compositeDatabasePath_				 - Identifies the composite database published folder.
+		generationScriptsPath_				 - Identifies the generation scripts folder.
+		applicationPublishedPath_			 - Identifies the path to the Data Abstraction client published sub-layer
+		applicationServicesPath_			 - Identifies the Data Abstraction Layer segment folder for Application Services sub-layer
+		applicationViewsPath_				 - Identifies the Data Abstraction Layer segment folder for Application Views sub-layer
+		applicationViewsSubFolder_			 - Identifies the subfolder to the Data Abstraction client views sub-layer
+		crudPath_							 - Identifies the Data Abstraction Layer segment folder for CRUD operations (create,retrievePK,update,delete).
+		typeDefinitionPath_					 - Identifies the type definition and constants folder.
+		typeDefinitionProcName_				 - Identifies the Type Definition Default Procedure Name.
+		businessBusinessPath_				 - Identifies the path to the Data Abstraction business sub-layer
+		businessLogicalPath_				 - Identifies the path to the Data Abstraction logical sub-layer
+		physicalFormattingPath_				 - Identifies the path to the Data Abstraction formatting sub-layer
+		physicalFormattingTransformationPath - Identifies the path to the Data Abstraction formatting transformation sub-layer
+		physicalMetadataPath_				 - Identifies the path to the Data Abstraction physical metadata sub-layer
+		physicalViewsPath_					 - Identifies the path to the Data Abstraction physical sub-layer
+		genUniqueIDPath_					 - Identifies the full path to the procedure to generate a unique ID
+	)
+	Example Output:
+		&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;defaultValuesType&gt;
+		  &lt;bestPracticesVersion&gt;2019.2&lt;/bestPracticesVersion&gt;
+		  &lt;basePath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template&lt;/basePath&gt;
+		  &lt;scriptsPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/&quot;_scripts&quot;&lt;/scriptsPath&gt;
+		  &lt;configureScriptsPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/&quot;_scripts&quot;/Configure&lt;/configureScriptsPath&gt;
+		  &lt;constantsScriptsPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/&quot;_scripts&quot;/Constants&lt;/constantsScriptsPath&gt;
+		  &lt;generationScriptsPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/&quot;_scripts&quot;/Generate&lt;/generationScriptsPath&gt;
+		  &lt;compositeDatabasePath&gt;/services/databases/DataAbstraction_GENERIC_Template&lt;/compositeDatabasePath&gt;
+		  &lt;applicationPublishedPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/Application/Published&lt;/applicationPublishedPath&gt;
+		  &lt;applicationServicesPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/Application/Services&lt;/applicationServicesPath&gt;
+		  &lt;applicationViewsPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/Application/Views&lt;/applicationViewsPath&gt;
+		  &lt;applicationViewsSubFolder&gt;null&lt;/applicationViewsSubFolder&gt;
+		  &lt;crudPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/Application/Services/CRUD&lt;/crudPath&gt;
+		  &lt;typeDefinitionPath&gt;Definitions&lt;/typeDefinitionPath&gt;
+		  &lt;typeDefinitionProcName&gt;TypeDefinitionsGen&lt;/typeDefinitionProcName&gt;
+		  &lt;businessBusinessPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/Business/Business&lt;/businessBusinessPath&gt;
+		  &lt;businessLogicalPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/Business/Logical&lt;/businessLogicalPath&gt;
+		  &lt;physicalFormattingPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/Physical/Formatting&lt;/physicalFormattingPath&gt;
+		  &lt;physicalFormattingTransformationPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/Physical/Formatting/Transformations&lt;/physicalFormattingTransformationPath&gt;
+		  &lt;physicalViewsPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/Physical/Physical&lt;/physicalViewsPath&gt;
+		  &lt;physicalMetadataPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/Physical/Metadata&lt;/physicalMetadataPath&gt;
+		  &lt;genUniqueIDPath&gt;/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/Physical/Metadata/SequenceGenerator/getUniqueID&lt;/genUniqueIDPath&gt;
+		  &lt;debugTime&gt;F&lt;/debugTime&gt;
+		&lt;/defaultValuesType&gt;
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	06/15/2010		Mike Tinius			5.2.0			Created new
+	04/05/2013		Mike Tinius			5.2.0			Added new columns from defaultValues
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+	06/12/2019		Mike Tinius			7.0.8			B.P. 2019.200: Derived the new getDefaultValuesXML from getDefaultValues to eliminate vector usage.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE getDefaultValuesXML(
+	IN scriptsPath			VARCHAR(4000),
+	OUT defaultValuesXML	LONGVARCHAR
+)
+BEGIN
+	DECLARE sqlStatement		VARCHAR(4000); 
+	DECLARE resourceReserved	VARCHAR(4000);
+	DECLARE curs 				CURSOR /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.defaultValuesType;
+	DECLARE cursV2 				CURSOR /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.defaultValuesTypeV2;
+	DECLARE version				DOUBLE;
+
+	CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(scriptsPath, null, resourceReserved);
+
+	-- Get the version
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(scriptsPath||&apos;/Constants/defaultValues&apos;, &apos;bestPracticesVersion_&apos;, 1, version);
+
+	SET sqlStatement = &apos;select * from &apos;||resourceReserved||&apos;/Constants/defaultValues()&apos;;
+
+	set defaultValuesXML = &apos;&lt;defaultValuesType&gt;&apos;||CHR(10);
+
+	/**********************************************
+	 * All version prior to 2019.300
+	 **********************************************/
+	IF (version &lt; 2019.300) THEN
+		open curs for sqlStatement;
+		for r as curs do
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;bestPracticesVersion&gt;&apos;||NVL(CAST(r.bestPracticesVersion AS VARCHAR),&apos;null&apos;)||&apos;&lt;/bestPracticesVersion&gt;&apos;;
+
+			-- base path
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.basePath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;basePath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/basePath&gt;&apos;;
+
+			-- scripts path
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.scriptsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;scriptsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/scriptsPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.configureScriptsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;configureScriptsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/configureScriptsPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.constantsScriptsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;constantsScriptsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/constantsScriptsPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.generationScriptsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;generationScriptsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/generationScriptsPath&gt;&apos;;
+
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;documentationScriptsPath&gt;&lt;/documentationScriptsPath&gt;&apos;;
+
+			-- Composite Database Layer
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.compositeDatabasePath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;compositeDatabasePath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/compositeDatabasePath&gt;&apos;;
+
+			-- Application Layer
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.applicationPublishedPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;applicationPublishedPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/applicationPublishedPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.applicationServicesPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;applicationServicesPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/applicationServicesPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.applicationViewsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;applicationViewsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/applicationViewsPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.applicationViewsSubFolder, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;applicationViewsSubFolder&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/applicationViewsSubFolder&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.crudPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;crudPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/crudPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.typeDefinitionPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;typeDefinitionPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/typeDefinitionPath&gt;&apos;;
+
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;typeDefinitionProcName&gt;&apos;||NVL(r.typeDefinitionProcName,&apos;null&apos;)||&apos;&lt;/typeDefinitionProcName&gt;&apos;;
+
+			-- Business Layer
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.businessBusinessPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;businessBusinessPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/businessBusinessPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.businessLogicalPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;businessLogicalPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/businessLogicalPath&gt;&apos;;
+
+			-- Physical Layer
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.physicalFormattingPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;physicalFormattingPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/physicalFormattingPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.physicalFormattingTransformationPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;physicalFormattingTransformationPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/physicalFormattingTransformationPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.physicalViewsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;physicalViewsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/physicalViewsPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.physicalMetadataPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;physicalMetadataPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/physicalMetadataPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.genUniqueIDPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;genUniqueIDPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/genUniqueIDPath&gt;&apos;;
+
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;debugTime&gt;&apos;||NVL(r.debugTime,&apos;null&apos;)||&apos;&lt;/debugTime&gt;&apos;;
+		end for;
+	ELSE
+	/**********************************************
+	 * All version after and including to 2019.300
+	 **********************************************/
+		open cursV2 for sqlStatement;
+		for r as cursV2 do
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;bestPracticesVersion&gt;&apos;||NVL(CAST(r.bestPracticesVersion AS VARCHAR),&apos;null&apos;)||&apos;&lt;/bestPracticesVersion&gt;&apos;;
+
+			-- base path
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.basePath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;basePath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/basePath&gt;&apos;;
+
+			-- scripts path
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.scriptsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;scriptsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/scriptsPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.configureScriptsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;configureScriptsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/configureScriptsPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.constantsScriptsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;constantsScriptsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/constantsScriptsPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.generationScriptsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;generationScriptsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/generationScriptsPath&gt;&apos;;
+
+		-- V2: Added during 2019.300
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.documentationScriptsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;documentationScriptsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/documentationScriptsPath&gt;&apos;;
+
+			-- Composite Database Layer
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.compositeDatabasePath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;compositeDatabasePath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/compositeDatabasePath&gt;&apos;;
+
+			-- Application Layer
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.applicationPublishedPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;applicationPublishedPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/applicationPublishedPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.applicationServicesPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;applicationServicesPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/applicationServicesPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.applicationViewsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;applicationViewsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/applicationViewsPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.applicationViewsSubFolder, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;applicationViewsSubFolder&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/applicationViewsSubFolder&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.crudPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;crudPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/crudPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.typeDefinitionPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;typeDefinitionPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/typeDefinitionPath&gt;&apos;;
+
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;typeDefinitionProcName&gt;&apos;||NVL(r.typeDefinitionProcName,&apos;null&apos;)||&apos;&lt;/typeDefinitionProcName&gt;&apos;;
+
+			-- Business Layer
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.businessBusinessPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;businessBusinessPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/businessBusinessPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.businessLogicalPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;businessLogicalPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/businessLogicalPath&gt;&apos;;
+
+			-- Physical Layer
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.physicalFormattingPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;physicalFormattingPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/physicalFormattingPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.physicalFormattingTransformationPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;physicalFormattingTransformationPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/physicalFormattingTransformationPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.physicalViewsPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;physicalViewsPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/physicalViewsPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.physicalMetadataPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;physicalMetadataPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/physicalMetadataPath&gt;&apos;;
+
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(r.genUniqueIDPath, null, resourceReserved);
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;genUniqueIDPath&gt;&apos;||NVL(resourceReserved,&apos;null&apos;)||&apos;&lt;/genUniqueIDPath&gt;&apos;;
+
+			set defaultValuesXML = defaultValuesXML || &apos;&lt;debugTime&gt;&apos;||NVL(r.debugTime,&apos;null&apos;)||&apos;&lt;/debugTime&gt;&apos;;
+		end for;
+	END IF;
+
+	set defaultValuesXML = defaultValuesXML || &apos;&lt;/defaultValuesType&gt;&apos;;
+
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564603434618</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:1:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

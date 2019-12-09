@@ -1,0 +1,164 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="rebindGenerationScripts" path="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/rebindGenerationScripts" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>rebindGenerationScripts:
+
+	This procedure is used to rebind the generation scripts &quot;&lt;baseFolder&gt;/constants/defaultValues&quot;.   Since several of the scripts
+	point to this folder to provide basic starting folder information, it is vital that the correct binding be in 
+	place.  For example, if you were to copy one of the generationScripts from folder A to folder B...this would not 
+	change the bindings to the &quot;&lt;baseFolder&gt;/constants/defaultValues&quot;.   You could go in by hand and change each and 
+	every script but that is potentially error prone.  This script will help you to rebind all of the generationScripts
+	that make a reference to the &quot;rebindOldFolder&quot; and allow you to rebind to the new &quot;rebindNewFolder&quot;.   The starting point
+	for this script is provided by &quot;startingResourceFolder&quot;.
+ 
+	For example, let&apos;s say that you copied scripts out of /shared/BestPractices/DataAbstraction_GENERIC_Template/generationScripts
+	and pasted them into /shared/BestPractices/DataAbstractionSample/generationScripts.   The scripts still point to the folder
+	/shared/BestPractices/DataAbstraction_GENERIC_Template/constants.  The sample values below show what the input
+	should look like to preform the rebinding for all of the generation scripts.
+
+	Input:
+		startingResourceFolder - the folder &quot;&lt;baseFolder&gt;/generationScripts&quot; from which to start from and interrogate all of the resource Views in it.  
+			Values: e.g. /shared/BestPractices/DataAbstractionSample/generationScripts
+		rebindOldFolder - the old folder &quot;&lt;oldBaseFolder&gt;/constants&quot; which the scripts are currently pointing to.
+			Values: e.g. /shared/BestPractices/DataAbstraction_GENERIC_Template/constants
+		rebindNewFolder - the current folder &quot;&lt;baseFolder&gt;/constants&quot; which want the scripts to point to.
+			Values: e.g. /shared/BestPractices/DataAbstractionSample/constants
+	Output:
+		result - success or failure
+			Values: &apos;success&apos; or &apos;failure&apos;
+		resultMessage - null if success or a message text upon failure.
+
+	Exceptions:  none
+	Author:      Mike Tinius
+	Date:        8/2/2010
+	CSW Version: 5.1.0
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="startingResourceFolder" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="rebindOldFolder" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="rebindNewFolder" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="resultMessage" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/rebindGenerationScripts" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="startingResourceFolder" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="rebindOldFolder" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="rebindNewFolder" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resultMessage" direction="OUT">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* rebindGenerationScripts:
+
+	This procedure is used to rebind the generation scripts &quot;&lt;baseFolder&gt;/_scripts/Constants/defaultValues&quot;.   Since several of the scripts
+	point to this folder to provide basic starting folder information, it is vital that the correct binding be in 
+	place.  For example, if you were to copy one of the generationScripts from folder A to folder B...this would not 
+	change the bindings to the &quot;&lt;baseFolder&gt;/_scripts/Constants/defaultValues&quot;.   You could go in by hand and change each and 
+	every script but that is potentially error prone.  This script will help you to rebind all of the generationScripts
+	that make a reference to the &quot;rebindOldFolder&quot; and allow you to rebind to the new &quot;rebindNewFolder&quot;.   The starting point
+	for this script is provided by &quot;startingResourceFolder&quot;.
+ 
+	For example, let&apos;s say that you copied scripts out of /shared/BestPractices/DataAbstraction_GENERIC_Template/_scripts/Generate
+	and pasted them into /shared/BestPractices/DataAbstractionSample/_scripts/Generate.   The scripts still point to the folder
+	/shared/BestPractices/DataAbstraction_GENERIC_Template/_scripts/Constants.  The sample values below show what the input
+	should look like to preform the rebinding for all of the generation scripts.
+
+	Input:
+		startingResourceFolder - the folder &quot;&lt;baseFolder&gt;/_scripts/Generate&quot; from which to start from and interrogate all of the resources in it.  
+			Values: e.g. /shared/ASAssets/BestPractices_v81/DataAbstractionSample/_scripts/Generate
+		rebindOldFolder - the old folder &quot;&lt;oldBaseFolder&gt;/_scripts/Constants&quot; which the scripts are currently pointing to.
+			Values: e.g. /shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/_scripts/Constants
+		rebindNewFolder - the current folder &quot;&lt;baseFolder&gt;/_constants&quot; which want the scripts to point to.
+			Values: e.g. /shared/ASAssets/BestPractices_v81/DataAbstractionSample/_scripts/Constants
+	Output:
+		result - success or failure
+			Values: &apos;success&apos; or &apos;failure&apos;
+		resultMessage - null if success or a message text upon failure.
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	8/2/2010		Mike Tinius			5.2.0			Created new
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE rebindGenerationScripts(
+	IN startingResourceFolder VARCHAR(4000),
+	IN rebindOldFolder	VARCHAR(4000),
+	IN rebindNewFolder	VARCHAR(4000),
+	OUT result			VARCHAR(255),
+	OUT resultMessage	VARCHAR(4000)
+)
+BEGIN
+	DECLARE debug	CHAR(1) DEFAULT &apos;Y&apos;;	-- Y=debug, N=do not debug
+
+	call /shared/ASAssets/BestPractices_v81/Procedures/rebindGenerationScripts(debug, startingResourceFolder,rebindOldFolder,rebindNewFolder,result,resultMessage);
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

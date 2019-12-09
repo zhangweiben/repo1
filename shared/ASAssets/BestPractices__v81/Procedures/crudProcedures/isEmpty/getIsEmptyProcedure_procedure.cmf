@@ -1,0 +1,98 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getIsEmptyProcedure" path="/shared/ASAssets/BestPractices_v81/Procedures/crudProcedures/isEmpty/getIsEmptyProcedure" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="colType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="formatProcedure" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="Script" type="STRING">/*
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE getIsEmptyProcedure(
+	IN colType				VARCHAR,
+	OUT formatProcedure		VARCHAR
+)
+BEGIN
+	DECLARE len			INTEGER;
+	DECLARE columnType	VARCHAR;
+
+	set len = POSITION(&apos;(&apos; IN colType);
+	IF (len = 0) THEN
+		set len = LENGTH(colType);
+	ELSE
+		set len = len - 1;
+	END IF;
+	set columnType = UPPER(SUBSTRING(colType,1,len));
+	CASE columnType
+		WHEN &apos;VARCHAR&apos; 	 THEN set formatProcedure = &apos;isEmptyString&apos;;
+		WHEN &apos;CHAR&apos; 	 THEN set formatProcedure = &apos;isEmptyString&apos;;
+		WHEN &apos;DOUBLE&apos; 	 THEN set formatProcedure = &apos;isEmptyDouble&apos;;
+		WHEN &apos;DECIMAL&apos; 	 THEN set formatProcedure = &apos;isEmptyDecimal&apos;;
+		WHEN &apos;NUMERIC&apos; 	 THEN set formatProcedure = &apos;isEmptyDecimal&apos;;
+		WHEN &apos;TIMESTAMP&apos; THEN set formatProcedure = &apos;isEmptyTimestamp&apos;;
+		WHEN &apos;DATE&apos; 	 THEN set formatProcedure = &apos;isEmptyDate&apos;;
+		WHEN &apos;TIME&apos; 	 THEN set formatProcedure = &apos;isEmptyTime&apos;;
+		WHEN &apos;INTEGER&apos; 	 THEN set formatProcedure = &apos;isEmptyInteger&apos;;
+		WHEN &apos;SMALLINT&apos;  THEN set formatProcedure = &apos;isEmptyInteger&apos;;
+		WHEN &apos;TINYINT&apos; 	 THEN set formatProcedure = &apos;isEmptyInteger&apos;;
+		WHEN &apos;INT&apos; 	 	 THEN set formatProcedure = &apos;isEmptyInteger&apos;;
+		WHEN &apos;BIT&apos; 	 	 THEN set formatProcedure = &apos;isEmptyInteger&apos;;
+		WHEN &apos;BIGINT&apos; 	 THEN set formatProcedure = &apos;isEmptyBigint&apos;;
+		WHEN &apos;FLOAT&apos; 	 THEN set formatProcedure = &apos;isEmptyFloat&apos;;
+		WHEN &apos;REAL&apos; 	 THEN set formatProcedure = &apos;isEmptyFloat&apos;;
+		WHEN &apos;CLOB&apos; 	 THEN set formatProcedure = &apos;isEmptyClob&apos;;
+		WHEN &apos;BLOB&apos; 	 THEN set formatProcedure = &apos;isEmptyBlob&apos;;
+		ELSE set formatProcedure = null;
+	END CASE;	
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1513829976555</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

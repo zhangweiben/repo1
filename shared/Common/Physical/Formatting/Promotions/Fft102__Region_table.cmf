@@ -1,0 +1,68 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Fft102_Region" path="/shared/Common/Physical/Formatting/Promotions/Fft102_Region" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="rgn_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rgn_nm" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rgn_abbv_cd" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes>
+    <index name="PK_FFT102_REGION" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="rgn_cd" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/OnPremises/SQLServer_Promotions/FFB101P1/dbo/FFT102_REGION" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="RGN_CD" nullable="false">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="RGN_NM" nullable="false">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="RGN_ABBV_CD" nullable="false">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	FFT102_REGION.RGN_CD rgn_cd,
+	CAST(FFT102_REGION.RGN_NM AS VARCHAR(15)) AS rgn_nm,
+	CAST(FFT102_REGION.RGN_ABBV_CD AS CHAR(4)) AS rgn_abbv_cd 
+FROM
+	/shared/Common/Physical/Metadata/OnPremises/SQLServer_Promotions/FFB101P1/dbo/FFT102_REGION FFT102_REGION</attribute>
+  <attribute name="creationDate" type="LONG">1565897550421</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1566324640379</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1565897550421</attribute>
+</metadata>

@@ -1,0 +1,2570 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateDatasourceListXML" path="/shared/ASAssets/BestPractices_v81/Procedures/generateDatasourceListXML" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="sourceResource" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="generateLogicalNames" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="layerType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inGroupIds" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="inDerivedFilterPath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="inStartingFolderExtendedXML" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="ConfigParamsXML" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="resultPipe" direction="OUT" nullable="true">
+      <datatype name="DataSourceRowV2Row" type="TABLE" refId="1">
+        <element name="DataSource">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="ProjectFolderName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="GreatGrandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="GrandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="ParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="ContainerName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="PhysicalName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="NativeType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="LogicalName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="LogicalType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="LogicalTransformation">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="LogicalDefinition">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="LogicalPath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="Duration">
+          <datatype name="IntervalDay" type="INTERVAL_DAY" intervalMode="INTERVAL_HOUR_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/GetEnvironment" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="variableName" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyName" type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyValue" type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/checkDuplicateColumn" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inColumnListStr" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inNewColumnListStr" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inColumnAliasOrName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="columnListStrOut" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="columnAliasOrName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="dropColumn" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/getDataSourceName" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cacheStorageDataSourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="excludePathsList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="datasourceAncestor" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inIgnoreResourceDoesNotExist" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="datasourceName" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="datasourcePath" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/getDefaultValuesXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="scriptsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="defaultValuesXML" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/getNameXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inLogicalID" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inContainerList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inProjectFolderName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inGreatGrandParentName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inGrandParentName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inParentName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inContainerName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inResourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="columnType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="applyReservedWordList" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="ConfigParamsXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="containerList" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="logicalName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="logicalType" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="compositeTransformation" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="annotation" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="status" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/isDerivedPathMatch" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="exactMatch" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="derivedFilterPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="sourcepath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="excludePathsList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/isUnsupportedColumnType" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="columnType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="isUnsupported" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/retrieveName/replaceSymbol" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="direction" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inReplaceStr" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outReplaceStr" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/getSqlScriptComplexColumns" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="subType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="columnAliasVect" direction="OUT">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+          </itemDatatype>
+        </datatype>
+      </element>
+      <element name="resultVector" direction="OUT">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="SqlScriptV2Row" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="SqlScriptV2Row" type="TREE" refId="2">
+              <element name="derivedColumn">
+                <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+              </element>
+              <element name="sourceAlias">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="sourceColumn">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="columnAlias">
+                <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+              </element>
+              <element name="columnType">
+                <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+              </element>
+              <element name="sourceExpression">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="sourceExpressionNoCast">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="sourceColumnList">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="functionList">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="sourcePath">
+                <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedList" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="codingListType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="codingList" direction="OUT">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inCodingType" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inEncodingActions" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="codingList" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inModuleNameInvoking" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inDebug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inStringName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="outString" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="tagName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inXMLDoc" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resultValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/getUtilitiesVersion" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="version" direction="OUT">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inWord" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getAncestorResources" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="changeid">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="childCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="dataSourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="path">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="changeid">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="version">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="introspectState">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactMessage">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="scriptText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="childCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="dataSourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor_PROCEDURE_CURSOR" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="cursorNum" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="4096"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnType">
+            <datatype type="STRING" maxLength="4096"/>
+          </element>
+          <element name="columnBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="dataType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="paramDirection">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="proprietaryModel">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceCacheConfigCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="configured">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="cachePolicy">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageMode">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageDataSourcePath">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageTargetName">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storagePath">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="storageType">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="refreshMode">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="scheduleMode">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="startTime">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="fromTimeInADay">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="endTimeInADay">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="recurringDay">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="interval">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="period">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="count">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="isCluster">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="expirationPeriod">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="clearRule">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="allOrNothing">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="incremental">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="storageBucketMode">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketCatalog">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketSchema">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketPrefix">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="storageBucketNumBuckets">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="storageDropCreateIdx">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="firstRefreshCallback">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="secondRefreshCallback">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceListRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creationDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="creationDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="creatorUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creatorUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="lastModifiedDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="lastModifiedUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getUsedResourcesCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="usedResCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/lowerLevelProcedures/getBasicResourceXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="folderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="folderPath" direction="OUT">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/TextUtils/RegexPosition" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="Input Text" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Regular Expression" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractBiDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="searchTerm" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="openingDelim" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="closingDelim" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOccurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inTrimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inCaseSensitive" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseInputText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseOutput" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="trimText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="includeDelimiter" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="object">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractTextList" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="separator" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="preserveDoubleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveSingleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveParenthesis" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveQualifier" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="trimResults" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="textExpression">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getDelimitedOccurrence" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOccurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inTrimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/numOccurrences" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="searchString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="stringToSearch" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="num" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/xml/extractXMLOccurrence" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inContentXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inTagName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOccurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inIncludeDelimiter" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inTrimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inCaseSensitive" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="status" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/xml/getValueFromXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="namespaces" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inXpath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inXml" direction="IN">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	generateDatasourceListXML: 
+	-- Data Virtualization Best Practices --
+
+	Generate the data source structure an any given layer designated by the layerType parameter
+ 
+	Input:
+			-- The source folder in CIS to begin searching for views to generate the view list or
+			-- a source view (exact path) to generate for.
+			-- If this is set it supercedes layerType, inGroupIDs and derivedFilterPath
+	 	sourceResource
+
+			-- 0 (FALSE) - generate datasource list only with no logical names, 
+    		-- 1 (TRUE) - generate datasource list with logical names
+  		generateLogicalNames - generate the logical names choice
+
+			-- PM=Physical Metadata - generateDatasourceList physical metadata tables
+			-- FV=Formatting Views 	- generateDatasourceList formatting views
+			-- BV=Business Views 	- generateDatasourceList business views (only single source)
+			-- LV=Logical Views 	- generateDatasourceList logical views (only single source)
+			-- CV=Client Views 		- generateDatasourceList client views (only single source)
+			-- CP=Client Published 	- generateDatasourceList client published views (only single source)
+  		layerType - the designator for the layer in which to generate from
+
+			-- This is a filter that allows the user to only generate for a specific group or list of groups
+			--   found in the /generationScripts/Configure/ConfigureStartingFolders.
+			--   Pass in null to select all groupIds.
+		inGroupIds - This is a comma separate list group ids to process. 
+
+			-- The list &quot;derivedFilterPath&quot; is a comma-separated list of resources and may be used with either generateToFolder (option 1) to groupId (option 2) 
+			-- The path is derived by concatenating the partial filter path with the target path of the designated layer type.
+			-- The layerType and the groupId are used to filter the rows from the configureStartingFolders.  The target path is
+			--    defined in configureStartingFolders per the layerType and groupId combination.
+			--   e.g. layerType=PV and targetFolderPath=/shared/BestPractices/DataAbstractionSample/Physical/Physical
+			--        The derivedFilterPath list=CUSTOMERS,EMPLOYEES
+			--        Even though there are several other views in the /CISORADEMO folder under the Physical_Views only the ones specified
+			--	      will be generated.  Views directly under the target path do not require any qualifying path except the view name.
+			--        Lastly, a leading &apos;/&apos; is not required but may be present if desired.
+			-- Correlate the groupId position with the derivedFilterPath position
+			--		derivedFilterPath=&quot;customers,orders&quot;,shippingmethods
+			--                         |                     |
+			--                         v                     v
+			--		          groupId=ds_inventory.tutorial,ds_orders.tutorial
+			-- If null, generate views from all target folders as directed by the &quot;configure starting folders&quot; and the designated layer type.
+		derivedFilterPath				LONGVARCHAR, 
+
+			-- This is an alternative entry point for this method.  If this is set then layerType,inGroupIds and inDerivedFilterPath are ignored
+		inStartingFolderExtendedXML	LONGVARCHAR,
+
+			-- The XML of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+		ConfigParamsXML 			LONGVARCHAR 
+	Output:
+		DECLARE PUBLIC TYPE DataSourceRowV2Row ROW (
+			DataSource 					VARCHAR(255), -- The name of the data source in composite (data lineage-used resources)
+--[NOT CURRENTLY IMPLEMENTED] Published					VARCHAR(255), -- Indicates whether this element is published in composite (data lineage-dependent resources)
+			ParentName 					VARCHAR(255), -- The name of the parent container - parent to the parent (a.k.a. grand parent)
+			ContainerName 				VARCHAR(255), -- The name of the container - parent to the resource
+			PhysicalName				VARCHAR(255), -- The physical column name (a.k.a. source column name)
+			physicalType				VARCHAR(255), -- The logical column name (a.k.a. table/view alias)
+			LogicalName					VARCHAR(255), -- The logical column name (a.k.a. table/view alias)
+			LogicalType 				VARCHAR(255), -- The logical column type
+			LogicalTransformation		LONGVARCHAR,  -- The logical column transformation excluding outer cast statement
+			LogicalDefinition			LONGVARCHAR,  -- The logical resource definition (a.k.a. view/table/column annotation)
+			LogicalPath					LONGVARCHAR   -- The logical resource (view) path
+		)
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	06/15/2010		Mike Tinius			5.2.0			Created new
+	03/15/2013		Mike Tinius			5.2.0			Modifications for Best Practices 7.0
+	05/22/2013		Mike Tinius			6.0.0			Modified for Best Practices 7.1
+	09/17/2013		Mike Tinius			6.1.0			Modified to pass in excludeDsPathsList to getDataSourceName
+	03/27/2014		Mike Tinius			6.2.0			Resolve issue where the physical name and type columns were left blank.  Scenario: layerType=PM, generateMode=R|G and derivedFilterPath=&lt;some_table&gt;
+	03/02/2018		Mike Tinius			7.0.5			Replaced RegexSplit with extractDelimitedText
+	01/24/2019		Mike Tinius			8.0.0			B.P. 2019.1: Added the ability to handle columnCaseRule, resourcePrefix, resourceSuffix and newColumnList for generateMode=&apos;G&apos;. 
+															newColumnList Format: column1&amp;&amp;type1&amp;&amp;value1//column2&amp;&amp;type2&amp;&amp;value2//column3&amp;&amp;type3&amp;&amp;value3
+	01/29/2019		Mike Tinius			8.0.0			B.P. 2019.101: Fix bug so derivedFilterPath could be used with generateToFolder.
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+																	   Removed double quotes from the parentPath.
+	06/12/2019		Mike Tinius			7.0.8			B.P. 2019.200: Derived the new generateDatasourceListXML from generateDatasourceList to eliminate vector usage for ConfigParamsVector and inStartingFolderExtendedVector.
+	07/30/2019		Mike Tinius			7.0.8			B.P. 2019.300: Modified to account for null &quot;inDerivedFilterPath&quot; parameter which through an exception.
+																	   Fixed bug where duration was only calculated when debug2=Y.  Now it is calculated all the time.
+																	   Fixed bug where new columns were generated when the resource was not a valid used resource.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE generateDatasourceListXML(
+		-- The source folder in CIS to begin searching for views to generate the view list or
+		-- a source view (exact path) to generate for.
+		-- If this is set it supercedes layerType, inGroupIDs and derivedFilterPath
+	IN sourceResource					LONGVARCHAR, 	
+
+		-- 0 (FALSE) - generate datasource list only with no logical names, 
+    	-- 1 (TRUE) - generate datasource list with logical names
+   	IN generateLogicalNames				BIT, 	
+
+	-- If sourceResource is blank, then layerType, inGroupIds must be set with derivedFilterPath being optional
+		-- PM=Physical Metadata - generateDatasourceList physical metadata tables
+		-- FV=Formatting Views 	- generateDatasourceList formatting views
+		-- BV=Business Views 	- generateDatasourceList business views (only single source)
+		-- LV=Logical Views 	- generateDatasourceList logical views (only single source)
+		-- CV=Client Views 		- generateDatasourceList client views (only single source)
+		-- CP=Client Published 	- generateDatasourceList client published views (only single source)
+   	IN layerType						VARCHAR,
+
+		-- This is a comma separate list group ids to process from the configureStartingFolders.
+		-- Pass in null to select all groupIds.
+	IN inGroupIds						LONGVARCHAR, 
+
+		-- The list &quot;derivedFilterPath&quot; is a comma-separated list of resources and may be used with either generateToFolder (option 1) to groupId (option 2) 
+		-- The path is derived by concatenating the partial filter path with the source path of the designated layer type.
+		-- The layerType and the groupId are used to filter the rows from the configureStartingFolders.  The source path is
+		--    defined in configureStartingFolders per the layerType and groupId combination.
+		--   e.g. layerType=CP and sourceFolderPath=/shared/BestPractices/DataAbstractionSample/Application/Views
+		--        The derivedFilterPath list=Orders_Closed,/Orders/Customers,Orders/Product
+		--        Even though there are several other views in the /Orders folder under the Client_Views only the ones specified
+		--	      will be generated to the Client_Published.  Views directly under the source path do not require any qualifying path except the view name.
+		--        Lastly, a leading &apos;/&apos; is not required but may be present if desired.
+		-- Correlate the groupId position with the derivedFilterPath position
+		--		derivedFilterPath=&quot;customers,orders&quot;,shippingmethods
+		--                         |                     |
+		--                         v                     v
+		--		          groupId=ds_inventory.tutorial,ds_orders.tutorial
+		-- If null, generate views from all source folders as directed by the &quot;configure starting folders&quot; and the designated layer type.
+	IN inDerivedFilterPath				LONGVARCHAR, 
+
+		-- This is an alternative entry point for this method.  If this is set then layerType,inGroupIds and inDerivedFilterPath are ignored
+	IN 	inStartingFolderExtendedXML		LONGVARCHAR,
+
+		-- The XML of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+	IN ConfigParamsXML					LONGVARCHAR,
+
+	OUT resultPipe						PIPE /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.DataSourceRowV2Row
+)
+BEGIN
+	DECLARE moduleName						VARCHAR DEFAULT &apos;&apos;||&apos;generateDatasourceListXML&apos;;
+	DECLARE ConfigParamsRec					/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.ConfigParamsType;
+	DECLARE defaultValuesXML				LONGVARCHAR;
+	DECLARE groupId							LONGVARCHAR DEFAULT inGroupIds;
+	DECLARE sourceResource_					LONGVARCHAR DEFAULT sourceResource;
+	DECLARE resourceExists					BOOLEAN;
+	DECLARE resultRec						/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.DataSourceRowV2Row;
+	DECLARE startingFolder					/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.startingFolderType;
+	DECLARE status							VARCHAR;
+	DECLARE resultNode						LONGVARCHAR;
+	DECLARE numStartingFolders				INTEGER;
+	DECLARE startingFolderCursor			CURSOR /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.startingFolderType;
+	DECLARE startingFolderExtendedXML		LONGVARCHAR;
+	DECLARE startingFolderExtendedRec 		/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.startingFolderExtendedType;
+	DECLARE derivedFilterVector				VECTOR(ROW(groupId VARCHAR, derivedFilterPath LONGVARCHAR));
+	DECLARE derivedFilterPath				LONGVARCHAR DEFAULT inDerivedFilterPath;   -- a single resource name which will act like a filter
+	DECLARE derivedFilterPath_				LONGVARCHAR DEFAULT derivedFilterPath;
+	DECLARE exactMatch						BIT;
+	DECLARE pos								INTEGER;
+	DECLARE debug							CHAR(1);
+	DECLARE debug2							CHAR(1);
+	DECLARE debug3							CHAR(1);
+	DECLARE sfNum							INTEGER;
+	DECLARE i,j,k							INTEGER DEFAULT 1;
+	DECLARE padAmount						INTEGER;
+	DECLARE padChar							CHAR(1) DEFAULT &apos; &apos;;
+	DECLARE version							DOUBLE;
+	DECLARE minVersion						DOUBLE DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.minVersion;
+	DECLARE generateMode					CHAR(1);
+	DECLARE namespaces						VARCHAR(4000);
+	DECLARE xpath							VARCHAR(4000);
+	DECLARE xmlOut							XML;
+	DECLARE message							LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE ex								EXCEPTION;
+
+	DECLARE parentPath						VARCHAR(4000);
+	DECLARE sourceFolderPath				VARCHAR(4000);
+	DECLARE resourcePath					VARCHAR(4000);
+	DECLARE resourceType					VARCHAR;
+	DECLARE resourceSubtype					VARCHAR;
+	DECLARE sourceName						VARCHAR(4000);
+	DECLARE resourceName					VARCHAR(4000);
+	DECLARE resourceNameReserved			VARCHAR(4000);
+	DECLARE greatGrandParentName			VARCHAR(4000);
+	DECLARE grandParentName					VARCHAR(4000);
+	DECLARE parentName						VARCHAR(4000);
+	DECLARE containerName					VARCHAR(4000);
+	DECLARE datasourceNameList				LONGVARCHAR;
+	DECLARE datasourcePathList				LONGVARCHAR;
+	DECLARE physicalPath					VARCHAR(4000);
+	DECLARE physicalType					VARCHAR;
+	DECLARE physicalName					VARCHAR(4000);
+	DECLARE physicalResourceFound			BOOLEAN;
+	DECLARE physicalColumnTypeList			LONGVARCHAR;
+	DECLARE columnName						VARCHAR(4000);
+	DECLARE columnNameReserved				VARCHAR(4000);
+	DECLARE columnType						VARCHAR;
+	DECLARE columnListStr, newColumnListStr	LONGVARCHAR DEFAULT &apos;&apos;; -- used to determine if a column has a duplicate or not. 
+	DECLARE newColumnList					LONGVARCHAR;
+	DECLARE newColumnName					VARCHAR;
+	DECLARE newColumnType					VARCHAR;
+	DECLARE newColumnValue					LONGVARCHAR;
+	DECLARE newColumnTransformation			LONGVARCHAR;
+	DECLARE dropColumn						BIT;
+	DECLARE applyReservedWordList			BIT;	-- 1=true, apply the reserved word list to the output, 0=false, do not apply reserved word list
+	DECLARE sqlStatement					LONGVARCHAR;
+	DECLARE childResCursor					CURSOR /shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.columnListRow;
+	DECLARE sqlScriptColumnVector			VECTOR (/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.SqlScriptV2Row);
+	DECLARE sourceResourcePath				LONGVARCHAR DEFAULT sourceResource;
+	DECLARE usedResourceFound				BOOLEAN;
+	DECLARE validUsedResource				BIT;
+	DECLARE isDerivedMatch					INTEGER;
+	DECLARE matchFound						BOOLEAN;
+		-- 0=fuzzy match - sourcePath + derivedFilterPath must simply be contained within resourcePath
+		-- 1=exact match - sourcePath + derivedFilterPath must match exactly in resourcePath
+	DECLARE generateUnsupportedColumnType 	BIT;
+		-- flag indicating whether to ignore or generate unsupported column types.  For example in Oracle an SDO spatial type gets imported into Composite as &apos;OTHER&apos;.
+		-- 0/null (default) - ignore column type = &apos;OTHER&apos; and do not generate that column
+		-- 1 - generate columns where the column type = &apos;OTHER&apos;
+	DECLARE excludeDsPathsList				LONGVARCHAR;
+	DECLARE LogicalName						VARCHAR(255) DEFAULT NULL;
+	DECLARE LogicalType 					VARCHAR(255);
+	DECLARE LogicalTransformation			LONGVARCHAR;
+	DECLARE LogicalDefinition				LONGVARCHAR;
+	DECLARE LogicalPath						LONGVARCHAR;
+	DECLARE logicalStatus					VARCHAR;
+	DECLARE unsupportedColumnTypeList 		LONGVARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.unsupportedColumnTypeList;
+	DECLARE isUnsupportedColumnTypeNative 	INTEGER;
+	DECLARE isUnsupportedColumnTypeLogical 	INTEGER;
+	DECLARE castResourceNameToType 			LONGVARCHAR;
+	DECLARE inIgnoreResourceDoesNotExist	INTEGER DEFAULT 1;	-- Ignore any resources that do not exist
+																-- 1 = Bypass the processing of that resource.
+																-- 0 = (default) Do not ignore any resources.  Throw an error that the resource does not exist.
+	DECLARE projectFolderName	 			VARCHAR;			-- the name of the project folder (defaultValue.basePath)(projectName)
+	DECLARE generationStartTime				TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+	DECLARE resourceStartTime				TIMESTAMP;				 -- The time the processing starts for a resource
+	DECLARE duration						INTERVAL HOUR TO SECOND; -- The time it takes to process a view/column.  When processing a column, the duration is a running total for the entire view.
+	DECLARE physicalFormattingTransformationPath LONGVARCHAR;
+	DECLARE configureScriptsPath			LONGVARCHAR;
+	DECLARE pathInFormattingTransformation	BOOLEAN;
+	DECLARE cacheStorageDataSourcePath 		VARCHAR(4000);
+	DECLARE cacheStoragePath 				VARCHAR(4000);
+	DECLARE cacheStorageFound				BOOLEAN;
+	DECLARE columnExpressionVect			VECTOR(VARCHAR(4000));
+	DECLARE sourceExpressionEncoded			VARCHAR(4000);
+	DECLARE colExprIdx						INTEGER;
+	DECLARE codingListColumns				VARCHAR(4000);
+	DECLARE usedRowFound					BOOLEAN;
+	DECLARE basicRowFound					BOOLEAN;
+	DECLARE useBasicResourceOnly			BOOLEAN;
+	DECLARE rowType							VARCHAR;
+	DECLARE containerList					LONGVARCHAR;
+
+	/***************************************************************
+	 * Make sure the Utilities are up to date
+	 ***************************************************************/
+	call /shared/ASAssets/Utilities/getUtilitiesVersion(version);
+	if (version &lt;  minVersion) then
+		raise ex value &apos;Utilities &apos;||minVersion||&apos; or higher is required&apos;;
+	end if;
+
+	-- Set local Configuration parameters	
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;debug&apos;, ConfigParamsXML, debug);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;debug2&apos;, ConfigParamsXML, debug2);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;debug3&apos;, ConfigParamsXML, debug3);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;scriptsPath&apos;, ConfigParamsXML, ConfigParamsRec.scriptsPath);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;basePath&apos;, ConfigParamsXML, ConfigParamsRec.basePath);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;generateMode&apos;, ConfigParamsXML, ConfigParamsRec.generateMode);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;generateCast&apos;, ConfigParamsXML, ConfigParamsRec.generateCast);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;padAmount&apos;, ConfigParamsXML, ConfigParamsRec.padAmount);
+
+	-- Set the default values
+	call /shared/ASAssets/BestPractices_v81/Procedures/getDefaultValuesXML(ConfigParamsRec.scriptsPath, defaultValuesXML);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;physicalFormattingTransformationPath&apos;, defaultValuesXML, physicalFormattingTransformationPath);
+	call /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;configureScriptsPath&apos;, defaultValuesXML, configureScriptsPath);
+
+	-- Get the coding list.  [codingListColumns, codingListFrom, codingListComma, codingListRetriveColumns]
+	call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedList(&apos;codingListColumns&apos;, codingListColumns);
+
+	-- Exclude any resources found in this path as these are considered source files.
+	SET physicalFormattingTransformationPath = REPLACE(physicalFormattingTransformationPath||&apos;/&apos;,&apos;//&apos;,&apos;/&apos;);
+
+	-- Extract the project name from the last folder name at the end of the basePath.
+	call /shared/ASAssets/Utilities/string/getDelimitedOccurrence(ConfigParamsRec.basePath, &apos;R&apos;, &apos;/&apos;, 1, 0, projectFolderName);
+	SET projectFolderName = REPLACE(projectFolderName, &apos;&quot;&apos;, &apos;&apos;); -- Remove double quotes
+
+	-- Get environment variables
+	call /lib/util/GetEnvironment(&apos;best.practices.generateUnsupportedColumnType&apos;,generateUnsupportedColumnType);
+	call /lib/util/GetEnvironment(&apos;best.practices.exactMatch&apos;,exactMatch);
+	call /lib/util/GetEnvironment(&apos;best.practices.excludeDsPathsList&apos;,excludeDsPathsList);
+	call /lib/util/GetEnvironment(&apos;best.practices.newColumnList&apos;,newColumnList);	-- Format: column1&amp;&amp;type1&amp;&amp;value1//column2&amp;&amp;type2&amp;&amp;value2//column3&amp;&amp;type3&amp;&amp;value3
+
+	-- Validate the environment variables
+	if (generateUnsupportedColumnType is null) then
+		set generateUnsupportedColumnType = 0;			-- set the default behavior to not generate unsupported column types
+	end if;
+	if (exactMatch is null) then
+		set exactMatch = 1;
+	end if;
+	if (groupId is not null and (layerType IS NULL OR LENGTH(&apos;|&apos;||layerType||&apos;|&apos;) = 2)) then
+		raise ex value &apos;The &quot;layerType&quot; may not be null or empty when the &quot;groupId&quot; is specified.&apos;;
+	end if;
+
+	-- Print out parameters for debugging purposes
+	if (debug = &apos;Y&apos;) then
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;generateLogicalNames=&apos;||generateLogicalNames);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;generateUnsupportedColumnType=&apos;||generateUnsupportedColumnType);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;derivedFilterPath=&apos;||NVL(derivedFilterPath,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;OPTION 1:&apos;);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;sourceResource=&apos;||NVL(sourceResource,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;OPTION 2:&apos;);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;layerType=&apos;||NVL(layerType,&apos;null&apos;));
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;groupId=&apos;||NVL(groupId,&apos;null&apos;));
+	end if;
+
+	if (inStartingFolderExtendedXML is not null) then
+		set startingFolderExtendedXML = inStartingFolderExtendedXML;
+	else
+		if (derivedFilterPath is not null and length(trim(derivedFilterPath)) &gt; 0) then
+			-- Automatically add double quotes around the comma-separated list if the quotes don&apos;t exist.
+			if (INSTR(derivedFilterPath, &apos;,&apos;) &gt; 0) and (INSTR(derivedFilterPath, &apos;&quot;&apos;) = 0) then
+				SET derivedFilterPath = &apos;&quot;&apos;||derivedFilterPath||&apos;&quot;&apos;;
+			end if;
+
+			/*
+			The extractTextList is used to extract a separated list of values containing
+				embedded separators within double quotes, single quotes.  The result is returned as a cursor based on
+				the boundaries of the the qualifiers: double quotes, single quotes or paired parenthesis.  The separator value
+				is preserved within the qualifier if the flag for that qualifier is set to 1 (true).
+			*/
+			-- Create a vector of the comma-separated derived filter paths associated with their respective (positional) groupId
+			for r as select * from /shared/ASAssets/Utilities/string/extractTextList(derivedFilterPath_,&apos;,&apos;,1,0,0,0,1) do
+				-- Initialize or extend the vector
+				if (derivedFilterVector is null) then
+					set derivedFilterVector = VECTOR[(null)];
+					set i = 1;
+				else
+					set derivedFilterVector = EXTEND(derivedFilterVector,1);
+					set i = i + 1;
+				end if;
+
+				-- set the derivedFilterPath
+				set derivedFilterVector[i].derivedFilterPath = r.textExpression;
+
+				-- Set the associated groupId with the derivedFilterPath item based on their respective position within the comma-separated string.
+				set j = 0;
+				groupLoop:
+				for g as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(groupId,&apos;,&apos;,0,0,0,1,0) do
+					set j = j + 1;
+					if (i = j) then
+						set derivedFilterVector[i].groupId = g.object;
+						if (INSTR(derivedFilterVector[i].groupId, &apos;&apos;&apos;&apos;) &gt; 0) then
+							set derivedFilterVector[i].groupId = REPLACE(derivedFilterVector[i].groupId, &apos;&apos;&apos;&apos;, &apos;&apos;&apos;&apos;&apos;&apos;);
+						end if;
+						leave groupLoop;
+					end if;
+				end for;
+				if (debug = &apos;Y&apos;) then
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;derivedFilterVector[&apos;||i||&apos;].groupId=&apos;||derivedFilterVector[i].groupId || &apos;  derivedFilterPath=&apos;||derivedFilterVector[i].derivedFilterPath);
+				end if;
+			end for;
+		end if;
+
+		if (sourceResource_ IS NOT NULL AND LENGTH(&apos;|&apos;||sourceResource_||&apos;|&apos;) &gt; 2) then  --notEmpty
+			/* ------------------------------------------------------------------------
+			 * Derive/Validate Target Folder
+			 * -------------------------------
+			 * When the sourceResource is a FOLDER/CONTAINER and it is a valid path then the targetPath will be set to the sourceResource and 
+			 *   derivedFilterPath is blank.
+			 * When the sourceResource is a VIEW/TABLE and it is a valid path then the targetPath will be set to the parent CONTAINER path and
+			 *   derivedFilterPath will be set to &apos;/&lt;RESOURCE_NAME&gt;&apos;
+			 * ------------------------------------------------------------------------*/
+			-- Retrieve the resource XML and get the annotation
+			call /shared/ASAssets/Utilities/repository/lowerLevelProcedures/getBasicResourceXML(sourceResource_, null, xmlOut);
+			-- Extract the annotation
+			set namespaces = &apos;xmlns:resource=&quot;http://www.compositesw.com/services/system/admin/resource&quot; xmlns:common=&quot;http://www.compositesw.com/services/system/util/common&quot;&apos;;
+			set xpath = &apos;/resource:getResourceResponse/resource:resources/resource:resource/resource:type&apos;;
+			call /shared/ASAssets/Utilities/&quot;xml&quot;/getValueFromXML(&apos;N&apos;, namespaces, xpath, CAST(xmlOut as LONGVARCHAR), resourceType);
+
+			-- If the source resource is not a folder/container then extract the folder path and resource name.
+			--   Use the resource name as the derivedFilterPath
+			set resourceName = null;
+			if (resourceType != &apos;CONTAINER&apos; and resourceType != &apos;DATA_SOURCE&apos;) then
+				call /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(sourceResource_, &apos;E&apos;, resourceName, sourceResourcePath);
+			else
+				set sourceResourcePath = sourceResource;
+			end if;
+
+			-- If the source resource path has a non-CONTAINER resource type such as TABLE or PROCEDURE then set the derivedFilterPath to the resourceName
+			--		otherwise set the derivedFilterPath to the incoming derivedFilterPath was set then use the first occurrence of what was passed in
+			if (resourceName IS NOT NULL AND LENGTH(TRIM(resourceName)) &gt; 0) then
+				set derivedFilterPath = resourceName;
+			else
+				if (derivedFilterVector is not null and derivedFilterVector[1].derivedFilterPath is not null) then
+					set derivedFilterPath = derivedFilterVector[1].derivedFilterPath;
+				else
+					set derivedFilterPath = null;
+				end if;
+			end if;
+
+			/* ------------------------------------------------------------------------
+			 * Instantiate a new startingFolderExtendedXML
+			 * ------------------------------------------------------------------------*/
+			/* startingFolderExtendedXML
+					groupId:			CISORADEMO
+					process:			1
+					layerType:			PV
+					pathDerivation:		A
+					sourceFolderPath: 	/shared/BestPractices/DataAbstractionSample/Physical/Metadata/OracleSource/cisOraDemoDS/CISORADEMO
+					targetFolderPath: 	/shared/BestPractices/DataAbstractionSample/Physical/Physical/CISORADEMO
+			*/
+			set startingFolderExtendedXML = 
+&apos;&lt;startingFolderExtendedType&gt;
+    &lt;groupId/&gt;
+    &lt;process&gt;1&lt;/process&gt;
+    &lt;layerType/&gt;
+    &lt;pathDerivation/&gt;
+    &lt;sourceFolderPath&gt;&apos;||TRIM(NVL(sourceResourcePath,&apos;  &apos;))||&apos;&lt;/sourceFolderPath&gt;
+    &lt;targetFolderPath&gt;&apos;||TRIM(NVL(sourceResourcePath,&apos;  &apos;))||&apos;&lt;/targetFolderPath&gt;
+    &lt;derivedFilterPath&gt;&apos;||TRIM(NVL(derivedFilterPath,&apos;  &apos;))||&apos;&lt;/derivedFilterPath&gt;
+&lt;/startingFolderExtendedType&gt;&apos;;
+
+		else
+			/* Get the ConfigureStartingFolders info:
+			Sample of the StartFolderXML - Identifies the various Data Sources that need to undergo Abstract View Generation
+			groupId, process, layerType, pathDerivation, sourceFolderPath, 			targetFolderPath
+			(&apos;g1&apos;,0,&apos;FV&apos;,&apos;D&apos;,&apos;/shared/ViewGenerator/PhysicalMetadata/INVENTORY&apos;,	&apos;/shared/ViewGenerator/Physical/Formatting/Inventory&apos;),
+			(&apos;g2&apos;,1,&apos;FV&apos;,&apos;A&apos;,&apos;/shared/ViewGenerator/PhysicalMetadata/ORDERS&apos;,		&apos;/shared/ViewGenerator/Physicl/Formatting/Orders&apos;) 
+			*/
+			if (groupId is not null and LENGTH(groupId) &gt; 0) then
+				-- Turn the comma separated group id list CISORADEMO,XML into a SQL IN clause: groupId in (&apos;CISORADEMO&apos;,&apos;XML&apos;)
+				set i = 0;
+				for r as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(groupId,&apos;,&apos;,0,0,0,1,0) do
+					if (i = 0) then
+						set groupId = &apos;&apos;;
+					end if;
+					if (i &gt; 0) then
+						set groupId = groupId || &apos;,&apos;;
+					end if;
+					set groupId = groupId || &apos;&apos;&apos;&apos;||r.object||&apos;&apos;&apos;&apos;;
+					set i = i + 1;
+				end for;
+				-- Construct the SQL statement
+				set sqlStatement = REPLACE(&apos;SELECT * FROM &apos;|| configureScriptsPath ||
+				&apos;/ConfigureStartingFolders() WHERE layerType=&apos;|| &apos;&apos;&apos;&apos;|| layerType || &apos;&apos;&apos;&apos; ||
+					&apos; and groupId in (&apos;|| groupId ||&apos;)&apos;, &apos;//&apos;, &apos;/&apos;);
+			else
+				-- Construct the SQL statement
+				set sqlStatement = REPLACE(&apos;SELECT * FROM &apos;|| configureScriptsPath ||
+				&apos;/ConfigureStartingFolders() WHERE layerType=&apos;|| &apos;&apos;&apos;&apos;|| layerType || &apos;&apos;&apos;&apos;, &apos;//&apos;, &apos;/&apos;);
+			end if;
+			if (debug = &apos;Y&apos;) then
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;sqlStatement=&apos;||TRIM(NVL(sqlStatement,&apos;  &apos;)));
+			end if;
+
+	/*	DECLARE PUBLIC TYPE startingFolderExtendedType ROW (
+			groupId				VARCHAR,
+			process 			BIT,
+			layerType			VARCHAR,
+			pathDerivation 		CHAR(1),
+			sourceFolderPath 	TypeDefinitions.pathType,
+			targetFolderPath 	TypeDefinitions.pathType,
+			derivedFilterPath	LONGVARCHAR
+		);
+	*/
+			set startingFolderExtendedXML = &apos;&apos;;
+
+			OPEN startingFolderCursor FOR sqlStatement;
+			FOR startingFolder AS startingFolderCursor DO
+				-- Correlate the groupId position with the derivedFilterPath position
+				--		derivedFilterPath=&quot;customers,orders&quot;,shippingmethods
+				--                         |                     |
+				--                         v                     v
+				--		          groupId=ds_inventory.tutorial,ds_orders.tutorial
+				SET i = 1;
+				IF (derivedFilterVector IS NOT NULL AND CARDINALITY(derivedFilterVector) &gt; 0) THEN
+					WHILE (i &lt;= CARDINALITY(derivedFilterVector)) DO
+						IF (startingFolder.groupId = derivedFilterVector[i].groupId) THEN
+							SET derivedFilterPath_ = derivedFilterVector[i].derivedFilterPath;
+						END IF;
+						SET i = i + 1;
+					END WHILE;
+				ELSE
+					SET derivedFilterPath_ = null;
+				END IF;
+
+				if (debug = &apos;Y&apos;) then
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, LPAD(i, 4 , &apos; &apos;)||&apos;. groupId=&apos;||startingFolder.groupId||
+						&apos;  Starting Folder=&apos;||NVL(startingFolder.targetFolderPath,&apos;null&apos;));
+				end if;
+
+				SET startingFolderExtendedXML = startingFolderExtendedXML ||
+&apos;&lt;startingFolderExtendedType&gt;
+    &lt;groupId&gt;&apos;||TRIM(NVL(startingFolder.groupId,&apos;  &apos;))||&apos;&lt;/groupId&gt;
+    &lt;process&gt;&apos;||TRIM(NVL(CAST(startingFolder.process AS VARCHAR),&apos;  &apos;))||&apos;&lt;/process&gt;
+    &lt;layerType&gt;&apos;||TRIM(NVL(startingFolder.layerType,&apos;  &apos;))||&apos;&lt;/layerType&gt;
+    &lt;pathDerivation&gt;&apos;||TRIM(NVL(startingFolder.pathDerivation,&apos;  &apos;))||&apos;&lt;/pathDerivation&gt;
+    &lt;sourceFolderPath&gt;&apos;||TRIM(NVL(startingFolder.sourceFolderPath,&apos;  &apos;))||&apos;&lt;/sourceFolderPath&gt;
+    &lt;targetFolderPath&gt;&apos;||TRIM(NVL(startingFolder.targetFolderPath,&apos;  &apos;))||&apos;&lt;/targetFolderPath&gt;
+    &lt;derivedFilterPath&gt;&apos;||TRIM(NVL(derivedFilterPath_,&apos;  &apos;))||&apos;&lt;/derivedFilterPath&gt;
+    &lt;typeDefProcPath/&gt;
+    &lt;typeDefProcName/&gt;
+&lt;/startingFolderExtendedType&gt;&apos;||CHR(10);
+			END FOR;
+		end if;
+	end if;
+	CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, NVL(startingFolderExtendedXML,&apos;null&apos;));
+
+	/**************************************************************
+	 * Execute to retrieve View information and generate the
+	 * data source / view list for each data source group id.
+	 * Each row in startingFolderVector contains a group id from
+	 * ConfigureStartingFolders or a specified source folder.
+	 **************************************************************/
+	SET sfNum = 1;
+	CALL /shared/ASAssets/Utilities/string/numOccurrences(&apos;&lt;startingFolderExtendedType&gt;&apos;, startingFolderExtendedXML, numStartingFolders);
+	WHILE (sfNum &lt;= numStartingFolders) DO
+		CALL /shared/ASAssets/Utilities/&quot;xml&quot;/extractXMLOccurrence(startingFolderExtendedXML, &apos;startingFolderExtendedType&apos;, sfNum, 0, 0, 0, status, resultNode);
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;sourceFolderPath&apos;, resultNode, startingFolderExtendedRec.sourceFolderPath);
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;targetFolderPath&apos;, resultNode, startingFolderExtendedRec.targetFolderPath);
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;process&apos;, resultNode, startingFolderExtendedRec.process);
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;groupId&apos;, resultNode, startingFolderExtendedRec.groupId);
+		CALL /shared/ASAssets/BestPractices_v81/Procedures/xmlGetNodeValue(&apos;derivedFilterPath&apos;, resultNode, startingFolderExtendedRec.derivedFilterPath);
+
+		-- Get the specific resource type for the target resource
+		SET resourceExists = true;
+		SET resourceType = null;
+		SET parentPath = REPLACE(startingFolderExtendedRec.targetFolderPath, &apos;&quot;&apos;, &apos;&apos;); -- Remove the double quotes from the path
+		BEGIN INDEPENDENT TRANSACTION
+			FOR resource AS SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor(parentPath, resourceType) DO
+				set resourceType = resource.&quot;type&quot;;
+			END FOR;
+			IF (resourceType is null) then
+				set resourceExists = false;
+				if (debug = &apos;Y&apos;) then
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;WARNING: The resource type is null for the resource path=[&apos;||TRIM(NVL(parentPath,&apos;  &apos;))||&apos;]&apos;);
+				end if;
+			END IF;
+		EXCEPTION
+			ELSE
+				set resourceExists = false;
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, &apos;Y&apos;, &apos;WARNING: The target container does not exist: path=[&apos;||TRIM(NVL(parentPath,&apos;  &apos;))||&apos;]&apos;);
+		END;
+
+		-- Determine whether to process the target resource folder or not
+		IF (resourceExists and startingFolderExtendedRec.process = 1) THEN
+			-- set the parent path which will be used to drive the folder inspection
+			SET derivedFilterPath = startingFolderExtendedRec.derivedFilterPath;
+			SET padAmount = ConfigParamsRec.padAmount;
+			SET generateMode = ConfigParamsRec.generateMode; -- &apos;R&apos;=Retrieve logical names, &apos;G&apos;=Generate logical names
+
+			if (debug = &apos;Y&apos;) then
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos; PARENT FOLDER=&apos;||TRIM(NVL(parentPath,&apos;  &apos;)));
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;DERIVED FILTER=&apos;||TRIM(NVL(derivedFilterPath,&apos;  &apos;)));
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos; RESOURCE TYPE=&apos;||TRIM(NVL(resourceType,&apos;  &apos;)));
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;&apos;);
+			end if;
+
+			-- Initialize lineage variables
+			set greatGrandParentName = &apos;&apos;;
+			set grandParentName = &apos;&apos;;
+			set parentName = &apos;&apos;;
+			set containerName = &apos;&apos;;
+
+			 FOR list AS 
+				SELECT name, resPath, resType, subType 
+					FROM /shared/ASAssets/Utilities/repository/getResourceListRecursive(parentPath, resourceType) 
+			 DO
+				-- Determine if the path is within the Physical/Formatting/Transformations path
+				-- This will be required to determine if whether to utilize the &quot;USED&quot; or &quot;BASIC&quot; in the getUsedResourceCursor() section.
+				set pathInFormattingTransformation = false;
+				IF (POSITION(REPLACE(physicalFormattingTransformationPath,&apos;&quot;&apos;,&apos;&apos;) IN list.resPath) = 1) THEN
+					set pathInFormattingTransformation = true;
+				END IF;
+
+				if (debug = &apos;Y&apos;) then
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;getResourceListRecursive list:  resourcePath=&apos;||list.resPath||&apos;  resourceType=&apos;||list.resType);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos; pathInFormattingTransformation=&apos;|| CAST(pathInFormattingTransformation AS VARCHAR(255))||&apos;   Physical Formatting Transformation Path=&apos;||TRIM(NVL(REPLACE(physicalFormattingTransformationPath,&apos;&quot;&apos;,&apos;&apos;),&apos;  &apos;)));
+				end if;
+
+				-- Only process rows that come back from the recursive resource tree list that are actually Data Sources
+				-- Folders will be derived because the full path is provided to the resource
+				IF ( (list.resType = &apos;TABLE&apos; OR list.resType = &apos;PROCEDURE&apos;) /*AND (POSITION(physicalFormattingTransformationPath IN list.resPath) = 0)*/ ) THEN
+					-- Rolling duration for the entire table.  Resets when a new table/procedure resource is started.
+					set resourceStartTime = CURRENT_TIMESTAMP;	-- Start the clock running for procesing a TABLE or PROCEDURE
+
+					if (debug = &apos;Y&apos;) then
+						CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;BEGIN: ========================================================================================&apos;);
+					end if;
+
+					-- Determine if the source path is a match to the derivedFilterPath
+					call /shared/ASAssets/BestPractices_v81/Procedures/isDerivedPathMatch(debug, exactMatch, derivedFilterPath, parentPath, list.resPath, excludeDsPathsList, isDerivedMatch);
+
+					IF (isDerivedMatch  = 1) THEN
+					/**************************************************************************************************************
+					 * MATCH FOUND.  PROCESS THIS RESOURCE.
+					 **************************************************************************************************************/
+--set debug2=&apos;Y&apos;;
+						/**************************************************************************************************************
+						 * 1. Get the Data Source for the resource
+						 *    If the Formatting layer points to the Metadata table then the path of the metadata table is returned
+						 *      and used to compare with the data source location.  This is required in order to establish the container
+						 *      lineage.  The container lineage is used to generate the spreadsheet.
+						 *    When the resource path lineage is 1 to 1 like in the Physical layer subfolders Formatting or Physical
+						 *      then the datasourcePathList will contain only 1 path.  This is the expectation.  However, if this
+						 *      procedure is run against top level views such as those in the Application or Business layers, then the
+						 *      results may yield multiple paths as there may be many views to many data sources.
+						 **************************************************************************************************************/
+						-- If the view is cached, then get the storage data source path
+						set cacheStorageDataSourcePath = null;
+						set cacheStoragePath = null;
+						FOR cc AS SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceCacheConfigCursor(list.resPath, list.resType) DO
+							set cacheStorageDataSourcePath = cc.storageDataSourcePath;
+							set cacheStoragePath = cc.storagePath;
+						END FOR;
+
+						-- Get the data source name for this resource. There can be a list of data sources
+						call /shared/ASAssets/BestPractices_v81/Procedures/getDataSourceName(list.resPath, list.resType, cacheStorageDataSourcePath, null, 1, inIgnoreResourceDoesNotExist,  debug2, datasourceNameList, datasourcePathList);
+						if (debug2 = &apos;Y&apos;) then
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2,&apos;USED RESOURCE:   datasourcePathList=&apos;||TRIM(NVL(datasourcePathList,&apos;  &apos;)));
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2,&apos;USED RESOURCE:   getUsedResourcesCursor(&apos;||list.resPath||&apos;, &apos;||list.resType||&apos;)&apos;);
+						end if;
+
+						/**************************************************************************************************************
+						 * 2. Get the immediate &quot;USED&quot; resource (lineage below)
+						 *    If the Formatting layer points to the Metadata table then the path of the metadata table is returned
+						 *      and used to compare with the data source location.  This is required in order to establish the container
+						 *      lineage.  The container lineage is used to generate the spreadsheet.
+						 *
+						 *    If the resource is at the lowest Metadata level then simply get the basic resource information.
+						 *
+						 *    Note: This code must be execute prior to getting the data source in step 2. below.
+						 **************************************************************************************************************/
+						-- Initialize variables.    physicalColumnTypeList-the physical column type list.  Format &quot;view.column1&quot;:[TYPE] &quot;view.column2&quot;:[TYPE]
+						set usedResourceFound = false;
+						set physicalColumnTypeList = &apos;&apos;;
+						set validUsedResource = 0;
+						set physicalPath = &apos;&apos;;
+						set physicalType = &apos;&apos;;
+						set physicalName = &apos;&apos;;
+						set columnListStr = &apos;&apos;;
+						set usedRowFound = false;
+						set basicRowFound = false;
+						set rowType = &apos;UNKNOWN&apos;;
+
+						-- Determine if the current resource is already at the lowest Metadata level.  If it is then don&apos;t used the &quot;getUsedResourceCursor&quot; results
+						--   but instead use the &quot;getBasicResourceCursor&quot; results.   To determine if a resource is at the lowest level look for &quot;Ancestor Resources&quot;
+						--   that are of type &quot;DATA_SOURCE&quot;.  This signifies that the resource is below a data source and thus at the Metadata or lowest level.
+						set useBasicResourceOnly = false;
+						ancestorLoop:
+						for AR as select * from /shared/ASAssets/Utilities/repository/getAncestorResources(list.resPath, list.resType) do
+							if (AR.resourceType = &apos;DATA_SOURCE&apos;) then
+								set useBasicResourceOnly = true;
+								leave ancestorLoop;
+							end if;
+						end for;
+
+						-- Get the immediate resources used which are valid TABLEs or PROCEDUREs with a CURSOR and retrieve the physical columns and types
+						-- At this time, only a single used resource is supported.  Leave the loop after the first one is found.
+						urLoop:
+						for UR as select * from (
+							select &apos;USED&apos; rowType, resourceName, resourcePath, resourceType from /shared/ASAssets/Utilities/repository/getUsedResourcesCursor(list.resPath, list.resType) 
+							union all
+							select &apos;BASIC&apos; rowType, name resourceName, &quot;path&quot; resourcePath, &quot;type&quot; resourceType from /shared/ASAssets/Utilities/repository/getBasicResourceCursor(list.resPath, list.resType)
+							) u
+						do
+							-- mtinius 2014-03-27: resolve issue where the physical name and type columns were left blank.  
+							--	                   Scenario: layerType=PM, generateMode=R|G and derivedFilterPath=&lt;some_table&gt;
+							-- This logic was put in place to handle the use case when the resource itself is a physical metadata resource in which case it has no &quot;used&quot; resources under it.
+							-- The idea is that when a resource is a metadata resource table or procedure then get its basic resource information instead of looking for &quot;used&quot; resource information.
+							-- However, if the resource is not a metadata table or procedure then don&apos;t use its &quot;basic&quot; resource information because the getUsedResourceCursor returns the required values
+							--   and incluing the getBasicResourceCursor would only cause a duplication of values.
+							set rowType = UR.rowType;
+							if (rowType = &apos;USED&apos; and not pathInFormattingTransformation and not useBasicResourceOnly) then
+								set usedRowFound = true;
+							end if;
+							if (rowType = &apos;BASIC&apos;) then
+								set basicRowFound = true;
+							end if;
+							if (debug2 = &apos;Y&apos;) then
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2,&apos;USED RESOURCE:  rowType=&apos;||rowType||&apos;  usedRowFound=&apos;||CAST(usedRowFound AS VARCHAR(255)) ||&apos;  basicRowFound=&apos;||TRIM(NVL(cast(basicRowFound as varchar),&apos;  &apos;))||&apos;  pathInFormattingTransformation=&apos;||TRIM(NVL(cast(pathInFormattingTransformation as varchar),&apos;  &apos;)));
+							end if;
+	
+							-- mtinius 2014-03-27: As the notes above describe, this if statement acts as a &quot;gate&quot; to only use results from either &quot;getusedResourceCursor&quot; or &quot;getBasicResourceCursor&quot;
+							if ( (usedRowFound AND NOT basicRowFound) OR (NOT usedRowFound AND basicRowFound) ) then
+								-- If this resource was cached then eliminate any paths that match a cache storage data source path or cache storage path
+								set cacheStorageFound = false;
+								if (cacheStorageDataSourcePath is not null and UR.resourcePath = cacheStorageDataSourcePath) then
+									set cacheStorageFound = true;
+								end if;
+								if (cacheStoragePath is not null and UR.resourcePath = cacheStoragePath) then
+									set cacheStorageFound = true;
+								end if;
+
+								if (NOT cacheStorageFound) then
+									-- Determine if the used resource is a child of the data source that was discovered for the original resource
+									--   This is needed in order to determine whether to use nativeType or columnType when retrieving the cursor of columns for the used resource.
+									call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(UR.resourcePath, null, resourcePath);
+									set physicalResourceFound = false;
+									if (POSITION(datasourcePathList||&apos;/&apos; IN resourcePath) &gt; 0) then
+										set physicalResourceFound = true;
+									end if;
+									if (debug2 = &apos;Y&apos;) then
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2,&apos;USED RESOURCE:  rowType=&apos;||rowType||&apos;  physicalResourceFound=&apos;|| CAST(physicalResourceFound AS VARCHAR(255))||&apos;  UR.resourceName=&apos;||TRIM(NVL(UR.resourceName,&apos;  &apos;))||&apos;  UR.resourceType=&apos;||TRIM(NVL(UR.resourceType,&apos;  &apos;))||&apos;  UR.resourcePath=&apos;||TRIM(NVL(resourcePath,&apos;  &apos;)));
+									end if;
+
+									-- mtinius 2014-03-14 - Determine if the resource exists.  Ignore foreign key table references for example.
+									call /lib/resource/ResourceExists(UR.resourcePath, UR.resourceType, null, resourceExists);
+									if (resourceExists) then
+										-- ASSUMPTION: A resource is valid if it returns a cursor of columns regardless of whether it is a view, table or procedure.
+										case UPPER(UR.resourceType)
+											when &apos;PROCEDURE&apos; then
+												-- Get Regular Procedure and determine if it returns a cursor output
+												for p as select * from /shared/ASAssets/Utilities/repository/getBasicResourceCursor_PROCEDURE_CURSOR(UR.resourcePath, UR.resourceType, 0) WHERE columnType != &apos;CURSOR&apos; do
+													-- Both the column and columnType or nativeType must be present to process the row
+													if (p.columnName is not null and (p.columnType is not null or p.nativeType is not null)) then
+														if (physicalResourceFound) then
+															set columnType = TRIM(NVL(NVL(p.nativeType, p.nativeBaseType),&apos;  &apos;));
+															-- Use native type when the used resource is a child of the data source
+															call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(UR.resourceName, null, resourceNameReserved);
+															call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(p.columnName, null, columnNameReserved);
+															set sourceExpressionEncoded = resourceNameReserved||&apos;.&apos;||columnNameReserved;
+															call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;E&apos;, &apos;D&apos;, codingListColumns, sourceExpressionEncoded, moduleName, debug3, &apos;sourceExpressionEncoded&apos;, sourceExpressionEncoded);
+
+															set physicalColumnTypeList = physicalColumnTypeList || sourceExpressionEncoded ||&apos;:[&apos;||columnType||&apos;] &apos;;
+														else
+															-- Use column type when the used resource is a regular view and not a data source child
+															call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(UR.resourceName, null, resourceNameReserved);
+															call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(p.columnName, null, columnNameReserved);
+															set sourceExpressionEncoded = resourceNameReserved||&apos;.&apos;||columnNameReserved;
+															call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;E&apos;, &apos;D&apos;, codingListColumns, sourceExpressionEncoded, moduleName, debug3, &apos;sourceExpressionEncoded&apos;, sourceExpressionEncoded);
+
+															set physicalColumnTypeList = physicalColumnTypeList || sourceExpressionEncoded ||&apos;:[&apos;||p.columnType||&apos;] &apos;;
+														end if;
+														set validUsedResource = 1;
+													end if;
+												end for;
+											when &apos;TABLE&apos; then
+												-- Get a TABLE resource and determine if it uses native type or column type for the column names
+												for t as select * from /shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE(UR.resourcePath, UR.resourceType) do
+													if (t.columnName is not null) then
+														if (physicalResourceFound) then
+															set columnType = TRIM(NVL(NVL(t.nativeType, t.nativeBaseType),&apos;  &apos;));
+															-- Use native type when the used resource is a child of the data source
+															call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(UR.resourceName, null, resourceNameReserved);
+															call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(t.columnName, null, columnNameReserved);
+															set sourceExpressionEncoded = resourceNameReserved||&apos;.&apos;||columnNameReserved;
+															call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;E&apos;, &apos;D&apos;, codingListColumns, sourceExpressionEncoded, moduleName, debug3, &apos;sourceExpressionEncoded&apos;, sourceExpressionEncoded);
+
+															set physicalColumnTypeList = physicalColumnTypeList || sourceExpressionEncoded ||&apos;:[&apos;||columnType||&apos;] &apos;;
+														else
+															-- Use column type when the used resource is a regular view and not a data source child
+															call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(UR.resourceName, null, resourceNameReserved);
+															call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(t.columnName, null, columnNameReserved);
+															set sourceExpressionEncoded = resourceNameReserved||&apos;.&apos;||columnNameReserved;
+															call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;E&apos;, &apos;D&apos;, codingListColumns, sourceExpressionEncoded, moduleName, debug3, &apos;sourceExpressionEncoded&apos;, sourceExpressionEncoded);
+
+															set physicalColumnTypeList = physicalColumnTypeList || sourceExpressionEncoded ||&apos;:[&apos;||t.columnType||&apos;] &apos;;
+														end if;
+													end if;
+													set validUsedResource = 1;
+												end for;
+											else
+												set validUsedResource = 0;
+										end case;
+
+										if (NOT usedResourceFound and validUsedResource = 1) then
+											-- Set the physical &quot;used&quot; resource path for the current resource being interrogated.
+											set physicalPath = UR.resourcePath;
+											-- Set the physical &quot;used&quot; resource type
+											set physicalType = UR.resourceType;
+											-- Set the physical resource name
+											set physicalName = UR.resourceName;
+											set usedResourceFound = true;
+											leave urLoop;
+										end if;
+									else
+										if (debug2 = &apos;Y&apos;) then
+											CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2,&apos;USED RESOURCE:  rowType=&apos;||rowType||&apos;  SKIPPED-DOES NOT EXIST   physicalType=&apos;||UR.resourceType||&apos;  physicalPath=&apos;||UR.resourcePath);
+										end if;
+									end if; -- if (resourceExists) then
+								end if;
+							end if;
+						end for;
+						if (debug2 = &apos;Y&apos;) then
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2,&apos;USED RESOURCE:  rowType=&apos;||rowType||&apos;  validUsedResource=&apos;||validUsedResource||&apos;  physicalName=&apos;||physicalName||&apos;  physicalType=&apos;||physicalType||&apos;  physicalPath=&apos;||physicalPath);
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2,&apos;USED RESOURCE:  rowType=&apos;||rowType||&apos;  physicalColumnTypeList=&apos;||physicalColumnTypeList);
+						end if;
+
+						IF (validUsedResource = 1) THEN
+							/**************************************************************************************************************
+							 * 3. Extract the resource &quot;name&quot; lineage
+							 *    The resource &quot;name&quot; lineage includes columns identified by the data source or folder structure that are used
+							 *    to populate the spreadsheet: greatGrandParentName, grandParentName, parentName containerName, resourceName.
+							 *    When a resource points directly to a resource in the Metadata layer, it will extract &quot;name&quot; lineage based on
+							 *      the data source. For example a Formatting view points directly to a data source Metadata table.
+							 *      View: /shared/project1/Physical/Formatting/myView: select * from /shared/project1/Physical/Metadata/DS1/SCH1/TABLE1
+							 *      Therefore, the &quot;used&quot; lineage points to an actual datasource resource: /shared/project1/Physical/Metadata/DS1/SCH1/TABLE1 
+							 *    
+							 *          datasourcePathList=DS1
+							 *         greatGrandParentName=
+							 *              grandParentName=
+							 *                   parentName=DS1
+							 *                containerName=SCH1
+							 *                 resourceName=TABLE1
+							 *    
+							 *    When a resource points to another non-Metadata layer, then it will use the folder structure to extract the
+							 *      &quot;name&quot; lineage.  For example a Formatting view point to a Physical sublayer view 
+							 *      View: /shared/project1/Physical/Formatting/myView: select * from /shared/project1/Physical/Physical/DS1/SCH1/TABLE1
+							 *      Therefore, the &quot;used&quot; lineage points to another view in the physical subfolder: /shared/project1/Physical/Physical/DS1/SCH1/TABLE1
+							 *        It should be noted that the best practices scripts will generate subfolders that match the physical data source strucuture by convention.
+							 *        Since the resource is not the actual data source then it uses the folder structure to determine the &quot;name&quot; lineage.
+							 *
+							 *          datasourcePathList=DS1
+							 *         greatGrandParentName=
+							 *              grandParentName=physical
+							 *                   parentName=DS1
+							 *                containerName=SCH1
+							 *                 resourceName=TABLE1
+							 **************************************************************************************************************/
+							-- Apply double quotes around data source path list when there is more than one path present in the list
+							IF (POSITION(&apos;,&apos; IN datasourceNameList) &gt; 0) THEN	
+								set datasourceNameList = &apos;&quot;&apos;||datasourceNameList||&apos;&quot;&apos;;
+							ELSE
+								/*****
+								 * Extract the remaining source path when the path matches the physical data source location.  The remaining path will be the datasource + children resources.
+								 *	This scenario is only true for the Formatting sub-layer when it point directly to the Metadata sub-layer or when the Physical sub-layer points to the Metadata sub-layer.
+								 *	All other layers will simply extract based on the folder paths as is.  The Common Model Spreadsheets need to be composed with this in mind since they
+								 * 	can contain entries for both Formatting and other layers.  In the example below, the Formating sub-layer is the target layer and the source sub-layer is the
+								 * 	Metadata sub-layer.  Therefore, the generateViewsLoop will iterate over the Metadata sub-layer as per the groupId definition and provide a list of children
+								 *	tables or procedures.   The getDataSourceName which was executed previously determines the lineage to the Composite data source resource which is used for
+								 *	the comparison and extraction of remaining path.  The steps are provided below with example output.
+								 *	
+								 *	Example Source Path:
+								 *		resourcePath=/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/SQLServerSource/cisSServerDemoDS/SServerDemoCat/dbo/Customers
+								 *
+								 *	Example Physical Metadata path:
+								 *		datasourcePathList=/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/SQLServerSource/cisSServerDemoDS
+								 *		datasourceNameList=cisSServerDemoDS
+								 *		
+								 * 		1) RegexPosition - Find the position of the last &apos;/&apos; in the actual data source path and return that position.  
+								 *			RegexPosition(datasourcePathList, &apos;\/&apos;, -1))
+								 *			e.g. 92 - position of the path just before the data source name
+								 *		2) SUBSTRING - Extract the beginning of the data source path just before the data source name. 
+								 *			SUBSTRING(datasourcePathList, 1, &lt;RegexPosition_Result&gt;)
+								 *			e.g. /shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/SQLServerSource/
+								 *		3) REPLACE - Extract the remaining path by setting the source string part that matches the data source path to a blank.  If it does not match it does not get replaced.
+								 *			REPLACE(list.resPath, &lt;SUBSTRING_Result&gt;, &apos;&apos;)
+								 *			e.g. cisSServerDemoDS/SServerDemoCat/dbo/Customers - remaining string
+								 *		3) getDelimitedOccurrence(resourcePath, &apos;R&apos;, &apos;/&apos;, 2, 0) - Retrieve containerName which is he second occurrence in the remaining path using the &apos;/&apos; delimiter traversing from the right (end) 
+								 *			e.g. containerName=dbo
+								 *		4) getDelimitedOccurrence(resourcePath, &apos;R&apos;, &apos;/&apos;, 2, 0) - Retrieve parentName which is he third occurrence in the remaining path using the &apos;/&apos; delimiter traversing from the right (end) 
+								 *			e.g. parentName=SServerDemoCat
+								 *		5) getDelimitedOccurrence(resourcePath, &apos;R&apos;, &apos;/&apos;, 2, 0) - Retrieve grandParentName which is he fourth occurrence in the remaining path using the &apos;/&apos; delimiter traversing from the right (end) 
+								 *			e.g. grandParentName=cisSServerDemoDS
+								******/
+
+								/*DAH 2014-03-12 this was physicalPath but changed to list.resPath as per comment on line 630 above*/ 
+								call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(list.resPath, null, resourcePath);
+								call /shared/ASAssets/Utilities/string/TextUtils/RegexPosition(datasourcePathList, &apos;\/&apos;, -1, pos);
+								set resourcePath = REPLACE(resourcePath, SUBSTRING(datasourcePathList, 1, pos), &apos;&apos;);
+
+								if (debug2 = &apos;Y&apos;) then
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2,&apos;EXTRACTED RESOURCE:  datasourcePathList=&apos;||SUBSTRING(datasourcePathList, 1, pos));
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2,&apos;EXTRACTED RESOURCE:        resourcePath=&apos;||TRIM(NVL(resourcePath,&apos;  &apos;)));
+								end if;
+								call /shared/ASAssets/Utilities/string/getDelimitedOccurrence(resourcePath, &apos;R&apos;, &apos;/&apos;, 2, 0, containerName);
+								call /shared/ASAssets/Utilities/string/getDelimitedOccurrence(resourcePath, &apos;R&apos;, &apos;/&apos;, 3, 0, parentName);
+								call /shared/ASAssets/Utilities/string/getDelimitedOccurrence(resourcePath, &apos;R&apos;, &apos;/&apos;, 4, 0, grandParentName);
+								set greatGrandParentName = 	&apos;&apos;; -- Always default to blank for first row which represents the resource.
+								if (containerName is null) then set containerName = &apos;&apos;; end if;
+								if (parentName is null) then set parentName = &apos;&apos;;  end if;
+								if (grandParentName is null) then set grandParentName = &apos;&apos;;  end if;
+								if (greatGrandParentName is null) then set greatGrandParentName = &apos;&apos;;  end if;
+							END IF;
+
+--set debug=&apos;N&apos;;
+							IF (debug = &apos;Y&apos;) THEN
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, LPAD(sfNum, 4 , &apos; &apos;)||&apos;. groupId=&apos;||startingFolderExtendedRec.groupId||&apos;  Starting Folder=&apos;||TRIM(NVL(startingFolderExtendedRec.targetFolderPath,&apos;  &apos;)));
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):CURRENT:_____________&apos;);
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):________resourcePath=&apos;||list.resPath);	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):__________parentPath=&apos;||TRIM(NVL(parentPath,&apos;  &apos;)));
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):___________layerType=&apos;||TRIM(NVL(layerType,&apos;  &apos;)));	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):___derivedFilterPath=&apos;||TRIM(NVL(derivedFilterPath,&apos;  &apos;)));
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):DATASOURCE:__________&apos;);
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):__datasourcePathList=&apos;||TRIM(NVL(datasourcePathList,&apos;  &apos;)));	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):__datasourceNameList=&apos;||TRIM(NVL(datasourceNameList,&apos;  &apos;)));	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):USED:________________&apos;);	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):________physicalPath=&apos;||TRIM(NVL(physicalPath,&apos;  &apos;)));	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):________physicalName=&apos;||TRIM(NVL(physicalName,&apos;  &apos;)));	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):________physicalType=&apos;||TRIM(NVL(physicalType,&apos;  &apos;)));
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):__physColumnTypeList=&apos;||TRIM(NVL(physicalColumnTypeList,&apos;  &apos;)));	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):LOGICAL:_____________&apos;);
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):   projectFolderName=&apos;||TRIM(NVL(projectFolderName,&apos;  &apos;)));	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):greatGrandParentName=&apos;||TRIM(NVL(greatGrandParentName,&apos;  &apos;)));	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):_____grandParentName=&apos;||TRIM(NVL(grandParentName,&apos;  &apos;)));	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):__________parentName=&apos;||TRIM(NVL(parentName,&apos;  &apos;)));	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):_______containerName=&apos;||TRIM(NVL(containerName,&apos;  &apos;)));	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):________resourceName=&apos;||list.name);	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):________resourceType=&apos;||list.resType);	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;   (MATCH):____________sub_type=&apos;||list.subType);	
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug,&apos;------------------------------------------------------------------------------------------------------&apos;);
+							END IF;
+--set debug=&apos;N&apos;;
+							-- Put quotes around &quot;_folder&quot; or &quot;1_folder&quot; but in a way that it is not hard-coded if _ or 0-9 exists in the first character of the folder name or reserved words are used.
+							call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(list.resPath, null, resourcePath);
+
+							-- Close the cursor if it is open
+							if (childResCursor is not null and childResCursor.ISOPEN) then
+								close childResCursor;
+							end if;
+
+								-- Provides the ability to return metadata on Composite Views (a.k.a. resource type = TABLE).
+							IF (list.resType = &apos;TABLE&apos;) THEN
+								OPEN childResCursor FOR 
+									SELECT * --resourceName, resourcePath, resourceType, subtype, enabled, annotation, NULL, NULL, columnName, columnType, nativeBaseType, nativeType
+									FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE(resourcePath, list.resType);
+								/* Important Note:  The FIRST ROW FOR a TABLE returns a NULL IN the columnName.  
+									This IS used TO determine the start OF a new TABLE.  Don&apos;t change the XSLT -- getResourceResponseXSLT_SQL_TABLE
+									getResourceResponseXSLT_SQL_TABLE returns the following:
+										resourceName VARCHAR(255), 				orders
+										resourcePath VARCHAR(4000), 			/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/MysqlSource/ORDERS1/ds_orders1/customers
+										resourceType VARCHAR(255), 				TABLE
+										subtype VARCHAR(255), 					DATABASE_TABLE
+										enabled BIT, 							1
+										annotation LONGVARCHAR,					description
+										explicitlyDesigned BIT, 				0 if first row, NULL if column row
+										tableType VARCHAR(255), 				TABLE
+										sqlText VARCHAR(2147483647), 			NULL
+										proprietaryModel VARCHAR(2147483647), 	NULL
+										columnName VARCHAR(255), 				CustomerID
+										columnType VARCHAR(255),				INTEGER
+										nativeBaseType VARCHAR(255), 			int
+										nativeType VARCHAR(255)					int(11)
+								*/
+							END IF;
+
+							-- Provides the ability to return metadata on Composite XSLT Procedures (a.k.a. resource type = PROCEDURE).
+							IF (list.resType = &apos;PROCEDURE&apos;)	THEN
+								OPEN childResCursor FOR 
+									SELECT resourceName, resourcePath, resourceType, subtype, enabled, annotation, NULL, tableType, sqlText, NULL, columnName, columnType, nativeBaseType, nativeType
+									FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_PROCEDURE_CURSOR(resourcePath, list.resType, 1)
+									WHERE paramDirection = &apos;OUT&apos;;
+								/* 	Important Note:  The FIRST ROW FOR a TABLE returns a NULL IN the columnName.  
+									This IS used TO determine the start OF a new TABLE.  Don&apos;t change the XSLT -- getResourceResponseXSLT_SQL_PROCEDURE
+								   getResourceResponseXSLT_SQL_PROCEDURE returns the following:
+										resourceName VARCHAR(255), 				productCatalog_Transformation
+										resourcePath VARCHAR(4000), 			/shared/ASAssets/BestPractices_v81/DataAbstractionSample/Physical/Formatting/Transformations/ds_XML/productCatalog_Transformation
+										resourceType VARCHAR(255), 				PROCEDURE
+										subtype VARCHAR(255), 					XSLT_TRANSFORM_PROCEDURE
+										enabled BIT, 							1
+										annotation LONGVARCHAR,					description
+										explicitlyDesigned BIT, 				NULL (default)
+										tableType VARCHAR(255), 				NULL (default)
+										sqlText VARCHAR(2147483647), 			NULL (default)
+										proprietaryModel VARCHAR(2147483647), 	NULL (default)
+										columnName VARCHAR(255), 				ProductID
+										columnType VARCHAR(255),				NUMERIC(2147483647,0)
+										nativeBaseType VARCHAR(255), 			NULL (default)
+										nativeType VARCHAR(255)					NULL (default)
+								*/
+							END IF;
+		   
+							set matchFound = true;
+							set greatGrandParentName = 	&apos;&apos;; -- Always default to blank for first row which represents the resource.
+							set i = 1;
+
+							FOR childRes AS childResCursor DO	 
+								-- Initialize base variables 
+								set LogicalType = &apos;&apos;;
+								set LogicalTransformation = &apos;&apos;;
+								set LogicalDefinition = &apos;&apos;;
+								set LogicalName = &apos;&apos;;
+								set resourcePath 	= childRes.resourcePath;
+								set resourceName	= childRes.resourceName;
+								set resourceType	= childRes.resourceType;
+								set resourceSubtype = childRes.subtype;
+								set columnName 		= childRes.columnName;
+
+								-- Make sure any reserved words are quoted.   
+								-- 2014-11-21: mtinius 
+								--   Handle the unique situation where there is a double quote in the column name.  
+								--   In CIS there must be 2 double quotes present in the view to escape a single double quote for the view to be valid.
+								if (INSTR(columnName, &apos;&quot;&apos;) &gt; 0) then
+									set columnName = REPLACE(columnName, &apos;&quot;&apos;, &apos;&quot;&quot;&apos;);
+									set columnNameReserved = &apos;&quot;&apos;||columnName||&apos;&quot;&apos;;
+								else
+										call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(columnName, null, columnNameReserved);
+								end if;
+
+								set columnType 		= childRes.columnType;
+								if (debug2 = &apos;Y&apos;) then
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, &apos;child resourcePath=&apos;||TRIM(NVL(resourcePath,&apos;  &apos;)));
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, &apos;child resourceName=&apos;||TRIM(NVL(resourceName,&apos;  &apos;)));
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, &apos;child resourceType=&apos;||TRIM(NVL(resourceType,&apos;  &apos;)));
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, &apos;child      subtype=&apos;||TRIM(NVL(resourceSubtype,&apos;  &apos;)));
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, &apos;child   columnName=&apos;||TRIM(NVL(columnName,&apos;  &apos;)));
+									CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, &apos;child   columnType=&apos;||TRIM(NVL(columnType,&apos;  &apos;)));
+								end if;
+
+							-- Get the logical definition (annotation)
+							call /shared/ASAssets/BestPractices_v81/Procedures/retrieveName/replaceSymbol(&apos;R&apos;, childRes.annotation, LogicalDefinition);
+
+							/***********************************
+							 * First row represents resource [table or procedure]
+							 ***********************************/
+								-- Only invoke once per resource.  When the column name is null or it is a procedure with a cursor it indicates the container for the resources
+								IF (columnName IS NULL OR columnType = &apos;CURSOR&apos;) THEN
+/***********************
+* DEBUG:  If there are any exceed depth errors, then uncomment the call print() line and execute again.
+*         This will print the path of the view that is being processed and will be the view with the error.
+***********************/
+--call print(&apos;path=&apos;||resourcePath);
+									if (physicalName is null or LENGTH(physicalName) = 0) then
+										set physicalName = childRes.resourceName;
+									end if;
+									if (physicalType is null or LENGTH(physicalType) = 0) then
+										set physicalType = childRes.resourceType;
+									end if;
+
+									if (generateMode = &apos;R&apos;) then
+										-- Parse the SQL statement to extract the column information
+										call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/getSqlScriptComplexColumns(resourcePath, resourceType, resourceSubtype, columnExpressionVect, sqlScriptColumnVector);
+										if (debug2 = &apos;Y&apos;) then
+											set j = 1;
+											while (j &lt;= CARDINALITY(columnExpressionVect)) do
+												if (debug2 = &apos;Y&apos;) then
+													CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, &apos;columnExpressionVect[&apos;||j||&apos;]=&apos;||columnExpressionVect[j]);
+												end if;
+												set j = j + 1;
+											end while;
+										end if;
+									end if;
+
+									-- Determine whether to generate or retrieve the logical name
+									IF (generateMode = &apos;G&apos;) THEN
+										SET applyReservedWordList = 1;
+										CALL /shared/ASAssets/BestPractices_v81/Procedures/getNameXML(&apos;T&apos;, containerList, projectFolderName, greatGrandParentName, grandParentName, parentName, containerName, childRes.resourceName, null, applyReservedWordList, ConfigParamsXML, containerList, LogicalName, LogicalType, LogicalTransformation, LogicalDefinition, logicalStatus);
+										-- DAH 2014-03-12 - Set Physical name to childRes.resourceName
+										set physicalName = childRes.resourceName;
+
+										-- Perform a test for the annotation that is passed in and use it if it is not empty
+										if ((LogicalDefinition IS NULL OR LENGTH(&apos;|&apos;||LogicalDefinition||&apos;|&apos;) = 2) and -- empty
+											(childRes.annotation IS NOT NULL AND LENGTH(&apos;|&apos;||childRes.annotation||&apos;|&apos;) &gt; 2)) then --notEmpty
+											call /shared/ASAssets/BestPractices_v81/Procedures/retrieveName/replaceSymbol(&apos;R&apos;, childRes.annotation, LogicalDefinition);
+										end if;
+									else -- generatMode=&apos;R&apos;
+										call /shared/ASAssets/Utilities/string/getDelimitedOccurrence(childRes.resourcePath, &apos;R&apos;, &apos;/&apos;, 1, 0, LogicalName);
+										call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(LogicalName, null, LogicalName);
+									END IF;
+									-- call print(&apos;VIEW: *************** physicalName=&apos;||TRIM(NVL(physicalName));
+
+									-- Set the logical type for the resource
+									SET LogicalType = childRes.resourceType; -- [MRT-2010-08-13: changed to allow the container type to come through.
+
+									call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(physicalName, null, physicalName);
+									
+									-- mtinius 2014-03-14
+									IF (generateMode = &apos;G&apos;) THEN
+										-- DAH 2014-03-12 - If the Physical Name is null, set it to the Logical name
+										IF physicalName IS NULL OR LENGTH(physicalName) = 0 THEN
+											set physicalName = LogicalName;
+										END IF;
+									END IF;
+
+									-- If the user does not want to generate logical names then blank them out
+									IF (generateLogicalNames = 0) THEN
+										set LogicalName = &apos;&apos;;
+										set LogicalType = &apos;&apos;;
+										set LogicalTransformation = &apos;&apos;;
+										set LogicalDefinition = &apos;&apos;;
+									END IF;
+									SET duration = CURRENT_TIMESTAMP - resourceStartTime;-- Rolling duration for the entire table.  Resets when a new table/procedure resource is started.
+
+									IF (debug2 = &apos;Y&apos;) THEN
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                                        &apos;, debug2, &apos;&apos;);
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;         INSERT INTO resultPipe VALUES (&apos;, debug2, &apos;&apos;);
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                             DataSource=&apos;, debug2, TRIM(NVL(datasourceNameList,&apos;  &apos;)));
+										--[NOT CURRENTLY IMPLEMENTED]
+								 		-- CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                              Published=&apos;, debug2, TRIM(NVL(Published));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                      projectFolderName=&apos;, debug2, TRIM(NVL(projectFolderName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                   greatGrandParentName=&apos;, debug2, TRIM(NVL(greatGrandParentName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                        grandParentName=&apos;, debug2, TRIM(NVL(grandParentName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                             parentName=&apos;, debug2, TRIM(NVL(parentName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                          containerName=&apos;, debug2, TRIM(NVL(containerName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                           physicalName=&apos;, debug2, TRIM(NVL(physicalName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                           physicalType=&apos;, debug2, TRIM(NVL(physicalType,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                            LogicalName=&apos;, debug2, TRIM(NVL(LogicalName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                            LogicalType=&apos;, debug2, TRIM(NVL(LogicalType,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                  LogicalTransformation=&apos;, debug2, TRIM(NVL(LogicalTransformation,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                      LogicalDefinition=&apos;, debug2, TRIM(NVL(LogicalDefinition,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                  childRes.resourcePath=&apos;, debug2, TRIM(NVL(childRes.resourcePath,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                               duration=&apos;, debug2, cast(duration as varchar));
+									END IF;
+
+									INSERT INTO resultPipe VALUES (
+											TRIM(NVL(datasourceNameList,&apos;  &apos;)),
+											projectFolderName,
+							 				-- TRIM(NVL(Published,&apos;  &apos;)),	--[NOT CURRENTLY IMPLEMENTED]
+											TRIM(NVL(greatGrandParentName,&apos;  &apos;)), 
+											TRIM(NVL(grandParentName,&apos;  &apos;)), 
+											TRIM(NVL(parentName,&apos;  &apos;)), 
+											TRIM(NVL(containerName,&apos;  &apos;)),
+											TRIM(NVL(physicalName,&apos;  &apos;)),
+											TRIM(NVL(physicalType,&apos;  &apos;)),
+											TRIM(NVL(LogicalName,&apos;  &apos;)),
+											TRIM(NVL(LogicalType,&apos;  &apos;)),
+											TRIM(NVL(LogicalTransformation,&apos;  &apos;)),
+											TRIM(NVL(LogicalDefinition,&apos;  &apos;)),
+											TRIM(NVL(childRes.resourcePath,&apos;  &apos;)),
+											duration
+										);
+									if (debug2 = &apos;Y&apos;) then
+										set message = RPAD(&apos;container=&apos;||containerName,padAmount,padChar) ||&apos;  &apos;|| RPAD(&apos;physicalName=&apos;||physicalName,padAmount,padChar) || &apos;  logical=&apos;||LogicalName;
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, message);
+									end if;
+
+									-- Shift the resources in preparation for column processing
+									set greatGrandParentName = grandParentName;
+									set grandParentName = parentName;
+									set parentName = containerName;
+									set containerName = physicalName;
+
+							/***********************
+							 * Column rows
+							 **********************/
+								ELSE
+									if (debug2 = &apos;Y&apos;) then
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;USE CASE: &quot;childRes.columnName IS NOT NULL&quot;&apos;, debug2, startingFolderExtendedRec.sourceFolderPath);
+									end if;
+
+									-- Set the logical type for the column
+									SET LogicalType = childRes.columnType;
+									-- Set the physical name using the resource name
+									if (columnName is not null) then
+										call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(columnName, null, columnName);
+									else
+										set columnName = &apos;&apos;;
+									end if;
+									if (debug2 = &apos;Y&apos;) then
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                 COL: generateMode=&apos;, debug2, generateMode||&apos;  columnName=[&apos;||columnName||&apos;]   Logical/columnType=&apos;||TRIM(NVL(LogicalType,&apos;  &apos;)));
+									end if;
+
+								/**************************
+								 * generateMode = &apos;G&apos;
+								 **************************/
+									-- Determine whether to generate or retrieve the logical name
+									IF (generateMode = &apos;G&apos;) THEN
+										SET applyReservedWordList = 1;
+										CALL /shared/ASAssets/BestPractices_v81/Procedures/getNameXML(&apos;C&apos;, containerList, projectFolderName, greatGrandParentName, grandParentName, parentName, containerName, columnName, null, applyReservedWordList, ConfigParamsXML, containerList, LogicalName, LogicalType, LogicalTransformation, LogicalDefinition, logicalStatus);
+										--call print(&apos;G_TABLE LogicalName=&apos;||TRIM(NVL(LogicalName,&apos;  &apos;)));
+
+										-- If the logicalType is empty use the physical column type otherwise use the logical type.
+										if (LogicalType IS NULL OR LENGTH(&apos;|&apos;||LogicalType||&apos;|&apos;) = 2) then
+											set LogicalType = childRes.columnType;
+										end if;
+										-- Perform a test for the annotation that is passed in and use it if it is not empty
+										if ((LogicalDefinition IS NULL OR LENGTH(&apos;|&apos;||LogicalDefinition||&apos;|&apos;) = 2) and -- empty
+											(childRes.annotation IS NOT NULL AND LENGTH(&apos;|&apos;||childRes.annotation||&apos;|&apos;) &gt; 2)) then --notEmpty
+											call /shared/ASAssets/BestPractices_v81/Procedures/retrieveName/replaceSymbol(&apos;R&apos;, childRes.annotation, LogicalDefinition);
+										end if;
+
+										-- DAH 2014-03-14 - Set physicalName = columnName
+										set physicalName = columnName;
+										-- mtinius 2014-03-14 - set physicalType
+										set physicalType = TRIM(NVL(NVL(NVL(childRes.nativeType, childRes.nativeBaseType), childRes.columnType),&apos;  &apos;));
+
+								/**************************
+								 * generateMode = &apos;R&apos;
+								 **************************/
+									ELSE	-- generateMode = &apos;R&apos;
+										set physicalType = &apos;&apos;;
+--set debug2=&apos;Y&apos;;
+										/**************************
+										 * FIND_INDEX(columnName... 
+										 *
+										 * look for the column name / column alias in the columnExpressionVect
+										 * which mirrors the sqlScriptColumnVector.
+										 **************************/
+										set i = FIND_INDEX(columnName, columnExpressionVect);
+										if (i &gt; 0) then
+											if (debug2 = &apos;Y&apos;) then
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                 MATCH FOUND&apos;, debug2, &apos;  INDEX=&apos;||i||&apos; (found).  (columnAlias = columnName)=&apos;||TRIM(NVL(columnName,&apos;  &apos;)));
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                    sourceExpressionNoCast=&apos;, debug2, TRIM(NVL(sqlScriptColumnVector[i].sourceExpressionNoCast,&apos;  &apos;)));
+											end if;
+											call /shared/ASAssets/Utilities/string/getDelimitedOccurrence(sqlScriptColumnVector[i].sourcePath, &apos;R&apos;, &apos;/&apos;, 2, 1, parentName);
+											call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(parentName, null, parentName);
+											call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(sqlScriptColumnVector[i].sourceAlias, null, containerName);
+
+											if (sqlScriptColumnVector[i].sourceColumn is not null) then
+												call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(sqlScriptColumnVector[i].sourceColumn, null, physicalName);
+											else
+												set physicalName = &apos;&apos;;
+											end if;
+											call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(sqlScriptColumnVector[i].columnAlias, null, LogicalName);
+											--call print(&apos;R_FIND_INDEX LogicalName=&apos;||TRIM(NVL(LogicalName,&apos;  &apos;)));
+											set LogicalType = sqlScriptColumnVector[i].columnType;
+
+											/*********************
+											determine affect of commas on the string.
+											***********************/
+
+											-- Apply Reserved Words and Encode the source expression (containerName.physicalName)
+											set sourceExpressionEncoded = containerName||&apos;.&apos;||physicalName;
+											if (debug2 = &apos;Y&apos;) then
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                    sourcePath=&apos;, debug2, TRIM(NVL(sqlScriptColumnVector[i].sourcePath,&apos;  &apos;)));
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                    sourceColumn=&apos;, debug2, TRIM(NVL(sqlScriptColumnVector[i].sourceColumn,&apos;  &apos;)));
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                    sourceAlias=&apos;, debug2, TRIM(NVL(sqlScriptColumnVector[i].sourceAlias,&apos;  &apos;)));
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                    columnAlias=&apos;, debug2, TRIM(NVL(sqlScriptColumnVector[i].columnAlias,&apos;  &apos;)));
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                    parentName=&apos;, debug2, TRIM(NVL(parentName,&apos;  &apos;)));
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                    containerName=&apos;, debug2, TRIM(NVL(containerName,&apos;  &apos;)));
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                    physicalName=&apos;, debug2, TRIM(NVL(physicalName,&apos;  &apos;)));
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                    LogicalName=&apos;, debug2, TRIM(NVL(LogicalName,&apos;  &apos;)));
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                    LogicalType=&apos;, debug2, TRIM(NVL(LogicalType,&apos;  &apos;)));
+											end if;
+--call print(&apos;sourceExpressionEncoded=&apos;||sourceExpressionEncoded);
+											call /shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/getCodedString(&apos;E&apos;, &apos;D&apos;, codingListColumns, sourceExpressionEncoded, moduleName, debug3, &apos;sourceExpressionEncoded&apos;, sourceExpressionEncoded);
+--call print(&apos;sourceExpressionEncoded=&apos;||sourceExpressionEncoded);
+
+											-- Extract the physical type
+											call /shared/ASAssets/Utilities/string/extractBiDelimitedText(
+												physicalColumnTypeList,			-- list of physical columns and types
+												sourceExpressionEncoded||&apos;:&apos;,	-- search term in format: view.column:[TYPE]
+												&apos;[&apos;,							-- opening delimiter
+												&apos;]&apos;,							-- closing delimiter
+												1,1,1,							-- occurrence, trim text, case sensative
+												physicalType);
+											if (debug2 = &apos;Y&apos;) then
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                    &apos;||physicalType||&apos; &lt;-- extractBiDelimitedText&apos;, debug2, &apos;(physicalColumnTypeList,&apos;||sourceExpressionEncoded||&apos;:&apos;&apos;,&apos;&apos;[&apos;&apos;,&apos;&apos;]&apos;&apos;,1,1,1)&apos;);
+											end if;
+
+--call print(&apos;if (&apos;||sqlScriptColumnVector[i].sourceExpressionNoCast||&apos; = &apos;||containerName||&apos;.&apos;||physicalName||&apos;) then&apos;);
+											-- When the source expression (no cast statement) is simply the physical containerName.physicalName then don&apos;t export it.
+											if (sqlScriptColumnVector[i].sourceExpressionNoCast = containerName||&apos;.&apos;||physicalName) then
+												set LogicalTransformation = &apos;&apos;;
+											else
+												if (physicalName IS NOT NULL AND LENGTH(&apos;|&apos;||physicalName||&apos;|&apos;) &gt; 2) then  --notEmpty
+													-- However, when the source expression (no cast statement) contains a complex expression then replace the actual 
+													--  containerName.physicalName with a question mark.  The question mark gets replaced during execution of the generateViews 
+													--  with the actual column name.
+													if (debug2 = &apos;Y&apos;) then
+														CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                 containerName.physicalName=&apos;, debug2, TRIM(NVL(containerName||&apos;.&apos;||physicalName,&apos;  &apos;)));
+													end if;
+													set LogicalTransformation = REPLACE(sqlScriptColumnVector[i].sourceExpressionNoCast, containerName||&apos;.&apos;||physicalName, &apos;?&apos;);
+													if (debug2 = &apos;Y&apos;) then
+														CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                 LogicalTransformation=&apos;, debug2, TRIM(NVL(LogicalTransformation,&apos;  &apos;)));
+													end if;
+												else
+													set LogicalTransformation = sqlScriptColumnVector[i].sourceExpressionNoCast;
+													if (debug2 = &apos;Y&apos;) then
+														CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                 LogicalTransformation=&apos;, debug2, TRIM(NVL(LogicalTransformation,&apos;  &apos;)));
+													end if;
+												end if;
+											end if;
+										else
+											if (debug2 = &apos;Y&apos;) then
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                 MATCH NOT FOUND&apos;, debug2, &apos;INDEX=0 (not found).  columnName=&apos;||TRIM(NVL(columnName,&apos;  &apos;)));
+											end if;
+										end if;
+									END IF;
+--set debug2=&apos;N&apos;;
+
+									IF (generateLogicalNames = 0) THEN
+										set LogicalName = &apos;&apos;;
+										set LogicalType = &apos;&apos;;
+										set LogicalTransformation = &apos;&apos;;
+										set LogicalDefinition = &apos;&apos;;
+										-- Add the physical name to the column string list
+										IF (columnListStr IS NULL) THEN
+											SET columnListStr = &apos;&apos;;
+										END IF;
+										SET columnListStr = columnListStr || physicalName || &apos;|&apos;; 
+									ELSE
+										-- Determine if the LogicalName column is a duplicate and add a sequence number to it if it is.
+										call /shared/ASAssets/BestPractices_v81/Procedures/checkDuplicateColumn(columnListStr, newColumnListStr, LogicalName, columnListStr, LogicalName, dropColumn);
+										call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(LogicalName, null, LogicalName);
+										--call print(&apos;columnListStr=&apos;||columnListStr);
+									END IF;
+
+									-- Generate the transform &quot;CAST&quot; statement [mtinius: 5/10/2012]
+									IF (ConfigParamsRec.generateCast = 1 and childRes.columnType IS NOT NULL AND LENGTH(&apos;|&apos;||childRes.columnType||&apos;|&apos;) &gt; 2) THEN --notEmpty
+										SET castResourceNameToType = &apos;CAST(? AS &apos;||childRes.columnType||&apos;)&apos;;
+									END IF;
+									SET duration = CURRENT_TIMESTAMP - resourceStartTime; -- Rolling duration for the entire table.  Resets when a new table/procedure resource is started.
+
+									IF (debug2 = &apos;Y&apos;) THEN
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                                        &apos;, debug2, &apos;&apos;);
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;         INSERT INTO resultPipe VALUES (&apos;, debug2, &apos;&apos;);
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                             DataSource=&apos;, debug2, TRIM(NVL(datasourceNameList,&apos;  &apos;)));
+										-- [NOT CURRENTLY IMPLEMENTED]
+	 									-- CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                              Published=&apos;, debug2, TRIM(NVL(Published,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                   greatGrandParentName=&apos;, debug2, TRIM(NVL(greatGrandParentName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                        grandParentName=&apos;, debug2, TRIM(NVL(grandParentName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                             parentName=&apos;, debug2, TRIM(NVL(parentName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                          containerName=&apos;, debug2, TRIM(NVL(containerName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                           physicalName=&apos;, debug2, TRIM(NVL(physicalName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                           physicalType=&apos;, debug2, TRIM(NVL(physicalType,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                            LogicalName=&apos;, debug2, TRIM(NVL(LogicalName,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                            LogicalType=&apos;, debug2, TRIM(NVL(LogicalType,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                  LogicalTransformation=&apos;, debug2, TRIM(NVL(LogicalTransformation,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                      LogicalDefinition=&apos;, debug2, TRIM(NVL(LogicalDefinition,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                  childRes.resourcePath=&apos;, debug2, TRIM(NVL(childRes.resourcePath,&apos;  &apos;)));
+										CALL /shared/ASAssets/Utilities/log/logDebugMessage(&apos;                               duration=&apos;, debug2, cast(duration as varchar));
+									END IF;
+
+									-- Determine if the column types are supported or not
+									call /shared/ASAssets/BestPractices_v81/Procedures/isUnsupportedColumnType(physicalType, isUnsupportedColumnTypeNative);
+									call /shared/ASAssets/BestPractices_v81/Procedures/isUnsupportedColumnType(LogicalType, isUnsupportedColumnTypeLogical);
+
+									-- Asses whether to drop the column or not
+									if (dropColumn = 1 or
+										((generateUnsupportedColumnType is null or generateUnsupportedColumnType = 0) and (isUnsupportedColumnTypeNative = 1 or isUnsupportedColumnTypeLogical = 1))) then
+										-- Determine which condition was met
+										if (dropColumn = 1) then
+											if (debug2 = &apos;Y&apos;) then
+												set message = &apos;DROPPED COLUMN DUE TO DUPLICATE NAME.  LogicalName=[&apos;||LogicalName||&apos;]&apos;;
+												CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, message);
+											end if;
+										else
+											if (debug2 = &apos;Y&apos;) then
+												set message = &apos;DROPPED COLUMN WITH COLUMN_TYPE IN (&apos;||unsupportedColumnTypeList||&apos;)&apos;;
+												if (debug2 = &apos;Y&apos;) then
+													CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, message);
+												end if;
+												set message = RPAD(&apos;container=&apos;||childRes.resourceName,padAmount,padChar) ||&apos;  &apos;|| RPAD(&apos;resource=&apos;||childRes.columnName,padAmount,padChar) || &apos;  logical=&apos;||LogicalName;
+												if (debug2 = &apos;Y&apos;) then
+													CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, message);
+												end if;
+											end if;
+										end if;
+									else
+										INSERT INTO resultPipe VALUES (
+											TRIM(NVL(datasourceNameList,&apos;  &apos;)),
+											projectFolderName,
+											-- TRIM(NVL(Published,&apos;  &apos;)), --[NOT CURRENTLY IMPLEMENTED] 
+											TRIM(NVL(greatGrandParentName,&apos;  &apos;)), 
+											TRIM(NVL(grandParentName,&apos;  &apos;)), 
+											TRIM(NVL(parentName,&apos;  &apos;)), 
+											TRIM(NVL(containerName,&apos;  &apos;)),
+											TRIM(NVL(physicalName,&apos;  &apos;)),
+											TRIM(NVL(physicalType,&apos;  &apos;)),
+											TRIM(NVL(LogicalName,&apos;  &apos;)),
+											TRIM(NVL(LogicalType,&apos;  &apos;)),
+											TRIM(NVL(LogicalTransformation,&apos;  &apos;)),
+											TRIM(NVL(LogicalDefinition,&apos;  &apos;)),
+											TRIM(NVL(childRes.resourcePath,&apos;  &apos;)),
+											duration
+										);
+										if (debug2 = &apos;Y&apos;) then
+											set message = RPAD(&apos;container=&apos;||childRes.resourceName,padAmount,padChar) ||&apos;  &apos;|| RPAD(&apos;resource=&apos;||childRes.columnName,padAmount,padChar) || &apos;  logical=&apos;||LogicalName;
+											call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, message);
+										end if;
+									end if;
+								END IF; -- IF (columnName IS NULL) THEN
+							END FOR; -- FOR childRes AS childResCursor DO
+
+							-- Add New Columns to the end of the View. 
+							IF (generateMode = &apos;G&apos; AND newColumnList IS NOT NULL AND LENGTH(TRIM(newColumnList)) &gt; 0) THEN
+								SET physicalName = &apos;&apos;;
+								SET physicalType = &apos;&apos;;
+								FOR c AS
+									SELECT * FROM /shared/ASAssets/Utilities/string/extractDelimitedText(newColumnList,&apos;//&apos;,0,0,0,1,0) 
+										WHERE object IS NOT NULL AND length(object) &gt; 0
+								DO
+									SET newColumnName = null;
+									SET newColumnType = null;
+									SET newColumnValue = null;
+									SET k = 0;
+									FOR item AS
+										SELECT * FROM /shared/ASAssets/Utilities/string/extractDelimitedText(c.object,&apos;&amp;&amp;&apos;,0,0,0,1,0) 
+											WHERE object IS NOT NULL AND length(object) &gt; 0
+									DO
+										SET k = k + 1;
+										CASE 
+											WHEN k = 1 THEN set newColumnName = item.object;
+											WHEN k = 2 THEN set newColumnType = item.object;
+											WHEN k = 3 THEN set newColumnValue = item.object;
+										END CASE;
+									END FOR;
+									IF (newColumnName IS NOT NULL AND newColumnType IS NOT NULL AND newColumnValue IS NOT NULL) THEN
+										IF ((INSTR(UPPER(newColumnType), &apos;CHAR&apos;) &gt; 0 OR INSTR(UPPER(newColumnType), &apos;TIMESTAMP&apos;) &gt; 0 OR INSTR(UPPER(newColumnType), &apos;DATE&apos;) &gt; 0 OR INSTR(UPPER(newColumnType), &apos;TIME&apos;) &gt; 0) AND
+											(UPPER(newColumnValue) &lt;&gt; &apos;CURRENT_TIMESTAMP&apos; AND UPPER(newColumnValue) &lt;&gt; &apos;CURRENT_DATE&apos; AND UPPER(newColumnValue) &lt;&gt; &apos;CURRENT_TIME&apos;) AND
+											(SUBSTRING(newColumnValue,1,1) &lt;&gt; &apos;&apos;&apos;&apos; AND SUBSTRING(newColumnValue,LENGTH(newColumnValue),1) &lt;&gt; &apos;&apos;&apos;&apos;)) THEN
+											SET newColumnTransformation = &apos;&apos;&apos;&apos;||newColumnValue||&apos;&apos;&apos;&apos;;
+										ELSE
+											SET newColumnTransformation = newColumnValue;
+										END IF;
+
+										-- Determine if the LogicalName column is a duplicate and add a sequence number to it if it is.
+										call /shared/ASAssets/BestPractices_v81/Procedures/checkDuplicateColumn(columnListStr, null, newColumnName, columnListStr, newColumnName, dropColumn);
+										call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToWord(newColumnName, null, newColumnName);
+										--call print(&apos;columnListStr=&apos;||columnListStr);
+
+										IF (dropColumn = 0) THEN									
+											INSERT INTO resultPipe VALUES (
+												TRIM(NVL(datasourceNameList,&apos;  &apos;)),
+												projectFolderName,
+												-- TRIM(NVL(Published,&apos;  &apos;)), --[NOT CURRENTLY IMPLEMENTED] 
+												TRIM(NVL(greatGrandParentName,&apos;  &apos;)), 
+												TRIM(NVL(grandParentName,&apos;  &apos;)), 
+												TRIM(NVL(parentName,&apos;  &apos;)), 
+												TRIM(NVL(containerName,&apos;  &apos;)),
+												TRIM(NVL(physicalName,&apos;  &apos;)),
+												TRIM(NVL(physicalType,&apos;  &apos;)),
+												TRIM(NVL(newColumnName,&apos;  &apos;)),
+												TRIM(NVL(newColumnType,&apos;  &apos;)),
+												TRIM(NVL(newColumnTransformation,&apos;  &apos;)),
+												&apos;&apos;, -- LogicalDefinition
+												&apos;&apos;, -- childRes.resourcePath
+												duration
+											);
+											if (debug2 = &apos;Y&apos;) then
+												set message = RPAD(&apos;container=&apos;||containerName,padAmount,padChar) ||&apos;  &apos;|| RPAD(&apos;newColumnType=&apos;||newColumnName,padAmount,padChar) || &apos;  newColumnType=&apos;||newColumnType;
+												call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug2, message);
+											end if;
+										END IF; -- IF (dropColumn = 0) THEN
+									END IF; -- IF (newColumnName IS NOT NULL AND newColumnType IS NOT NULL AND newColumnValue IS NOT NULL) THEN
+								END FOR; -- FOR c AS
+							END IF; -- IF (generateMode = &apos;G&apos; AND newColumnList IS NOT NULL AND LENGTH(TRIM(newColumnList)) &gt; 0) THEN
+						END IF; -- IF (validUsedResource = 1) THEN
+					END IF; --if (isDerivedMatch  = 0)
+				END IF; -- IF ( list.resType = &apos;TABLE&apos; OR list.resType = &apos;PROCEDURE&apos;)
+			END FOR;
+		END IF;	-- IF (resourceExists and startingFolderExtendedRec.process = 1) THEN
+		SET sfNum = sfNum + 1;
+	END WHILE;     
+	IF (sfNum-1 &gt; 0) THEN
+		set resultRec.Duration = CURRENT_TIMESTAMP - generationStartTime;
+		set resultRec.DataSource = &apos;FINISHED&apos;;
+		INSERT INTO resultPipe VALUES(resultRec);
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564671321253</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:5:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:6:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

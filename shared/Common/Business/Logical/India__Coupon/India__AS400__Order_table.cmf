@@ -1,0 +1,614 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="India_AS400_Order" path="/shared/Common/Business/Logical/India_Coupon/India_AS400_Order" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="order_number" nullable="true">
+      <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="order_date" nullable="true">
+      <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ord_dt_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ordering_abo" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="volume_abo" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="order_value" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="order_bv" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="order_pv" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="group_payment_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="combined_order_flag" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="combined_order_number" nullable="true">
+      <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes>
+    <index name="India_AS400_Order_PK" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="order_number" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/policy/cache/India_Coupon" type="POLICY">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/Cache/Physical/Metadata/PostgreSQL_Cache" type="DATA_SOURCE">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/India_AS400_Order0" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="order_number">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+      <element name="order_date">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+      </element>
+      <element name="ord_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ordering_abo">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="volume_abo">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="order_value">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="order_bv">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="order_pv">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="group_payment_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="combined_order_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="combined_order_number">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/India_AS400_Order1" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="order_number">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+      <element name="order_date">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+      </element>
+      <element name="ord_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ordering_abo">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="volume_abo">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="order_value">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="order_bv">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="order_pv">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="group_payment_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="combined_order_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="combined_order_number">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/India_AS400_Order2" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="order_number">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+      <element name="order_date">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+      </element>
+      <element name="ord_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ordering_abo">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="volume_abo">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="order_value">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="order_bv">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="order_pv">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="group_payment_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="combined_order_flag">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="combined_order_number">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/OMS_India/ORDDTA" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="ORDER_NUMBER">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANADVU">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAD0N">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="ANAEPB">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAEM8">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAF4H">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="0"/>
+      </element>
+      <element name="ORDER_DATE">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANBNFK">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAACD">
+        <datatype type="STRING" minLength="8" maxLength="8"/>
+      </element>
+      <element name="ANAE8D">
+        <datatype type="STRING" minLength="8" maxLength="8"/>
+      </element>
+      <element name="ORDERING_ABO">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAHAT">
+        <datatype type="STRING" minLength="8" maxLength="8"/>
+      </element>
+      <element name="VOLUME_ABO">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANBMGH">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANBMGD">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANBMGE">
+        <datatype type="DECIMAL" maxDigits="3" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANBK78">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="ANAFF0">
+        <datatype type="DECIMAL" maxDigits="3" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAECY">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAEF5">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAFF1">
+        <datatype type="DECIMAL" maxDigits="3" maxFractionalDigits="0"/>
+      </element>
+      <element name="ORDER_VALUE">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANAIBN">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANAIBO">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANAJN5">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANAJN6">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANAJN7">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANAJN8">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANAJN9">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANAJMF">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANADUM">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANAHGU">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANAJMG">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANBK22">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ORDER_BV">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ORDER_PV">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANADUQ">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANAAFQ">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="ANAEMD">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAEUN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAEUJ">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAEH1">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANBK23">
+        <datatype type="DECIMAL" maxDigits="6" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAERB">
+        <datatype type="DECIMAL" maxDigits="6" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANADVA">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAEN9">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANBMF8">
+        <datatype type="DECIMAL" maxDigits="3" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAELC">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAAFN">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="ANAERU">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAERV">
+        <datatype type="DECIMAL" maxDigits="5" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANADTW">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAFW6">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAFW7">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANADTY">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANBJ0Z">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAE4E">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAE4F">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAE4G">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAE4H">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANADT6">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAFDJ">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAG4F">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANBK24">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANAFAT">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANBJ0T">
+        <datatype type="DECIMAL" maxDigits="6" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANBNFL">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ANADTU">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANADTV">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="ANAEUK">
+        <datatype type="STRING" minLength="11" maxLength="11"/>
+      </element>
+      <element name="GROUP_PAYMENT_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="COMBINED_ORDER_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="COMBINED_ORDER">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAEQY">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAF5A">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAG61">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANAHAR">
+        <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANBKFN">
+        <datatype type="DECIMAL" maxDigits="6" maxFractionalDigits="0"/>
+      </element>
+      <element name="ANADVS">
+        <datatype type="STRING" minLength="10" maxLength="10"/>
+      </element>
+      <element name="ANBPBG">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+      </element>
+      <element name="ANBPBR">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="ANAGGR">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="ANBPBP">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    ORDDTA.ORDER_NUMBER order_number, 
+    ORDDTA.ORDER_DATE order_date,
+	CAST(&apos;20&apos; || RIGHT(TO_CHAR(ORDDTA.ORDER_DATE),6) AS BIGINT) ord_dt_key_no,
+    ORDDTA.ORDERING_ABO ordering_abo, 
+    ORDDTA.VOLUME_ABO volume_abo, 
+    ORDDTA.ORDER_VALUE order_value, 
+    ORDDTA.ORDER_BV order_bv, 
+    ORDDTA.ORDER_PV order_pv, 
+    ORDDTA.GROUP_PAYMENT_FLAG group_payment_flag, 
+    ORDDTA.COMBINED_ORDER_FLAG combined_order_flag, 
+    ORDDTA.COMBINED_ORDER combined_order_number
+FROM      
+    /shared/Common/Physical/Formatting/OMS_India/ORDDTA ORDDTA
+WHERE
+	ORDDTA.ORDER_DATE &gt;= 1180101</attribute>
+  <attribute name="cacheBucketMode" type="STRING">MANUAL</attribute>
+  <attribute name="cacheClearRule" type="STRING">MANUAL</attribute>
+  <attribute name="cacheConfigured" type="BOOLEAN">true</attribute>
+  <attribute name="cacheDeltaLoader" type="NULL"/>
+  <attribute name="cacheEnabled" type="BOOLEAN">true</attribute>
+  <attribute name="cacheIncremental" type="BOOLEAN">false</attribute>
+  <attribute name="cacheLastTracking" type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/cache_tracking</attribute>
+  <attribute name="cachePolicy" type="STRING">/policy/cache/India_Coupon</attribute>
+  <attribute name="cachePostRefreshCallback" type="NULL"/>
+  <attribute name="cachePreRefreshCallback" type="NULL"/>
+  <attribute name="cachePullBasedIncremental" type="BOOLEAN">false</attribute>
+  <attribute name="cacheRefreshMode" type="STRING">MANUAL</attribute>
+  <attribute name="cacheSnapshotLoader" type="NULL"/>
+  <attribute name="cacheStorageSource" type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache</attribute>
+  <attribute name="cacheStorageTargets" type="MAP">
+    <item>
+      <key type="STRING">result</key>
+      <value type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/India_AS400_Order0</value>
+    </item>
+    <item>
+      <key type="STRING">result1</key>
+      <value type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/India_AS400_Order1</value>
+    </item>
+    <item>
+      <key type="STRING">result2</key>
+      <value type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/India_AS400_Order2</value>
+    </item>
+  </attribute>
+  <attribute name="cacheStorageType" type="STRING">DATA_SOURCE_OTPS</attribute>
+  <attribute name="creationDate" type="LONG">1567626587679</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30105</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">true</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1574783786453</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30105</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1567626587679</attribute>
+  <trigger>
+    <security>
+      <owner user="nobody" domain="composite"/>
+    </security>
+    <dependency target="/lib/resource/RefreshResourceCache" type="PROCEDURE">
+      <datatype name="Tree" type="TREE" refId="1"></datatype>
+    </dependency>
+    <dependency target="/shared/Common/Business/Logical/India_Coupon/India_AS400_Order" type="TABLE">
+      <datatype type="TABLE" refId="1">
+        <element name="order_number">
+          <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+        </element>
+        <element name="order_date">
+          <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="0"/>
+        </element>
+        <element name="ord_dt_key_no">
+          <datatype type="INTEGER"/>
+        </element>
+        <element name="ordering_abo">
+          <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+        </element>
+        <element name="volume_abo">
+          <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+        </element>
+        <element name="order_value">
+          <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+        </element>
+        <element name="order_bv">
+          <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+        </element>
+        <element name="order_pv">
+          <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="2"/>
+        </element>
+        <element name="group_payment_flag">
+          <datatype type="STRING" minLength="1" maxLength="1"/>
+        </element>
+        <element name="combined_order_flag">
+          <datatype type="STRING" minLength="1" maxLength="1"/>
+        </element>
+        <element name="combined_order_number">
+          <datatype type="DECIMAL" maxDigits="9" maxFractionalDigits="0"/>
+        </element>
+      </datatype>
+    </dependency>
+    <attribute name="actionProperties" type="MAP">
+      <item>
+        <key type="STRING">PATH</key>
+        <value type="STRING">/lib/resource/RefreshResourceCache</value>
+      </item>
+      <item>
+        <key type="STRING">PARAMETERS</key>
+        <value type="STRING">&apos;/shared/Common/Business/Logical/India_Coupon/India_AS400_Order&apos;,&apos;TABLE&apos;</value>
+      </item>
+    </attribute>
+    <attribute name="actionType" type="STRING">PROCEDURE</attribute>
+    <attribute name="conditionSchedule" type="MAP">
+      <item>
+        <key type="STRING">mode</key>
+        <value type="STRING">CALENDAR</value>
+      </item>
+      <item>
+        <key type="STRING">period</key>
+        <value type="INTEGER">2</value>
+      </item>
+      <item>
+        <key type="STRING">lastRunTime</key>
+        <value type="LONG">0</value>
+      </item>
+      <item>
+        <key type="STRING">lastScheduledTime</key>
+        <value type="LONG">0</value>
+      </item>
+      <item>
+        <key type="STRING">count</key>
+        <value type="INTEGER">1</value>
+      </item>
+      <item>
+        <key type="STRING">startTime</key>
+        <value type="LONG">1567734153000</value>
+      </item>
+      <item>
+        <key type="STRING">interval</key>
+        <value type="INTEGER">0</value>
+      </item>
+      <item>
+        <key type="STRING">endTime</key>
+        <value type="LONG">0</value>
+      </item>
+      <item>
+        <key type="STRING">isCluster</key>
+        <value type="BOOLEAN">true</value>
+      </item>
+    </attribute>
+    <attribute name="conditionType" type="STRING">TIMER</attribute>
+    <attribute name="creationDate" type="LONG">1567736182877</attribute>
+    <attribute name="creatorUserDomain" type="STRING">na</attribute>
+    <attribute name="creatorUserId" type="INTEGER">30105</attribute>
+    <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+    <attribute name="enabled" type="BOOLEAN">false</attribute>
+    <attribute name="isChildTrigger" type="BOOLEAN">true</attribute>
+    <attribute name="lastModifiedDate" type="LONG">1574783786453</attribute>
+    <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+    <attribute name="lastModifiedUserId" type="INTEGER">30105</attribute>
+    <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+    <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1567736182877</attribute>
+  </trigger>
+</metadata>

@@ -1,0 +1,256 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="upgradeRestoreDocumentationConstants" path="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/upgradeRestoreDocumentationConstants" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="scriptsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="success" direction="OUT" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getLatestCopy_scripts" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="scriptsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="scriptsPathCopy" direction="OUT">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractTextList" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="separator" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="preserveDoubleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveSingleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveParenthesis" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveQualifier" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="trimResults" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="textExpression">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/modifyConstant" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="constantsValue" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	upgradeRestoreDocumentationConstants:
+
+	This procedure is used to restore the &quot;/Documentation/constants&quot; procdure with values from the latest copy
+		made during upgrade. 
+
+	Input: 
+		scriptsPath - the full path to the _scripts folder.
+	Output:
+		success - 1=success, 0=fail
+	Exceptions: none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	07/26/2019		Mike Tinius			7.0.8			Created new
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE upgradeRestoreDocumentationConstants(
+	IN debug				CHAR(1),
+	IN scriptsPath			VARCHAR(4000),
+	OUT success				BIT
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;upgradeRestoreDocumentationConstants&apos;;
+	DECLARE scriptsPathCopy			VARCHAR(4000);
+	DECLARE constantList			LONGVARCHAR;
+	DECLARE constantName			VARCHAR;
+	DECLARE constantValue			LONGVARCHAR;
+	DECLARE constantOrigValue		LONGVARCHAR;
+	DECLARE constantFound			BOOLEAN;
+	DECLARE docConstantsPath		VARCHAR(4000);
+	DECLARE docConstantsCopyPath	VARCHAR(4000);
+	DECLARE ch						CHAR(1);
+	DECLARE ex						EXCEPTION;
+
+	IF (scriptsPath IS NULL OR LENGTH(scriptsPath) = 0) THEN
+		RAISE ex VALUE moduleName||&apos; : The scriptsPath cannot be null or empty.&apos;;
+	END IF;
+
+	-- Get the latest copy of the scripts path that was made during this upgrade.
+	CALL /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getLatestCopy_scripts(scriptsPath, scriptsPathCopy);
+
+	IF (scriptsPathCopy IS NOT NULL) THEN
+		-- Set the defaultValues Path
+		SET docConstantsPath = scriptsPath || &apos;/Documentation/constants&apos;;
+		-- Set the defaultValues Copy Path
+		SET docConstantsCopyPath = scriptsPathCopy || &apos;/Documentation/constants&apos;;
+		-- Set the constant names to retrieve
+		SET constantList =  &apos;docPreambleImpl,docResourceFormatImpl,switches,beginSeparator,endSeparator,minorSeparator,excludeKeywordsInPathList,excludePathsList,excludeDSPathsList&apos;;
+
+		FOR r AS SELECT * FROM /shared/ASAssets/Utilities/string/extractTextList(constantList, &apos;,&apos;, 0,0,0,0,1) DO
+			SET constantName = r.textExpression;
+			BEGIN INDEPENDENT TRANSACTION
+				CALL /shared/ASAssets/Utilities/string/getConstantV2(docConstantsCopyPath, constantName, 2, constantValue);
+				SET constantFound = true;
+			EXCEPTION
+				ELSE
+					CALL PRINT(SUBSTRING(moduleName||&apos; : EXCEPTION: getConstantV2() - The constant name=[&apos;||constantName||&apos;] could not be found in &apos;|| docConstantsCopyPath 
+							|| &apos;  ERROR=&apos;||REPLACE(CAST(CURRENT_EXCEPTION.MESSAGE AS LONGVARCHAR), CHR(10), &apos; &apos;),1,63900));
+					SET constantFound = false;
+			END;
+
+			IF (constantFound) THEN
+				-- Determine if the string requires single quotes around it.
+				IF (constantValue IS NULL) THEN
+					SET constantValue = &apos;null&apos;;
+				ELSEIF (LENGTH(constantValue) = 0) THEN
+					SET constantValue = &apos;&apos;&apos;&apos;||&apos;&apos;&apos;&apos;;
+				ELSE
+					-- If the string does not start with &apos; and the string is a DV path starting with / then surround it with single quotes.
+					SET ch = SUBSTRING(constantValue, 1, 1);
+					IF (ch &lt;&gt; &apos;&apos;&apos;&apos; AND ch = &apos;/&apos;) THEN
+						SET constantValue = &apos;&apos;&apos;&apos; || constantValue || &apos;&apos;&apos;&apos;;
+					END IF;
+				END IF;	
+
+				BEGIN INDEPENDENT TRANSACTION
+					-- Get the original definition
+					CALL /shared/ASAssets/Utilities/string/getConstantV2(docConstantsPath, constantName, 2, constantOrigValue);
+					-- Modify the constant
+					CALL /shared/ASAssets/Utilities/string/modifyConstant(docConstantsPath, constantName, constantValue);
+				EXCEPTION
+					ELSE
+						CALL PRINT(SUBSTRING(moduleName||&apos; : EXCEPTION: modifyConstant() - The constant name=[&apos;||constantName||&apos;] could not be found in &apos;|| docConstantsPath 
+								|| &apos;  ERROR=&apos;||REPLACE(CAST(CURRENT_EXCEPTION.MESSAGE AS LONGVARCHAR), CHR(10), &apos; &apos;),1,63900));
+				END;
+				IF (UPPER(debug) = &apos;Y&apos;) THEN
+					CALL PRINT(moduleName||&apos; : The constant name=[&apos;||constantName||&apos;] was modified to [&apos;||constantValue||&apos;] in procedure [&apos;|| docConstantsPath||&apos;] from original value=[&apos;||constantOrigValue||&apos;]&apos;);
+				END IF;
+			END IF;
+		END FOR;
+		SET success = 1;
+	ELSE
+		IF (UPPER(debug) = &apos;Y&apos;) THEN
+			CALL PRINT(moduleName||&apos; : The &quot;scriptsPathCopy&quot; does not exist.  Current &quot;defaultValues&quot; was not updated.&apos;);
+		END IF;
+		SET success = 0;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1564185253061</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573160027349</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">11/102</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/72</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/98</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/109</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1564185253061</attribute>
+</metadata>

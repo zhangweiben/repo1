@@ -1,0 +1,460 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="_README_INSTALLATION" path="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/_README_INSTALLATION" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters></parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="Script" type="STRING">/*
+    A custom script that manages files dynamically.
+	----------------------------
+	Installation Instructions:  
+	----------------------------
+	1. Configure the Data Virtualization  Email
+		a. In Studio, go to Administration í Server í Configuration í E-Mail
+
+	2. Configure the environment name for /shared/ASAssets/Utilities/environment/getEnvName()
+		a. Set it to a unique environment name for each DV environment such as: DEV, TEST, QA, DR, PROD
+
+	3. Modify the &quot;admin&quot; password for the data source DYNAMIC_FILE_LOCAL_LOOPBACK
+		a. The loopback is required so that execution of &quot;triggered&quot; procedure run as a user with proper rights to execute internal
+			procedures for creating and dropping views and assigning privileges.  
+
+	4.	Provide a datasource to be used for the Dynamic File Framework queue and email tables.
+		a.	You may choose to use the out-of-the-box Postgres datasource with the built in &quot;ciscache&quot; schema.  
+			For this, you will have to set the connection information for this datasource: 
+			/shared/ASAssets/BestPractices_v81/DynamicFileFramework/DYNAMIC_FILE_QUEUE_DS
+		b.	You may also choose to use your own database but it must be Oracle, SQL Server or Postgres.  
+			A datasource must be provided within DV.   The path, catalog, schema and tablespace/filegroup 
+			are configured in the &quot;constants&quot; procedure in step 5.
+
+	5. Modify the constants file and set the following accordingly
+		SET EXECUTE_DDL_PACKAGE_PATH =&apos;/shared/ASAssets/BestPractices_v81/DynamicFileFramework/00_ExecuteDDL&apos;;	-- [mandatory] The location of the Execute DDL package path
+		SET DATASOURCE_PATH = &apos;/shared/ASAssets/BestPractices_v81/DynamicFileFramework/DYNAMIC_FILE_QUEUE_DS&apos;;	-- [mandatory] CIS datasource path. Supported: Oracle, SQL Server and Postgres
+		SET CATALOG_NAME = null;															-- [optional] Catalog name for SQL Server
+		SET SCHEMA_NAME	= &apos;ciscache&apos;;														-- [mandatory] Schema name
+		SET TABLESPACE_FILEGROUP = null;													-- [optional] Tablespace name if Oracle or Postgres and file group name if SQL Server.
+		SET PROCESS_WAIT_TIME_SECONDS = &apos;5&apos;;												-- [mandatory] The number of seconds to wait in between processing requests.
+		SET DEFAULT_EMAIL = &apos;admin-email@company.com&apos;;										-- [mandatory] Default email to send exceptions to.
+		SET DEFAULT_RETENTION_POLICY_DAYS = &apos;30&apos;;											-- [mandatory] Default retention policy.  Delete files and CIS resources older than x days.  
+																							--		This is a numeric value that will be converted from text to integer.
+		SET DYNAMIC_FILE_SEQ = &apos;DYNAMIC_FILE_SEQ&apos;;											-- [DO NOT CHANGE] Dynamic File Sequence Name.
+		SET DYNAMIC_FILE_EMAIL = &apos;DYNAMIC_FILE_EMAIL&apos;;										-- [DO NOT CHANGE] Dynamic File Email Table Name.
+		SET DYNAMIC_FILE_QUEUE = &apos;DYNAMIC_FILE_QUEUE&apos;;										-- [DO NOT CHANGE] Dynamic File Queue Table Name.
+		SET CSV_SUPPORTED_FILE_EXTENSIONS = &apos;.csv,.txt&apos;;									-- [DO NOT CHANGE] CSV Supported File Extensions
+		SET EXCEL_SUPPORTED_FILE_EXTENSIONS = &apos;.xls,.xlsx&apos;;									-- [DO NOT CHANGE] Excel Supported File Extensions
+
+	6. Create the sequence generator and queue table and rebind 00_ExecuteDDL
+		a. Execute 01_pqCreateDrop_dynamic_file_tables and provide the following:
+			This procedure uses information from the &quot;constants&quot; procedure to dynamically 
+			construct the DDL.  Using the parameters below, you can achieve different 
+			combinations of dropping and creating or nothing at all.
+			Input:
+				executeDDL:			y=execute DDL, 		n=print DDL
+				dropResources:		y=Drop resources, 	n=don&apos;t drop resources
+				createResources:	y=Create resources, n=don&apos;t create resources
+			What gets created/dropped:
+				Sequence Name:	DYNAMIC_FILE_SEQ
+				Table Name:		DYNAMIC_FILE_QUEUE
+				Table Name:		DYNAMIC_FILE_EMAIL
+		b. The script rebinds the 00_ExecuteDDL to point to the datasource.
+		c. The script introspects resources on the target datasource.
+			Add the table DYNAMIC_FILE_QUEUE
+			Add the table DYNAMIC_FILE_EMAIL
+
+	7. Add emails for each user that will be invoking the procedures
+		a. Invoke /shared/ASAssets/BestPractices_v81/DynamicFileFramework/Helper/emailAddUser
+		b. Add a general group email for the user &quot;admin&quot; so that
+			if files are generically created/deleted at least the admin will be notified.
+
+	8. Turn on the Trigger:			DynamicFileFrameworkProcessTrigger
+		a. Set the periodic refresh rate according to your policy.  Default is 15 minutes.
+			This is how often the trigger will wake up and look for rows in DYNAMIC_FILE_QUEUE table to process.
+			If it finds no rows then no work is done.  If it does find rows, the requests are executed in a single-threaded
+			fashion with the default time delay applied in between requests as set in constants.PROCESS_WAIT_TIME_SECONDS.
+			The purpose of the time-delay is so that DV does not get overwhelmed by processing files.
+
+	9. Proceed to either OPTION 1 (automated install) or OPTION 2 (manual install) below
+		to generate the Dynamic File Framework within a project folder for a user application.
+
+	----------------------------------------
+	OPTION 1 - Automated template creation
+	----------------------------------------
+	1. Locate the procedure: /shared/ASAssets/BestPractices_v81/DynamicFileFramework/Example/example_Create_or_Remove
+		a. Make a copy of it.
+		b. Rename it to give it a meaningful name associated with the target project.
+		c. Modify the paths and other variables for your use case.
+		d. Execute it with a 1 to create the Dynamic File Framework resources in your project path.
+		e. Execute it with a 0 to destroy the Dynamic File Framework resources in your project path. [Validating the removal works.]
+		e. Execute it with a 1 to create the Dynamic File Framework resources in your project path.
+ 	2. Proceed to the &quot;Executing the Dynamic File Framework&quot; section
+		
+	----------------------------------------
+	OPTION 2 - Manual template creation
+	----------------------------------------
+	1. Copy the Dynamic folder from DynamicFileFramework/Templates/Application/Services/Dynamic and 
+		paste it into your project&apos;s /Application/Services folder.
+		ex. /shared/base_project_path/business_area/subject_area/Application/Services
+
+	2. Modify the variables in your new location &quot;constants&quot; procedure
+			NOTE: Take note of mandatory and optional variable settings within the constants.
+
+			-- Standard application default settings [ORG, PRJ1, S1, ORGDB]
+			SET ORGANIZATION = &apos;&apos;;												-- [mandatory] Identifies your organization for tracking/filtering purposes.
+			SET PROJECT_NAME = &apos;&apos;;												-- [mandatory] This is your project folder name and is used for tracking/filtering purposes.
+			SET SUBPROJECT_NAME	= &apos;&apos;;											-- [optional] Leave blank if your project folder does not have a sub project
+			SET PUBLISHED_DATABASE = &apos;&apos;;										-- [mandatory] This is the published database name.
+
+			-- Published Schema Path: e.g. /services/databases/published_data_source/catalog/Dynamic : Dynamic is recommended for the schema name
+			SET PUBLISHED_SCHEMA_PATH = &apos;&apos;;										-- [mandatory] The full path to the published Dynamic schema within your published databases
+			-- Physical Metadata Layer Path
+			SET PHYSICAL_METADATA_LAYER = &apos;&apos;;									-- [mandatory] The full path to the physical metadata Dynamic folder where the dynamic file data sources reside.
+			-- Set to the default null for no view generation in the layers.  Otherwise set to Option 2 to generate views in the layers.
+			SET APPLICATION_LAYER = null;                                       -- Option 1: null,  Option 2: Full path to /Physical/Formatting/Dynamic folder
+			SET    BUSINESS_LAYER = null;                                       -- Option 1: null,  Option 2: Full path to /Business/Logical/Dynamic folder
+			SET  FORMATTING_LAYER = null;                                       -- Option 1: null,  Option 2: Full path to /Application/Views/Dynamic folder
+
+			-- Allows the invoking interface procedure to control the behavior of the implementation procedure.
+			SET ALLOW_NULL_FILE_NAME = &apos;0&apos;;										-- 0=Do not allow user to pass in null/empty for the file name.  Throw an exception.
+																				-- 1=Allow the user to pass in null/empty for the file name which results in picking up all unclaimed (not introspected) files in the file system for the invoking user.
+			-- Default retention policy.  
+			SET RETENTION_POLICY_DAYS = &apos;30&apos;;									-- [mandatory] Delete files and CIS resources older than x days.  
+																				--   This is a numeric value that will be converted from text to integer.
+		b. Save the procedure
+
+	3. Copy the Dynamic folder from Templates/Physical/Metadata/Dynamic and paste it into your project&apos;s /Metadata folder.
+		Note: In both cases, if file system security is being used on the DV server, then you will need to put in the &quot;File System Security Root Mapping Name&quot;
+				associated with the file system location.  Work with the DV administrator to set up Root Mapping Names and paths.
+			E.g.  /shared/BusArea/SubjectArea/Physical/Metadata
+															/Dynamic
+																	/DynamicTempFiles_CSV
+																	/DynamicTempFiles_Excel
+		a. Open the data source &quot;Dynamic/DynamicTempFiles_CSV&quot; 
+			i. Edit the Root Path to point to the DV file system path where your project files are stored or use the root mapping name if applicable.
+			ii. Test the connection and execute the Add/Remove Tables to make sure the files are visible.
+		b. Open the data source &quot;Dynamic/DynamicTempFiles_Excel&quot; 
+			i. Edit the Root Path to point to the DV file system path where your project files are stored or use the root mapping name if applicable.
+			ii. Test the connection and execute the Add/Remove Tables to make sure the files are visible.
+
+	4. Create a published relational catalog and schema
+		a. Create a published database if it does not exist as per constants.PUBLISHED_DATABASE.
+		a. Create a catalog name according to your project and subproject
+		b. Create a schema name called Dynamic. 
+		c. Publish the procedures to the published /services/databases/published_datasource/catalog/Dynamic schema
+				Select the following procedures.   You will need to Control-Click to select them all
+					i.		dynamicFileCleanup
+					ii.		dynamicFileCreate
+					iii.	dynamicFileList
+					iv.		dynamicFileRebuild
+					v.		dynamicFileRemove
+				Right-click on the selected procedures and choose Publish
+				Browse and select the /services/databases/published_datasource/catalog/Dynamic schema and click OK
+
+	5. Create a web service
+		a. Create a folder that mimics the catalog and schema name from the relational datasource.
+			e.g. /services/webservices/published_datasource/catalog/Dynamic
+		b. Create a web service in /services/webservices/published_datasource/catalog/Dynamic called Utilities
+
+		c. Publish the procedures to the published /services/webservices/published_datasource/catalog/Dynamic/Utilities web service
+				Select the following procedures.   You will need to Control-Click to select them all
+					i.		dynamicFileCleanup
+					ii.		dynamicFileCreate
+					iii.	dynamicFileList
+					iv.		dynamicFileRebuild
+					v.		dynamicFileRemove
+				Right-click on the selected procedures and choose Publish
+				Browse and select the Utilities web service and click OK
+
+	6. Test the procedures for create, remove and list
+		a. SFTP files to your designated file system location on the target DV server host.
+
+		b. Create files/views
+			Execute the published &quot;dynamicFileCreate&quot; procedure from a 3rd party tool such as DB Visualizer
+			File Views should be visible now to execute queries from in the DV published schema
+
+		b. List files/views
+			Execute the published &quot;dynamicFileList&quot; procedure from a 3rd party tool such as DB Visualizer
+			A listing of files and published views should be displayed.
+
+		c. Remove the file from the target DV server file system.
+			Execute the published &quot;dynamicFileRemove&quot; procedure from a 3rd party tool such as DB Visualizer
+			Files and Views should now be removed and therefore the same query should fail that was previously executed.
+
+	7. Turn on both triggers if applicable:
+		DynamicFileFrameworkAutoPublishTrigger - Will automatically detect files in the file system and publish them if turned on.
+		DynamicFileFrameworkCleanupTrigger - Will automatically detect files that are out of policy and remove the views and files.
+
+	8. Proceed to the &quot;Executing the Dynamic File Framework&quot; section
+
+	--------------------------------------
+	Executing the Dynamic File Framework:  
+	--------------------------------------
+	1. How to invoke from a 3rd party tool such as Toad or DB Visualizer:
+		Once you have completed OPTION 1 or OPTION 2 for the installation/setup, now you are ready to start using the Dynamic File Framework.
+		a. Create either an ODBC or JDBC connection from your favorite 3rd party tool to the target DV instance.
+		b. Open your favorite Query tool
+		c. Execute the following using the sample project as a guideline:
+			---------------------------------------------------
+			LIST FILES - dynamicFileList():
+			---------------------------------------------------
+				The purpose of the &quot;dynamic file list&quot; is to show what files are published as views, 
+					not published at all and which ones are not supported.
+				DATABASE: ex_project - ODBC/JDBC connection is made
+				SELECT * FROM &quot;cat1&quot;.&quot;Dynamic&quot;.&quot;dynamicFileList&quot;()
+
+				Output Messages:
+					&apos;PUBLISHED&apos;
+					&apos;NOT PUBLISHED&apos;
+					&apos;FILE NOT SUPPORTED&apos;
+
+			---------------------------------------------------
+			ADD FILE - dynamicFileCreate():
+			---------------------------------------------------
+				The purpose of &quot;dynamic file create&quot; is to add/create the views for the specified file 
+					residing in the file system.  This procedure queues up the request into the DYNAMIC_FILE_QUEUE 
+					table.  The request is processed by the framework procedure &quot;dynamicFileQueueProcess&quot; which is 
+					triggered by the framework trigger &quot;DynamicFileFrameworkProcessTrigger&quot;.
+				DATABASE: ex_project - ODBC/JDBC connection is made
+				How to register a file to be created as the actual user who owns the file:
+					This scenario is useful for users who are directly connecting to DV to upload files to their file system
+					area and invoking the DV Dynamic File Framework API to register the file creation.
+
+					SELECT * FROM &quot;cat1&quot;.&quot;Dynamic&quot;.&quot;dynamicFileCreate&quot;(&apos;user1-Common_Model_v3_file2.xlsx&apos;)
+
+				How to register a file to be created as a proxy user (service account) who does not own the file:
+					This scenario comes into play when there is a service account such as an application that is controlling the 
+					interface between the user and the DV layer.  For example, there may be a front-end web application that the 
+					users log into to upload their files.  Therefore, the service account of the application is the proxy user
+					which both uploads the file and invokes the DV Dynamic File Framework API&apos;s to register the file creation.
+
+					SELECT * FROM &quot;cat1&quot;.&quot;Dynamic&quot;.&quot;dynamicFileCreate&quot;(&apos;USERNAME[user1]user1-Common_Model_v3_file2.xlsx&apos;)
+
+				Queuing Messages:
+					&apos;FILE ADD QUEUED&apos;				actiontype=&apos;A&apos;
+					&apos;INVALID FILENAME&apos;				actiontype=&apos;A&apos;,&apos;R&apos;
+					&apos;DUPLICATE REQUEST IGNORED&apos;		actiontype=&apos;A&apos;,&apos;R&apos;,&apos;C&apos;
+
+				Email Messages:
+					&apos;UNKNOWN&apos;
+					&apos;FILE ADDED.  NO VIEWS PUBLISHED&apos;
+					&apos;FILE ADDED.  VIEWS PUBLISHED&apos;
+					&apos;FILE ADDED.  VIEWS ALREADY EXISTS&apos;
+					&apos;FILE ADDED.  VIEWS OVERWRITTEN&apos;
+					&apos;FILE DOES NOT EXIST&apos;
+
+					- Occurs when the file being added contains no Excel sheets and/or no columns and no data
+					&apos;FILE REMOVED.  NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+					&apos;UNABLE TO REMOVE FILE.  NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+					&apos;FILE DOES NOT EXIST.  NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+
+					&apos;ERROR: Data source type not supported: &apos;+&lt;dataSourceType&gt;
+					&apos;ERROR: File Name is required.&apos;  - occurs when (allowNullFileName = 0 and (fileName IS NULL OR LENGTH(fileName) = 0))
+
+			---------------------------------------------------
+			REMOVE FILE - dynamicFileRemove():
+			---------------------------------------------------
+				The purpose of the &quot;dynamic file remove&quot; is to remove the file and views for the specified file 
+					residing in the file system.  This procedure queues up the request into the DYNAMIC_FILE_QUEUE 
+					table.  The request is processed by the framework procedure &quot;dynamicFileQueueProcess&quot; which is 
+					triggered by the framework trigger &quot;DynamicFileFrameworkProcessTrigger&quot;.
+				DATABASE: ex_project - ODBC/JDBC connection is made
+				How to register a file to be removed as the actual user who owns the file:
+					SELECT * FROM &quot;cat1&quot;.&quot;Dynamic&quot;.&quot;dynamicFileRemove&quot;(&apos;user1-Common_Model_v3_file2.xlsx&apos;)
+
+				How to register a file to be removed as a proxy user (service account) who does not own the file:
+					SELECT * FROM &quot;cat1&quot;.&quot;Dynamic&quot;.&quot;dynamicFileRemove&quot;(&apos;USERNAME[user1]user1-Common_Model_v3_file2.xlsx&apos;)
+
+				Queuing Messages:
+					&apos;FILE REMOVE QUEUED&apos;			actiontype=&apos;R&apos;
+					&apos;INVALID FILENAME&apos;				actiontype=&apos;A&apos;,&apos;R&apos;
+					&apos;DUPLICATE REQUEST IGNORED&apos;		actiontype=&apos;A&apos;,&apos;R&apos;,&apos;C&apos;
+
+				Email Messages:
+					&apos;FILE REMOVED.  &apos; + 1 of the following:
+							&apos;PUBLISHED VIEWS REMOVED&apos;
+							&apos;VIEWS NOT PUBLISHED&apos;
+					&apos;UNABLE TO REMOVE FILE.  &apos;  + 1 of the following:
+							&apos;PUBLISHED VIEWS REMOVED&apos;
+							&apos;VIEWS NOT PUBLISHED&apos;
+					&apos;FILE DOES NOT EXIST.  &apos; + 1 of the following:
+							&apos;PUBLISHED VIEWS REMOVED&apos;
+							&apos;VIEWS NOT PUBLISHED&apos;
+
+					&apos;FILE NOT ASSOCIATED WITH USERNAME=&lt;username&gt;&apos;
+					&apos;FILE DOES NOT EXIST.  FILE NOT ASSOCIATED WITH USERNAME=&lt;username&gt;&apos;
+
+			---------------------------------------------------
+			CLEANUP FILES - dynamicFileCleanup():
+			---------------------------------------------------
+				The purpose of the &quot;dynamic file cleanup&quot; is to clean-up old files that have a file timestamp beyond 
+					the retention policy.  The file and the associate views are removed. This procedure queues up 
+					the request into the DYNAMIC_FILE_QUEUE table.  The file cleanup procedure may be invoked manually 
+					or it may be triggered once a day by the trigger &quot;DynamicFileFrameworkCleanupTrigger&quot;.  The request 
+					is processed by the framework procedure &quot;dynamicFileQueueProcess&quot; which is triggered by the framework 
+					trigger &quot;DynamicFileFrameworkProcessTrigger&quot;.
+				DATABASE: ex_project - ODBC/JDBC connection is made
+				How to register a cleanup for either an actual user or proxy service account user:
+					SELECT * FROM &quot;cat1&quot;.&quot;Dynamic&quot;.&quot;dynamicFileCleanup&quot;()
+
+				Queuing Messages:
+					&apos;FILE CLEAN-UP QUEUED&apos;			actiontype=&apos;C&apos;
+					&apos;DUPLICATE REQUEST IGNORED&apos;		actiontype=&apos;A&apos;,&apos;R&apos;,&apos;C&apos;
+
+				Email Messages:
+					&apos;RETENTION POLICY EXCEEDED.  &apos; + dynamicFileRemove message
+					or
+					&apos;FILE NOT SUPPORTED.  &apos; + dynamicFileRemove message
+
+					- dynamicFileRemove messages:
+					&apos;FILE REMOVED.  &apos; + 1 of the following:
+							&apos;PUBLISHED VIEWS REMOVED&apos;
+							&apos;VIEWS NOT PUBLISHED&apos;
+					&apos;UNABLE TO REMOVE FILE.  &apos;  + 1 of the following:
+							&apos;PUBLISHED VIEWS REMOVED&apos;
+							&apos;VIEWS NOT PUBLISHED&apos;
+					&apos;FILE DOES NOT EXIST.  &apos; + 1 of the following:
+							&apos;PUBLISHED VIEWS REMOVED&apos;
+							&apos;VIEWS NOT PUBLISHED&apos;
+
+					&apos;FILE NOT ASSOCIATED WITH USERNAME=&lt;username&gt;&apos;
+					&apos;FILE DOES NOT EXIST.  FILE NOT ASSOCIATED WITH USERNAME=&lt;username&gt;&apos;
+
+			---------------------------------------------------
+			REBUILD FILES - dynamicFileRebuild():
+			---------------------------------------------------
+				The purpose of &quot;dynamic file rebuild&quot; is to add/create the views for all unpublished files residing 
+					in the file system.  This procedure queues up requests for each into the DYNAMIC_FILE_QUEUE table.  
+					The request is processed by the framework procedure &quot;dynamicFileQueueProcess&quot; which is triggered 
+					by the framework trigger &quot;DynamicFileFrameworkProcessTrigger&quot;.
+				DATABASE: ex_project - ODBC/JDBC connection is made
+				How to register a rebuild for either an actual user or proxy service account user:
+					SELECT * FROM &quot;cat1&quot;.&quot;Dynamic&quot;.&quot;dynamicFileRebuild&quot;()
+
+				Queuing Messages:
+					&apos;FILE ADD QUEUED&apos;				actiontype=&apos;A&apos;
+					&apos;INVALID FILENAME&apos;				actiontype=&apos;A&apos;,&apos;R&apos;
+					&apos;DUPLICATE REQUEST IGNORED&apos;		actiontype=&apos;A&apos;,&apos;R&apos;,&apos;C&apos;
+
+				Email Messages:
+					&apos;UNKNOWN&apos;
+					&apos;FILE ADDED.  NO VIEWS PUBLISHED&apos;
+					&apos;FILE ADDED.  VIEWS PUBLISHED&apos;
+					&apos;FILE ADDED.  VIEWS ALREADY EXISTS&apos;
+					&apos;FILE ADDED.  VIEWS OVERWRITTEN&apos;
+					&apos;FILE DOES NOT EXIST&apos;
+
+					- Occurs when the file being added contains no Excel sheets and/or no columns and no data
+					&apos;FILE REMOVED.  NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+					&apos;UNABLE TO REMOVE FILE.  NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+					&apos;FILE DOES NOT EXIST.  NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+
+					&apos;ERROR: Data source type not supported: &apos;+&lt;dataSourceType&gt;
+					&apos;ERROR: File Name is required.&apos;  - occurs when (allowNullFileName = 0 and (fileName IS NULL OR LENGTH(fileName) = 0))
+
+			---------------------------------------------------
+			AUTOMATED PUBLISH (ADD) - dynamicFileAutoPublish():
+			---------------------------------------------------
+				The purpose of &quot;dynamic file auto-publish&quot; is to automatically add/create the views for any new files residing 
+					in the file system.  This procedure queues up the request for each new file found into the DYNAMIC_FILE_QUEUE 
+					table.  The request is processed by the framework procedure &quot;dynamicFileQueueProcess&quot; which is triggered by the 
+					framework trigger &quot;DynamicFileFrameworkProcessTrigger&quot;.
+
+				Turn on the trigger &quot;DynamicFileFrameworkAutoPublishTrigger&quot;.  
+				Check the schedule to determine how often you want it to wake up and look for files to add to the queue.
+				The default is every 5 minutes at nn:04.  The reason for 04 is that the &quot;DynamicFileFrameworkProcessTrigger&quot;
+					wakes up on the :00 or :05 or :15 so that the processing of the Publish trigger would be picked soon
+					after it was registered.
+
+			Queuing Messages:
+				&apos;FILE ADD QUEUED&apos;				actiontype=&apos;A&apos;
+				&apos;INVALID FILENAME&apos;				actiontype=&apos;A&apos;,&apos;R&apos;
+				&apos;DUPLICATE REQUEST IGNORED&apos;		actiontype=&apos;A&apos;,&apos;R&apos;,&apos;C&apos;
+
+			Email Messages:
+				&apos;UNKNOWN&apos;
+				&apos;FILE ADDED.  NO VIEWS PUBLISHED&apos;
+				&apos;FILE ADDED.  VIEWS PUBLISHED&apos;
+				&apos;FILE ADDED.  VIEWS ALREADY EXISTS&apos;
+				&apos;FILE ADDED.  VIEWS OVERWRITTEN&apos;
+				&apos;FILE DOES NOT EXIST&apos;
+
+				- Occurs when the file being added contains no Excel sheets and/or no columns and no data
+				&apos;FILE REMOVED.  NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+				&apos;UNABLE TO REMOVE FILE.  NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+				&apos;FILE DOES NOT EXIST.  NO COLUMNS DETECTED.  VIEWS NOT PUBLISHED&apos;
+
+				&apos;ERROR: Data source type not supported: &apos;+&lt;dataSourceType&gt;
+				&apos;ERROR: File Name is required.&apos;  - occurs when (allowNullFileName = 0 and (fileName IS NULL OR LENGTH(fileName) = 0))
+
+			---------------------------------------------------
+			AUTOMATED CLEANUP - dynamicFileCleanup():
+			---------------------------------------------------
+				The purpose of the &quot;dynamic file cleanup&quot; is to automatically clean-up old files that have a file timestamp beyond 
+					the retention policy.  The file and the associate views are removed. This procedure queues up the request into 
+					the DYNAMIC_FILE_QUEUE table.  The request is processed by the framework procedure &quot;dynamicFileQueueProcess&quot; 
+					which is triggered by the framework trigger &quot;DynamicFileFrameworkProcessTrigger&quot;.
+
+				Turn on the trigger &quot;DynamicFileFrameworkCleanupTrigger&quot;.
+				Check the schedule to determine how often you want it to wake up and schedule a cleanup into the queue.
+				The default is once a day at 4:59 am.  This is on an odd number for the same reason as the publish trigger
+					is so the processing would be picked up soon after it was registered.
+
+				Queuing Messages:
+					&apos;FILE CLEAN-UP QUEUED&apos;			actiontype=&apos;C&apos;
+					&apos;DUPLICATE REQUEST IGNORED&apos;		actiontype=&apos;A&apos;,&apos;R&apos;,&apos;C&apos;
+
+				Email Messages:
+					&apos;RETENTION POLICY EXCEEDED.  &apos; + dynamicFileRemove message
+					or
+					&apos;FILE NOT SUPPORTED.  &apos; + dynamicFileRemove message
+
+					- dynamicFileRemove messages:
+					&apos;FILE REMOVED.  &apos; + 1 of the following:
+							&apos;PUBLISHED VIEWS REMOVED&apos;
+							&apos;VIEWS NOT PUBLISHED&apos;
+					&apos;UNABLE TO REMOVE FILE.  &apos;  + 1 of the following:
+							&apos;PUBLISHED VIEWS REMOVED&apos;
+							&apos;VIEWS NOT PUBLISHED&apos;
+					&apos;FILE DOES NOT EXIST.  &apos; + 1 of the following:
+							&apos;PUBLISHED VIEWS REMOVED&apos;
+							&apos;VIEWS NOT PUBLISHED&apos;
+
+					&apos;FILE NOT ASSOCIATED WITH USERNAME=&lt;username&gt;&apos;
+					&apos;FILE DOES NOT EXIST.  FILE NOT ASSOCIATED WITH USERNAME=&lt;username&gt;&apos;
+
+
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE &quot;_README_INSTALLATION&quot;()
+BEGIN
+END</attribute>
+  <attribute name="creationDate" type="LONG">1454346388895</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1519683412781</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1454346388895</attribute>
+</metadata>

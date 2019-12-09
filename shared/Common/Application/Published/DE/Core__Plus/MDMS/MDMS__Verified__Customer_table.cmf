@@ -1,0 +1,108 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="MDMS_Verified_Customer" path="/shared/Common/Application/Published/DE/Core_Plus/MDMS/MDMS_Verified_Customer" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="aff_no" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ibo_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_typ_cd" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="status_cd" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bus_natr_cd" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bus_entity_no" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="verfd_cust_flg" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Business/Business/Core_Plus/MDMS_Verified_Customer" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="aff_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="ibo_no">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0"/>
+      </element>
+      <element name="imc_typ_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="status_cd">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="bus_natr_cd">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="bus_entity_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="verfd_cust_flg">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(MDMS_Verified_Customer.aff_no AS INTEGER) AS aff_no,
+	CAST(MDMS_Verified_Customer.ibo_no AS DECIMAL(20,0)) AS ibo_no,
+	CAST(MDMS_Verified_Customer.imc_typ_cd AS VARCHAR(1)) AS imc_typ_cd,
+	CAST(MDMS_Verified_Customer.status_cd AS VARCHAR(2)) AS status_cd,
+	CAST(MDMS_Verified_Customer.bus_natr_cd AS VARCHAR(2)) AS bus_natr_cd,
+	CAST(MDMS_Verified_Customer.bus_entity_no AS INTEGER) AS bus_entity_no,
+	CAST(MDMS_Verified_Customer.verfd_cust_flg AS INTEGER) AS verfd_cust_flg 
+FROM
+	/shared/Common/Business/Business/Core_Plus/MDMS_Verified_Customer MDMS_Verified_Customer</attribute>
+  <attribute name="creationDate" type="LONG">1568638497409</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1568638615666</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1568638497409</attribute>
+</metadata>

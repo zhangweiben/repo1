@@ -1,0 +1,613 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Account_Snapshot" path="/shared/Common/Business/Business/General/Account_Snapshot" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="mo_yr_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="imc_key_no" nullable="true">
+      <datatype type="INTEGER"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="globl_imc_type_cd" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="globl_imc_type_desc" nullable="true">
+      <datatype type="STRING" maxLength="25"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/GDW/Awv00060_Globl_Imc_Type_Dim" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="globl_imc_type_key_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="globl_imc_type_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="globl_imc_type_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+      <element name="globl_imc_emp_flg">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="globl_imc_hnr_flg">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="globl_imc_lgcy_type_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="globl_imc_lgcy_type_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Physical/Formatting/GDW/Dwv00050_Imc_Ccyymm_Fact" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="snap_mo_yr_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="sub_loa_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="imc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_aff_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_cntry_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_derived_nm">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="imc_st_prov_cd">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="imc_postl_cd">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="imc_type_cd">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="engage_flg">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_curr_seg_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_appl_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="last_renew_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_dlete_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="spon_imc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_class_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="imc_high_awd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_achv_awd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_curr_qual_awd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_ispon_flg">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="imc_ispon_aff_id">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="imc_lang_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="imc_ispon_imc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_expire_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="frontline_cnt">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lom_dy_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="loa_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="globl_imc_type_key_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="postl_cd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="status_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="last_ord_oimc_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="last_ord_vimc_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="last_spon_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="last_updt_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="last_load_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="last_updt_proc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="last_load_proc_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="los_grp_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="bus_natr_cd">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="last_ord_simc_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="rpt_imc_flg">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="frontln_distb_cnt">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="frontln_cust_cnt">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="frontln_engaged_cnt">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="contb_distb_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="puc_user_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="puc_sponsor_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="local_seg_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="local_imc_type_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="insrt_proc_nm">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="insrt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="updt_user_id">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="updt_proc_nm">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="updt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="spon_ibo_cnt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="spon_ibo_rcency">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="spon_ibo_flg">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="spon_cust_cnt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="spon_cust_rcency">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="spon_cust_flg">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="spon_imc_cnt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="spon_imc_rcency">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="spon_imc_flg">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="app_1_birth_dt_key_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="app_1_ethn_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="app_1_gndr_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="app_1_gndr_desc">
+        <datatype type="STRING" maxLength="7"/>
+      </element>
+      <element name="app_1_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="app_2_birth_dt_key_no">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="app_2_ethn_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="app_2_gndr_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="app_2_gndr_desc">
+        <datatype type="STRING" maxLength="7"/>
+      </element>
+      <element name="app_2_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="prm_ethn_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="curr_shop_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="mago_local_imc_type_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="mago_bus_natr_cd">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="mago_global_seg_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="missing_info_flg">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="auto_renew_pay_mthod_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="imc_signed_cntrc_date">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="reg_chnl_cd">
+        <datatype type="STRING" maxLength="40"/>
+      </element>
+      <element name="reg_chnl_nm">
+        <datatype type="STRING" maxLength="40"/>
+      </element>
+      <element name="imc_reg_url">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="imc_last_renew_year">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="imc_renewal_mthod_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="imc_renewal_mthod_desc">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="imc_signup_mthod_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="imc_signup_mthod_desc">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="imc_receive_pub_pack_flg">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="grp_leader_imc_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="spons_leader_imc_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="team_leader_imc_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="mol_imc_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="aff_leader_imc_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="imc_xcept_class_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="imc_xcept_class_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+      <element name="bus_natr_cd_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+      <element name="fulfl_cd">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="fulfl_desc">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="dwnln_act_distb_cnt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="first_pers_website_ctgry">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="first_pers_website_name">
+        <datatype type="STRING" maxLength="400"/>
+      </element>
+      <element name="first_pers_website_path">
+        <datatype type="STRING" maxLength="254"/>
+      </element>
+      <element name="first_pers_website_theme">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="frontln_client_cnt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="only_one_dwnln_lvl_flg">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="ibo_cust_lead_elgbl_flg">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="ibo_cust_lead_prgm_sign_up_flg">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="ibo_ref_flg">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="imc_bo_blck_flg">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="imc_ethnc_targt_cd">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="imc_ethnc_targt_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="imc_hisp_ethnc_targt_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="imc_hard_mail_hold_flg">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="imc_match_cust_adr_flg">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="imc_match_ibo_adr_flg">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="imc_vintg_grp_cd">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="imc_vintg_grp_desc">
+        <datatype type="STRING" maxLength="75"/>
+      </element>
+      <element name="paid_dir_flg">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="prm_email_frmt_desc">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="prm_vm">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="prm_vm_typ_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="prm_vm_typ_desc">
+        <datatype type="STRING" maxLength="40"/>
+      </element>
+      <element name="sec_email_adr">
+        <datatype type="STRING" maxLength="400"/>
+      </element>
+      <element name="sec_email_flg">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="sec_pers_website_ctgry">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="sec_pers_website_name">
+        <datatype type="STRING" maxLength="400"/>
+      </element>
+      <element name="sec_pers_website_path">
+        <datatype type="STRING" maxLength="254"/>
+      </element>
+      <element name="sec_pers_website_theme">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="share_imc_cntac_info_flg">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="share_imc_ord_info_flg">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="withd_tax_cd">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="withd_tax_desc">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="last_distb_spon_dt_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="imc_inact_stat_dt_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="prm_lang_desc">
+        <datatype type="STRING" maxLength="25"/>
+      </element>
+      <element name="app_1_pref_first_nm">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="app_2_pref_first_nm">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="lcl_last_pc_2_sr_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lcl_last_pc_2_aa_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lcl_last_pc_2_emp_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lcl_last_sr_2_aa_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="gbl_last_distb_to_rc_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="gbl_last_rc_2_distb_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="last_oimc_bv_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="last_simc_bv_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="last_vimc_bv_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lcl_curr_type_start_dt_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_u35_flg">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="imc_dlt_cd">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="imc_dlt_desc">
+        <datatype type="STRING" maxLength="33"/>
+      </element>
+      <element name="imc_age_brckt_cd">
+        <datatype type="STRING" maxLength="14"/>
+      </element>
+      <element name="imc_age_brckt_desc">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="imc_gndr_cd">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="imc_gndr_desc">
+        <datatype type="STRING" maxLength="7"/>
+      </element>
+      <element name="ctd_imc_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ctd_imc_cntry_key_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="ctd_imc_cntry_nm">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="ctd_imc_loa_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="ctd_imc_loa_cd">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="ctd_imc_loa_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="ctd_globl_amway_account_id">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ctd_globl_amway_account_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="ctd_imc_name">
+        <datatype type="STRING" maxLength="360"/>
+      </element>
+      <element name="imc_expec_awd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="imc_expec_faa_awd_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="mobl_doc_complete">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="imc_latin_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="app_1_latin_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="app_2_latin_name">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="escrw_amt">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="escrw_curcy_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="escrw_type">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="gba_key_no">
+        <datatype type="INTEGER"/>
+      </element>
+      <element name="lcl_los_grp_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    Dwv00050_Imc_Ccyymm_Fact.snap_mo_yr_key_no mo_yr_key_no, 
+    Dwv00050_Imc_Ccyymm_Fact.imc_key_no, 
+    Awv00060_Globl_Imc_Type_Dim.globl_imc_type_cd, 
+    Awv00060_Globl_Imc_Type_Dim.globl_imc_type_desc
+FROM      
+    /shared/Common/Physical/Formatting/GDW/Dwv00050_Imc_Ccyymm_Fact Dwv00050_Imc_Ccyymm_Fact INNER JOIN 
+        /shared/Common/Physical/Formatting/GDW/Awv00060_Globl_Imc_Type_Dim Awv00060_Globl_Imc_Type_Dim
+    ON Dwv00050_Imc_Ccyymm_Fact.globl_imc_type_key_no = Awv00060_Globl_Imc_Type_Dim.globl_imc_type_key_no</attribute>
+  <attribute name="creationDate" type="LONG">1556731327940</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">250108</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573161499536</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">250108</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="BYTE_ARRAY">EIEJBAAAAAMQUQYBABgARAB3AHYAMAAwADAANQAwAF8ASQBtAGMAXwBDAGMAeQB5AG0AbQBfAEYAYQBjAHQGAgAYAEQAdwB2ADAAMAAwADUAMABfAEkAbQBjAF8AQwBjAHkAeQBtAG0AXwBGAGEAYwB0Awv/////Awr/////Awz/////CxEABgAGAHMAaABhAHIAZQBkAAYAQwBvAG0AbQBvAG4ACABQAGgAeQBzAGkAYwBhAGwACgBGAG8AcgBtAGEAdAB0AGkAbgBnAAMARwBEAFcAGABEAHcAdgAwADAAMAA1ADAAXwBJAG0AYwBfAEMAYwB5AHkAbQBtAF8ARgBhAGMAdP//EFEGAQAbAEEAdwB2ADAAMAAwADYAMABfAEcAbABvAGIAbABfAEkAbQBjAF8AVAB5AHAAZQBfAEQAaQBtBgIAGwBBAHcAdgAwADAAMAA2ADAAXwBHAGwAbwBiAGwAXwBJAG0AYwBfAFQAeQBwAGUAXwBEAGkAbQML/////wMK/////wMM/////wsRAAYABgBzAGgAYQByAGUAZAAGAEMAbwBtAG0AbwBuAAgAUABoAHkAcwBpAGMAYQBsAAoARgBvAHIAbQBhAHQAdABpAG4AZwADAEcARABXABsAQQB3AHYAMAAwADAANgAwAF8ARwBsAG8AYgBsAF8ASQBtAGMAXwBUAHkAcABlAF8ARABpAG3//xBTBgkABQBJAE4ATgBFAFIDDQAAAAADDgAAAAEIDxBiBgcAAQA9AQUACAMQQQYBABUAZwBsAG8AYgBsAF8AaQBtAGMAXwB0AHkAcABlAF8AawBlAHkAXwBuAG8GAgAABgP//wYE//8DCv////8DCwAAAAD//wgEEEEGAQAVAGcAbABvAGIAbABfAGkAbQBjAF8AdAB5AHAAZQBfAGsAZQB5AF8AbgBvBgIAAAYD//8GBP//Awr/////AwsAAAAB////////AwUAAAABCAIQMQYB//8BAgEBBgABAwABBAABBQADBwAAAAAHCQAAAAEAAAACCQoAAAAEEEEGAQARAHMAbgBhAHAAXwBtAG8AXwB5AHIAXwBrAGUAeQBfAG4AbwYCAAwAbQBvAF8AeQByAF8AawBlAHkAXwBuAG8GA///BgT//wMK/////wgMEBkDEgAAAAEEB4AAAAAAAAAA//8DCwAAAAD//xBBBgEACgBpAG0AYwBfAGsAZQB5AF8AbgBvBgIAAAYD//8GBP//Awr/////CAwQGQMSAAAAAQQHgAAAAAAAAAD//wMLAAAAAP//EEEGAQARAGcAbABvAGIAbABfAGkAbQBjAF8AdAB5AHAAZQBfAGMAZAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAABBAQAAAAAAAAAAQETAf//AwsAAAAB//8QQQYBABMAZwBsAG8AYgBsAF8AaQBtAGMAXwB0AHkAcABlAF8AZABlAHMAYwYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAAZARMB//8DCwAAAAH/////CQYAAAADEIIDCgAAAJMDCwAAAIcDDAAAAMgDDQAAAeT//xCCAwoAAAHQAwsAAACbAwwAAADIAw0AAAEB//8QggMK/////wML/////wMM/////wMN////////CAMQcQMBAAAACwMCAAAAMgkDAAACJhB0AwYAAAAA//8QcgYEAAwAbQBvAF8AeQByAF8AawBlAHkAXwBuAG///xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAH//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAAv//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAD//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2////////</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1556731327940</attribute>
+</metadata>

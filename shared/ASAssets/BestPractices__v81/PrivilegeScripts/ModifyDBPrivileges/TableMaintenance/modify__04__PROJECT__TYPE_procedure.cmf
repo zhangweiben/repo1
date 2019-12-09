@@ -1,0 +1,299 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="modify_04_PROJECT_TYPE" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/ModifyDBPrivileges/TableMaintenance/modify_04_PROJECT_TYPE" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <parameters>
+    <parameter name="datasource" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="setInactive" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="1"/>
+    </parameter>
+    <parameter name="performDelete" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="1"/>
+    </parameter>
+    <parameter name="inPROJECT_NAME" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inORGANIZATION_NAME" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="message" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getPrivilegeDatasourceToScriptMapping" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="scriptType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="datasource" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="scriptMapping" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/ModifyDBPrivileges/TableMaintenance/modify_01_ORGANIZATION_TYPE" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="datasource" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="setInactive" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="performDelete" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="inORGANIZATION_NAME" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="message" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	This procedure is used to insert/update/delete/inactivate rows in the PROJECT_TYPE table.
+	This procedure performs a cascade modify for the ORGANIZATION_TYPE table also.  
+	However, it does not perform the cascade inactivate.  That must be done explicitly on each table.
+	
+	Input:
+		datasource				- REQUIRED FILTER: DB_[LLE,PROD], The source of the groups. Refer to getPrivilegeDatasourceToScriptMapping().
+		setInactive				- Set the ISACTIVE flag to N
+									Y=if the record exists set it inactive.  Overrides performDelete
+									N/null=do not perform this operation.
+		performDelete			- Delete the row if it exists
+									Y=perform a delete using filters supplied.
+									N/null=do not perform delete but perform insert or update instead.
+		inPROJECT_NAME			- The project name to insert/update/delete/inactivate
+									If both setInactive and performDelete are null or N then perform the insert.
+									If the row does not exist then insert.
+									If the row already exists then do nothing.
+		inORGANIZATION_NAME		- The organiation name to insert/update/delete/inactivate
+			Examples:
+				PROJECT_NAME	ORGANIZATION_NAME
+				PROJECT1		ORG1
+				PROJECT2		ORG2
+	Output:
+		message
+
+	Modified Date:	Modified By:		CIS Version:	Reason:
+	--------------	------------------	------------	-------
+	05/16/2017		Mike Tinius			7.0.5			Adapted for Data Abstraction Best Practices.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE modify_04_PROJECT_TYPE(
+	IN 	datasource				VARCHAR(255),-- REQUIRED FILTER: DB_[LLE,PROD], The source of the groups. Refer to getPrivilegeDatasourceToScriptMapping().
+	IN	setInactive				VARCHAR(1),	-- Y=if the record exists set it inactive.  Overrides performDelete
+											-- N/null=do not perform this operation.
+	IN	performDelete			VARCHAR(1),	-- Y=perform a delete using filters supplied.
+											-- N/null=do not perform delete but perform insert or update instead.
+	IN	inPROJECT_NAME			VARCHAR(255),
+	IN	inORGANIZATION_NAME		VARCHAR(255),
+	OUT	message					LONGVARCHAR
+)
+BEGIN
+	DECLARE moduleName		VARCHAR DEFAULT &apos;modify_04_PROJECT_TYPE&apos;;
+	DECLARE debug			CHAR(1) DEFAULT &apos;Y&apos;;
+	DECLARE ex				EXCEPTION;
+	DECLARE cnt				INTEGER;
+	DECLARE numRows			INTEGER DEFAULT 0;
+	DECLARE sqlStatement	LONGVARCHAR;
+	DECLARE scriptPath		VARCHAR(4000);
+	DECLARE countCursor		CURSOR(rowCount INTEGER);
+
+	set message = &apos;&apos;;
+	IF (datasource IS NOT NULL AND datasource = &apos;EXCEL&apos;) THEN
+		raise ex value &apos;The input variable datasource=&quot;EXCEL&quot; is not valid.&apos;;
+	END IF;
+
+	if (inPROJECT_NAME is null or length(trim(inPROJECT_NAME)) = 0) then
+		raise ex value &apos;inPROJECT_NAME cannot be null or empty.&apos;;
+	end if;
+	if (inORGANIZATION_NAME is null or length(trim(inORGANIZATION_NAME)) = 0) then
+		raise ex value &apos;inORGANIZATION_NAME cannot be null or empty.&apos;;
+	end if;
+	-- Determine the operation: insert/update/delete/inactivate
+	if ((performDelete is null or upper(performDelete) = &apos;N&apos;) and (setInactive is null or upper(setInactive) = &apos;N&apos;)) then
+		call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getPrivilegeDatasourceToScriptMapping(&apos;PT&apos;, datasource, scriptPath);
+		set sqlStatement = &apos;select count(*) cnt from &apos;||scriptPath||&apos; where PROJECT_NAME = &apos;&apos;&apos;||inPROJECT_NAME||&apos;&apos;&apos; and ORGANIZATION_NAME = &apos;&apos;&apos;||inORGANIZATION_NAME||&apos;&apos;&apos;&apos;;
+		open countCursor for sqlStatement;
+		fetch countCursor into cnt;
+		close countCursor;
+		if (cnt &gt; 0) then
+			set message = &apos;PROJECT_TYPE.PROJECT_NAME=[&apos;||inPROJECT_NAME||&apos;] and ORGANIZATION_NAME=[&apos;||inORGANIZATION_NAME||&apos;] already exists.&apos;;
+		else
+			-- Insert ORGANIZATION_NAME into the ORGANIZATION_TYPE table
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/ModifyDBPrivileges/TableMaintenance/modify_01_ORGANIZATION_TYPE(datasource, null, null, inORGANIZATION_NAME, message);
+
+			-- Insert the ROJECT_NAME
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getPrivilegeDatasourceToScriptMapping(&apos;PT&apos;, datasource, scriptPath);
+			set sqlStatement = &apos;insert into &apos;||scriptPath||&apos; (PROJECT_NAME, ORGANIZATION_NAME, ISACTIVE) values (&apos;&apos;&apos;||inPROJECT_NAME||&apos;&apos;&apos;, &apos;&apos;&apos;||inORGANIZATION_NAME||&apos;&apos;&apos;, &apos;&apos;Y&apos;&apos;)&apos;;
+			if (debug is not null and UPPER(debug) = &apos;Y&apos;) then
+				call print(moduleName || &apos; : sqlStatement=&apos;||SUBSTRING(moduleName || &apos; : sqlStatement=&apos;||sqlStatement,1,63900));
+			end if;
+			-- Execute the SQL INSERT
+			execute immediate sqlStatement;
+			set message = &apos;SUCCESS INSERTING PROJECT_NAME=[&apos;||inPROJECT_NAME||&apos;] and ORGANIZATION_NAME=[&apos;||inORGANIZATION_NAME||&apos;]&apos;;
+		end if;
+	elseif ((performDelete is not null and upper(performDelete) = &apos;Y&apos;) or (setInactive is not null and upper(setInactive) = &apos;Y&apos;)) then
+		call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getPrivilegeDatasourceToScriptMapping(&apos;PT&apos;, datasource, scriptPath);
+		set sqlStatement = &apos;select count(*) cnt from &apos;||scriptPath||&apos; where PROJECT_NAME = &apos;&apos;&apos;||inPROJECT_NAME||&apos;&apos;&apos; and ORGANIZATION_NAME = &apos;&apos;&apos;||inORGANIZATION_NAME||&apos;&apos;&apos;&apos;;
+		open countCursor for sqlStatement;
+		fetch countCursor into cnt;
+		close countCursor;
+		if (cnt &gt; 0) then
+			set message = &apos;Rows still exist containing PROJECT_NAME=[&apos;||inPROJECT_NAME||&apos;] and ORGANIZATION_NAME=[&apos;||inORGANIZATION_NAME||&apos;] in the following tables:&apos;;
+			-- Test COMPOSITE_PRIVILEGES
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getPrivilegeDatasourceToScriptMapping(&apos;CP&apos;, datasource, scriptPath);
+			set sqlStatement = &apos;select count(*) cnt from &apos;||scriptPath||&apos; where PROJECT_NAME = &apos;&apos;&apos;||inPROJECT_NAME||&apos;&apos;&apos; and ORGANIZATION_NAME = &apos;&apos;&apos;||inORGANIZATION_NAME||&apos;&apos;&apos;&apos;;
+			open countCursor for sqlStatement;
+			fetch countCursor into cnt;
+			close countCursor;
+			if (cnt &gt; 0) then
+				set message = message || &apos; COMPOSITE_PRIVILEGES,&apos;;
+			end if;
+			set numRows = numRows + cnt;
+
+			-- Test COMPOSITE_STUDIO_RIGHTS (GROUPS)
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getPrivilegeDatasourceToScriptMapping(&apos;CG&apos;, datasource, scriptPath);
+			set sqlStatement = &apos;select count(*) cnt from &apos;||scriptPath||&apos; where PROJECT_NAME = &apos;&apos;&apos;||inPROJECT_NAME||&apos;&apos;&apos; and ORGANIZATION_NAME = &apos;&apos;&apos;||inORGANIZATION_NAME||&apos;&apos;&apos;&apos;;
+			open countCursor for sqlStatement;
+			fetch countCursor into cnt;
+			close countCursor;
+			if (cnt &gt; 0) then
+				set message = message || &apos; COMPOSITE_STUDIO_RIGHTS,&apos;;
+			end if;
+			set numRows = numRows + cnt;
+
+			-- Test COMPOSITE_USER
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getPrivilegeDatasourceToScriptMapping(&apos;CU&apos;, datasource, scriptPath);
+			set sqlStatement = &apos;select count(*) cnt from &apos;||scriptPath||&apos; where PROJECT_NAME = &apos;&apos;&apos;||inPROJECT_NAME||&apos;&apos;&apos; and ORGANIZATION_NAME = &apos;&apos;&apos;||inORGANIZATION_NAME||&apos;&apos;&apos;&apos;;
+			open countCursor for sqlStatement;
+			fetch countCursor into cnt;
+			close countCursor;
+			if (cnt &gt; 0) then
+				set message = message || &apos; COMPOSITE_USER,&apos;;
+			end if;
+			set numRows = numRows + cnt;
+
+			-- Test SUBPROJECT_TYPE
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getPrivilegeDatasourceToScriptMapping(&apos;ST&apos;, datasource, scriptPath);
+			set sqlStatement = &apos;select count(*) cnt from &apos;||scriptPath||&apos; where PROJECT_NAME = &apos;&apos;&apos;||inPROJECT_NAME||&apos;&apos;&apos; and ORGANIZATION_NAME = &apos;&apos;&apos;||inORGANIZATION_NAME||&apos;&apos;&apos;&apos;;
+			open countCursor for sqlStatement;
+			fetch countCursor into cnt;
+			close countCursor;
+			if (cnt &gt; 0) then
+				set message = message || &apos; SUBPROJECT_TYPE,&apos;;
+			end if;
+			set numRows = numRows + cnt;
+
+			if (numRows = 0) then
+				if (setInactive is not null and upper(setInactive) = &apos;Y&apos;) then
+					-- Update ISACTIVE from PROJECT_TYPE table
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getPrivilegeDatasourceToScriptMapping(&apos;PT&apos;, datasource, scriptPath);
+					set sqlStatement = &apos;UPDATE &apos;||scriptPath||&apos; SET ISACTIVE = &apos;&apos;N&apos;&apos; WHERE PROJECT_NAME = &apos;&apos;&apos;||inPROJECT_NAME||&apos;&apos;&apos; and ORGANIZATION_NAME = &apos;&apos;&apos;||inORGANIZATION_NAME||&apos;&apos;&apos;&apos;;
+					execute immediate sqlStatement;
+					set message = &apos;SUCCESS SETTING INACTIVE PROJECT_NAME=[&apos;||inPROJECT_NAME||&apos;] and ORGANIZATION_NAME=[&apos;||inORGANIZATION_NAME||&apos;]&apos;;
+				elseif (performDelete is not null and upper(performDelete) = &apos;Y&apos;) then
+					BEGIN INDEPENDENT TRANSACTION
+						-- Delete PROJECT_NAME from PROJECT_TYPE table
+						call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getPrivilegeDatasourceToScriptMapping(&apos;PT&apos;, datasource, scriptPath);
+						set sqlStatement = &apos;DELETE FROM &apos;||scriptPath||&apos; WHERE PROJECT_NAME = &apos;&apos;&apos;||inPROJECT_NAME||&apos;&apos;&apos; and ORGANIZATION_NAME = &apos;&apos;&apos;||inORGANIZATION_NAME||&apos;&apos;&apos;&apos;;
+						execute immediate sqlStatement;
+					EXCEPTION
+						ELSE
+							raise;
+					END;
+
+					-- Delete ORGANIZATION_NAME from the ORGANIZATION_TYPE table
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/ModifyDBPrivileges/TableMaintenance/modify_01_ORGANIZATION_TYPE(datasource, null, performDelete, inORGANIZATION_NAME, message);
+
+					set message = &apos;SUCCESS DELETING PROJECT_NAME=[&apos;||inPROJECT_NAME||&apos;] and ORGANIZATION_NAME=[&apos;||inORGANIZATION_NAME||&apos;]&apos;;
+				end if;
+			else
+				set message = SUBSTRING(message, 1, length(message)-1);
+			end if;
+		else
+			set message = &apos;No rows exists.&apos;;
+		end if;
+	else
+		set message = &apos;Invalid command provided.&apos;;
+	end if;
+	call print(moduleName||&apos; : &apos;||message);
+END</attribute>
+  <attribute name="creationDate" type="LONG">1491944673930</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserId" type="INTEGER">4005</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564075714164</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">4005</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">10/95</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">7/185</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1491944673930</attribute>
+</metadata>

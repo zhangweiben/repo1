@@ -1,0 +1,200 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="moveProject" path="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/moveProject" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="oldProjectPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="oldScriptsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="newProjectPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="newScriptsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="generateTestFolder" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="updateScriptText" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="overwrite" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="message" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/moveProject" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="oldProjectPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="oldScriptsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="newProjectPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="newScriptsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="generateTestFolder" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="updateScriptText" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="overwrite" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="message" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* moveProject:
+
+	This procedure is used to move an existing project to another folder structure 
+		and correctly update all of the necessary project paths including the following:
+			/shared/&lt;project&gt;/_scripts/Constants/defaultValues.basePath
+			/shared/&lt;project&gt;/_scripts/Documentation/documentationTrigger.*
+			/shared/&lt;project&gt;/_scripts/Generate/generate*
+			All project resources are automatically rebound to the new path.
+			The text for view (SQL_TABLE) and procedure (SQL_SCRIPT_PROCEDURE) resources are searched for text containing
+				the old path and replaced with the new path and then updated in the repository.
+
+	If the project path already exists, this procedure will not copy over it unless overwrite is set to 1 (true).  
+
+	Input: 
+			-- the full project path to the older project
+			--		e.g. /shared/PROJECT1
+		oldProjectPath 
+
+			-- the full path to the old project scripts folder.  
+			--		e.g. /shared/PROJECT1/_scripts
+		oldScriptsPath 
+
+			-- the full project path to the new project
+			--		e.g. /shared/PROJECT2
+		newProjectPath 
+
+			-- the full path to a project scripts.  
+			--		e.g. /shared/PROJECT2/_scripts
+		newScriptsPath	
+
+			-- determine whether to generate the Test folder or not.  
+			-- If it already exists in the old folder, it is retained and not generated.
+			--	1=generate Test folder, 
+			--	0 or null=do not generate Test folder (default)
+		generateTestFolder 
+
+			-- determine whether the VIEW or PROCEDURE text should be modified
+			--	1=modify the VIEW or PROCEDURE script text and replace old paths with new paths in the text. 
+			--	0 or null=do not modify the VIEW or PROCEDURE script text (default)
+		updateScriptText 
+
+			-- determine whether to overwrite the new project path
+			--	1=overwrite the project
+			--	0=do not overwrite the project
+		overwrite 
+	Output:
+		message - a resulting message 
+		(you must click refresh upon completion for Studio to recognize changes to the new project)
+
+	Exceptions:  ex
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	04/19/2013		Mike Tinius			5.2.0			Created new
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added oldScriptsPath and newscriptsPath for flexibility of the location of the _scripts folder.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE moveProject(
+	-- the full path to the old project including the project name
+	IN oldProjectPath		VARCHAR(4000), 
+
+	-- the full path to the old project scripts folder.  e.g. /shared/PROJECT1/_scripts
+	IN oldScriptsPath		VARCHAR(4000),
+
+	-- the full path to the new project including the project name
+	IN newProjectPath		VARCHAR(4000),
+
+	-- the full path to a project scripts.  e.g. /shared/PROJECT1/_scripts	
+	IN newScriptsPath		VARCHAR(4000),
+
+	-- 1=generate test folder, 0 or null (default)=do not generate test folder	
+	-- 		1=generate Test folder, 
+	-- 		0 or null=do not generate Test folder
+	IN generateTestFolder	BIT,
+
+	-- determine whether the VIEW or PROCEDURE text should be modified
+	-- 		1=modify the VIEW or PROCEDURE scrpt text and replace old paths with new paths in the text. 
+	-- 		0 or null=do not modify the VIEW or PROCEDURE script text
+	IN updateScriptText 	BIT,
+
+	-- determine whether to overwrite the taget project path or not
+	-- 		1=overwrite the target project
+	-- 		0 or null=do not overwrite the target project
+	IN overwrite			BIT,
+
+	OUT message				LONGVARCHAR
+)
+BEGIN
+	DECLARE debug	CHAR(1) DEFAULT &apos;Y&apos;;	-- Y=debug, N=do not debug
+
+	call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/moveProject(debug, oldProjectPath, oldScriptsPath, newProjectPath, newScriptsPath, generateTestFolder, updateScriptText, overwrite, message);
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564601299799</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

@@ -1,0 +1,252 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="pkg_Carlos_1" path="/shared/Amway_POC/_TEST/pkg_Carlos_1" type="PROCEDURE" subtype="EXTERNAL_SQL_PROCEDURE" changeToken="0">
+  <annotation/>
+  <parameters>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="CURSOR" type="TABLE" refId="1">
+        <element name="varcharColumn">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn2">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn3">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn4">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn5">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn6">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn7">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn8">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn9">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="longvarcharColumn">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn10">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn11">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn12">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn13">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn14">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="varcharColumn15">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/Amway_POC/L1_DataSources/ds_GDW" type="DATA_SOURCE">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">&lt;version 2&gt;
+
+WITH calendario AS 
+(
+select  B.CALEN_YR_KEY_NO
+from             DWSAVR01.DWV00010_DT_DIM A
+join             DWSAVR01.DWV00010_DT_DIM B
+on               (A.CALEN_YR_KEY_NO-2) &lt;= b.CALEN_YR_KEY_NO
+and              B.MO_YR_KEY_NO &lt;= A.MO_YR_KEY_NO
+where            A.CURR_CAL_YR_FLAG = &apos;Y&apos;
+GROUP BY  B.CALEN_YR_KEY_NO
+order by         B.CALEN_YR_KEY_NO DESC)
+,
+
+dias AS (SELECT a.DT_KEY_NO,a.FULL_DT,a.WK_DY_NO,a.WRK_DY_FLG,a.MO_DY_NO,a.CALEN_MO_NO,a.CURR_MNTH_FLAG,a.mo_yr_key_no,a.CALEN_YR_KEY_NO,
+a.CURR_DAY_FLAG,CALEN_YR_DY_NO
+FROM DWSAVR01.DWV00010_DT_DIM a
+JOIN calendario b 
+ON a.CALEN_YR_KEY_NO = b.CALEN_YR_KEY_NO
+WHERE a.DT_KEY_NO &lt; (SELECT DT_KEY_NO-1 FROM DWSAVR01.DWV00010_DT_DIM WHERE CURR_DAY_FLAG = &apos;Y&apos;) ----2 days
+GROUP BY a.DT_KEY_NO,a.FULL_DT,a.WK_DY_NO,a.WRK_DY_FLG,a.MO_DY_NO,a.CALEN_MO_NO,a.CURR_MNTH_FLAG,a.mo_yr_key_no,a.CALEN_YR_KEY_NO,
+a.CURR_DAY_FLAG,CALEN_YR_DY_NO)
+----SELECT * FROM dias
+,
+yesterday AS (SELECT DT_KEY_NO,(CALEN_YR_DY_NO-2) AS dia FROM DWSAVR01.DWV00010_DT_DIM WHERE CURR_MNTH_FLAG=&apos;Y&apos; AND CURR_DAY_FLAG =&apos;Y&apos;
+GROUP BY DT_KEY_NO,CALEN_YR_DY_NO ) 
+,
+mesactual AS (SELECT mo_yr_key_no, row_number() over (order by mo_yr_key_no  desc) as fynum FROM dias GROUP BY mo_yr_key_no) 
+----select * from mesactual
+,
+anoayer AS ( SELECT DT_KEY_NO,CALEN_YR_DY_NO,(CALEN_YR_DY_NO-2) AS diano FROM DWSAVR01.DWV00010_DT_DIM WHERE CURR_MNTH_FLAG=&apos;Y&apos; AND CURR_DAY_FLAG =&apos;Y&apos;
+GROUP BY DT_KEY_NO,CALEN_YR_DY_NO ) 
+----SELECT * FROM anoayer
+,
+timemensual AS (
+SELECT a.DT_KEY_NO,a.FULL_DT,a.MO_DY_NO,a.CALEN_MO_NO,a.CURR_MNTH_FLAG,a.mo_yr_key_no,a.CALEN_YR_KEY_NO,b.fynum,a.CALEN_YR_DY_NO,
+CASE WHEN a.CALEN_YR_DY_NO &lt;= (SELECT dia FROM yesterday)  THEN &apos;Y&apos; ELSE &apos;N&apos; END AS sametime
+from dias  a 
+JOIN mesactual b 
+ON a.mo_yr_key_no = b.mo_yr_key_no
+WHERE b.fynum IN (1,13)
+GROUP BY a.DT_KEY_NO,a.FULL_DT,a.WK_DY_NO,a.WRK_DY_FLG,a.MO_DY_NO,a.CALEN_MO_NO,a.CURR_MNTH_FLAG,a.mo_yr_key_no,a.CALEN_YR_KEY_NO,
+CASE WHEN a.MO_DY_NO in (SELECT dia FROM yesterday)  THEN &apos;Y&apos; ELSE &apos;N&apos; END,b.fynum,a.CALEN_YR_DY_NO
+)---sELECT * FROM timemensual
+,
+time4fy2 AS (
+SELECT a.DT_KEY_NO,a.FULL_DT,a.MO_DY_NO,a.CALEN_MO_NO,a.CURR_MNTH_FLAG,a.mo_yr_key_no,a.CALEN_YR_KEY_NO,b.fynum,a.CALEN_YR_DY_NO,
+CASE WHEN a.CALEN_YR_DY_NO &lt;= (SELECT diano FROM anoayer)  THEN &apos;Y&apos; ELSE &apos;N&apos; END AS annualstm
+from dias  a 
+JOIN mesactual b 
+ON a.mo_yr_key_no = b.mo_yr_key_no 
+GROUP BY a.DT_KEY_NO,a.FULL_DT,a.MO_DY_NO,a.CALEN_MO_NO,a.CURR_MNTH_FLAG,a.mo_yr_key_no,a.CALEN_YR_KEY_NO,b.fynum,a.CALEN_YR_DY_NO,
+CASE WHEN a.CALEN_YR_DY_NO in (SELECT diano FROM anoayer)  THEN &apos;Y&apos; ELSE &apos;N&apos; END
+)---sELECT * FROM time4fy2
+,
+anonum AS (SELECT CALEN_YR_KEY_NO, row_number() over (order by CALEN_YR_KEY_NO  desc) as CYNUM FROM time4fy2 GROUP BY CALEN_YR_KEY_NO) ----SELECT * FROM anonum
+,
+time4fy AS (
+SELECT a.DT_KEY_NO,a.FULL_DT,a.MO_DY_NO,a.CALEN_MO_NO,a.CURR_MNTH_FLAG,a.mo_yr_key_no,a.CALEN_YR_KEY_NO,a.fynum,a.CALEN_YR_DY_NO,
+a.annualstm,b.cynum
+from time4fy2 a 
+JOIN anonum b 
+ON a.CALEN_YR_KEY_NO = b.CALEN_YR_KEY_NO
+GROUP BY a.DT_KEY_NO,a.FULL_DT,a.MO_DY_NO,a.CALEN_MO_NO,a.CURR_MNTH_FLAG,a.mo_yr_key_no,a.CALEN_YR_KEY_NO,a.fynum,a.CALEN_YR_DY_NO,
+a.annualstm,b.cynum)
+----SELECT * FROM time4fy
+,
+targetpais AS (SELECT uu.CNTRY_KEY_NO,ee.CNTRY_CD,uu.AMWAY_CNTRY_CD, sum(ee.&quot;Rev2018&quot;/ee.&quot;Rev2017&quot;)-1 AS pct
+from DWSAVR01.AWV00004_CNTRY_AFF_DIM uu
+JOIN ----SELECT * FROM   SELECT * from 
+AIUL048.&quot;target2018&quot; ee 
+ON ee.CORP_CD = uu.AMWAY_CNTRY_CD
+GROUP BY uu.CNTRY_KEY_NO,ee.CNTRY_CD,uu.AMWAY_CNTRY_CD)
+,
+diario as(
+SELECT max(dd.MO_YR_KEY_NO) AS monthyear,max(FULL_DT) AS fulldt,ord.OPER_CNTRY_KEY_NO, 
+sum(CASE WHEN dd.fynum =1 THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END) AS &quot;Cmonth&quot;,
+sum(CASE WHEN dd.fynum =13 THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END) AS &quot;STLYmonth&quot;,
+(sum(CASE WHEN dd.fynum =13 THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END))*ee.pct+
+(sum(CASE WHEN dd.fynum =13 THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END))AS &quot;Cmonthtarget&quot;
+FROM  DWSAVR01.DWV10612_DMAND_ORD_DTL_FACT ORD 
+join DWSAVR01.DWV01021_IMC_MASTER_DIM tt
+       ON tt.imc_key_no = ord.ctc_imc_key_no
+       AND tt.IMC_CNTRY_KEY_NO = ord.OPER_CNTRY_KEY_NO
+INNER JOIN  DWSAVR01.DWV00710_ORD_CD_DIM ORD_CD 
+    On ORD.ORD_CD_KEY_NO = ORD_CD.ORD_CD_KEY_NO 
+JOIN timemensual dd
+       ON dd.DT_KEY_NO = ord.ORD_DT_KEY_NO
+JOIN DWSAVR01.DWV05017_MOS_EXCHG_RT_DIM EXCHG_RT
+     ON ORD.MO_YR_CURCY_COMB_KEY_NO = EXCHG_RT.COMB_CURCY_MO_YR_CURCY_KEY_NO
+INNER JOIN DWSAVR01.DWV00720_ORD_LN_DIM qq
+ON qq.ORD_LN_KEY_NO = ord.ORD_LN_KEY_NO
+LEFT JOIN targetpais ee 
+ON ee.CNTRY_KEY_NO = ord.OPER_CNTRY_KEY_NO
+WHERE  ((OPER_CNTRY_KEY_NO  NOT IN (20,22)
+    AND PAY_REQ_FLG &lt;&gt; &apos;N&apos;)
+               OR (OPER_CNTRY_KEY_NO IN (20,22)
+                AND PAY_REQ_FLG NOT IN(&apos;N&apos;,&apos;P&apos;)))
+----and ord.OPER_CNTRY_KEY_NO&lt;&gt;55
+and ord.OPER_CNTRY_KEY_NO=3
+AND         ORD_CD.CANC_FLG = &apos;N&apos; 
+---AND          ord.ADJ_TYPE_KEY_NO &lt;&gt;2
+----AND qq.ORD_LN_DISP_CD NOT IN (&apos;4&apos;,&apos;5&apos;,&apos;8&apos;,&apos;7&apos;,&apos;6&apos;)
+AND dd.sametime=&apos;Y&apos;
+AND dd.fynum IN (1,13)
+GROUP BY ord.OPER_CNTRY_KEY_NO,ee.pct) ----select * from diario
+,
+annual AS (
+SELECT max(dd.MO_YR_KEY_NO) AS monthyear,max(FULL_DT) AS fulldt,ord.OPER_CNTRY_KEY_NO, 
+sum(CASE WHEN dd.CYNUM =1 AND dd.ANNUALSTM=&apos;Y&apos; THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END) AS &quot;CYCurrent&quot;,
+sum(CASE WHEN dd.CYNUM =2 AND dd.ANNUALSTM=&apos;Y&apos; THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END) AS &quot;LYcurrent&quot;,
+(sum(CASE WHEN dd.CYNUM =2 AND dd.ANNUALSTM=&apos;Y&apos; THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END)) *ee.pct+
+(sum(CASE WHEN dd.CYNUM =2 AND dd.ANNUALSTM=&apos;Y&apos; THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END)) AS &quot;CYcurrentarget&quot;,
+sum(CASE WHEN dd.CYNUM =2  THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END) AS &quot;Lastyeartotal&quot;,
+(sum(CASE WHEN dd.CYNUM IN (1)  AND dd.ANNUALSTM=&apos;Y&apos; THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END) /
+(sum(CASE WHEN dd.CYNUM IN (2,3)  AND dd.ANNUALSTM=&apos;Y&apos; THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END)/
+sum(CASE WHEN dd.CYNUM IN (2,3) THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END))) AS &quot;Currentyeartotal&quot;,
+(sum(CASE WHEN dd.CYNUM =2  THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END))*ee.pct+
+(sum(CASE WHEN dd.CYNUM =2  THEN (ORD.IBO_PRICE_LC_AMT * EXCHG_RT.TO_USD_BUDGT_EXCHG_RT) ELSE NULL END)) AS &quot;CYtotaltarget&quot;
+FROM  DWSAVR01.DWV10612_DMAND_ORD_DTL_FACT ORD 
+join DWSAVR01.DWV01021_IMC_MASTER_DIM tt
+       ON tt.imc_key_no = ord.ctc_imc_key_no
+       AND tt.IMC_CNTRY_KEY_NO = ord.OPER_CNTRY_KEY_NO
+INNER JOIN  DWSAVR01.DWV00710_ORD_CD_DIM ORD_CD 
+    On ORD.ORD_CD_KEY_NO = ORD_CD.ORD_CD_KEY_NO 
+JOIN time4fy dd
+       ON dd.DT_KEY_NO = ord.ORD_DT_KEY_NO
+JOIN DWSAVR01.DWV05017_MOS_EXCHG_RT_DIM EXCHG_RT
+     ON ORD.MO_YR_CURCY_COMB_KEY_NO = EXCHG_RT.COMB_CURCY_MO_YR_CURCY_KEY_NO
+INNER JOIN DWSAVR01.DWV00720_ORD_LN_DIM qq
+ON qq.ORD_LN_KEY_NO = ord.ORD_LN_KEY_NO
+LEFT JOIN targetpais ee 
+ON ee.CNTRY_KEY_NO = ord.OPER_CNTRY_KEY_NO
+WHERE  ((OPER_CNTRY_KEY_NO  NOT IN (20,22)
+                AND PAY_REQ_FLG &lt;&gt; &apos;N&apos;)
+                OR (OPER_CNTRY_KEY_NO IN (20,22)
+                AND PAY_REQ_FLG NOT IN(&apos;N&apos;,&apos;P&apos;)))
+and ord.OPER_CNTRY_KEY_NO&lt;&gt;55
+---and ord.OPER_CNTRY_KEY_NO=3
+AND         ORD_CD.CANC_FLG = &apos;N&apos; 
+AND        ord.ADJ_TYPE_KEY_NO &lt;&gt;2
+AND qq.ORD_LN_DISP_CD NOT IN (&apos;4&apos;,&apos;5&apos;,&apos;8&apos;,&apos;7&apos;,&apos;6&apos;)
+GROUP BY ord.OPER_CNTRY_KEY_NO,ee.pct)
+----SELECT * FROM annual
+,
+database1 AS (SELECT a.MONTHYEAR,a.FULLDT,a.OPER_CNTRY_KEY_NO,a.&quot;Cmonth&quot;,a.&quot;STLYmonth&quot;,a.&quot;Cmonthtarget&quot;,     
+c.&quot;CYCurrent&quot;,c.&quot;LYcurrent&quot;,c.&quot;CYcurrentarget&quot;,c.&quot;Currentyeartotal&quot;,c.&quot;Lastyeartotal&quot;,c.&quot;CYtotaltarget&quot;
+FROM diario a 
+JOIN annual c 
+ON a.OPER_CNTRY_KEY_NO = c.OPER_CNTRY_KEY_NO
+GROUP BY a.MONTHYEAR,a.FULLDT,a.OPER_CNTRY_KEY_NO,a.&quot;Cmonth&quot;,a.&quot;STLYmonth&quot;,a.&quot;Cmonthtarget&quot;,     
+c.&quot;CYCurrent&quot;,c.&quot;LYcurrent&quot;,c.&quot;CYcurrentarget&quot;,c.&quot;Currentyeartotal&quot;,c.&quot;Lastyeartotal&quot;,c.&quot;CYtotaltarget&quot;
+)----SELECT * FROM database1
+,
+reporte AS (
+SELECT a.MONTHYEAR,a.FULLDT,a.OPER_CNTRY_KEY_NO,a.&quot;Cmonth&quot;,a.&quot;STLYmonth&quot;,a.&quot;Cmonthtarget&quot;,     
+a.&quot;CYCurrent&quot;,a.&quot;LYcurrent&quot;,a.&quot;CYcurrentarget&quot;,a.&quot;Currentyeartotal&quot;,a.&quot;Lastyeartotal&quot;,a.&quot;CYtotaltarget&quot;,
+b.CNTRY_SHORT_NM,b.MRKT_CLSTR_DESC,b.SUB_RGN_DESC,b.RGN_DESC
+FROM database1 a 
+JOIN DWSAVR01.AWV00004_CNTRY_AFF_DIM b 
+ON a.OPER_CNTRY_KEY_NO = b.CNTRY_KEY_NO
+GROUP BY a.MONTHYEAR,a.FULLDT,a.OPER_CNTRY_KEY_NO,a.&quot;Cmonth&quot;,a.&quot;STLYmonth&quot;,a.&quot;Cmonthtarget&quot;,     
+a.&quot;CYCurrent&quot;,a.&quot;LYcurrent&quot;,a.&quot;CYcurrentarget&quot;,a.&quot;Currentyeartotal&quot;,a.&quot;Lastyeartotal&quot;,a.&quot;CYtotaltarget&quot;,
+b.CNTRY_SHORT_NM,b.MRKT_CLSTR_DESC,b.SUB_RGN_DESC,b.RGN_DESC
+)
+SELECT * FROM reporte
+</attribute>
+  <attribute name="cacheDeltaLoader" type="NULL"/>
+  <attribute name="cacheIncremental" type="BOOLEAN">false</attribute>
+  <attribute name="cacheLastTracking" type="STRING">/lib/sources/defaultCacheDataSource/ciscache/cstracking</attribute>
+  <attribute name="cachePostRefreshCallback" type="NULL"/>
+  <attribute name="cachePreRefreshCallback" type="NULL"/>
+  <attribute name="cachePullBasedIncremental" type="BOOLEAN">false</attribute>
+  <attribute name="cacheRefreshMode" type="STRING">MANUAL</attribute>
+  <attribute name="cacheSnapshotLoader" type="NULL"/>
+  <attribute name="creationDate" type="LONG">1534276125946</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="isSingleSelect" type="STRING">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1534361703497</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="passThroughSource" type="STRING">/shared/Amway_POC/L1_DataSources/ds_GDW</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1534276125946</attribute>
+</metadata>

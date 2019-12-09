@@ -1,0 +1,207 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Glbl_Party_Dist_Rlt_Mdms_Raw" path="/shared/Common/Physical/Formatting/MDMS/Glbl_Party_Dist_Rlt_Mdms_Raw" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="dist_id" nullable="true">
+      <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ssr_party_id" nullable="true">
+      <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="role_cd" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="primary_accnt" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="subscription_flg" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_creat_dtm" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_creat_user_nm" nullable="true">
+      <datatype type="STRING" minLength="16" maxLength="16"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_chng_dtm" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_chng_user_nm" nullable="true">
+      <datatype type="STRING" minLength="16" maxLength="16"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_chng_host_nm" nullable="true">
+      <datatype type="STRING" maxLength="60"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sft_dlete_dtm" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="as400_sync_dtm" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="status_cd" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_chng_modul_nm" nullable="true">
+      <datatype type="STRING" minLength="30" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="succsn_seq_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="czshp_typ_cd" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/OnPremises/Oracle_GDW/DWSANL02/GLBL_PARTY_DIST_RLT_MDMS_RAW" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="DIST_ID" nullable="false">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0"/>
+      </element>
+      <element name="SSR_PARTY_ID" nullable="false">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0"/>
+      </element>
+      <element name="ROLE_CD">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="PRIMARY_ACCNT">
+        <datatype type="INTEGER" minValue="-99999" maxValue="99999"/>
+      </element>
+      <element name="SUBSCRIPTION_FLG">
+        <datatype type="INTEGER" minValue="-99999" maxValue="99999"/>
+      </element>
+      <element name="AUDIT_CREAT_DTM">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="AUDIT_CREAT_USER_NM">
+        <datatype type="STRING" minLength="16" maxLength="16"/>
+      </element>
+      <element name="AUDIT_CHNG_DTM">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="AUDIT_CHNG_USER_NM">
+        <datatype type="STRING" minLength="16" maxLength="16"/>
+      </element>
+      <element name="AUDIT_CHNG_HOST_NM">
+        <datatype type="STRING" maxLength="60"/>
+      </element>
+      <element name="SFT_DLETE_DTM">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="AS400_SYNC_DTM">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="STATUS_CD">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="AUDIT_CHNG_MODUL_NM">
+        <datatype type="STRING" minLength="30" maxLength="30"/>
+      </element>
+      <element name="SUCCSN_SEQ_NO">
+        <datatype type="DECIMAL" maxDigits="20" maxFractionalDigits="0"/>
+      </element>
+      <element name="CZSHP_TYP_CD">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	GLBL_PARTY_DIST_RLT_MDMS_RAW.DIST_ID dist_id,
+	GLBL_PARTY_DIST_RLT_MDMS_RAW.SSR_PARTY_ID ssr_party_id,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.ROLE_CD AS CHAR(2)) AS role_cd,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.PRIMARY_ACCNT AS INTEGER) AS primary_accnt,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.SUBSCRIPTION_FLG AS INTEGER) AS subscription_flg,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.AUDIT_CREAT_DTM AS TIMESTAMP) AS audit_creat_dtm,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.AUDIT_CREAT_USER_NM AS CHAR(16)) AS audit_creat_user_nm,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.AUDIT_CHNG_DTM AS TIMESTAMP) AS audit_chng_dtm,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.AUDIT_CHNG_USER_NM AS CHAR(16)) AS audit_chng_user_nm,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.AUDIT_CHNG_HOST_NM AS VARCHAR(60)) AS audit_chng_host_nm,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.SFT_DLETE_DTM AS TIMESTAMP) AS sft_dlete_dtm,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.AS400_SYNC_DTM AS TIMESTAMP) AS as400_sync_dtm,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.STATUS_CD AS CHAR(2)) AS status_cd,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.AUDIT_CHNG_MODUL_NM AS CHAR(30)) AS audit_chng_modul_nm,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.SUCCSN_SEQ_NO AS DECIMAL(20,0)) AS succsn_seq_no,
+	CAST(GLBL_PARTY_DIST_RLT_MDMS_RAW.CZSHP_TYP_CD AS CHAR(5)) AS czshp_typ_cd 
+FROM
+	/shared/Common/Physical/Metadata/OnPremises/Oracle_GDW/DWSANL02/GLBL_PARTY_DIST_RLT_MDMS_RAW GLBL_PARTY_DIST_RLT_MDMS_RAW</attribute>
+  <attribute name="creationDate" type="LONG">1568096153069</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30105</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1568096153069</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30105</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1568096153069</attribute>
+</metadata>

@@ -1,0 +1,234 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getUsers" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/getUsers" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <parameters>
+    <parameter name="datasource" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Environment_Name" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Organization" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Project" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="SubProject" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="User_Name" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Domain_Name" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="rownum">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="sheetRownum">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="datasource">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="sheetName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="Organization">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="Project">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="SubProject">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="UserName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="Description">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="Domain">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="Env Type">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="Password">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="Force">
+          <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+        </element>
+        <element name="GroupList">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="UserName_lowercase">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="IsActive">
+          <datatype name="VARCHAR" type="STRING" maxLength="1"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getSQLUsers" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="datasource" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Environment_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Organization" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Project" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SubProject" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="User_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Domain_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="sqlStatement" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="fromClause" direction="OUT">
+        <datatype type="STRING" maxLength="2048"/>
+      </element>
+      <element name="whereClause" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	getUsers:
+
+	Construct a SQL statement based on filters passed in and retrieve the set of users that match the criteria.
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	05/16/2017		Mike Tinius			7.0.5			Adapted for Data Abstraction Best Practices.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE getUsers(
+	IN datasource		VARCHAR(255),	-- REQUIRED FILTER: EXCEL or DB_[LLE,PROD], The source of the users
+    IN Environment_Name VARCHAR(255), 	-- REQUIRED FILTER: The Composite server environment in which to get/update users for: [DEV, TEST, UAT, PROD]
+	IN Organization		VARCHAR(255),	-- RECOMMENDED FILTER: The name of the organization such as IM or SS
+	IN Project			VARCHAR(255),	-- RECOMMENDED FILTER: The name of the project that is hosted on CIS for this &quot;Env Type&quot;.  This provides a filter for only applying privileges for the given project.
+	IN SubProject		VARCHAR(255),	-- OPTIONAL FILTER: The name of the sub-project that is hosted on CIS for this &quot;Env Type&quot;.  This provides a filter for only applying privileges for the given sub-project.  If left blank, all rows for the sub-projects will be updated.
+    IN User_Name 		VARCHAR(255), 	-- OPTIONAL FILTER: The user name for which to get/update users.
+    IN Domain_Name 		VARCHAR(255), 	-- OPTIONAL FILTER: The domain name in which to get/update users.
+	IN debug			CHAR(1),		-- OPTIONAL: Y=debug on, N=debug off
+    OUT result 			CURSOR /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/TypeDefinitions.userRowType
+    )
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;getUsers&apos;;
+	DECLARE sqlStatement			LONGVARCHAR;
+	DECLARE fromClause				LONGVARCHAR;
+	DECLARE whereClause				LONGVARCHAR;
+	DECLARE ex						EXCEPTION;
+
+	if (Environment_Name is null or LENGTH(Environment_Name) = 0) then
+		raise ex value &apos;The variable &quot;Environment_Name&quot; may not be null or empty.&apos;;
+	end if;
+
+	call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getSQLUsers(
+		datasource,		--	VARCHAR(255),	-- REQUIRED FILTER: EXCEL or DB_[LLE,PROD], The source of the groups
+		Environment_Name,-- VARCHAR(255), 	-- REQUIRED FILTER: The Composite server environment in which to get/update groups for: [DEV, TEST, UAT, PROD]
+		Organization,	--	VARCHAR(255),	-- OPTIONAL FILTER: The name of the organization such as IM or SS
+		Project,		--	VARCHAR(255),	-- OPTIONAL FILTER: The name of the project that is hosted on CIS for this &quot;Env Type&quot;. 
+		SubProject,		--	VARCHAR(255),	-- OPTIONAL FILTER: The name of the sub-project that is hosted on CIS for this &quot;Env Type&quot;.  If left blank, all rows for the sub-projects will be selected.
+		User_Name,		--	VARCHAR(255), 	-- OPTIONAL FILTER: The group name
+		Domain_Name,	-- 	VARCHAR(255), 	-- OPTIONAL FILTER: The domain name in which to get/update groups.
+		debug,			--	CHAR(1),		-- OPTIONAL: Y=debug on, N=debug off
+		sqlStatement,	--	LONGVARCHAR,
+		fromClause,		--	VARCHAR(2048),
+		whereClause		--	LONGVARCHAR
+	);
+	if (debug is not null and UPPER(debug) = &apos;Y&apos;) then
+ 		call print(SUBSTRING(moduleName || &apos; : sqlStatement=&apos;||sqlStatement,1,63900)||CHR(10));
+	end if;
+
+	OPEN result FOR sqlStatement;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1387113466371</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">9/62</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

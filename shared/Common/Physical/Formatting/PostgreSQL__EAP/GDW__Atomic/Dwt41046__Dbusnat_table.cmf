@@ -1,0 +1,284 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Dwt41046_Dbusnat" path="/shared/Common/Physical/Formatting/PostgreSQL_EAP/GDW_Atomic/Dwt41046_Dbusnat" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="etl_insert_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_msg_create_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_uniq_id" nullable="true">
+      <datatype type="STRING" maxLength="960"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_act_cd" nullable="true">
+      <datatype type="STRING" maxLength="120"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_aff_cd" nullable="true">
+      <datatype type="STRING" maxLength="480"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_orgnl_source_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="480"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_source_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="480"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_targt_sys_id" nullable="true">
+      <datatype type="STRING" maxLength="480"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_cntry_cd" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_src_file" nullable="true">
+      <datatype type="STRING" maxLength="480"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="interface_type" nullable="true">
+      <datatype type="STRING" maxLength="120"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bus_nat_cd" nullable="true">
+      <datatype type="STRING" maxLength="4"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bus_nat_desc" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="error_severity" nullable="true">
+      <datatype type="STRING" maxLength="40"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="error_flag" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_prgrm" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="usr" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audt_dt" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audt_tm" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="wrkstn" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bus_nat_shrt_desc" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="last_load_dt_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="last_updt_dt_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_gdw_dwsatm01/dwt41046_dbusnat" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="etl_insert_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="intgrt_msg_create_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="intgrt_uniq_id">
+        <datatype type="STRING" maxLength="960"/>
+      </element>
+      <element name="intgrt_act_cd">
+        <datatype type="STRING" maxLength="120"/>
+      </element>
+      <element name="intgrt_aff_cd">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="intgrt_orgnl_source_sys_id">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="intgrt_source_sys_id">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="intgrt_targt_sys_id">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="intgrt_cntry_cd" nullable="false">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="intgrt_src_file">
+        <datatype type="STRING" maxLength="480"/>
+      </element>
+      <element name="interface_type">
+        <datatype type="STRING" maxLength="120"/>
+      </element>
+      <element name="bus_nat_cd" nullable="false">
+        <datatype type="STRING" maxLength="4"/>
+      </element>
+      <element name="bus_nat_desc">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="error_severity">
+        <datatype type="STRING" maxLength="40"/>
+      </element>
+      <element name="error_flag">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="updt_prgrm">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="usr">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="audt_dt">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="audt_tm">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="wrkstn">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="bus_nat_shrt_desc">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="last_load_dt_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="last_updt_dt_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(dwt41046_dbusnat.etl_insert_dt AS TIMESTAMP) AS etl_insert_dt,
+	CAST(dwt41046_dbusnat.intgrt_msg_create_dt AS TIMESTAMP) AS intgrt_msg_create_dt,
+	CAST(dwt41046_dbusnat.intgrt_uniq_id AS VARCHAR(960)) AS intgrt_uniq_id,
+	CAST(dwt41046_dbusnat.intgrt_act_cd AS VARCHAR(120)) AS intgrt_act_cd,
+	CAST(dwt41046_dbusnat.intgrt_aff_cd AS VARCHAR(480)) AS intgrt_aff_cd,
+	CAST(dwt41046_dbusnat.intgrt_orgnl_source_sys_id AS VARCHAR(480)) AS intgrt_orgnl_source_sys_id,
+	CAST(dwt41046_dbusnat.intgrt_source_sys_id AS VARCHAR(480)) AS intgrt_source_sys_id,
+	CAST(dwt41046_dbusnat.intgrt_targt_sys_id AS VARCHAR(480)) AS intgrt_targt_sys_id,
+	dwt41046_dbusnat.intgrt_cntry_cd intgrt_cntry_cd,
+	CAST(dwt41046_dbusnat.intgrt_src_file AS VARCHAR(480)) AS intgrt_src_file,
+	CAST(dwt41046_dbusnat.interface_type AS VARCHAR(120)) AS interface_type,
+	dwt41046_dbusnat.bus_nat_cd bus_nat_cd,
+	CAST(dwt41046_dbusnat.bus_nat_desc AS VARCHAR(50)) AS bus_nat_desc,
+	CAST(dwt41046_dbusnat.error_severity AS VARCHAR(40)) AS error_severity,
+	CAST(dwt41046_dbusnat.error_flag AS VARCHAR(2)) AS error_flag,
+	CAST(dwt41046_dbusnat.updt_prgrm AS VARCHAR(10)) AS updt_prgrm,
+	CAST(dwt41046_dbusnat.usr AS VARCHAR(10)) AS usr,
+	CAST(dwt41046_dbusnat.audt_dt AS VARCHAR(8)) AS audt_dt,
+	CAST(dwt41046_dbusnat.audt_tm AS VARCHAR(8)) AS audt_tm,
+	CAST(dwt41046_dbusnat.wrkstn AS VARCHAR(10)) AS wrkstn,
+	CAST(dwt41046_dbusnat.bus_nat_shrt_desc AS VARCHAR(10)) AS bus_nat_shrt_desc,
+	CAST(dwt41046_dbusnat.last_load_dt_key_no AS DOUBLE) AS last_load_dt_key_no,
+	CAST(dwt41046_dbusnat.last_updt_dt_key_no AS DOUBLE) AS last_updt_dt_key_no 
+FROM
+	/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_gdw_dwsatm01/dwt41046_dbusnat dwt41046_dbusnat</attribute>
+  <attribute name="creationDate" type="LONG">1570036711111</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1570037303482</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1570036711111</attribute>
+</metadata>

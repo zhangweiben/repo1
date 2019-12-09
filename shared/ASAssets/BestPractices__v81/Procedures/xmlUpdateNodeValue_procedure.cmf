@@ -1,0 +1,112 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="xmlUpdateNodeValue" path="/shared/ASAssets/BestPractices_v81/Procedures/xmlUpdateNodeValue" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="tagName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="updateValue" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="inXMLDoc" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="outXMLDoc" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="Script" type="STRING">/* xmlUpdateNodeValue:
+
+	This procedure is used to extract the value of a node from a simple XML document with only 1 row (instance).
+	This works faster than using XSLT.
+
+	Input:
+		tagName			VARCHAR,		- The name of the unique tag to extract the value for.  Do not include xml brackets &lt;,&gt;.
+			e.g.  mynode
+		updateValue		LONGVARCHAR,	- The new value to update.  It overwrites the old value.  If input is null then set the word null.
+			e.g. my new value
+		inXMLDoc		LONGVARCHAR,	- The simple 1 instance XML document.
+			e.g.  &lt;myxml&gt;&lt;mynode&gt;myvalue&lt;/mynode&gt;&lt;/myxml&gt;
+
+	Output:
+		outXMLDoc			LONGVARCHAR - the modified xmlDoc from the input.  If the tagname is not found, the original input XML doc is returned.
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	06/12/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added new to extract simple XML document nodes.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE xmlUpdateNodeValue(
+	IN tagName			VARCHAR,
+	IN updateValue		LONGVARCHAR,
+	IN inXMLDoc			LONGVARCHAR,
+	OUT outXMLDoc		LONGVARCHAR
+)
+BEGIN
+	DECLARE tagNameBeg		VARCHAR;
+	DECLARE tagNameEnd		VARCHAR;
+	DECLARE tagNameNull		VARCHAR;
+	DECLARE pos1, pos2, len	INTEGER;
+	DECLARE modifiedNode	LONGVARCHAR;
+
+	SET outXMLDoc = inXMLDoc;
+	SET tagNameBeg = &apos;&lt;&apos;||tagName||&apos;&gt;&apos;;
+	SET tagNameEnd = &apos;&lt;/&apos;||tagName||&apos;&gt;&apos;;
+	SET tagNameNull = &apos;&lt;&apos;||tagName||&apos;/&gt;&apos;;
+	
+	SET pos1 = INSTR(inXMLDoc, tagNameBeg);
+	SET pos2 = INSTR(inXMLDoc, tagNameEnd);
+	IF (pos1 = 0 AND pos2 = 0) THEN
+		SET pos1 = INSTR(inXMLDoc, tagNameNull);
+		SET len = LENGTH(tagNameNull);
+		IF (pos1 &gt; 0) THEN
+			IF (updateValue IS NULL) THEN
+				SET outXMLDoc = SUBSTRING(inXMLDoc, 1, pos1-1) || tagNameNull || SUBSTRING(inXMLDoc, pos1+len);
+			ELSE
+				SET outXMLDoc = SUBSTRING(inXMLDoc, 1, pos1-1) || tagNameBeg || updateValue || tagNameEnd || SUBSTRING(inXMLDoc, pos1+len);
+			END IF;
+		END IF;
+	ELSE
+		SET len = LENGTH(tagNameEnd);
+		IF (updateValue IS NULL) THEN
+			SET outXMLDoc = SUBSTRING(inXMLDoc, 1, pos1-1) || tagNameNull || SUBSTRING(inXMLDoc, pos2+len);
+		ELSE
+			SET outXMLDoc = SUBSTRING(inXMLDoc, 1, pos1-1) || tagNameBeg || updateValue || tagNameEnd || SUBSTRING(inXMLDoc, pos2+len);
+		END IF;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1560363272187</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560364981915</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1560363272187</attribute>
+</metadata>

@@ -1,0 +1,284 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Dwv42340_Ord_Ln_Fulfill" path="/shared/Common/Physical/Formatting/PostgreSQL_EAP/Hybris/Dwv42340_Ord_Ln_Fulfill" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="affiliatecode" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="salecountrycode" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="salesorderid" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="orderlineid" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="uniquefulfillmentid" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="fulfilledbaseitemid" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="fulfilleddate" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="fulfilleditemlot" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="fulfilleditemrevision" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="fulfilledquantity" nullable="true">
+      <datatype type="DECIMAL" maxDigits="131089" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="fulfilledserialnumbers" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="fulfillmentlocation" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="eventid" nullable="true">
+      <datatype type="STRING" maxLength="200"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="eventcode" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sourcetimestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="publishtimestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="actioncode" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sourceintegrationid" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_user_id" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_hybris_wwshyb01/dwv42340_ord_ln_fulfill" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="affiliateCode">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="saleCountryCode">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="salesOrderId">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="orderLineId">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="uniqueFulfillmentID">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="fulfilledBaseItemId">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="fulfilledDate">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="fulfilledItemLot">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="fulfilledItemRevision">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="fulfilledQuantity">
+        <datatype type="DECIMAL" maxDigits="131089" maxFractionalDigits="0"/>
+      </element>
+      <element name="fulfilledSerialNumbers">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="fulfillmentLocation">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="EventID">
+        <datatype type="STRING" maxLength="200"/>
+      </element>
+      <element name="EventCode">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="SourceTimestamp">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="PublishTimestamp">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="ActionCode">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="SourceIntegrationID">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="INSRT_PROC_NM">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="INSRT_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="UPDT_USER_ID">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="UPDT_PROC_NM">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="UPDT_DT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(dwv42340_ord_ln_fulfill.affiliateCode AS VARCHAR(3)) AS affiliatecode,
+	CAST(dwv42340_ord_ln_fulfill.saleCountryCode AS VARCHAR(3)) AS salecountrycode,
+	CAST(dwv42340_ord_ln_fulfill.salesOrderId AS VARCHAR(30)) AS salesorderid,
+	CAST(dwv42340_ord_ln_fulfill.orderLineId AS VARCHAR(100)) AS orderlineid,
+	CAST(dwv42340_ord_ln_fulfill.uniqueFulfillmentID AS VARCHAR(50)) AS uniquefulfillmentid,
+	CAST(dwv42340_ord_ln_fulfill.fulfilledBaseItemId AS VARCHAR(50)) AS fulfilledbaseitemid,
+	CAST(dwv42340_ord_ln_fulfill.fulfilledDate AS TIMESTAMP) AS fulfilleddate,
+	CAST(dwv42340_ord_ln_fulfill.fulfilledItemLot AS VARCHAR(50)) AS fulfilleditemlot,
+	CAST(dwv42340_ord_ln_fulfill.fulfilledItemRevision AS VARCHAR(50)) AS fulfilleditemrevision,
+	CAST(dwv42340_ord_ln_fulfill.fulfilledQuantity AS NUMERIC(131089,0)) AS fulfilledquantity,
+	CAST(dwv42340_ord_ln_fulfill.fulfilledSerialNumbers AS VARCHAR(50)) AS fulfilledserialnumbers,
+	CAST(dwv42340_ord_ln_fulfill.fulfillmentLocation AS VARCHAR(20)) AS fulfillmentlocation,
+	CAST(dwv42340_ord_ln_fulfill.EventID AS VARCHAR(200)) AS eventid,
+	CAST(dwv42340_ord_ln_fulfill.EventCode AS VARCHAR(50)) AS eventcode,
+	CAST(dwv42340_ord_ln_fulfill.SourceTimestamp AS TIMESTAMP) AS sourcetimestamp,
+	CAST(dwv42340_ord_ln_fulfill.PublishTimestamp AS TIMESTAMP) AS publishtimestamp,
+	CAST(dwv42340_ord_ln_fulfill.ActionCode AS VARCHAR(1)) AS actioncode,
+	CAST(dwv42340_ord_ln_fulfill.SourceIntegrationID AS VARCHAR(50)) AS sourceintegrationid,
+	CAST(dwv42340_ord_ln_fulfill.INSRT_PROC_NM AS VARCHAR(240)) AS insrt_proc_nm,
+	CAST(dwv42340_ord_ln_fulfill.INSRT_DT AS TIMESTAMP) AS insrt_dt,
+	CAST(dwv42340_ord_ln_fulfill.UPDT_USER_ID AS VARCHAR(50)) AS updt_user_id,
+	CAST(dwv42340_ord_ln_fulfill.UPDT_PROC_NM AS VARCHAR(240)) AS updt_proc_nm,
+	CAST(dwv42340_ord_ln_fulfill.UPDT_DT AS TIMESTAMP) AS updt_dt 
+FROM
+	/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_hybris_wwshyb01/dwv42340_ord_ln_fulfill dwv42340_ord_ln_fulfill</attribute>
+  <attribute name="creationDate" type="LONG">1569985925376</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569985925376</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1569985925376</attribute>
+</metadata>

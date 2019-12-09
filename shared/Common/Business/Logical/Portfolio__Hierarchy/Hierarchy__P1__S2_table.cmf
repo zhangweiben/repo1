@@ -1,0 +1,263 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Hierarchy_P1_S2" path="/shared/Common/Business/Logical/Portfolio_Hierarchy/Hierarchy_P1_S2" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="AMWAY_CNTRY_CD" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RGN_DESC" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SUB_RGN_DESC" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_SHORT_NM" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_SHORT_NM" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="BASE_7_ITEM_NO" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TO_BASE_7_ITEM_NO" nullable="true">
+      <datatype type="STRING" maxLength="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="FC_CLASS_CD_STRING" nullable="true">
+      <datatype type="STRING" maxLength="8000"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="FC_INTRO_CD_STRING" nullable="true">
+      <datatype type="STRING" maxLength="8000"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ITEM_DESC" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_BUS_LN_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_CTGRY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_ALT_CTGRY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_SUB_CTGRY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_PRDCT_IND_CUT_CD" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_PRDCT_IND_CUT_DESC" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_PRDCT_FMLY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_BRAND_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_SUB_BRAND_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_BRAND_FLG" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="3" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="COUNT_SKU" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="3" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="LAST_ORD_DATE" nullable="true">
+      <datatype type="DATE"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Business/Logical/Portfolio_Hierarchy/Hierarchy_P1_S1" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="AMWAY_CNTRY_CD">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="SUB_RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="AFF_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="CNTRY_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="TO_BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="FC_CLASS_CD_STRING">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+      <element name="FC_INTRO_CD_STRING">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+      <element name="ITEM_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BUS_LN_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_SUB_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_PRDCT_IND_CUT_CD">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="GLBL_PRDCT_IND_CUT_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_PRDCT_FMLY_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_SUB_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="COUNT_SKU">
+        <datatype type="STRING" minLength="2" maxLength="3" trailingSpaces="false"/>
+      </element>
+      <element name="LAST_ORD_DATE">
+        <datatype type="DATE"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    HS1.AMWAY_CNTRY_CD, 
+    HS1.RGN_DESC, 
+    HS1.SUB_RGN_DESC, 
+    HS1.AFF_SHORT_NM, 
+    HS1.CNTRY_SHORT_NM, 
+    HS1.BASE_7_ITEM_NO, 
+    HS1.TO_BASE_7_ITEM_NO, 
+    HS1.FC_CLASS_CD_STRING, 
+    HS1.FC_INTRO_CD_STRING, 
+    HS1.ITEM_DESC, 
+    HS1.GLBL_BUS_LN_DESC, 
+    HS1.GLBL_CTGRY_DESC,
+	CASE 
+		WHEN GLBL_SUB_CTGRY_DESC IN (&apos;HYDRATING&apos;, &apos;ANTI AGING&apos;, &apos;MASKS&apos;, &apos;BODY&apos;, &apos;SERUMS&apos;, &apos;WHITENING&apos;, &apos;OTHER SKIN NUTRITION&apos;) THEN &apos;SKIN NUTRITION&apos;
+		WHEN GLBL_SUB_CTGRY_DESC = &apos;ESSENTIALS&apos; THEN &apos;STUDIO SKIN&apos;
+		WHEN GLBL_SUB_CTGRY_DESC = &apos;INTENSIVES&apos; THEN &apos;LABS&apos;
+		WHEN GLBL_SUB_CTGRY_DESC = &apos;LUXURY&apos; THEN &apos;LUXURY&apos;
+		WHEN GLBL_SUB_CTGRY_DESC = &apos;MENS SKIN CARE&apos; THEN &apos;MENS SKIN CARE&apos;
+		WHEN GLBL_SUB_CTGRY_DESC = &apos;SKIN CARE DEVICE&apos; THEN &apos;SKIN CARE DEVICE&apos;
+		WHEN GLBL_SUB_CTGRY_DESC = &apos;OTHER SKIN CARE&apos; THEN &apos;OTHER SKIN CARE&apos;
+		WHEN GLBL_SUB_CTGRY_DESC = &apos;LOCAL SKIN CARE&apos; THEN &apos;LOCAL SKIN CARE&apos;
+		WHEN GLBL_CTGRY_DESC = &apos;SUPPLEMENTS&apos; AND FC_CLASS_CD_STRING LIKE &apos;%C73%&apos; THEN &apos;CORE&apos;
+		WHEN GLBL_CTGRY_DESC = &apos;SUPPLEMENTS&apos; AND FC_CLASS_CD_STRING NOT LIKE &apos;%C73%&apos; THEN &apos;NON CORE&apos;
+		WHEN GLBL_CTGRY_DESC = &apos;OTHER BEAUTY&apos; THEN &apos;OTHER BEAUTY&apos;
+		WHEN GLBL_CTGRY_DESC = &apos;COLOR&apos; AND GLBL_BRAND_DESC NOT IN (&apos;ARTISTRY&apos;) THEN &apos;LOCAL COLOR&apos;
+		WHEN GLBL_CTGRY_DESC = &apos;COLOR&apos; AND FC_CLASS_CD_STRING LIKE &apos;%12Z%&apos; THEN &apos;COLOR COLLECTIONS&apos;
+		WHEN GLBL_CTGRY_DESC = &apos;COLOR&apos; AND GLBL_BRAND_DESC = &apos;ARTISTRY&apos; AND (FC_CLASS_CD_STRING NOT LIKE &apos;%12Z%&apos; OR FC_CLASS_CD_STRING IS NULL) THEN &apos;CORE COLOR&apos;
+		ELSE GLBL_CTGRY_DESC
+	END AS GLBL_ALT_CTGRY_DESC,
+    HS1.GLBL_SUB_CTGRY_DESC, 
+    HS1.GLBL_PRDCT_IND_CUT_CD, 
+    HS1.GLBL_PRDCT_IND_CUT_DESC, 
+    HS1.GLBL_PRDCT_FMLY_DESC, 
+    HS1.GLBL_BRAND_DESC, 
+    HS1.GLBL_SUB_BRAND_DESC, 
+    CASE 
+		WHEN GLBL_BRAND_DESC IN (&apos;ATMOSPHERE&apos;, &apos;ESPRING&apos;, &apos;GLISTER&apos;, &apos;SPREEDENT&apos;, &apos;SATINIQUE&apos;, &apos;G&amp;H&apos;, &apos;BODY SERIES&apos;, &apos;ARTISTRY&apos;, &apos;AMWAY HOME&apos;, &apos;NUTRILITE/NUTRIWAY&apos;, &apos;XS&apos;, &apos;ICOOK&apos;, &apos;AMWAY QUEEN&apos;, &apos;AMWAY AIR&apos;, &apos;AMWAY WATER&apos;, &apos;POSITRIM&apos;) THEN &apos;YES&apos;
+        ELSE &apos;NO&apos;
+    END AS GLBL_BRAND_FLG, 
+    HS1.COUNT_SKU, 
+    HS1.LAST_ORD_DATE
+FROM      
+    /shared/Common/Business/Logical/Portfolio_Hierarchy/Hierarchy_P1_S1 HS1</attribute>
+  <attribute name="creationDate" type="LONG">1573501881782</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">292776</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1574565375475</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">292776</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1573501881782</attribute>
+</metadata>

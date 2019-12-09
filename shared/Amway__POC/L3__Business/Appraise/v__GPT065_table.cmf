@@ -1,0 +1,682 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="v_GPT065" path="/shared/Amway_POC/L3_Business/Appraise/v_GPT065" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="CORP_CD" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="COSMETIC_SKU_PFX" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="COSMETIC_SKU_BASE" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="COSMETIC_SKU_SFX" nullable="true">
+      <datatype type="STRING" minLength="5" maxLength="5"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="SKU_CD" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="BUSINESS_CD" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="PV" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="BV" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="DC" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="SRLVAT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="SR" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="NON_BV" nullable="true">
+      <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMAB" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMAB_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMAD" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="AMAD_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CMAB" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CMAB_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CMAD" nullable="true">
+      <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CMAD_PCT" nullable="true">
+      <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ADDED_DT" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CHANGED_DT" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="EFF_DT" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="CASE_QTY" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="LTU_CONV_FLG" nullable="true">
+      <datatype type="STRING" minLength="1" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="LTU_CONV_MULT_QTY" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Amway_POC/L2_Physical/ds_Appraise/v_GPT001_SKU_MASTER" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="CORP_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_PFX">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_BASE">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="AMWAY_SKU_SFX">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="SKU_CD">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="FRT_RATE_CD">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="SALES_OUTLET_CD">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="I_SOURCE_CD">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="MAKE_BUY_CD">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="UNIT_CD">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="STATUS_CD">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="BUSINESS_CD">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="CATEGORY_CD">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="SKU_DESC">
+        <datatype type="STRING" minLength="25" maxLength="25"/>
+      </element>
+      <element name="EFFECTIVE_DATE">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="CASE_QTY">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="AVAILABLE_AS_EACH">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="UNIT_QTY">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="MARKUP_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="WEIGHT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="DUTY_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="VAT_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="ALCOHOL_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="NPI_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="NPI_MFG_COST">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="PRICE_LIST_MAJOR">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="PRICE_LIST_MINOR">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="PV">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="BV">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="DC">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="DCIVAT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="SR">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="SRLVAT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="FACTORY_COST">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="BDGT_FACTORY_COST">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="FACTORY_COST_BYOUT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="BDGT_FACTORY_COST_BYOUT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="UNIT_FORECAST">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="UNIT_FORECAST_LNR">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="BDGT_UNIT_FORECAST">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="BDGT_UNIT_FORECAST_LNR">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="EXPORT_PRICE">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="EXPORT_FREIGHT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="XFR_DUTY_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="XFR_DUTY_AMT">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+      </element>
+      <element name="XFR_ROYAL_AMT">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+      </element>
+      <element name="XFR_ADU_AMT">
+        <datatype type="DECIMAL" maxDigits="10" maxFractionalDigits="4"/>
+      </element>
+      <element name="COST_OF_SALE">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="BV_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ASSOC_SKIPPED">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ADDED_WHO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="ADDED_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="CHANGED_WHO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="CHANGED_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="SKU_COMMENTS">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ROYALTY_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="NPI_XFR_PRICE">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CREATIVE_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="PACK_QTY">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="ABC_MAD">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="ABC_OP_MGN">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="ABC_OP_MGN_ALLOC">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="SAVE_SKU_FROM_BILL">
+        <datatype type="STRING" minLength="18" maxLength="18"/>
+      </element>
+      <element name="AMWAY_SKU_STD">
+        <datatype type="STRING" minLength="15" maxLength="15"/>
+      </element>
+      <element name="COSMETIC_LEAD">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="MF_EXTRACT_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="COS_BILL">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="HYBRID_SKU">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="SKU_STD_OVRRD">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="BV_DC_RATIO">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="KIT_SKU">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="FILE_NUM">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="EA_DIST_EXP_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CS_DIST_EXP_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="USER_DFINE_0_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="USER_DFINE_1_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="USER_DFINE_2_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="USER_DFINE_3_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="USER_DFINE_4_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="USER_DFINE_5_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="USER_DFINE_6_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="USER_DFINE_7_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="USER_DFINE_8_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="USER_DFINE_9_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="BDGT_PROD_FORECAST">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="PROD_RECP_ID">
+        <datatype type="STRING" minLength="18" maxLength="18"/>
+      </element>
+      <element name="LC_CMAB_SRCHG_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="STD_COST_SRC_CD">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="HYBRD_COST_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="REAS_CHNG_DESC">
+        <datatype type="STRING" minLength="15" maxLength="15"/>
+      </element>
+      <element name="MEAS_CR_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="ADA_MRGN_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="MEAS_CR_EFF_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="MEAS_CR_SRC_CD">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="SELL_MULT_QTY">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="LTU_CONV_FLG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="LTU_CONV_MULT_QTY">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="PRICE_CTGRY_GRP_CD">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="RTAIL_PRFT_PCT">
+        <datatype type="DECIMAL" maxDigits="7" maxFractionalDigits="4"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Amway_POC/L2_Physical/ds_Appraise/v_GPT065_COSMETIC_MASTER" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="CORP_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_PFX">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_BASE">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="AMWAY_SKU_SFX">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="COSMETIC_SKU_PFX">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="COSMETIC_SKU_BASE">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="COSMETIC_SKU_SFX">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="SKU_CD">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="UNIT_FORECAST">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="UNIT_FORECAST_LNR">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="BDGT_UNIT_FORECAST">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="BDGT_UNIT_FORECAST_LNR">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="FACTORY_COST">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="BDGT_FACTORY_COST">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="SKU_DESC">
+        <datatype type="STRING" minLength="40" maxLength="40"/>
+      </element>
+      <element name="ADDED_WHO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="ADDED_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="FORECAST_SUM">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="CHANGED_DT">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="CHANGED_WHO">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="PEND_WGTD_FLAG">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="BDGT_FORECAST_SUM">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="BDGT_PROD_FORECAST">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="EXPORT_PRICE">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="STD_COST_SRC_CD">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="HYBRD_COST_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="ADA_MRGN_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="MEAS_CR_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Amway_POC/L2_Physical/ds_Appraise/v_GPT073_MASTER_MARGINS" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="CORP_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_PFX">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="AMWAY_SKU_BASE">
+        <datatype type="STRING" minLength="4" maxLength="4"/>
+      </element>
+      <element name="AMWAY_SKU_SFX">
+        <datatype type="STRING" minLength="5" maxLength="5"/>
+      </element>
+      <element name="SKU_CD">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ROYALTY">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="ADA_MARGIN">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAB">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAB_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="AMAD">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="AMAD_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CMAB">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CMAB_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CMAD">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CMAD_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="MEAS_CR_LC_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_GRS_PRFT_LC_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_MAB_LC_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_MAB_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CNTRB_MAD_LC_AMT">
+        <datatype type="DECIMAL" maxDigits="18" maxFractionalDigits="4"/>
+      </element>
+      <element name="CNTRB_MAD_PCT">
+        <datatype type="DECIMAL" maxDigits="14" maxFractionalDigits="6"/>
+      </element>
+      <element name="CHANGED_DT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    v_GPT065_COSMETIC_MASTER.CORP_CD, 
+    v_GPT065_COSMETIC_MASTER.COSMETIC_SKU_PFX, 
+    v_GPT065_COSMETIC_MASTER.COSMETIC_SKU_BASE, 
+    v_GPT065_COSMETIC_MASTER.COSMETIC_SKU_SFX, 
+    { DECLARE GPT065_SKU_CD VARCHAR(255) DEFAULT &apos;M&apos; } SKU_CD, 
+    v_GPT001_SKU_MASTER.BUSINESS_CD, 
+    v_GPT001_SKU_MASTER.PV, 
+    v_GPT001_SKU_MASTER.BV, 
+    v_GPT001_SKU_MASTER.DC, 
+    v_GPT001_SKU_MASTER.SRLVAT, 
+    v_GPT001_SKU_MASTER.SR, 
+    v_GPT001_SKU_MASTER.SR - v_GPT001_SKU_MASTER.BV NON_BV, 
+    v_GPT073_MASTER_MARGINS.AMAB, 
+    v_GPT073_MASTER_MARGINS.AMAB_PCT, 
+    v_GPT073_MASTER_MARGINS.AMAD, 
+    v_GPT073_MASTER_MARGINS.AMAD_PCT, 
+    v_GPT073_MASTER_MARGINS.CMAB, 
+    v_GPT073_MASTER_MARGINS.CMAB_PCT, 
+    v_GPT073_MASTER_MARGINS.CMAD, 
+    v_GPT073_MASTER_MARGINS.CMAD_PCT, 
+    v_GPT001_SKU_MASTER.ADDED_DT, 
+    v_GPT001_SKU_MASTER.CHANGED_DT, 
+    v_GPT001_SKU_MASTER.EFFECTIVE_DATE EFF_DT, 
+    v_GPT001_SKU_MASTER.CASE_QTY, 
+    v_GPT001_SKU_MASTER.LTU_CONV_FLG, 
+    v_GPT001_SKU_MASTER.LTU_CONV_MULT_QTY
+FROM      
+    /shared/Amway_POC/L2_Physical/ds_Appraise/v_GPT065_COSMETIC_MASTER v_GPT065_COSMETIC_MASTER INNER JOIN 
+        /shared/Amway_POC/L2_Physical/ds_Appraise/v_GPT001_SKU_MASTER v_GPT001_SKU_MASTER INNER JOIN 
+            /shared/Amway_POC/L2_Physical/ds_Appraise/v_GPT073_MASTER_MARGINS v_GPT073_MASTER_MARGINS
+        ON (((v_GPT001_SKU_MASTER.CORP_CD = v_GPT073_MASTER_MARGINS.CORP_CD AND 
+            v_GPT001_SKU_MASTER.AMWAY_SKU_PFX = v_GPT073_MASTER_MARGINS.AMWAY_SKU_PFX) AND 
+            v_GPT001_SKU_MASTER.AMWAY_SKU_BASE = v_GPT073_MASTER_MARGINS.AMWAY_SKU_BASE) AND 
+            v_GPT001_SKU_MASTER.AMWAY_SKU_SFX = v_GPT073_MASTER_MARGINS.AMWAY_SKU_SFX) AND 
+            v_GPT001_SKU_MASTER.SKU_CD = v_GPT073_MASTER_MARGINS.SKU_CD
+    ON (((v_GPT001_SKU_MASTER.CORP_CD = v_GPT065_COSMETIC_MASTER.CORP_CD AND 
+        v_GPT001_SKU_MASTER.AMWAY_SKU_PFX = v_GPT065_COSMETIC_MASTER.AMWAY_SKU_PFX) AND 
+        v_GPT001_SKU_MASTER.AMWAY_SKU_BASE = v_GPT065_COSMETIC_MASTER.AMWAY_SKU_BASE) AND 
+        v_GPT001_SKU_MASTER.AMWAY_SKU_SFX = v_GPT065_COSMETIC_MASTER.AMWAY_SKU_SFX) AND 
+        v_GPT001_SKU_MASTER.SKU_CD = v_GPT065_COSMETIC_MASTER.SKU_CD
+WHERE
+    v_GPT001_SKU_MASTER.EFFECTIVE_DATE &gt; &apos;2018-01-01 00:00:00&apos; AND 
+    ISNULL(v_GPT001_SKU_MASTER.COSMETIC_LEAD, &apos;N&apos;) = &apos;Y&apos;</attribute>
+  <attribute name="creationDate" type="LONG">1534267156759</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1534277928609</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="BYTE_ARRAY">EIEJBAAAAAUQUQYBABMAdgBfAEcAUABUADAAMAAxAF8AUwBLAFUAXwBNAEEAUwBUAEUAUgYCABMAdgBfAEcAUABUADAAMAAxAF8AUwBLAFUAXwBNAEEAUwBUAEUAUgML/////wMKAAE1uwMM/////wsRAAUABgBzAGgAYQByAGUAZAAJAEEAbQB3AGEAeQBfAFAATwBDAAsATAAyAF8AUABoAHkAcwBpAGMAYQBsAAsAZABzAF8AQQBwAHAAcgBhAGkAcwBlABMAdgBfAEcAUABUADAAMAAxAF8AUwBLAFUAXwBNAEEAUwBUAEUAUv//EFEGAQAYAHYAXwBHAFAAVAAwADYANQBfAEMATwBTAE0ARQBUAEkAQwBfAE0AQQBTAFQARQBSBgIAGAB2AF8ARwBQAFQAMAA2ADUAXwBDAE8AUwBNAEUAVABJAEMAXwBNAEEAUwBUAEUAUgML/////wMKAAE1vQMM/////wsRAAUABgBzAGgAYQByAGUAZAAJAEEAbQB3AGEAeQBfAFAATwBDAAsATAAyAF8AUABoAHkAcwBpAGMAYQBsAAsAZABzAF8AQQBwAHAAcgBhAGkAcwBlABgAdgBfAEcAUABUADAANgA1AF8AQwBPAFMATQBFAFQASQBDAF8ATQBBAFMAVABFAFL//xBRBgEAFwB2AF8ARwBQAFQAMAA3ADMAXwBNAEEAUwBUAEUAUgBfAE0AQQBSAEcASQBOAFMGAgAXAHYAXwBHAFAAVAAwADcAMwBfAE0AQQBTAFQARQBSAF8ATQBBAFIARwBJAE4AUwML/////wMKAAE1vAMM/////wsRAAUABgBzAGgAYQByAGUAZAAJAEEAbQB3AGEAeQBfAFAATwBDAAsATAAyAF8AUABoAHkAcwBpAGMAYQBsAAsAZABzAF8AQQBwAHAAcgBhAGkAcwBlABcAdgBfAEcAUABUADAANwAzAF8ATQBBAFMAVABFAFIAXwBNAEEAUgBHAEkATgBT//8QUwYJAAUASQBOAE4ARQBSAw0AAAAAAw4AAAACCA8QYQEFAAEGAAgBEGEBBQABBgAIARBhAQUAAQYACAEQYQEFAAEGAAgBEGIGBwABAD0BBQAIAxBBBgEABwBDAE8AUgBQAF8AQwBEBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAMEBAAAAAAAAAADARMB//8DCwAAAAD//wgEEEEGAQAHAEMATwBSAFAAXwBDAEQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAwQEAAAAAAAAAAMBEwH//wMLAAAAAv////8IAhBiBgcAAQA9AQUACAMQQQYBAA0AQQBNAFcAQQBZAF8AUwBLAFUAXwBQAEYAWAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAADBAQAAAAAAAAAAwETAf//AwsAAAAA//8IBBBBBgEADQBBAE0AVwBBAFkAXwBTAEsAVQBfAFAARgBYBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAMEBAAAAAAAAAADARMB//8DCwAAAAL///////8IAhBiBgcAAQA9AQUACAMQQQYBAA4AQQBNAFcAQQBZAF8AUwBLAFUAXwBCAEEAUwBFBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAQEBAAAAAAAAAAEARMB//8DCwAAAAD//wgEEEEGAQAOAEEATQBXAEEAWQBfAFMASwBVAF8AQgBBAFMARQYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAAEBAQAAAAAAAAABAETAf//AwsAAAAC////////CAIQYgYHAAEAPQEFAAgDEEEGAQANAEEATQBXAEEAWQBfAFMASwBVAF8AUwBGAFgGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAABQQEAAAAAAAAAAUBEwH//wMLAAAAAP//CAQQQQYBAA0AQQBNAFcAQQBZAF8AUwBLAFUAXwBTAEYAWAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAAFBAQAAAAAAAAABQETAf//AwsAAAAC////////CAIQYgYHAAEAPQEFAAgDEEEGAQAGAFMASwBVAF8AQwBEBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAEEBAAAAAAAAAABARMB//8DCwAAAAD//wgEEEEGAQAGAFMASwBVAF8AQwBEBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAEEBAAAAAAAAAABARMB//8DCwAAAAL//////////xBTBgkABQBJAE4ATgBFAFIDDQAAAAEDDgAAAAMIDxBhAQUAAQYACAEQYQEFAAEGAAgBEGEBBQABBgAIARBhAQUAAQYACAEQYgYHAAEAPQEFAAgDEEEGAQAHAEMATwBSAFAAXwBDAEQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAwQEAAAAAAAAAAMBEwH//wMLAAAAAP//CAQQQQYBAAcAQwBPAFIAUABfAEMARAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAADBAQAAAAAAAAAAwETAf//AwsAAAAB/////wgCEGIGBwABAD0BBQAIAxBBBgEADQBBAE0AVwBBAFkAXwBTAEsAVQBfAFAARgBYBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAMEBAAAAAAAAAADARMB//8DCwAAAAD//wgEEEEGAQANAEEATQBXAEEAWQBfAFMASwBVAF8AUABGAFgGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAwQEAAAAAAAAAAMBEwH//wMLAAAAAf///////wgCEGIGBwABAD0BBQAIAxBBBgEADgBBAE0AVwBBAFkAXwBTAEsAVQBfAEIAQQBTAEUGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAABAQEAAAAAAAAAAQBEwH//wMLAAAAAP//CAQQQQYBAA4AQQBNAFcAQQBZAF8AUwBLAFUAXwBCAEEAUwBFBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAQEBAAAAAAAAAAEARMB//8DCwAAAAH///////8IAhBiBgcAAQA9AQUACAMQQQYBAA0AQQBNAFcAQQBZAF8AUwBLAFUAXwBTAEYAWAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAAFBAQAAAAAAAAABQETAf//AwsAAAAA//8IBBBBBgEADQBBAE0AVwBBAFkAXwBTAEsAVQBfAFMARgBYBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAUEBAAAAAAAAAAFARMB//8DCwAAAAH///////8IAhBiBgcAAQA9AQUACAMQQQYBAAYAUwBLAFUAXwBDAEQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAQQEAAAAAAAAAAEBEwH//wMLAAAAAP//CAQQQQYBAAYAUwBLAFUAXwBDAEQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAQQEAAAAAAAAAAEBEwH//wMLAAAAAf//////////AwUAAAACCAIQMQYB//8BAgEBBgABAwABBAABBQADBwAAAAAICBBhAQUAAQYACAEQYgYHAAEAPgEFAAgDEEEGAQAOAEUARgBGAEUAQwBUAEkAVgBFAF8ARABBAFQARQYCAAAGA///BgT//wMK/////wgMEBYDEgAAAAH//wMLAAAAAP//CAQQQwYCAAAKDhAbBgIABABDAEgAQQBSAxIAAAABATsABAUAAAAAAAAAEwQEAAAAAAAAABMBEwH//xAAAAATMjAxOC0wMS0wMSAwMDowMDowMP////8IAhBiBgcAAQA9AQUACAMQQgYBAAYASQBTAE4AVQBMAEwGAgAOAEMATwBTAE0ARQBUAEkAQwBfAEwARQBBAEQAMQEJAAESAAkNAAAAAhBBBgEADQBDAE8AUwBNAEUAVABJAEMAXwBMAEUAQQBEBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAEEBAAAAAAAAAABARMB//8DCwAAAAD//xBDBgIAAAoOEBsGAgAEAEMASABBAFIDEgAAAAEBOwAEBQAAAAAAAAABBAQAAAAAAAAAAQETAf//EAAAAAFO/////wgEEEMGAgAACg4QGwYCAAQAQwBIAEEAUgMSAAAAAQE7AAQFAAAAAAAAAAEEBAAAAAAAAAABARMB//8QAAAAAVn///////8HCQAAAAEAAAAECQoAAAAaEEEGAQAHAEMATwBSAFAAXwBDAEQGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAwQEAAAAAAAAAAMBEwH//wMLAAAAAf//EEEGAQAQAEMATwBTAE0ARQBUAEkAQwBfAFMASwBVAF8AUABGAFgGAgAABgP//wYE//8DCv////8IDBAbAxIAAAABBAUAAAAAAAAAAwQEAAAAAAAAAAMBEwH//wMLAAAAAf//EEEGAQARAEMATwBTAE0ARQBUAEkAQwBfAFMASwBVAF8AQgBBAFMARQYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAAEBAQAAAAAAAAABAETAf//AwsAAAAB//8QQQYBABAAQwBPAFMATQBFAFQASQBDAF8AUwBLAFUAXwBTAEYAWAYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAAFBAQAAAAAAAAABQETAf//AwsAAAAB//8QWgYCAAYAUwBLAFUAXwBDAEQGAQANAEcAUABUADAANgA1AF8AUwBLAFUAXwBDAEQBGgEIDBAbBgIABwBWAEEAUgBDAEgAQQBSAxIAAAABBAQAAAAAAAAA/wETAf//AFsQQwYCAAAKDhAbBgIABABDAEgAQQBSAxIAAAABATsABAUAAAAAAAAAAQQEAAAAAAAAAAEBEwH//xAAAAABTf////8QQQYBAAsAQgBVAFMASQBOAEUAUwBTAF8AQwBEBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAQEBAAAAAAAAAAEARMB//8DCwAAAAD//xBBBgEAAgBQAFYGAgAABgP//wYE//8DCv////8IDBAXAxIAAAABAw4AAAASAxAAAAAE//8DCwAAAAD//xBBBgEAAgBCAFYGAgAABgP//wYE//8DCv////8IDBAXAxIAAAABAw4AAAASAxAAAAAE//8DCwAAAAD//xBBBgEAAgBEAEMGAgAABgP//wYE//8DCv////8IDBAXAxIAAAABAw4AAAASAxAAAAAE//8DCwAAAAD//xBBBgEABgBTAFIATABWAEEAVAYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAABIDEAAAAAT//wMLAAAAAP//EEEGAQACAFMAUgYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAABIDEAAAAAT//wMLAAAAAP//EEIGAQABAC0GAgAGAE4ATwBOAF8AQgBWAQkAARIACQ0AAAACEEEGAQACAFMAUgYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAABIDEAAAAAT//wMLAAAAAP//EEEGAQACAEIAVgYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAABIDEAAAAAT//wMLAAAAAP////8QQQYBAAQAQQBNAEEAQgYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAABIDEAAAAAT//wMLAAAAAv//EEEGAQAIAEEATQBBAEIAXwBQAEMAVAYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAAA4DEAAAAAb//wMLAAAAAv//EEEGAQAEAEEATQBBAEQGAgAABgP//wYE//8DCv////8IDBAXAxIAAAABAw4AAAASAxAAAAAE//8DCwAAAAL//xBBBgEACABBAE0AQQBEAF8AUABDAFQGAgAABgP//wYE//8DCv////8IDBAXAxIAAAABAw4AAAAOAxAAAAAG//8DCwAAAAL//xBBBgEABABDAE0AQQBCBgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAEgMQAAAABP//AwsAAAAC//8QQQYBAAgAQwBNAEEAQgBfAFAAQwBUBgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAADgMQAAAABv//AwsAAAAC//8QQQYBAAQAQwBNAEEARAYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAABIDEAAAAAT//wMLAAAAAv//EEEGAQAIAEMATQBBAEQAXwBQAEMAVAYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAAA4DEAAAAAb//wMLAAAAAv//EEEGAQAIAEEARABEAEUARABfAEQAVAYCAAAGA///BgT//wMK/////wgMEBYDEgAAAAH//wMLAAAAAP//EEEGAQAKAEMASABBAE4ARwBFAEQAXwBEAFQGAgAABgP//wYE//8DCv////8IDBAWAxIAAAAB//8DCwAAAAD//xBBBgEADgBFAEYARgBFAEMAVABJAFYARQBfAEQAQQBUAEUGAgAGAEUARgBGAF8ARABUBgP//wYE//8DCv////8IDBAWAxIAAAAB//8DCwAAAAD//xBBBgEACABDAEEAUwBFAF8AUQBUAFkGAgAABgP//wYE//8DCv////8IDBAZAxIAAAABBAf/////gAAAAAQGAAAAAH///////wMLAAAAAP//EEEGAQAMAEwAVABVAF8AQwBPAE4AVgBfAEYATABHBgIAAAYD//8GBP//Awr/////CAwQGwMSAAAAAQQFAAAAAAAAAAEEBAAAAAAAAAABARMB//8DCwAAAAD//xBBBgEAEQBMAFQAVQBfAEMATwBOAFYAXwBNAFUATABUAF8AUQBUAFkGAgAABgP//wYE//8DCv////8IDBAZAxIAAAABBAf/////gAAAAAQGAAAAAH///////wMLAAAAAP////8JBgAAAAUQggMKAAABGAMLAAAAHgMMAAABKAMNAAAAyP//EIIDCgAAAB4DCwAAAB4DDAAAAN0DDQAAAMj//xCCAwoAAAJsAwsAAABaAwwAAAFGAw0AAADI//8QggMK/////wML/////wMM/////wMN////////EIIDCv////8DC/////8DDP////8DDf///////wgDEHEDAQAAAAsDAgAAADIJAwAAAiYQdAMGAAAAAP//EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAB//8QcgYE/////xBzAwUAAAAB//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAL//xByBgT/////EHMDBQAAAAH//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAA///EHIGBP////8QcwMFAAAAAf//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAE//8QcgYEAAYAUwBLAFUAXwBDAET//xBz//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAX//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAABv//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAH//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAj//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAACf//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAK//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAv//xByBgQABgBOAE8ATgBfAEIAVv//EHP//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAADP//EHIGBP////8QcwMFAAAAAv//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAN//8QcgYE/////xBzAwUAAAAC//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAA7//xByBgT/////EHMDBQAAAAL//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAD///EHIGBP////8QcwMFAAAAAv//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAQ//8QcgYE/////xBzAwUAAAAC//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABH//xByBgT/////EHMDBQAAAAL//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAEv//EHIGBP////8QcwMFAAAAAv//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAT//8QcgYE/////xBzAwUAAAAC//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAABT//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAFf//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAW//8QcgYEAAYARQBGAEYAXwBEAFT//xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8QdgYIADoAdgBfAEcAUABUADAAMAAxAF8AUwBLAFUAXwBNAEEAUwBUAEUAUgAuAEUARgBGAEUAQwBUAEkAVgBFAF8ARABBAFQARQAgAD4AIAAnADIAMAAxADgALQAwADEALQAwADEAIAAwADAAOgAwADAAOgAwADAAJ///EHb//xB2//8Qdv//EHQDBgAAABf//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAGP//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAZ//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQGCQAuAEkAUwBOAFUATABMACgAdgBfAEcAUABUADAAMAAxAF8AUwBLAFUAXwBNAEEAUwBUAEUAUgAuAEMATwBTAE0ARQBUAEkAQwBfAEwARQBBAEQALAAgACcATgAnACn//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2BggANABJAFMATgBVAEwATAAoAHYAXwBHAFAAVAAwADAAMQBfAFMASwBVAF8ATQBBAFMAVABFAFIALgBDAE8AUwBNAEUAVABJAEMAXwBMAEUAQQBEACwAIAAnAE4AJwApACAAPQAgACcAWQAn//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv///////w==</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1534267156759</attribute>
+</metadata>

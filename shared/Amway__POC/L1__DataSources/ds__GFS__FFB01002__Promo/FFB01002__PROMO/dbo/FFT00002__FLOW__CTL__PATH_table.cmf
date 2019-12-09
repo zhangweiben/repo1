@@ -1,0 +1,121 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="FFT00002_FLOW_CTL_PATH" path="/shared/Amway_POC/L1_DataSources/ds_GFS_FFB01002_Promo/FFB01002_PROMO/dbo/FFT00002_FLOW_CTL_PATH" type="TABLE" subtype="DATABASE_TABLE" changeToken="0" tableType="TABLE">
+  <columns>
+    <column name="FLOW_CTL_PATH_ID" nullable="false">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ENTITY_TYPE" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROMO_STAT_CD" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="FLOW_TO_PROMO_STAT_CD" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="WORK_FLOW_COMMENTS_ID" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="FLOW_TO_ENTITY_TYPE1" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="FLOW_TO_ENTITY_TYPE2" nullable="true">
+      <datatype name="int" extendedName="int" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes>
+    <index name="FFI00002_FLOW_CTL_PATH_PRM" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="FLOW_CTL_PATH_ID" sortOrder="ASCENDING"/>
+    </index>
+  </indexes>
+  <foreignKeys>
+    <foreignKey name="FFR00003_FFR00002_WORK_FLOW_COMMENTS_ID" primaryKeyName="FFI00003_WORK_FLOW_COMMENTS_PRM" primaryKeyTableName="/shared/Amway_POC/L1_DataSources/ds_GFS_FFB01002_Promo/FFB01002_PROMO/dbo/FFT00003_WORK_FLOW_COMMENTS">
+      <foreignKeyColumn primaryColumnName="WORK_FLOW_COMMENTS_ID" foreignColumnName="WORK_FLOW_COMMENTS_ID"/>
+    </foreignKey>
+    <foreignKey name="FFR00005_FFR00002_PROMO_STAT_CD" primaryKeyName="FFI00005_PROMO_STAT_CD_PRM" primaryKeyTableName="/shared/Amway_POC/L1_DataSources/ds_GFS_FFB01002_Promo/FFB01002_PROMO/dbo/FFT00005_PROMO_STAT_CD">
+      <foreignKeyColumn primaryColumnName="PROMO_STAT_CD" foreignColumnName="PROMO_STAT_CD"/>
+    </foreignKey>
+    <foreignKey name="FFR00004_FFR00002_ENTITY_TYPE" primaryKeyName="FFI00004_WORK_FLOW_ENTITY_TYPES_PRM" primaryKeyTableName="/shared/Amway_POC/L1_DataSources/ds_GFS_FFB01002_Promo/FFB01002_PROMO/dbo/FFT00004_WORK_FLOW_ENTITY_TYPES">
+      <foreignKeyColumn primaryColumnName="ENTITY_TYPE" foreignColumnName="ENTITY_TYPE"/>
+    </foreignKey>
+  </foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Amway_POC/L1_DataSources/ds_GFS_FFB01002_Promo/FFB01002_PROMO/dbo/FFT00003_WORK_FLOW_COMMENTS" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="WORK_FLOW_COMMENTS_ID" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="WORK_FLOW_COMMENTS">
+        <datatype type="STRING" maxLength="900"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Amway_POC/L1_DataSources/ds_GFS_FFB01002_Promo/FFB01002_PROMO/dbo/FFT00004_WORK_FLOW_ENTITY_TYPES" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="ENTITY_TYPE" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="ENTITY_TYPE_DESC">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Amway_POC/L1_DataSources/ds_GFS_FFB01002_Promo/FFB01002_PROMO/dbo/FFT00005_PROMO_STAT_CD" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="PROMO_STAT_CD" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="PROMO_STAT_CD_DESC">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="c:0:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:1:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:2:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:3:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:4:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:5:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:6:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="creationDate" type="LONG">1534185443938</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1534186503647</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1534185443938</attribute>
+</metadata>

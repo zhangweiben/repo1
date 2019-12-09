@@ -1,0 +1,2254 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="updateResourcePrivilegesDriverImplV4" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updateResourcePrivilegesDriverImplV4" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <parameters>
+    <parameter name="datasource" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Batch_Privileges" direction="IN" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="Environment_Name" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Organization" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Project" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="SubProject" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Sheet_Name" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Resource_Path" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="Resource_Type" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Name_" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Name_Type" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="Domain_Name" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inPreview" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="forceDomainAsComposite" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug1" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug1Console" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug1CISLog" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug1ReadOnly" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug1RevokeAll" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebug2" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inBypassErrors" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inModuleName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="rowsProcessed" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="logOutput" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/services/databases/system/ALL_COLUMNS" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="COLUMN_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="COLUMN_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DATA_TYPE">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ORDINAL_POSITION">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="JDBC_DATA_TYPE">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="COLUMN_LENGTH">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="COLUMN_PRECISION">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="COLUMN_SCALE">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="COLUMN_RADIX">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="NULLABLE">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="IS_NULLABLE">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="TABLE_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="TABLE_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SCHEMA_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="SCHEMA_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CATALOG_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="CATALOG_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DATASOURCE_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="DATASOURCE_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ANNOTATION">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="OWNER_ID">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="OWNER">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="PARENT_PATH">
+        <datatype type="STRING" minLength="21" maxLength="1043"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="printConsole" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="printLog" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inLogOutput" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="addLogOutput" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outLogOutput" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getResourcePrivileges" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="nameTypeFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="domainFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="privilegeEntryType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="includeNameEqualFilter" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="includeNameLikeFilter" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="excludeNameNotEqualFilter" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="excludeNameNotLikeFilter" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="includePrivsEqualFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="includePrivsLikeFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="excludePrivsNotEqualFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="excludePrivsNotLikeFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="includeColumnPrivs" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="path">
+            <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nameType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="domain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="privs">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="combinedPrivs">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="inheritedPrivs">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="p_N">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_R">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_W">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_E">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_S">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_U">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_I">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_D">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_G">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_N">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_R">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_W">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_E">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_S">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_U">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_I">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_D">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_G">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_N">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_R">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_W">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_E">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_S">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_U">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_I">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_D">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_G">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getSQLPrivileges" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="datasource" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Environment_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Organization" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Project" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SubProject" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Sheet_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Resource_Path" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Resource_Type" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Name_" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Name_Type" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Domain_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="sqlStatement" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="fromClause" direction="OUT">
+        <datatype type="STRING" maxLength="2048"/>
+      </element>
+      <element name="whereClause" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updatePrivilegeReadFoldersV4" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="bypassErrors" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="envType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="preview" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="debug1ReadOnly" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inDebug1Console" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inDebug1CISLog" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="debug2Modified" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inModuleName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="logOutput" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="privReadStr1" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="privReadStr2" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="privReadAppliedStr1" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="privReadAppliedStr2" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updateResourcePrivilegesV4" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inDebug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inDebugConsole" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inDebugCISLog" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="owner" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ownerDomain" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="recurse" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="recurseDependencies" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="recurseDependents" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="privilegeStr" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="logOutput" direction="INOUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/getPrivileges" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="datasource" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Environment_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Organization" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Project" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SubProject" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Sheet_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Resource_Path" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Resource_Type" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Name_" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Name_Type" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Domain_Name" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="rownum">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="sheetRownum">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="datasource">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sheetName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="privilegeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Organization">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Project">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="SubProject">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Resource Path">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="Resource Type">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Recurse Dependencies">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="Recurse Dependents">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="Recurse Child">
+            <datatype type="STRING" maxLength="3"/>
+          </element>
+          <element name="Revoke All">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="Name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Name Type">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Domain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Env Type">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="OrderPrecedence">
+            <datatype type="STRING" minLength="1" maxLength="1"/>
+          </element>
+          <element name="R">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="W">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="E">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="S">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="U">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="I">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="D">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="G">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="Owner">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Owner Domain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="Comments">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="Initialize">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="isActive">
+            <datatype type="STRING" minLength="1" maxLength="1"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getUsedResourcesCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="usedResCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/TextUtils/RegexReplace" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="Input Text" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Regular Expression" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Replacement Text" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="Occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/time/getCurrentTimestamp" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="currentTS" direction="OUT">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* updateResourcePrivilegesDriverImpl: 
+
+	Implementation procedure.   Does not get called directly.
+
+	This procedure is used to update privileges by reading the privileges from an excel spreadsheet - Composite_Resource_Privileges_IM or _RISK.xlsx.
+		sheets: Privileges_shared 		- Update privileges for /shared
+			    Privileges_databases 	- Update privileges for /services/databases
+				Privileges_webservices 	- Update privileges for /services/webservices
+
+	Input:
+		datasource		VARCHAR(255),	-- EXCEL, DB_LLE, DB_PROD.  The source of the privileges
+		Batch_Privileges INTEGER,		-- REQUIRED_FILTER: 1=Batch all privileges for the same path, type and recursion setting. 0=Process each spreadsheet line separately (no batching).
+											When the resource path in the spreadsheet changes, a batch is executed.
+											When the resource type in the spreadsheet changes, a batch is executed.
+											When the recursion identifier in the spreadsheet changes, a batch is executed.  
+												A group of rows with like recursion may only be batched together otherwise the meaning of the privilege setting is not the same.
+		Environment_Name VARCHAR(255), 	-- REQUIRED FILTER: The Composite server environment in which to get/update privileges for: [DEV, TEST, UAT, PROD]
+		Project			VARCHAR(255),	-- RECOMMENDED FILTER: The name of the project that is hosted on CIS for this &quot;Env Type&quot;.  
+											This provides a filter for only applying privileges for the given project.  If left blank, all projects will be updated.
+		SubProject		VARCHAR(255),	-- RECOMMENDED FILTER: The name of the sub-project that is hosted on CIS for this &quot;Env Type&quot;.  
+											This provides a filter for only applying privileges for the given sub-project.  If left blank, all rows for the project will be updated.
+		Sheet_Name 		VARCHAR(255), 	-- OPTIONAL FILTER: The name of the Excel spreadsheet in which to get/update privileges from: [shared, databases, webservices]
+		Resource_Path 	LONGVARCHAR,	-- OPTIONAL FILTER: The resource path in which to get/update privileges.  It may contain a wildcard &quot;%&quot;.
+		Resource_Type 	VARCHAR(255),	-- OPTIONAL FILTER: The resource type in which to get/update privileges.  It is always upper case. 
+										--  This will only be used when no &quot;Resource_Path&quot; or a single &quot;Resource_Path&quot; is provided.  
+										--  It is not used when a list of &quot;Resource_Path&quot; entries are provided.
+										--	E.g. DATA_SOURCE - a published datasource or physical metadata datasource.
+										--		 CONTAINER - a folder path, a catalog or schema path.
+										--		 COLUMN - a column from a table
+										--		 LINK - a published table or procedure.  If it resides in the path /services and points to a TABLE or PROCEDURE then it is a LINK.
+										--		 TABLE - a view in the /shared path.
+										--		 PROCEDURE a procedure in the /shared path.
+		Name_ 			VARCHAR(255), 	-- OPTIONAL FILTER: The user/group name in which to get/update privileges.
+		Domain_Name 	VARCHAR(255), 	-- OPTIONAL FILTER: The domain name in which to get/update privileges.
+		preview			CHAR(1),		-- N or null(default)=Do not preview.  Execute the privileges.  Y=preview what will get set but don&apos;t actually execute the privileges.
+		forceDomainAsComposite 	CHAR(1),-- OPTIONAL PARAM: Y=true, N=false. 
+										--    Provides a way to force a conversion of the group from an LDAP domain name like &quot;ldap&quot; to a the &quot;composite&quot; domain.  
+										--    This is useful when setting up the privileges for testing with composite groups that mirror the LDAP groups.  This way the spreadsheet does not have to be modified.
+										--    For example, the LDAP group Composite_Servicing_Dev is automatically converted to the composite domain group composite_servicing_dev.
+		inDebug1			CHAR(1),	-- N/Null=No debug, Y (default)=Debug for this procedure - basic messages
+		inDebug1Console		CHAR(1), 	-- N/Null (default)=No debug, Y=Debug console.  Determines whether to print the studio console window or not.
+		inDebug1CISLog		CHAR(1), 	-- N/Null (default)=No debug, Y=Debug log.  Determines whether to print to the CIS log or not.
+		inDebug1ReadOnly	CHAR(1),	-- N/Null (default)=No debug, Y=Debug for READ only messages
+		inDebug1RevokeAll	CHAR(1),	-- N/Null (default)=No debug, Y=Debug for Revoke All messages.
+		inDebug2			CHAR(1),	-- N/Null (default)=No debug, Y=Debug for 2nd and 3rd tier procedures (deep debug)
+		inBypassErrors		CHAR(1)		-- Bypass errors.  Throw exception when paths not found.
+										-- N/Null (default) Do not bypass errors.
+										-- Y=bypass resource not found errors but report them.
+	Output:
+		rowsProcessed	INTEGER			-- number of rows processed from the spreadsheet
+		logOutput		LONGVARCHAR		-- The output log that gets printed to the command line console is also output
+
+	Exceptions:  Exception may be thrown.
+
+---------------------------------------------------------------------------------
+/services/webservices/system/admin/resource/operations/updateResourcePrivileges:
+----------------------------------------------------------------------------------
+Set the privilege information for a list of resources.
+
+Only a user with GRANT privilege on a resource can modify the privileges for that
+resource.  The owner of a resource always has GRANT privilege, as do users with the
+MODIFY_ALL_RESOURCES right.
+
+When &quot;mode&quot; is &quot;OVERWRITE_APPEND&quot;, or is not supplied, privileges are applied on a
+per-user or per-group basis, so that updating privileges for one user or group does not
+alter privileges from any other user or group.  The privileges applied for a user or
+group replace the previous value for that user or group. When &quot;mode&quot; is &quot;SET_EXACTLY&quot;,
+all privileges on the resource are made to look exactly like the provided privileges.
+
+When &quot;updateRecursively&quot; is &quot;false&quot;, the privileges are applied only the specified
+resources.  When it is &quot;true&quot;, the privileges are recursively applied into any 
+CONTAINER or DATA_SOURCE resource specified.  When recursively applying privileges, 
+the privilege change is ignored for any resource the user lacks owner privileges for.
+
+Privileges that are not applicable for a given resource type are automatically stripped
+down to the set that is legal for each resource.  TABLE resources support NONE, READ,
+WRITE, SELECT, INSERT, UPDATE, and DELETE.  PROCEDURE resources support NONE, READ,
+WRITE, and EXECUTE.  All other resource types only support NONE, READ, and WRITE.
+
+The &quot;combinedPrivs&quot; and &quot;inheritedPrivs&quot; elements on each &quot;privilegeEntry&quot; will be
+ignored and can be left unset.
+
+Request Elements:
+    updateRecursively: If &quot;true&quot;, then all children of the given resources will
+       recursively be updated with the privileges assigned to their parent.
+    updateDependenciesRecursively: If &quot;true&quot;, then all dependencies of the given resources will
+       recursively be updated with the privileges assigned to their parent.
+    privilegeEntries: A list of resource names, types, and the privileges.
+    mode (optional): Determines whether privileges are merged with existing ones,
+       default is &quot;OVERWRITE_APPEND&quot;, which merges and does not update privileges for
+       users or groups not mentioned.  &quot;SET_EXACTLY&quot; makes privileges look exactly like
+       those provided in the call.
+
+Response Elements:
+    N/A
+
+Faults:
+    IllegalArgument: If any path is malformed or any type or privilege entry is illegal,
+       or mode is not one of the legal values.
+    NotAllowed: If an attempt is made to use this operation with an insufficient license.
+    NotFound: If a path refers to a resource that does not exist.
+    NotFound: If an unknown domain is provided.
+    NotFound: If an unknown user is provided.
+    NotFound: If an unknown group is provided.
+    Security: If for a given entry path the user does not have READ access on any item
+       in a path other than the last item, or does not have GRANT access on the last item.
+    Security: If the user does not have the ACCESS_TOOLS right.
+
+	Modified Date: 	Modified By:		CSW Version:	Reason:
+	10/28/2014		Mike Tinius			6.2.6			Added new.
+	01/15/2016		Mike Tinius			7.0.2			1. added additional parameters to updatePrivilegeCategory. 
+														2. Fixed bug where 1st privilege was not being applied.
+														3. Retrieve columns from system.COLUMN_NAMES instead of the procedure getBasicResourceCursor_SQL_TABLE.
+	05/24/2016		Mike Tinius			7.0.3			Added procedure getCurrentTimestamp to workaround a bug introduced by 7.0.3 server when setting CURRENT_TIMESTAMP.
+	07/15/2016		Mike Tinius			7.0.3			Removed use of vectors to improve performance and reduce memory leak issues.
+	05/16/2017		Mike Tinius			7.0.5			Adapted for Data Abstraction Best Practices.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE updateResourcePrivilegesDriverImplV4(
+	IN datasource				VARCHAR(255),	--  EXCEL, DB_LLE, DB_PROD.  The source of the privileges
+	IN Batch_Privileges 		INTEGER,		-- REQUIRED_FILTER: 1=Batch all privileges for the same path and type, 0=Process each spreadsheet line separately (no batching).
+    IN Environment_Name 		VARCHAR(255), 	-- REQUIRED FILTER: The Composite server environment in which to get/update privileges for: [DEV, TEST, UAT, PROD]
+	IN Organization				VARCHAR(255),	-- OPTIONAL FILTER: The name of the organization such as IM or SS
+	IN Project					VARCHAR(255),	-- OPTIONAL FILTER: The name of the project that is hosted on CIS for this &quot;Env Type&quot;.  This provides a filter for only applying privileges for the given project.  If left blank, all projects will be updated.
+	IN SubProject				VARCHAR(255),	-- OPTIONAL FILTER: The name of the sub-project that is hosted on CIS for this &quot;Env Type&quot;.  This provides a filter for only applying privileges for the given sub-project.  If left blank, all rows for the sub-projects will be updated.
+    IN Sheet_Name 				VARCHAR(255), 	-- OPTIONAL FILTER: The name of the Excel spreadsheet in which to get/update privileges from: [Privileges_initialize, Privileges_shared, Privileges_databases, Privileges_webservices]
+    IN Resource_Path 			LONGVARCHAR,	-- OPTIONAL FILTER: The resource path in which to get/update privileges.  It may contain a wildcard &quot;%&quot;.
+	IN Resource_Type 			VARCHAR(255),	-- OPTIONAL FILTER: The resource type in which to get/update privileges.  It is always upper case. 
+												--  This will only be used when no &quot;Resource_Path&quot; or a single &quot;Resource_Path&quot; is provided.  
+												--  It is not used when a list of &quot;Resource_Path&quot; entries are provided.
+												--	E.g. DATA_SOURCE - a published datasource or physical metadata datasource.
+												--		 CONTAINER - a folder path, a catalog or schema path.
+												--		 COLUMN - a column from a table
+												--		 LINK - a published table or procedure.  If it resides in the path /services and points to a TABLE or PROCEDURE then it is a LINK.
+												--		 TABLE - a view in the /shared path.
+												--		 PROCEDURE a procedure in the /shared path.
+    IN Name_ 					VARCHAR(255), 	-- OPTIONAL FILTER: The user/group name in which to get/update privileges.
+    IN Name_Type				VARCHAR(255), 	-- OPTIONAL FILTER: Valid values are USER or GROUP
+    IN Domain_Name 				VARCHAR(255), 	-- OPTIONAL FILTER: The domain name in which to get/update privileges.
+	IN inPreview				CHAR(1),		-- N or null(default)=Do not preview.  Execute the privileges.  Y=preview what will get set but don&apos;t actually execute the privileges.
+	IN forceDomainAsComposite 	CHAR(1),		-- OPTIONAL PARAM: Y=true, N=false. 
+												--    Provides a way to force a conversion of the group from an LDAP domain name like &quot;ldap&quot; to a the &quot;composite&quot; domain.  
+												--    This is useful when setting up the privileges for testing with composite groups that mirror the LDAP groups.  This way the spreadsheet does not have to be modified.
+												--    For example, the LDAP group Composite_Servicing_Dev is automatically converted to the composite domain group composite_servicing_dev.
+	IN inDebug1					CHAR(1),		-- N/Null=No debug, Y (default)=Debug for this procedure - basic messages
+	IN inDebug1Console			CHAR(1), 		-- N/Null (default)=No debug, Y=Debug console.  Determines whether to print the studio console window or not.
+	IN inDebug1CISLog			CHAR(1), 		-- N/Null (default)=No debug, Y=Debug log.  Determines whether to print to the CIS log or not.
+	IN inDebug1ReadOnly			CHAR(1), 		-- N/Null (default)=No debug, Y=Debug for READ only messages
+	IN inDebug1RevokeAll		CHAR(1),		-- N/Null (default)=No debug, Y=Debug for Revoke All messages.
+	IN inDebug2					CHAR(1),		-- N/Null (default)=No debug, Y=Debug for 2nd and 3rd tier procedures (deep debug)
+	IN inBypassErrors			CHAR(1),		-- Bypass errors.  Throw exception when paths not found.
+												-- 	  N/Null (default) Do not bypass errors.
+												-- 	  Y=bypass resource not found errors but report them.
+	IN inModuleName				VARCHAR,		-- The name of the invoking interface procedure.
+	OUT rowsProcessed			INTEGER,		-- number of rows processed from the spreadsheet
+	OUT logOutput				LONGVARCHAR		-- The output log that gets printed to the command line console is also output
+)
+BEGIN
+	DECLARE debug1					CHAR(1) DEFAULT UPPER(NVL(inDebug1,&apos;Y&apos;));			-- Debug for this procedure - basic messages
+	DECLARE debug1Console			CHAR(1) DEFAULT NVL(UPPER(inDebug1Console),&apos;N&apos;);
+	DECLARE debug1CISLog			CHAR(1) DEFAULT NVL(UPPER(inDebug1CISLog),&apos;N&apos;);
+	DECLARE debug1ReadOnly			CHAR(1) DEFAULT UPPER(NVL(inDebug1ReadOnly,&apos;N&apos;)); 	-- Debug for READ only messages
+	DECLARE debug1RevokeAll			CHAR(1) DEFAULT UPPER(NVL(inDebug1RevokeAll,&apos;N&apos;)); 	-- Debug for Revoke All only messages
+	DECLARE debug2					CHAR(1) DEFAULT UPPER(NVL(inDebug2,&apos;N&apos;));			-- Debug for 2nd and 3rd tier procedures (deep debug)
+	DECLARE bypassErrors			CHAR(1) DEFAULT NVL(UPPER(inBypassErrors), &apos;N&apos;);	-- N/Null (default) Do not bypass errors, Y=bypass resource not found errors but report them.
+
+	-- DO NOT CHANGE
+	DECLARE moduleName 				VARCHAR DEFAULT NVL(inModuleName,&apos;updateResourcePrivilegesDriverImplV4&apos;);
+	DECLARE sqlStatement			LONGVARCHAR;
+	DECLARE fromClause				VARCHAR(2048);
+	DECLARE whereClause				LONGVARCHAR;
+	DECLARE revokeUsersIgnoreList	VARCHAR(4000) DEFAULT &apos;admin&apos;; -- &apos;admin,all,anonymous,monitor&apos;  -- The list of user to ignore when revoking privileges
+	DECLARE revokeAllDefaultPrivilege VARCHAR DEFAULT &apos;NONE&apos;; -- READ -- this is the privilege that gets set on a resource when revoking privileges.  Option 2=NONE
+	DECLARE revokeAllLogOutput		LONGVARCHAR;
+	DECLARE debug2RownumMin			INTEGER DEFAULT 0; -- when 0 then allow debug for all otherwise only debug a specific row when debug2=&apos;Y&apos;
+	DECLARE debug2RownumMax			INTEGER DEFAULT 0; -- when 0 then allow debug for all otherwise only debug a specific row when debug2=&apos;Y&apos;
+	DECLARE debug2Modified			CHAR(1);
+	DECLARE newline					VARCHAR DEFAULT CHR(10);
+	DECLARE batchPrivileges			INTEGER DEFAULT NVL(Batch_Privileges, 1);
+	DECLARE preview					CHAR(1) DEFAULT UPPER(NVL(inPreview, &apos;N&apos;));
+	DECLARE beginBatch				BOOLEAN DEFAULT false;
+	DECLARE columnExists			INTEGER;
+	DECLARE parentPath				LONGVARCHAR;
+	DECLARE parentType				VARCHAR;
+	DECLARE colName					VARCHAR;
+	DECLARE resourcePath			LONGVARCHAR DEFAULT null;
+	DECLARE resourceType			VARCHAR DEFAULT null;
+	DECLARE resourceExists			BOOLEAN;
+	DECLARE resourceName			VARCHAR;
+	DECLARE getPrivsResourcePath	LONGVARCHAR;
+/* mtinius: 2016-01-15: Fixed bug where 1st record was not used because default was null.  
+                        Need to compare prevResourcePath and prevResourceType to blank string so 1st record is found different and used. 
+*/
+	DECLARE prevResourcePath		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE prevResourceType		VARCHAR DEFAULT &apos;&apos;;
+	DECLARE recurseDependencies		BIT;		-- 0=no recurse, 1=recurse through all dependencies of the given resource and update them with the privileges assigned to their parent.
+	DECLARE recurseDependents		BIT;		-- 0=no recurse, 1=recurse through all dependents of the given resource and update them with the privileges assigned to the resource passed in.
+	DECLARE recurseChild			BIT;	 	-- 0=no recurse, 1=recurse through folders if the resource is a folder.
+	DECLARE revokeAll				CHAR(1);	-- N=no revoke all, Y=yes revoke all
+	DECLARE recurseChildStr			VARCHAR DEFAULT null;
+	DECLARE prevRecurseChildStr		VARCHAR DEFAULT null;
+	DECLARE recurseDependenciesStr	VARCHAR;
+	DECLARE recurseDependentsStr	VARCHAR;
+	DECLARE mode					VARCHAR; 	-- &quot;OVERWRITE_APPEND&quot;=Only apply modification, &quot;SET_EXACTLY&quot;=Make child resources look like this resource. 
+	DECLARE PUBLIC TYPE privilegeRow		ROW (
+		domainName			VARCHAR(255),-- composite domain
+		name				VARCHAR(255),-- name of the user or group to assign the privilege
+		nameType			VARCHAR(255),-- USER or GROUP
+		privilegeList		VARCHAR(255) -- space separated list of privileges: NONE or READ WRITE SELECT EXECUTE INSERT UPDATE DELETE GRANT
+	);
+	DECLARE privilegeRec			privilegeRow;
+	DECLARE privilegeStr			LONGVARCHAR;
+	DECLARE name					VARCHAR;
+	DECLARE nameType				VARCHAR;
+	DECLARE domainName				VARCHAR;
+	DECLARE privilegeList			VARCHAR;
+	DECLARE privilegeListDisplay	VARCHAR;
+	DECLARE actualPrivilegeList		VARCHAR;
+	DECLARE owner					VARCHAR;
+	DECLARE ownerDomain				VARCHAR;
+	DECLARE ex						EXCEPTION;
+	DECLARE rowString				LONGVARCHAR;
+	DECLARE rownum					INTEGER;
+	DECLARE privRows				INTEGER;
+	DECLARE totalPrivsToApply		INTEGER;
+	DECLARE message					LONGVARCHAR;
+	DECLARE project					VARCHAR;
+	DECLARE subProject				VARCHAR;
+	DECLARE startTime				TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+	DECLARE currentTS				TIMESTAMP;
+	DECLARE duration				INTERVAL DAY(9) TO SECOND;
+	DECLARE result					LONGVARCHAR;
+	DECLARE status					VARCHAR;
+	DECLARE tmpResourceStr			LONGVARCHAR;
+	DECLARE bypassResourceStr		LONGVARCHAR;
+	DECLARE bypassErrorResourceFound BIT;
+	DECLARE LONGVARCHARlen			INTEGER DEFAULT 2147483647;
+	-- This string is used to keep track of resource not exist errors.  Format=&quot;Resource Path&quot;::&quot;Resource Type&quot;|[repeat format]
+	DECLARE bypassErrorsStr1		LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE bypassErrorsStr2		LONGVARCHAR DEFAULT &apos;&apos;;
+	-- The string used to track the list of paths to set READ privilege.
+	DECLARE privReadStr1			LONGVARCHAR;--Format: &quot;Resource Path&quot;::&quot;Resource Type&quot;::Name::&quot;Name Type&quot;::&quot;Domain&quot;::privilege::Owner::&quot;Owner Domain&quot;::&quot;Recurse Dependencies&quot;::&quot;Recurse Dependents&quot;::Recurse::mode|[repeat format]
+	DECLARE privReadStr2			LONGVARCHAR;--Format: &quot;Resource Path&quot;::&quot;Resource Type&quot;::Name::&quot;Name Type&quot;::&quot;Domain&quot;::privilege::Owner::&quot;Owner Domain&quot;::&quot;Recurse Dependencies&quot;::&quot;Recurse Dependents&quot;::Recurse::mode|[repeat format]
+	-- The string used to track the list of explicitly set paths for non-READ privileges.
+	DECLARE privReadAppliedStr1		LONGVARCHAR;--Format: &quot;Resource Path&quot;::&quot;Resource Type&quot;::Name::&quot;Name Type&quot;::&quot;Domain&quot;::privilege::Owner::&quot;Owner Domain&quot;::&quot;Recurse Dependencies&quot;::&quot;Recurse Dependents&quot;::Recurse::mode|[repeat format]
+	DECLARE privReadAppliedStr2		LONGVARCHAR;--Format: &quot;Resource Path&quot;::&quot;Resource Type&quot;::Name::&quot;Name Type&quot;::&quot;Domain&quot;::privilege::Owner::&quot;Owner Domain&quot;::&quot;Recurse Dependencies&quot;::&quot;Recurse Dependents&quot;::Recurse::mode|[repeat format]
+	-- This string contains a list of found and not found paths.  
+	--	Format [FOUND:/path,NOTFOUND:/path,]  Each path is succeeded by a comma to designate the end of the path.
+	DECLARE privExplicitlySetStr1	LONGVARCHAR DEFAULT &apos;&apos;;--Format: &quot;Resource Path&quot;::&quot;Resource Type&quot;::Name::&quot;Name Type&quot;::&quot;Domain&quot;::privilege::Owner::&quot;Owner Domain&quot;::&quot;Recurse Dependencies&quot;::&quot;Recurse Dependents&quot;::Recurse::mode|[repeat format]
+	DECLARE privExplicitlySetStr2	LONGVARCHAR DEFAULT &apos;&apos;;--Format: &quot;Resource Path&quot;::&quot;Resource Type&quot;::Name::&quot;Name Type&quot;::&quot;Domain&quot;::privilege::Owner::&quot;Owner Domain&quot;::&quot;Recurse Dependencies&quot;::&quot;Recurse Dependents&quot;::Recurse::mode|[repeat format]
+	-- The string used to track the list of READ-only privileges that have been applied privileges.
+	DECLARE parentPaths				LONGVARCHAR DEFAULT &apos;&apos;;
+	-- Global variable: 
+	DECLARE overrideOwner			VARCHAR;
+	DECLARE overrideOwnerDomain		VARCHAR;
+	-- Variables for Update Privilege Category
+	DECLARE grandparentPath			LONGVARCHAR;
+	DECLARE privReadStr				LONGVARCHAR;--Format: &quot;Resource Path&quot;::&quot;Resource Type&quot;::Name::&quot;Name Type&quot;::&quot;Domain&quot;::privilege::Owner::&quot;Owner Domain&quot;::&quot;Recurse Dependencies&quot;::&quot;Recurse Dependents&quot;::Recurse::mode|
+	DECLARE tmpPrivStr				LONGVARCHAR; --Format: &quot;Resource Path&quot;::&quot;Resource Type&quot;::Name::&quot;Name Type&quot;::&quot;Domain&quot;::privilege::Owner::&quot;Owner Domain&quot;::&quot;Recurse Dependencies&quot;::&quot;Recurse Dependents&quot;::Recurse::mode|[repeat format]
+	DECLARE trailerString			VARCHAR;
+	DECLARE category				INTEGER;
+	DECLARE userDomain				VARCHAR DEFAULT NULL;
+	DECLARE resourceTypeTmp			VARCHAR;
+	DECLARE denyReadPrivilegesNameList	LONGVARCHAR DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.denyReadPrivilegesNameList;
+	DECLARE denyNameBool				BOOLEAN;
+	DECLARE denyName					VARCHAR(4000);
+	DECLARE privRowFound				BOOLEAN;
+	-- Variables for lookupOverrideOwner
+	--   Global variable: 
+	--   A comma separated list of environments types user and domain where the owner and owner domain shall be defaulted to the specified value no matter how they are set within the privilege rows.
+	--   Format Environment_Name/[PDEFAULT,project1]/[SDEFAULT,subproject1]/user/domain, envType/[PDEFAULT,project2]/[SDEFAULT,subproject2]/user/domain,(repeat)
+	--   When project=PDEFAULT then apply the setting for all projects by default unless a specific project is found
+	--   When subproject=SDEFAULT then apply the setting for all subprojects by default unless a specific subproject is found
+	--   e.g. &apos;UAT/PDEFAULT/SDEFAULT/admin/composite, PROD/PDEFAULT/SDEFAULT/admin/composite&apos;
+	DECLARE OverrideEnvOwnerList				VARCHAR(4000) DEFAULT /shared/ASAssets/BestPractices_v81/&quot;_ProjectMaintenance&quot;/defaultValues.OverrideEnvOwnerList;
+	DECLARE defaultOwner					VARCHAR;
+	DECLARE defaultOwnerDomain				VARCHAR;
+	DECLARE defaultProjectFound				BOOLEAN;
+	DECLARE defaultSubProjectFound			BOOLEAN;
+	DECLARE part							VARCHAR(4000);
+	DECLARE listRow							VARCHAR(4000);
+	DECLARE listProject						VARCHAR;
+	DECLARE listSubproject					VARCHAR;
+	DECLARE pos								INTEGER;
+	DECLARE j,k								INTEGER;
+	DECLARE pos1,pos2						INTEGER;
+	DECLARE object							VARCHAR(4000);
+	DECLARE moreToDo1,moreToDo2				BOOLEAN;
+	DECLARE objectList1,objectList2			LONGVARCHAR;
+	DECLARE expression1,expression2			VARCHAR;
+	DECLARE explen1,explen2					INTEGER;
+
+	/************* FORCE BATCH PRIVILEGES TO BE ON *******************/
+--	set batchPrivileges = 1;
+	/*****************************************************************/
+
+	-- Set defaults
+	set logOutput = &apos;&apos;;
+	IF (batchPrivileges &gt; 0) THEN
+		set batchPrivileges = 1;
+	END IF;
+
+	-- Print out the input filters
+	set message = &apos;INPUT FILTERS:&apos;||newline;
+
+    IF (datasource IS NOT NULL) THEN
+		set message = message || &apos; datasource=&apos;||datasource||newline;
+	END IF;
+    IF (batchPrivileges IS NOT NULL) THEN
+		set message = message || &apos; Batch_Privileges=&apos;||NVL(CAST(batchPrivileges AS VARCHAR), &apos; &apos;)||newline;
+	END IF;
+    IF (Environment_Name IS NOT NULL AND LENGTH(Environment_Name) &gt; 0) THEN
+		set message = message || &apos; Environment_Name=&apos;||NVL(Environment_Name, &apos; &apos;)||newline;
+	END IF;
+     IF (Project IS NOT NULL AND LENGTH(Project) &gt; 0) THEN
+		set message = message || &apos; Project=&apos;||NVL(Project, &apos; &apos;)||newline;
+	END IF;
+     IF (SubProject IS NOT NULL AND LENGTH(SubProject) &gt; 0) THEN
+		set message = message || &apos; SubProject=&apos;||NVL(SubProject, &apos; &apos;)||newline;
+	END IF;
+    IF (Sheet_Name IS NOT NULL AND LENGTH(Sheet_Name) &gt; 0) THEN
+		IF (POSITION(&apos;shared&apos; in Sheet_Name) &gt; 0 OR POSITION(&apos;data&apos; in Sheet_Name) &gt; 0 OR POSITION(&apos;web&apos; in Sheet_Name) &gt; 0) THEN
+			set message = message || &apos; Sheet_Name=&apos;||NVL(Sheet_Name, &apos; &apos;)||newline;
+		ELSE
+			raise ex value &apos;The Sheet_Name value [&apos;||TRIM(NVL(Sheet_Name, &apos; &apos;))||&apos;] is invalid.  It may be [Privileges_shared|shared, Privileges_databases|databases, Privileges_webservices|webservices].&apos;;
+		END IF;
+	END IF;
+    IF (Resource_Path IS NOT NULL AND LENGTH(Resource_Path) &gt; 0) THEN
+		set message = message || &apos; Resource_Path=&apos;||NVL(Resource_Path, &apos; &apos;)||newline;
+	END IF;
+    IF (Name_ IS NOT NULL AND LENGTH(Name_) &gt; 0) THEN
+		set message = message || &apos; Name_=&apos;||NVL(Name_, &apos; &apos;)||newline;
+	END IF;
+    IF (Domain_Name IS NOT NULL AND LENGTH(Domain_Name) &gt; 0) THEN
+		set message = message || &apos; Domain_Name=&apos;||NVL(Domain_Name, &apos; &apos;)||newline;
+	END IF;
+    IF (preview IS NOT NULL AND LENGTH(preview) &gt; 0) THEN
+		set message = message || &apos; preview=&apos;||NVL(preview, &apos; &apos;)||newline;
+		IF (preview = &apos;Y&apos; AND debug1 = &apos;N&apos;) THEN
+			set debug1 = &apos;Y&apos;;
+		END IF;
+	END IF;
+    IF (forceDomainAsComposite IS NOT NULL AND LENGTH(forceDomainAsComposite) &gt; 0) THEN
+		set message = message || &apos; forceDomainAsComposite=&apos;||NVL(CAST(forceDomainAsComposite AS VARCHAR), &apos; &apos;)||newline;
+	END IF;
+
+	-- This is done so that the owner of a resource is not accidently reset thus wiping out the original resource owner in the development environment.
+	-- Lookup the override owner and owner domain
+	/******************************
+	 BEGIN lookupOverrideOwner
+	 ******************************/
+	IF (Environment_Name IS NOT NULL AND project IS NOT NULL) THEN
+		-- Extract the object from the object list
+		SET objectList1 = OverrideEnvOwnerList;
+		SET expression1 = &apos;,&apos;;
+		SET explen1 = length(expression1);
+		SET moreToDo1 = true;
+		SET j = 0;
+		WHILE (moreToDo1) DO
+			-- Extract the source column type
+			set j = j + 1;
+			SET object = null;
+			IF (j = 1) THEN
+				SET pos1 = INSTR(objectList1, expression1, 1, j);
+				IF (pos1 &gt; 0) THEN
+					SET object = SUBSTRING(objectList1, 1, pos1-1);
+				ELSE
+					IF (LENGTH(TRIM(objectList1)) &gt; 0) THEN
+						SET object = objectList1;
+					END IF;
+					SET moreToDo1 = false;
+				END IF;
+			ELSE
+				SET pos1 = INSTR(objectList1, expression1, 1, j-1);
+				SET pos2 = INSTR(objectList1, expression1, 1, j);
+				IF (pos1 &gt; 0 and pos2 &gt; 0) THEN
+					SET object = SUBSTRING(objectList1, pos1+explen1, pos2-pos1-explen1);
+				ELSEIF (pos1 &gt; 0 and pos2 = 0) THEN
+					SET object = SUBSTRING(objectList1, pos1+explen1);
+					SET moreToDo1 = false;
+				END IF;
+			END IF;
+			SET object = TRIM(object);
+			--CALL print(&apos;includeNameEQ object=[&apos;||TRIM(NVL(object,&apos;  &apos;))||&apos;]&apos;);
+			IF (object IS NOT NULL and LENGTH(TRIM(object)) &gt; 0) then
+				set listRow = object;
+				-- Continue if the listRow begins with envType or /envType
+				--	AND splitElement LIKE Environment_Name||&apos;%&apos; OR splitElement LIKE &apos;/&apos;||Environment_Name||&apos;%&apos;
+				IF (INSTR(listRow, Environment_Name) = 1 OR INSTR(listRow, &apos;/&apos;||Environment_Name) = 1) THEN
+					IF (SUBSTRING(listRow,1,1) = &apos;/&apos;) THEN
+						SET listRow = SUBSTRING(listRow, 2, LENGTH(listRow));
+					END IF;
+					--CALL PRINT(&apos;listRow=&apos;||listRow);
+					SET defaultProjectFound = false;
+					SET defaultSubProjectFound = false;
+
+					-- Extract the object from the object list
+					SET objectList2 = listRow;
+					SET expression2 = &apos;/&apos;;
+					SET explen2 = length(expression2);
+					SET moreToDo2 = true;
+					SET k = 0;
+					WHILE (moreToDo2) DO
+						-- Extract the source column type
+						set k = k + 1;
+						SET object = null;
+						IF (k = 1) THEN
+							SET pos1 = INSTR(objectList2, expression2, 1, k);
+							IF (pos1 &gt; 0) THEN
+								SET object = SUBSTRING(objectList2, 1, pos1-1);
+							ELSE
+								IF (LENGTH(TRIM(objectList2)) &gt; 0) THEN
+									SET object = objectList2;
+								END IF;
+								SET moreToDo2 = false;
+							END IF;
+						ELSE
+							SET pos1 = INSTR(objectList2, expression2, 1, k-1);
+							SET pos2 = INSTR(objectList2, expression2, 1, k);
+							IF (pos1 &gt; 0 and pos2 &gt; 0) THEN
+								SET object = SUBSTRING(objectList2, pos1+explen2, pos2-pos1-explen2);
+							ELSEIF (pos1 &gt; 0 and pos2 = 0) THEN
+								SET object = SUBSTRING(objectList2, pos1+explen2);
+								SET moreToDo2 = false;
+							END IF;
+						END IF;
+						SET object = TRIM(object);
+						--CALL print(&apos;part object=[&apos;||TRIM(NVL(object,&apos;  &apos;))||&apos;]&apos;);
+						IF (object IS NOT NULL and LENGTH(TRIM(object)) &gt; 0) then
+							set part = object;
+
+							CASE
+								WHEN k = 2 THEN SET listProject = part;
+								WHEN k = 3 THEN SET listSubproject = part;
+								ELSE
+							END CASE;
+							IF (part = &apos;PDEFAULT&apos;) THEN
+								SET defaultProjectFound = TRUE;
+							END IF;
+							IF (part = &apos;SDEFAULT&apos;) THEN
+								SET defaultSubProjectFound = TRUE;
+							END IF;
+							IF (defaultProjectFound AND defaultSubProjectFound) THEN
+								CASE
+									WHEN k = 4 THEN SET defaultOwner = TRIM(NVL(part,&apos;  &apos;));
+									WHEN k = 5 THEN SET defaultOwnerDomain = TRIM(NVL(part,&apos;  &apos;));
+									ELSE
+								END CASE;
+							ELSEIF (project = listProject AND subProject = listSubproject) THEN
+								CASE
+									WHEN k = 4 THEN SET overrideOwner = part;
+									WHEN k = 5 THEN SET overrideOwnerDomain = part;
+									ELSE
+								END CASE;
+							END IF;
+						END IF;
+					END WHILE;
+				END IF;
+			END IF;
+		END WHILE;
+
+		IF (overrideOwner IS NULL) THEN
+			SET overrideOwner = defaultOwner;
+		END IF;
+		IF (overrideOwnerDomain IS NULL) THEN
+			SET overrideOwnerDomain = defaultOwnerDomain;
+		END IF;
+	END IF;
+    IF (overrideOwner IS NOT NULL AND overrideOwnerDomain IS NOT NULL) THEN
+		set message = message || &apos; For Environment_Name[&apos;||TRIM(NVL(Environment_Name,&apos;  &apos;))||&apos;], the owner and ownderDomain are being overridden by default values overrideOwner=[&apos;||
+							TRIM(NVL(overrideOwner,&apos;  &apos;))||&apos;] and overrideOwnerDomain=[&apos;||TRIM(NVL(overrideOwnerDomain,&apos;  &apos;))||&apos;]&apos;||newline;
+		IF (overrideOwner = &apos;NULL&apos;) THEN
+			SET overrideOwner = &apos;&apos;;
+		END IF;
+		IF (overrideOwnerDomain = &apos;NULL&apos;) THEN
+			SET overrideOwnerDomain = &apos;&apos;;
+		END IF;
+	END IF;
+	IF (debug1 = &apos;Y&apos;) THEN
+		call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+	END IF;
+	/******************************
+	 END lookupOverrideOwner
+	 ******************************/
+
+	-- Print out the preview Mode
+	IF (preview = &apos;Y&apos;) THEN
+		IF (debug1 = &apos;Y&apos;) THEN
+			set message = &apos;PREVIEW MODE ONLY.  NO PRIVILEGES WILL BE UPDATED.&apos;||newline;
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+		END IF;
+	ELSE
+		IF (debug1 = &apos;Y&apos;) THEN
+			set message = &apos;UPDATE MODE.  PRIVILEGES WILL BE UPDATED.&apos;||newline;
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+		END IF;
+	END IF;
+
+	-- Get the SQL Statement for logging purposes
+	CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getSQLPrivileges(datasource, Environment_Name, Organization, Project, SubProject, Sheet_Name, Resource_Path, Resource_Type, Name_, Name_Type, Domain_Name, debug1, sqlStatement, fromClause, whereClause);
+	-- Process the spreadsheet and look for resource paths that do not exist in order to &quot;fail fast&quot;
+	IF (debug1 = &apos;Y&apos;) THEN
+		set message = &apos;VALIDATE ALL RESOURCE PATHS ::&apos;||&apos;|&apos;||newline;
+		call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+		set message = &apos;SQL STATEMENT FOR SELECTING PRIVILEGES ::&apos;||sqlStatement||&apos;|&apos;||newline;
+		call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+	END IF;
+
+	/*************************************
+	 BEGIN EVALUATE RESOURCES NOT EXIST
+	 *************************************/
+	-- Loop through the privilege list and check for resource paths that do not exist.
+	set totalPrivsToApply = 0;
+	FOR r AS 
+		SELECT * FROM /shared/ASAssets/BestPractices_v81/PrivilegeScripts/getPrivileges(datasource, Environment_Name, Organization, Project, SubProject, Sheet_Name, Resource_Path, Resource_Type, Name_, Name_Type, Domain_Name, &apos;N&apos;)
+	DO
+		-- set variables
+		set totalPrivsToApply = totalPrivsToApply + 1;
+		set resourcePath = r.&quot;Resource Path&quot;;
+		set resourceType = r.&quot;Resource Type&quot;;
+
+		IF (prevResourcePath IS NOT NULL AND prevResourceType IS NOT NULL AND resourcePath IS NOT NULL AND resourceType IS NOT NULL
+				AND (prevResourcePath != resourcePath OR prevResourceType != resourceType) ) 
+		THEN
+			-- Create the row string to display
+			set rowString = &apos;Sheet=&apos;||r.sheetName||&apos; SheetRow=&apos;||r.sheetRownum||&apos; ResPath=&apos;||resourcePath || &apos; ResType=&apos;||resourceType;
+
+			IF (resourceType != &apos;COLUMN&apos;) THEN
+				call /lib/resource/ResourceExists(resourcePath, resourceType, null, resourceExists);
+			ELSE
+				SET colName = null;
+				SET parentPath = null;
+				SET pos = INSTR(resourcePath, &apos;/&apos;, -1, 1);
+				IF (pos &gt; 0) THEN
+					SET colName = SUBSTRING(resourcePath, pos+1);
+					SET parentPath = SUBSTRING(resourcePath, 1, pos-1);
+				END IF;
+				-- Assumption when applying COLUMN level privileges is that the resource is a TABLE and not a PROCEDURE.
+				call /lib/resource/ResourceExists(parentPath, &apos;TABLE&apos;, null, resourceExists);
+				-- Check to see if the column exists if the table exists
+				IF (resourceExists) THEN
+					-- Remove double quotes around column name
+					IF (INSTR(colName, &apos;&quot;&apos;) &gt; 0) then
+						--CALL /shared/ASAssets/Utilities/string/removeDoubleQuotes(colName, colName);
+						--RegexReplace (RegexReplace(inString, &apos;&quot;&quot;&apos;, &apos;&quot;&quot;=dq=&apos;, 0), &apos;(&quot;=dq=|&quot;(?!&quot;))&apos;, &apos;&apos;, 0);
+						CALL/shared/ASAssets/Utilities/string/TextUtils/RegexReplace(colName, &apos;&quot;&quot;&apos;, &apos;&quot;&quot;=dq=&apos;, 0, colName);
+						CALL/shared/ASAssets/Utilities/string/TextUtils/RegexReplace(colName, &apos;(&quot;=dq=|&quot;(?!&quot;))&apos;, &apos;&apos;, 0, colName);
+					END IF;
+
+					/* mtinius: 2016-01-15: new strategy for checking column exists. */
+					SELECT COUNT(*) columnExists INTO columnExists
+						FROM /services/databases/system/ALL_COLUMNS
+						WHERE COLUMN_NAME = colName
+						  AND PARENT_PATH = parentPath;
+					/* mtinius: 2016-01-15: commented out old strategy
+					SELECT COUNT(*) columnExists INTO columnExists
+						FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE(parentPath, &apos;TABLE&apos;)
+						WHERE columnName IS NOT NULL AND columnName = colName;
+					*/
+					IF (columnExists = 0) THEN
+						SET resourceExists = FALSE;
+					END IF;
+				END IF;
+			END IF;
+
+				IF (bypassErrors = &apos;N&apos; AND NOT resourceExists) THEN
+					raise ex value &apos;Resource does not exist...&apos;||rowString;
+				ELSEIF (bypassErrors = &apos;Y&apos; AND NOT resourceExists) THEN
+					SET bypassResourceStr = TRIM(NVL(resourceType,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(resourcePath,&apos;  &apos;))||&apos;|&apos;;
+
+					-- Search for this current unique entry in the &quot;bypass error&quot; list.  
+					IF (POSITION(bypassResourceStr IN bypassErrorsStr1) &gt; 0) THEN
+						SET bypassErrorResourceFound = 1;
+					ELSEIF (POSITION(bypassResourceStr IN bypassErrorsStr2) &gt; 0) THEN
+						SET bypassErrorResourceFound = 1;
+					ELSE
+						SET bypassErrorResourceFound = 0;
+					END IF;
+					-- Add the row to the string since it was not found in the &quot;bypass error&quot; list.  Only one reference of resource path is needed.
+					IF (bypassErrorResourceFound = 0) THEN
+						IF (LENGTH(bypassErrorsStr1) + LENGTH(bypassResourceStr) &lt; LONGVARCHARlen) THEN
+							SET bypassErrorsStr1 = bypassErrorsStr1 || bypassResourceStr;
+						ELSEIF (LENGTH(bypassErrorsStr2) + LENGTH(bypassResourceStr) &lt; LONGVARCHARlen) THEN
+							SET bypassErrorsStr2 = bypassErrorsStr2 || bypassResourceStr;
+						ELSE
+							RAISE ex VALUE &apos;The length of &quot;bypassErrorsStr1&quot; and &quot;bypassErrorsStr2&quot; has been exceeded.&apos;;
+						END IF;
+
+						IF (debug1 = &apos;Y&apos;) THEN
+							-- Log the resource not exist issue
+							set message = &apos;**ERROR**: RESOURCE NOT EXIST :: Resource Type::Path=&apos;||TRIM(NVL(resourceType,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(resourcePath,&apos;  &apos;))||&apos;|&apos;||newline;
+							call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+						END IF;
+					END IF;
+				END IF;
+
+		END IF;
+		-- Set the previous resource path and type so as to track when a line is different than the previous
+		--   This will trigger invoking the updateResourcePrivileges() method during batch privilege processing.
+		set prevResourcePath = resourcePath;
+		set prevResourceType = resourceType;
+	END FOR;
+	set prevResourcePath = null;
+	set prevResourceType = null;
+	/*************************************
+	 END EVALUATE RESOURCES NOT EXIST
+	 *************************************/
+
+	-- Display a debug message that the batch is beginning
+	IF (batchPrivileges &gt; 0) THEN
+		IF (debug1 = &apos;Y&apos;) THEN
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, &apos;|&apos;||newline, logOutput);
+			set message = &apos;BEGIN BATCH ::&apos;||&apos;|&apos;||newline;
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+		END IF;
+		set beginBatch = true;
+	END IF;
+
+	-- Get the SQL Statement for logging purposes
+	CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getSQLPrivileges(datasource, Environment_Name, Organization, Project, SubProject, Sheet_Name, Resource_Path, Resource_Type, Name_, Name_Type, Domain_Name, debug1, sqlStatement, fromClause, whereClause);
+	IF (debug1 = &apos;Y&apos;) THEN
+		set message = &apos;SQL STATEMENT FOR SELECTING PRIVILEGES ::&apos;||REPLACE(sqlStatement,newline,&apos; &apos;)||&apos;|&apos;||newline;
+		call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+	END IF;
+
+	/*************************************
+	 BEGIN PROCESSING PRIVILEGE ROWS
+	 *************************************/
+	-- Process the spreadsheet and apply privileges
+	set privRows = 0;
+	set rowsProcessed = 0;
+	FOR r AS 
+		SELECT * FROM /shared/ASAssets/BestPractices_v81/PrivilegeScripts/getPrivileges(datasource, Environment_Name, Organization, Project, SubProject, Sheet_Name, Resource_Path, Resource_Type, Name_, Name_Type, Domain_Name, debug1)
+	DO
+		-- set count variables
+		set rowsProcessed = rowsProcessed + 1;
+		set rownum = r.rownum;
+		set project = r.Project;
+		set subProject = r.SubProject;
+		IF (preview = &apos;N&apos;) THEN
+			set status = &apos;PROCESSED:&apos;;
+		ELSE
+			set status = &apos;PREVIEWED:&apos;;
+		END IF;
+
+		-- Validate recurse child and mode
+		set recurseChildStr = &apos;N&apos;;
+		IF (r.&quot;Recurse Child&quot; IS NOT NULL) THEN
+			IF (UPPER(r.&quot;Recurse Child&quot;) = &apos;YM&apos;) THEN
+				set recurseChildStr = UPPER(TRIM(r.&quot;Recurse Child&quot;));
+			END IF;
+			IF (UPPER(r.&quot;Recurse Child&quot;) = &apos;YC&apos;) THEN
+				set recurseChildStr = UPPER(TRIM(r.&quot;Recurse Child&quot;));
+			END IF;
+		END IF;
+
+		-- Set the revoke all parameter
+		set revokeAll = &apos;N&apos;;
+		IF (r.&quot;Revoke All&quot; IS NOT NULL AND UPPER(r.&quot;Revoke All&quot;) = &apos;Y&apos;) THEN
+			set revokeAll = &apos;Y&apos;;
+		END IF;
+
+--		call print(&apos;CURR: recurseChildStr=&apos;||recurseChildStr    ||&apos;  resourceType=&apos;||r.&quot;Resource Type&quot;||&apos;  resourcePath=&apos;||r.&quot;Resource Path&quot;);
+--		call print(&apos;PREV: recurseChildStr=&apos;||prevRecurseChildStr||&apos;  resourceType=&apos;||prevResourceType ||&apos;  resourcePath=&apos;||prevResourcePath);
+
+		-- If Batch Privileges is &quot;ON&quot; and the curent path is different than the previous path then process this path before continuing.
+		IF (batchPrivileges &gt; 0 AND 
+				(	(prevResourcePath IS NOT NULL AND prevResourceType IS NOT NULL AND r.&quot;Resource Path&quot; IS NOT NULL AND r.&quot;Resource Type&quot; IS NOT NULL
+					and prevRecurseChildStr IS NOT NULL AND recurseChildStr IS NOT NULL
+					and (prevResourcePath != r.&quot;Resource Path&quot; OR prevResourceType != r.&quot;Resource Type&quot; OR prevRecurseChildStr != recurseChildStr))   )
+			) 
+		then
+			-- Debug message indicating the batch of privileges was committed
+			IF (debug1 = &apos;Y&apos;) THEN
+				IF (preview = &apos;Y&apos;) THEN
+					set message = &apos;PREVIEWED BATCH: Change in: &apos;;
+				ELSE
+					set message = &apos;COMMIT BATCH: Change in: &apos;;
+				END IF;
+				IF (prevResourcePath != r.&quot;Resource Path&quot;) THEN
+					set message = message || &apos;&quot;Resource Path&quot; &apos;;
+				ELSEIF (prevResourceType != r.&quot;Resource Type&quot;) THEN
+					set message = message || &apos;&quot;Resource Type&quot; &apos;;
+				ELSEIF (prevRecurseChildStr != recurseChildStr) THEN
+					set message = message || &apos;&quot;Recurse Child&quot; &apos;;
+				ELSE
+					set message = message || &apos;New Batch&apos;;
+				END IF;
+				IF (project IS NOT NULL) THEN
+					set message = message || &apos;    [Project=&apos;||TRIM(NVL(project,&apos; &apos;))||&apos;]&apos;;
+				END IF;
+				IF (subProject IS NOT NULL) THEN
+					set message = message || &apos;    [SubProject=&apos;||TRIM(NVL(subProject,&apos; &apos;))||&apos;]&apos;;
+				END IF;
+				set message = message ||&apos;|&apos; || newline;
+
+				call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+				call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, &apos;|&apos;||newline, logOutput);
+			END IF;
+
+			IF (debug2RownumMin = 0 AND debug2RownumMax = 0) THEN
+				set debug2Modified = debug2;
+			ELSE
+				IF (rownum &gt;= debug2RownumMin AND rownum &lt;= debug2RownumMax) THEN
+					set debug2Modified = debug2;
+				ELSE
+					set debug2Modified = &apos;N&apos;;
+				END IF;
+			END IF;
+
+			-- Perform update if NOT preview mode
+			IF (preview = &apos;N&apos;) THEN
+
+				-- Search the bypass error string to determine if the resource type and path combination exists due to a previous NOT EXIST ERROR detected.
+				SET bypassErrorResourceFound = 0;
+				IF (resourceType IS NOT NULL AND resourcePath IS NOT NULL AND
+					 (POSITION(resourceType||&apos;::&apos;||resourcePath||&apos;|&apos; IN bypassErrorsStr1) &gt; 0 OR POSITION(resourceType||&apos;::&apos;||resourcePath||&apos;|&apos; IN bypassErrorsStr2) &gt; 0) ) 
+				THEN
+					SET bypassErrorResourceFound = 1;
+				END IF;
+				-- Perform the update as long as there was no error logged previously
+				IF (bypassErrorResourceFound = 0) THEN
+			
+					BEGIN INDEPENDENT TRANSACTION
+						-- Invoke the update resource privileges admin api
+						call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updateResourcePrivilegesV4(
+							debug2Modified,
+							debug1Console,
+							debug1CISLog,
+							owner,
+							ownerDomain,
+							resourcePath,
+							resourceType,
+							recurseChild,
+							recurseDependencies,
+							recurseDependents,
+							mode,
+							privilegeStr,
+							logOutput,
+							result
+						);
+						IF (result IS NOT NULL) THEN
+							raise ex value result || newline || &apos;ROW: &apos;||rowString;
+						END IF;
+					EXCEPTION
+						ELSE
+							RAISE;
+					END;
+
+					/* mtinius (2014-10-28): added to automatically process READ-only acestor containers */
+					-- Update the READ privileges for ancestor folders only
+					CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updatePrivilegeReadFoldersV4(bypassErrors, Environment_Name, preview, debug1ReadOnly, debug1Console, debug1CISLog, debug2Modified, inModuleName, logOutput, privReadStr1, privReadStr2, privReadAppliedStr1, privReadAppliedStr2);
+				ELSE
+					-- Bypass error message for the batch
+					IF (debug1 = &apos;Y&apos;) THEN
+						set message = &apos;BYPASS BATCH :: RESOURCE PATH NOT FOUND [&apos;||TRIM(NVL(resourceType,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(resourcePath,&apos;  &apos;))||&apos;]&apos;||&apos;|&apos;||newline;
+						call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+					END IF;
+				END IF;
+			END IF;
+
+			-- Debug message indicating the batch of privileges was committed
+			IF (debug1 = &apos;Y&apos;) THEN
+				set message = &apos;BEGIN BATCH ::&apos;||&apos;|&apos;||newline;
+				call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+			END IF;
+			set beginBatch = false;
+
+			-- Initialize the privilege string for another row.
+			set privilegeStr = null;
+			set privilegeRec = null;
+		END IF;
+
+		/******************************
+		 * Set Resource Information
+		 ******************************/
+		-- Get the current resource path and type
+		set resourcePath = r.&quot;Resource Path&quot;;
+		set resourceType = r.&quot;Resource Type&quot;;
+
+		-- Validate recurse dependencies
+		set recurseDependenciesStr = &apos;N&apos;;
+		set recurseDependencies = 0;
+		IF (r.&quot;Recurse Dependencies&quot; IS NOT NULL) THEN
+			IF (UPPER(r.&quot;Recurse Dependencies&quot;) = &apos;Y&apos;) THEN
+				set recurseDependencies = 1;
+				set recurseDependenciesStr = UPPER(TRIM(r.&quot;Recurse Dependencies&quot;));
+			END IF;
+		END IF;
+
+		-- Validate recurse dependents
+		set recurseDependentsStr = &apos;N&apos;;
+		set recurseDependents = 0;
+		IF (r.&quot;Recurse Dependents&quot; IS NOT NULL) THEN
+			IF (UPPER(r.&quot;Recurse Dependents&quot;) = &apos;Y&apos;) THEN
+				set recurseDependents = 1;
+				set recurseDependentsStr = UPPER(TRIM(r.&quot;Recurse Dependents&quot;));
+			END IF;
+		END IF;
+
+		-- Set recurse child and mode
+		IF (recurseChildStr = &apos;N&apos;) THEN
+			set recurseChild = 0;
+			set mode = &apos;OVERWRITE_APPEND&apos;;
+		END IF;
+		IF (recurseChildStr = &apos;YM&apos;) THEN
+			set recurseChild = 1;
+			set mode = &apos;OVERWRITE_APPEND&apos;;
+		END IF;
+		IF (recurseChildStr = &apos;YC&apos;) THEN
+			set recurseChild = 1;
+			set mode = &apos;SET_EXACTLY&apos;;
+		END IF;
+
+		-- If the current owner IS NULL or empty then set to empty else set to current owner
+		IF (overrideOwner IS NOT NULL) THEN
+			set owner = TRIM(NVL(overrideOwner,&apos;  &apos;));
+		ELSEIF (r.owner IS NULL OR LENGTH(TRIM(r.owner)) = 0) THEN
+			set owner = &apos;&apos;;
+		ELSE
+			set owner = r.owner;
+		END IF;
+
+		-- If the current owner domain IS NULL or empty then set to empty else set to current owner domain
+		IF (overrideOwnerDomain IS NOT NULL) THEN
+			set ownerDomain = TRIM(NVL(overrideOwnerDomain,&apos;  &apos;));
+		ELSEIF (r.&quot;Owner Domain&quot; IS NULL OR LENGTH(TRIM(r.&quot;Owner Domain&quot;)) = 0) THEN
+			set ownerDomain = &apos;&apos;;
+		ELSE
+			set ownerDomain = r.&quot;Owner Domain&quot;;
+		END IF;
+
+		/******************************
+		 * Set Privileges
+		 ******************************/
+		-- Set domain name
+		IF (forceDomainAsComposite IS NOT NULL AND UPPER(forceDomainAsComposite) = &apos;Y&apos;) THEN
+			set domainName = &apos;composite&apos;;
+		ELSE
+			set domainName = r.&quot;Domain&quot;;
+		END IF;
+		IF (domainName IS NULL OR LENGTH(domainName) = 0) THEN
+			set domainName = &apos;&apos;;
+		END IF;
+		-- Set name
+		set name = r.name;
+		IF (name IS NULL OR LENGTH(name) = 0) THEN
+			set name = &apos;&apos;;
+		END IF;
+		-- Set name type
+		set nameType = r.&quot;Name Type&quot;;
+		IF (nameType IS NULL OR LENGTH(nameType) = 0) THEN
+			set nameType = &apos;&apos;;
+		END IF;
+		-- Set the privilege list
+		set privilegeList = &apos;&apos;;
+		set privilegeListDisplay = &apos;&apos;;
+
+		IF (r.R IS NOT NULL AND (TRIM(r.R) = &apos;X&apos; OR TRIM(r.R) = &apos;Y&apos;)) THEN 
+			set privilegeList = privilegeList || &apos;READ &apos;;    
+			set privilegeListDisplay = privilegeListDisplay || &apos;R &apos;;   
+		END IF;
+		IF (r.W IS NOT NULL AND (TRIM(r.W) = &apos;X&apos; OR TRIM(r.W) = &apos;Y&apos;)) THEN 
+			set privilegeList = privilegeList || &apos;WRITE &apos;;   
+			set privilegeListDisplay = privilegeListDisplay || &apos;W &apos;;   
+		END IF;
+		IF (r.E IS NOT NULL AND (TRIM(r.E) = &apos;X&apos; OR TRIM(r.E) = &apos;Y&apos;)) THEN 
+			set privilegeList = privilegeList || &apos;EXECUTE &apos;; 
+			set privilegeListDisplay = privilegeListDisplay || &apos;E &apos;;   
+		END IF;
+		IF (r.S IS NOT NULL AND (TRIM(r.S) = &apos;X&apos; OR TRIM(r.S) = &apos;Y&apos;)) THEN 
+			set privilegeList = privilegeList || &apos;SELECT &apos;;  
+			set privilegeListDisplay = privilegeListDisplay || &apos;S &apos;;   
+		END IF;
+		IF (r.U IS NOT NULL AND (TRIM(r.U) = &apos;X&apos; OR TRIM(r.U) = &apos;Y&apos;)) THEN 
+			set privilegeList = privilegeList || &apos;UPDATE &apos;;  
+			set privilegeListDisplay = privilegeListDisplay || &apos;U &apos;;   
+		END IF;
+		IF (r.I IS NOT NULL AND (TRIM(r.I) = &apos;X&apos; OR TRIM(r.I) = &apos;Y&apos;)) THEN 
+			set privilegeList = privilegeList || &apos;INSERT &apos;;  
+			set privilegeListDisplay = privilegeListDisplay || &apos;I &apos;;   
+		END IF;
+		IF (r.D IS NOT NULL AND (TRIM(r.D) = &apos;X&apos; OR TRIM(r.D) = &apos;Y&apos;)) THEN 
+			set privilegeList = privilegeList || &apos;DELETE &apos;;  
+			set privilegeListDisplay = privilegeListDisplay || &apos;D &apos;;   
+		END IF;
+		IF (r.G IS NOT NULL AND (TRIM(r.G) = &apos;X&apos; OR TRIM(r.G) = &apos;Y&apos;)) THEN
+			set privilegeList = privilegeList || &apos;GRANT &apos;;   
+			set privilegeListDisplay = privilegeListDisplay || &apos;G &apos;;   
+		END IF;
+		set privilegeList = TRIM(privilegeList);
+		set privilegeListDisplay = TRIM(privilegeListDisplay);
+		IF (LENGTH(privilegeList) = 0) THEN
+			set privilegeList = &apos;NONE&apos;;
+			set privilegeListDisplay = &apos;NONE&apos;;   
+		END IF;
+
+		-- Search the bypass error string to determine if the resource type and path combination exists due to a previous NOT EXIST ERROR detected.
+		SET bypassErrorResourceFound = 0;
+		IF (resourceType IS NOT NULL AND resourcePath IS NOT NULL AND
+			 (POSITION(resourceType||&apos;::&apos;||resourcePath||&apos;|&apos; IN bypassErrorsStr1) &gt; 0 OR POSITION(resourceType||&apos;::&apos;||resourcePath||&apos;|&apos; IN bypassErrorsStr2) &gt; 0) ) 
+		THEN
+			SET bypassErrorResourceFound = 1;
+		END IF;
+
+		-- Set status for this row
+		IF (bypassErrorResourceFound = 1) THEN
+			set status = &apos;SKIPPED: [BYPASS **ERROR**]&apos;;
+		END IF;
+
+		/**************************************
+		 * BEGIN REVOKE ALL PRIVILEGES SECTION
+		 **************************************/
+		set revokeAllLogOutput = &apos;&apos;;
+		-- Set the privilege string values for revoking all privileges as long as there was no error logged previously
+		IF (revokeAll = &apos;Y&apos;) THEN
+			IF (bypassErrorResourceFound = 0) THEN
+/*		   	getResourcePrivilegesV2()
+				IN resourcePath 				/lib/resource/ResourceDefs.ResourcePath, &lt;-- resourcePath
+				IN resourceType 				/lib/resource/ResourceDefs.ResourceType, &lt;-- resourceType
+				IN nameTypeFilter 				VARCHAR,	--[optional]
+				IN domainFilter					VARCHAR, 	--[optional]
+				IN privilegeEntryType			VARCHAR,	--[mandatory:  privs, combinedPrivs, inheritedPrivs] 1 of the selection list.  &lt;-- &apos;privs&apos;
+															--			   privs=the actual privileges. 
+															--			   combinedPrivs=Combination of actual privileges and inherited privileges.
+															--			   inheritedPrivs=Inherited privileges.
+				IN includeNameEqualFilter 		LONGVARCHAR,--[optional]
+				IN includeNameLikeFilter 		LONGVARCHAR,--[optional]
+				IN excludeNameNotEqualFilter	LONGVARCHAR,--[optional] &lt;-- revokeUsersIgnoreList
+				IN excludeNameNotLikeFilter		LONGVARCHAR,--[optional]
+				IN includePrivsEqualFilter		VARCHAR, 	--[optional]
+				IN includePrivsLikeFilter		VARCHAR, 	--[optional]
+				IN excludePrivsNotEqualFilter	VARCHAR, 	--[optional] &lt;-- &apos;NONE,READ&apos;
+				IN excludePrivsNotLikeFilter	VARCHAR, 	--[optional]
+				IN includeColumnPrivs			BIT,	 	--[optional] &lt;-- 0
+				IN debug						CHAR(1), 	--[optional] &lt;-- debug2
+				OUT result 						CURSOR ResultType
+*/
+			  BEGIN INDEPENDENT TRANSACTION
+				/*
+					Get Lineage for Published Resource Column
+						If resourcePath in /services/databases and resourceType = COLUMN then get the lineage to the view immediately publishing to the database.  
+						This is where the actual privileges are set
+				*/
+				SET getPrivsResourcePath = resourcePath;
+				IF (POSITION(&apos;/services/databases/&apos; IN getPrivsResourcePath) &gt; 0 AND resourceType = &apos;COLUMN&apos;) THEN
+					-- Get the parent path
+					SET resourceName = null;
+					SET parentPath = null;
+					SET pos = INSTR(getPrivsResourcePath, &apos;/&apos;, -1, 1);
+					IF (pos &gt; 0) THEN
+						SET resourceName = SUBSTRING(getPrivsResourcePath, pos+1);
+						SET parentPath = SUBSTRING(getPrivsResourcePath, 1, pos-1);
+					END IF;
+					-- Retrieve the first level depth resource for the published LINK
+					FOR r AS select * from /shared/ASAssets/Utilities/repository/getUsedResourcesCursor(parentPath, &apos;LINK&apos;) DO
+						set getPrivsResourcePath = r.resourcePath||&apos;/&apos;||resourceName;
+					END FOR;
+				END IF;
+
+				set j = 1;
+				-- Return the list of privileges for this resources where privs != &apos;NONE AND privs != &apos;READ&apos;
+				FOR p AS 
+					-- 2016-07-11 (mtinius): Created a new procedure to allow passing in the new privilegeEntryType=priv so that the sorting is only done on explicit privileges and not combinedPrivs.
+					--		This eliminates all of the inherited privileges which we don&apos;t care about.   This equates to fewer privilege rows to loop through. 
+					SELECT * FROM /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getResourcePrivileges(
+ 						getPrivsResourcePath,resourceType,null,null,&apos;privs&apos;,null,null,revokeUsersIgnoreList,null,null,null,&apos;NONE,READ&apos;,null,0,debug2)
+				DO
+					-- Get the list of inherited privielges to report
+					set actualPrivilegeList = &apos;&apos;;
+					-- 2016-06-25 (mtinius): Added to only look for actual privileges that are set.  Inherited Privileges cannot be explicitly set or changed.
+					IF (p.p_R IS NOT NULL AND p.p_R = 1) THEN set actualPrivilegeList = actualPrivilegeList || &apos;R &apos;; END IF;
+					IF (p.p_W IS NOT NULL AND p.p_W = 1) THEN set actualPrivilegeList = actualPrivilegeList || &apos;W &apos;; END IF;
+					IF (p.p_E IS NOT NULL AND p.p_E = 1) THEN set actualPrivilegeList = actualPrivilegeList || &apos;E &apos;; END IF;
+					IF (p.p_S IS NOT NULL AND p.p_S = 1) THEN set actualPrivilegeList = actualPrivilegeList || &apos;S &apos;; END IF;
+					IF (p.p_U IS NOT NULL AND p.p_U = 1) THEN set actualPrivilegeList = actualPrivilegeList || &apos;U &apos;; END IF;
+					IF (p.p_I IS NOT NULL AND p.p_I = 1) THEN set actualPrivilegeList = actualPrivilegeList || &apos;I &apos;; END IF;
+					IF (p.p_D IS NOT NULL AND p.p_D = 1) THEN set actualPrivilegeList = actualPrivilegeList || &apos;D &apos;; END IF;
+					IF (p.p_G IS NOT NULL AND p.p_G = 1) THEN set actualPrivilegeList = actualPrivilegeList || &apos;G &apos;; END IF;
+
+					IF (LENGTH(actualPrivilegeList) = 0) THEN
+						set actualPrivilegeList = &apos;NONE&apos;;
+					END IF;
+					-- Report the name, nameType, domain and inherited privileges that are being revoked.
+					IF (LENGTH(revokeAllLogOutput) = 0) THEN
+						set revokeAllLogOutput = LPAD(&apos;REVOKE ALL: &apos;,(LENGTH(moduleName||&apos; : &apos;)+27));
+					END IF;
+					set revokeAllLogOutput = revokeAllLogOutput || &apos;(&apos;||j||&apos;. &apos;||TRIM(NVL(p.name,&apos;  &apos;))||&apos;/&apos;||TRIM(NVL(p.nameType,&apos;  &apos;))||&apos;/&apos;||TRIM(NVL(p.&quot;domain&quot;,&apos;  &apos;))||
+																	&apos;/PRIVILEGES=&apos;||TRIM(actualPrivilegeList)||&apos;), &apos;;
+					-- Increment the string for each name to be revoked that currently has privileges set
+					IF (privilegeStr IS NULL) THEN
+						SET privilegeStr = &apos;&apos;;	-- initialize the string
+					END IF;
+					set privilegeStr = privilegeStr || TRIM(NVL(p.&quot;domain&quot;,&apos;  &apos;)) ||&apos;::&apos;|| TRIM(NVL(p.name,&apos;  &apos;)) ||&apos;::&apos;|| TRIM(NVL(p.nameType,&apos;  &apos;)) ||&apos;::&apos;|| TRIM(NVL(revokeAllDefaultPrivilege,&apos;  &apos;)) || &apos;|&apos;;
+					set privRows = privRows + 1;
+					IF (debug2Modified = &apos;Y&apos;) THEN
+						call print(moduleName||&apos;::  privRows=&apos;||CAST(privRows AS VARCHAR)||&apos;  Revoke privilegeStr=[&apos;||TRIM(NVL(privilegeStr,&apos;  &apos;))||&apos;]&apos;);
+					END IF;
+					set j = j + 1;
+				END FOR;
+				IF (LENGTH(revokeAllLogOutput) &gt; 0) THEN
+					set revokeAllLogOutput = TRIM(revokeAllLogOutput);
+					set revokeAllLogOutput = SUBSTRING(revokeAllLogOutput, 1, LENGTH(revokeAllLogOutput) -1);
+					set revokeAllLogOutput = revokeAllLogOutput||&apos;|&apos;||newline;
+				END IF;
+
+			  EXCEPTION
+				ELSE
+					raise ex value CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR);
+			  END;
+			ELSE
+				-- Debug message indicating the batch of privileges was committed
+				IF (debug1 = &apos;Y&apos;) THEN
+					set message = &apos;Status=SKIPPED: [BYPASS **ERROR**]  REVOKE ALL :: RESOURCE PATH NOT FOUND [&apos;||TRIM(NVL(resourceType,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(resourcePath,&apos;  &apos;))||&apos;]&apos;||&apos;|&apos;||newline;
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+				END IF;
+			END IF;
+		END IF;
+		/**************************************
+		 * END REVOKE ALL PRIVILEGES SECTION
+		 **************************************/
+
+		-- Set the privilege string values for the true settings for this line
+		set privilegeRec.name = name;
+		set privilegeRec.nameType = nameType;
+		set privilegeRec.domainName = domainName;
+		set privilegeRec.privilegeList = privilegeList;
+		set privRows = privRows + 1;
+
+		IF (privilegeStr IS NULL) THEN
+			SET privilegeStr = &apos;&apos;;	-- initialize the string
+		END IF;
+		set privilegeStr = privilegeStr || TRIM(NVL(domainName,&apos;  &apos;)) ||&apos;::&apos;|| TRIM(NVL(name,&apos;  &apos;)) ||&apos;::&apos;|| TRIM(NVL(nameType,&apos;  &apos;)) ||&apos;::&apos;|| TRIM(NVL(privilegeList,&apos;  &apos;)) || &apos;|&apos;;
+		IF (debug2Modified = &apos;Y&apos;) THEN
+			call print(moduleName||&apos;::  privRows=&apos;||CAST(privRows AS VARCHAR)||&apos;  Actual privilegeStr=[&apos;||TRIM(NVL(privilegeStr,&apos;  &apos;))||&apos;]&apos;);
+		END IF;
+
+		/*********************************
+		 * BEGIN Update Privilege Category
+		 *********************************/
+		-- Capture the privileges for READ only on ancestor folders
+		-- Initialize variables
+		SET resourceTypeTmp = &apos;CONTAINER&apos;;
+		SET userDomain = null;
+		SET denyNameBool = false;
+
+		-- Initialize the previous already applied privilege string
+		IF (privReadStr1 IS NULL) THEN
+			SET privReadStr1 = &apos;&apos;;
+		END IF;
+		IF (privReadStr2 IS NULL) THEN
+			SET privReadStr2 = &apos;&apos;;
+		END IF;
+
+		-- Determine IF the current group/domain is in the deny list
+		IF (POSITION(name||&apos;/&apos;||domainName IN denyReadPrivilegesNameList) &gt; 0) THEN
+			set denyNameBool = true;
+		END IF;
+
+/* 07/11/2016 mtinius - This section of code is commented out because the variables never get used even though they are being set.
+		-- Construct the explicitly set privilege string
+		SET privExplicitStr = TRIM(NVL(resourcePath,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(resourceType,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(name,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(nameType,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(domainName,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(privilegeList,&apos;  &apos;))||&apos;::&apos;||
+									TRIM(NVL(owner,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(ownerDomain,&apos;  &apos;))||&apos;::&apos;||
+									TRIM(NVL(CAST(recurseDependencies AS VARCHAR),&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(CAST(recurseDependents AS VARCHAR),&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(CAST(recurseChild AS VARCHAR),&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(mode,&apos;  &apos;))||&apos;|&apos;;
+
+		-- Search for this current unique entry in the &quot;privilege explicitly set&quot; list.  (Already applied list.)
+		SET privRowFound = FALSE;
+		IF (POSITION(privExplicitStr IN privExplicitlySetStr1) &gt; 0 OR POSITION(privExplicitStr IN privExplicitlySetStr2) &gt; 0) THEN
+			SET privRowFound = TRUE;
+		END IF;
+		-- Add the row to the privilege vector since it was not found in the &quot;privilege explicitly set&quot; list.  (Explicitly applied list.)
+		IF (NOT privRowFound) THEN
+			IF (LENGTH(privExplicitlySetStr1) + LENGTH(privExplicitStr) &lt; LONGVARCHARlen) THEN
+				SET privExplicitlySetStr1 = privExplicitlySetStr1 || privExplicitStr;
+			ELSEIF (LENGTH(privExplicitlySetStr2) + LENGTH(privExplicitStr) &lt; LONGVARCHARlen) THEN
+				SET privExplicitlySetStr2 = privExplicitlySetStr2 || privExplicitStr;
+			ELSE
+				RAISE ex VALUE &apos;The length of &quot;privExplicitlySetStr1&quot; and &quot;privExplicitlySetStr2&quot; has been exceeded.&apos;;
+			END IF;
+		END IF;
+*/
+		-- If the current name/domain is not denied then process it
+		IF (NOT denyNameBool) THEN
+			-- Get the parent path
+			SET resourceName = null;
+			SET parentPath = null;
+			SET pos = INSTR(resourcePath, &apos;/&apos;, -1, 1);
+			IF (pos &gt; 0) THEN
+				SET resourceName = SUBSTRING(resourcePath, pos+1);
+				SET parentPath = SUBSTRING(resourcePath, 1, pos-1);
+			END IF;
+			-- If the origial path is a COLUMN type THEN get the parent (container) of the parent (table)
+			IF (resourceType = &apos;COLUMN&apos;) THEN
+				SET resourceName = null;
+				SET pos = INSTR(parentPath, &apos;/&apos;, -1, 1);
+				IF (pos &gt; 0) THEN
+					SET resourceName = SUBSTRING(parentPath, pos+1);
+					SET parentPath = SUBSTRING(parentPath, 1, pos-1);
+				END IF;
+			END IF;
+
+			WHILE (parentPath IS NOT NULL AND LENGTH(parentPath) &gt; 0) DO
+				-- Set the parent path to a CONTAINER type by default
+				SET resourceTypeTmp = &apos;CONTAINER&apos;;
+				-- If the parent path is in the &quot;/services/databases&quot; path then get the grand parent path in order to determine if the parent path is a DATA_SOURCE
+				IF (POSITION(&apos;/services/databases/&apos; IN parentPath) &gt; 0) THEN
+					-- If the grandparentPath=/services/databases then this is a DATA_SOURCE
+					SET resourceName = null;
+					SET grandparentPath = null;
+					SET pos = INSTR(parentPath, &apos;/&apos;, -1, 1);
+					IF (pos &gt; 0) THEN
+						SET resourceName = SUBSTRING(parentPath, pos+1);
+						SET grandparentPath = SUBSTRING(parentPath, 1, pos-1);
+					END IF;
+					IF (grandparentPath = &apos;/services/databases&apos;) THEN
+						set resourceTypeTmp = &apos;DATA_SOURCE&apos;;
+					END IF;
+				END IF;
+
+				-- Check to see IF the parent path exists before proceeding
+				IF (POSITION(&apos;RESFOUND:&apos;||parentPath||&apos;,&apos; IN parentPaths) &gt; 0) THEN
+					SET resourceExists = true;
+				ELSEIF (POSITION(&apos;NOTFOUND:&apos;||parentPath||&apos;,&apos; IN parentPaths) &gt; 0) THEN
+					SET resourceExists = false;
+				ELSE
+					call /lib/resource/ResourceExists(parentPath, resourceTypeTmp, null, resourceExists);
+					IF (resourceExists) THEN
+						SET parentPaths = parentPaths || &apos;RESFOUND:&apos;||parentPath||&apos;,&apos;;
+					ELSE
+						SET parentPaths = parentPaths || &apos;NOTFOUND:&apos;||parentPath||&apos;,&apos;;
+					END IF;
+				END IF;
+
+				-- Log the resource not exist issue
+				IF (NOT resourceExists) THEN
+					IF (bypassErrors = &apos;Y&apos;) THEN
+						IF (debug1 = &apos;Y&apos;) THEN
+							SET message = &apos;Status=SKIPPED: [BYPASS **ERROR**]  PARENT PATH NOT FOUND :: ParentPath=&apos;||TRIM(NVL(parentPath,&apos;  &apos;))||&apos;|&apos;||newline;
+							CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, &apos;_________&apos;||moduleName||&apos; : &apos;||message, logOutput);
+						END IF;
+					ELSE
+						SET message = &apos;Status=EXCEPTION: [BYPASS=OFF **ERROR**]  PARENT PATH NOT FOUND :: ParentPath=&apos;||TRIM(NVL(parentPath,&apos;  &apos;))||&apos;|&apos;||newline;
+						RAISE ex VALUE message;
+					END IF;
+				ELSE
+					CASE 
+						WHEN POSITION(&apos;/services/databases/&apos; IN parentPath) &gt; 0 THEN 
+							SET category = 1;
+							IF (parentPath = &apos;/services/databases&apos;) THEN
+								SET category = 0;
+							END IF;
+						WHEN POSITION(&apos;/services/webservices/&apos; IN parentPath) &gt; 0 THEN 
+							SET category = 2;
+							IF (parentPath = &apos;/services/webservices&apos;) THEN
+								SET category = 0;
+							END IF;
+						WHEN POSITION(&apos;/shared/&apos; IN parentPath) &gt; 0 THEN 
+							SET category = 3;
+							IF (parentPath = &apos;/shared&apos;) THEN
+								SET category = 0;
+							END IF;
+						WHEN POSITION(&apos;/policy/cache/&apos; IN parentPath) &gt; 0 THEN 
+							SET category = 4;
+							IF (parentPath = &apos;/policy/cache&apos;) THEN
+								SET category = 0;
+							END IF;
+						WHEN POSITION(&apos;/policy/security/&apos; IN parentPath) &gt; 0 THEN 
+							SET category = 5;
+							IF (parentPath = &apos;/policy/security&apos;) THEN
+								SET category = 0;
+							END IF;
+						WHEN POSITION(&apos;/security/rowlevel/filters/&apos; IN parentPath) &gt; 0 THEN 
+							SET category = 6;
+							IF (parentPath = &apos;/security/rowlevel/filters&apos;) THEN
+								SET category = 0;
+							END IF;
+						WHEN POSITION(&apos;/users/composite/&apos; IN parentPath) &gt; 0 THEN 
+							SET category = 7;
+							IF (parentPath = &apos;/users/composite&apos;) THEN
+								SET category = 0;
+							END IF;
+						WHEN POSITION(&apos;/users/&apos; IN parentPath) &gt; 0 AND POSITION(&apos;/users/composite/&apos; IN parentPath) = 0 THEN 
+							SET category = 8;
+							IF (userDomain IS NULL) THEN
+								-- Get the user domain in the string - /users/ldap/nbkid
+								set pos = INSTR(parentPath, &apos;/&apos;, 1, 2);
+								set pos1 = INSTR(parentPath, &apos;/&apos;, 1, 3);
+								if (pos &gt; 0 and pos1 = 0) then
+									set userDomain = TRIM(SUBSTRING(parentPath, pos+1));
+								elseif (pos &gt; 0 and pos1 &gt; 0) then
+									set userDomain = TRIM(SUBSTRING(parentPath, pos+1, pos1-pos-1));
+								else
+									set userDomain = &apos;&apos;;
+								end if;
+								--call print(&apos;userDomain=&apos;||userDomain);
+							END IF;
+							IF (parentPath = &apos;/users/&apos;||userDomain) THEN
+								SET category = 0;
+							END IF;
+						ELSE
+							SET category = 0;
+					END CASE;
+					IF (category &gt; 0) THEN
+						SET privReadStr = TRIM(NVL(parentPath,&apos;  &apos;))||&apos;::&apos;||resourceTypeTmp||&apos;::&apos;||TRIM(NVL(name,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(nameType,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(domainName,&apos;  &apos;))||&apos;::&apos;;
+																								-- recurseDependencies :: recurseDependents	:: recurseChild ::	   mode		  
+						SET trailerString = &apos;READ&apos;||&apos;::&apos;||TRIM(NVL(owner,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(ownerDomain,&apos;  &apos;))||&apos;::&apos;||&apos;0&apos;||	  &apos;::&apos;||	&apos;0&apos;||	   &apos;::&apos;||&apos;0&apos;||	   &apos;::&apos;||&apos;OVERWRITE_APPEND&apos;||&apos;|&apos;;
+
+						-- Search for this current unique entry in the &quot;privilege read applied&quot; list.  (Already applied list.)
+						SET privRowFound = FALSE;
+						IF (POSITION(privReadStr IN privReadStr1) &gt; 0 OR POSITION(privReadStr IN privReadStr2) &gt; 0) THEN
+							SET privRowFound = TRUE;
+						END IF;
+						-- Add the row to the privilege string since it was not found in the &quot;privilege read applied&quot; list.  (Already applied list.)
+						IF (NOT privRowFound) THEN
+							IF (LENGTH(privReadStr1) + LENGTH(privReadStr) + LENGTH(trailerString) &lt; LONGVARCHARlen) THEN
+								SET privReadStr1 = privReadStr1 || privReadStr || trailerString;
+								IF (debug2Modified = &apos;Y&apos;) THEN
+									CALL PRINT(moduleName||&apos; : Added path to privReadStr1=&apos;||privReadStr1);
+								END IF;
+							ELSEIF (LENGTH(privReadStr2) + LENGTH(privReadStr) + LENGTH(trailerString) &lt; LONGVARCHARlen) THEN
+								SET privReadStr2 = privReadStr2 || privReadStr || trailerString;
+								IF (debug2Modified = &apos;Y&apos;) THEN
+									CALL PRINT(moduleName||&apos; : Added path to privReadStr2=&apos;||privReadStr2);
+								END IF;
+							ELSE
+								RAISE ex VALUE &apos;The length of &quot;privReadStr1&quot; and &quot;privReadStr2&quot; has been exceeded.&apos;;
+							END IF;
+						END IF;
+					END IF;
+				END IF;
+
+				SET resourceName = null;
+				SET pos = INSTR(parentPath, &apos;/&apos;, -1, 1);
+				IF (pos &gt; 0) THEN
+					SET resourceName = SUBSTRING(parentPath, pos+1);
+					SET parentPath = SUBSTRING(parentPath, 1, pos-1);
+				END IF;
+			END WHILE;
+		END IF;
+		/******************************
+		 * END Update Privilege Category
+		 ******************************/
+
+		/******************************
+		 * Set Debug Information
+		 ******************************/
+		-- Create the row string to display
+		set rowString = &apos;[&apos;||CAST(rowsProcessed AS VARCHAR)||&apos; of &apos;||CAST(totalPrivsToApply AS VARCHAR)||&apos;]  Status=&apos;||status||&apos;  Row=&apos;||TRIM(NVL(CAST(rownum AS VARCHAR),&apos; &apos;))||&apos;  PrivRows=&apos;||TRIM(NVL(CAST(privRows AS VARCHAR),&apos; &apos;))||
+			&apos; SheetRow=&apos;||TRIM(NVL(CAST(r.sheetRownum AS VARCHAR),&apos; &apos;))||&apos; Sheet=&apos;||TRIM(NVL(r.sheetName,&apos; &apos;))||
+			&apos; ResPath=&apos;||TRIM(NVL(resourcePath,&apos; &apos;)) || &apos; ResType=&apos;||TRIM(NVL(resourceType,&apos; &apos;)) ||
+			&apos; Dependencies=&apos;||TRIM(NVL(recurseDependenciesStr,&apos; &apos;)) || &apos; Dependents=&apos;||TRIM(NVL(recurseDependentsStr,&apos; &apos;)) || &apos; Child=&apos;||TRIM(NVL(recurseChildStr,&apos; &apos;))  || 
+			&apos; mode=&apos;|| TRIM(NVL(mode,&apos; &apos;)) ||  &apos; RevokeAll=&apos;|| TRIM(NVL(revokeAll,&apos; &apos;)) ||
+			&apos; Name=&apos;||TRIM(NVL(privilegeRec.name,&apos; &apos;)) || &apos; Type=&apos;||TRIM(NVL(privilegeRec.nameType,&apos; &apos;)) || 
+			&apos; Domain=&apos;||TRIM(NVL(privilegeRec.domainName,&apos; &apos;)) || &apos; EnvType=&apos;||TRIM(NVL(r.&quot;Env Type&quot;,&apos; &apos;)) || 
+			&apos; Privileges=&apos;||TRIM(NVL(privilegeListDisplay,&apos; &apos;)) || &apos; Owner=&apos;||TRIM(NVL(owner,&apos; &apos;)) || &apos; OwnerDomain=&apos;||TRIM(NVL(ownerDomain,&apos; &apos;))||
+			&apos;|&apos;||newline;
+
+		IF (debug1 = &apos;Y&apos;) THEN
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||rowString, logOutput);
+		END IF;
+		IF (debug1RevokeAll = &apos;Y&apos; AND LENGTH(revokeAllLogOutput) &gt; 0) THEN
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||revokeAllLogOutput, logOutput);
+		END IF;
+	
+		-- If Batch Privileges is &quot;OFF&quot; then process each row as it occurs.
+		IF (batchPrivileges = 0 and
+			resourcePath IS NOT NULL AND resourceType IS NOT NULL)
+		then
+			IF (preview = &apos;N&apos;) THEN
+				IF (debug2RownumMin = 0 AND debug2RownumMax = 0) THEN
+					set debug2Modified = debug2;
+				ELSE
+					IF (rownum &gt;= debug2RownumMin AND rownum &lt;= debug2RownumMax) THEN
+						set debug2Modified = debug2;
+					ELSE
+						set debug2Modified = &apos;N&apos;;
+					END IF;
+				END IF;
+
+				-- Search the bypass error string to determine if the resource type and path combination exists due to a previous NOT EXIST ERROR detected.
+				SET bypassErrorResourceFound = 0;
+				IF (resourceType IS NOT NULL AND resourcePath IS NOT NULL AND
+					 (POSITION(resourceType||&apos;::&apos;||resourcePath||&apos;|&apos; IN bypassErrorsStr1) &gt; 0 OR POSITION(resourceType||&apos;::&apos;||resourcePath||&apos;|&apos; IN bypassErrorsStr2) &gt; 0) ) 
+				THEN
+					SET bypassErrorResourceFound = 1;
+				END IF;
+				-- Perform the update as long as there was no error logged previously
+				IF (bypassErrorResourceFound = 0) THEN
+
+					BEGIN INDEPENDENT TRANSACTION
+						-- Invoke the update resource privileges admin api
+						call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updateResourcePrivilegesV4(
+							debug2Modified,
+							debug1Console,
+							debug1CISLog,
+							owner,
+							ownerDomain,
+							resourcePath,
+							resourceType,
+							recurseChild,
+							recurseDependencies,
+							recurseDependents,
+							mode,
+							privilegeStr,
+							logOutput,
+							result
+						);
+						IF (result IS NOT NULL) THEN
+							raise ex value result || newline || &apos;ROW: &apos;||rowString;
+						END IF;
+					EXCEPTION
+						ELSE
+							raise ex value CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR);
+					END;
+
+					/* mtinius (2014-10-28): added to automatically process READ-only acestor containers */
+					-- Update the READ privileges for ancestor folders only
+					CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updatePrivilegeReadFoldersV4(bypassErrors, Environment_Name, preview, debug1ReadOnly, debug1Console, debug1CISLog, debug2Modified, inModuleName, logOutput, privReadStr1, privReadStr2, privReadAppliedStr1, privReadAppliedStr2);
+				END IF;
+			END IF;
+
+			-- Initialize the privilege string for another row.
+			set privilegeStr = null;
+			set privilegeRec = null;
+			set privRows = 0;
+		ELSE
+			-- Initialize the privilege string for another row.
+		END IF;
+
+		-- Set the previous resource path and type so as to track when a line is different than the previous
+		--   This will trigger invoking the updateResourcePrivileges() method during batch privilege processing.
+		set prevResourcePath = resourcePath;
+		set prevResourceType = resourceType;
+		set prevRecurseChildStr = recurseChildStr;
+	END FOR;
+	/*************************************
+	 END PROCESSING PRIVILEGE ROWS
+	 *************************************/
+
+	/**********************************
+	 * Perform Post processing 
+	 **********************************/
+	-- If Batch Privileges is &quot;ON&quot; then process the last resource path.
+	IF (batchPrivileges &gt; 0
+			AND prevResourcePath IS NOT NULL AND prevResourceType IS NOT NULL AND resourcePath IS NOT NULL AND resourceType IS NOT NULL
+			AND prevRecurseChildStr IS NOT NULL AND recurseChildStr IS NOT NULL
+			) 
+	then
+		IF (debug2RownumMin = 0 AND debug2RownumMax = 0) THEN
+			set debug2Modified = debug2;
+		ELSE
+			IF (rownum &gt;= debug2RownumMin AND rownum &lt;= debug2RownumMax) THEN
+				set debug2Modified = debug2;
+			ELSE
+				set debug2Modified = &apos;N&apos;;
+			END IF;
+		END IF;
+
+		-- Search the bypass error string to determine if the resource type and path combination exists due to a previous NOT EXIST ERROR detected.
+		SET bypassErrorResourceFound = 0;
+		IF (resourceType IS NOT NULL AND resourcePath IS NOT NULL AND 
+			(POSITION(resourceType||&apos;::&apos;||resourcePath||&apos;|&apos; IN bypassErrorsStr1) &gt; 0 OR POSITION(resourceType||&apos;::&apos;||resourcePath||&apos;|&apos; IN bypassErrorsStr2) &gt; 0) ) 
+		THEN
+			SET bypassErrorResourceFound = 1;
+		END IF;
+
+		IF (preview = &apos;N&apos;) THEN
+
+			IF (debug2Modified = &apos;Y&apos;) THEN
+				SET message = &apos;FINAL PROCESSING...num privilege rows to process=&apos;||privRows||&apos;|&apos;||newline;
+				call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+			END IF;
+
+			-- Perform the update as long as there was no error logged previously
+			IF (bypassErrorResourceFound = 0) THEN
+
+				BEGIN INDEPENDENT TRANSACTION
+					-- Invoke the update resource privileges admin api
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updateResourcePrivilegesV4(
+						debug2Modified,
+						debug1Console,
+						debug1CISLog,
+						owner,
+						ownerDomain,
+						resourcePath,
+						resourceType,
+						recurseChild,
+						recurseDependencies,
+						recurseDependents,
+						mode,
+						privilegeStr,
+						logOutput,
+						result
+					);
+					IF (result IS NOT NULL) THEN
+						raise ex value result || newline || &apos;ROW: &apos;||rowString;
+					END IF;
+				EXCEPTION
+					ELSE
+						raise ex value CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR);
+				END;
+			ELSE
+				IF (debug1 = &apos;Y&apos;) THEN
+					set message = &apos;BYPASS FINAL BATCH :: RESOURCE PATH NOT FOUND [&apos;||TRIM(NVL(resourceType,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(resourcePath,&apos;  &apos;))||&apos;]&apos;||&apos;|&apos;||newline;
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+				END IF;
+			END IF;
+		END IF;
+
+		-- Debug message indicating the batch of privileges was committed
+		IF (debug1 = &apos;Y&apos;) THEN
+			IF (preview = &apos;Y&apos;) THEN
+				set message = &apos;PREVIEWED FINAL BATCH: &apos;;
+			ELSE
+				set message = &apos;COMMIT FINAL BATCH: &apos;;
+			END IF;
+			IF (project IS NOT NULL) THEN
+				set message = message || &apos;    [Project=&apos;||TRIM(NVL(project,&apos; &apos;))||&apos;]&apos;;
+			END IF;
+			IF (subProject IS NOT NULL) THEN
+				set message = message || &apos;    [SubProject=&apos;||TRIM(NVL(subProject,&apos; &apos;))||&apos;]&apos;;
+			END IF;
+			set message = message ||&apos;|&apos;||newline;
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+		END IF;
+
+		IF (preview = &apos;N&apos;) THEN
+			-- Perform the update as long as there was no error logged previously
+			IF (bypassErrorResourceFound = 0) THEN
+
+				/* mtinius (2014-10-28): added to automatically process READ-only acestor containers */
+				IF (debug1ReadOnly = &apos;Y&apos;) THEN
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, &apos;|&apos;||newline, logOutput);
+					SET message = &apos;BEGIN FINAL READ_ONLY PROCESSING...&apos;||&apos;|&apos;||newline;
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+				END IF;
+
+				-- Update the READ privileges for parent folders only
+				CALL /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updatePrivilegeReadFoldersV4(bypassErrors, Environment_Name, preview, debug1ReadOnly, debug1Console, debug1CISLog, debug2Modified, inModuleName, logOutput, privReadStr1, privReadStr2, privReadAppliedStr1, privReadAppliedStr2);
+
+				/* mtinius (2014-10-28): added to automatically process READ-only acestor containers */
+				IF (debug1ReadOnly = &apos;Y&apos;) THEN
+					SET message = &apos;COMMIT FINAL READ_ONLY PROCESSING&apos;;
+					IF (project IS NOT NULL) THEN
+						set message = message || &apos;    [Project=&apos;||TRIM(NVL(project,&apos; &apos;))||&apos;]&apos;;
+					END IF;
+					IF (subProject IS NOT NULL) THEN
+						set message = message || &apos;    [SubProject=&apos;||TRIM(NVL(subProject,&apos; &apos;))||&apos;]&apos;;
+					END IF;
+					set message = message ||&apos;|&apos;||newline;
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message||newline, logOutput);
+				END IF;
+			ELSE
+				IF (debug1ReadOnly = &apos;Y&apos;) THEN
+					set message = &apos;BYPASS FINAL READ-ONLY BATCH :: RESOURCE PATH NOT FOUND [&apos;||TRIM(NVL(resourceType,&apos;  &apos;))||&apos;::&apos;||TRIM(NVL(resourcePath,&apos;  &apos;))||&apos;]&apos;;
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+				END IF;
+			END IF;
+
+		END IF;
+	END IF;
+
+	-- Display final duration
+	IF (debug1 = &apos;Y&apos;) THEN
+		call /shared/ASAssets/Utilities/&quot;time&quot;/getCurrentTimestamp(currentTS);
+		set duration = currentTS - startTime;					
+		set message = &apos;PRIVILEGE EXECUTION TIME: &apos;||CAST(duration AS VARCHAR)||&apos;|&apos;||newline;
+		call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debug1Console, debug1CISLog, logOutput, moduleName||&apos; : &apos;||message, logOutput);
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1386346747412</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="public_types" type="MAP">
+    <item>
+      <key type="STRING">privilegeRow</key>
+      <value type="BYTE_ARRAY">EB8GAgAMAHAAcgBpAHYAaQBsAGUAZwBlAFIAbwB3BikAYAAvAHMAaABhAHIAZQBkAC8AQQBTAEEAcwBzAGUAdABzAC8AQgBlAHMAdABQAHIAYQBjAHQAaQBjAGUAcwBfAHYAOAAxAC8AUAByAGkAdgBpAGwAZQBnAGUAUwBjAHIAaQBwAHQAcwAvAEgAZQBsAHAAZQByAHMALwB1AHAAZABhAHQAZQBSAGUAcwBvAHUAcgBjAGUAUAByAGkAdgBpAGwAZQBnAGUAcwBEAHIAaQB2AGUAcgBJAG0AcABsAFYANAYqAAwAcAByAGkAdgBpAGwAZQBnAGUAUgBvAHcDEgAAAAEDEgAAAAEBEwEJFAAAAAQQIQYVAAoAZABvAG0AYQBpAG4ATgBhAG0AZQMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAgZEBsGAgAHAFYAQQBSAEMASABBAFIDEgAAAAIEBAAAAAAAAAD/ARMB/////xAhBhUABABuAGEAbQBlAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAAAxIAAAAC//8QIQYVAAgAbgBhAG0AZQBUAHkAcABlAy8AAAABAxYAAAAAAxoAAAABAxsAAAABAyD/////AyIAAAAAAxIAAAAC//8QIQYVAA0AcAByAGkAdgBpAGwAZQBnAGUATABpAHMAdAMvAAAAAQMWAAAAAAMaAAAAAQMbAAAAAQMg/////wMiAAAAAAMSAAAAAv////8=</value>
+    </item>
+  </attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">9/1051</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/1234</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/1239</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/1013</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

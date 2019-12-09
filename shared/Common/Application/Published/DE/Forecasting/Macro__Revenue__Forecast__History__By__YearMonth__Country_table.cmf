@@ -1,0 +1,94 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Macro_Revenue_Forecast_History_By_YearMonth_Country" path="/shared/Common/Application/Published/DE/Forecasting/Macro_Revenue_Forecast_History_By_YearMonth_Country" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="fc_calen_yr_key_no" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="fc_mo_yr_key_no" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="40" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="revenue_lc" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="cntry_cd" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="amway_cntry_cd" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dc_lc" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="dc_plan_lc_fc_price_adj" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Business/Business/Forecasting/Macro_Revenue_Forecast_History_By_YearMonth_Country" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="fc_calen_yr_key_no">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="fc_mo_yr_key_no">
+        <datatype type="STRING" minLength="2" maxLength="40" trailingSpaces="false"/>
+      </element>
+      <element name="revenue_lc">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      </element>
+      <element name="cntry_cd">
+        <datatype type="STRING" minLength="2" maxLength="2"/>
+      </element>
+      <element name="amway_cntry_cd">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="dc_lc">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      </element>
+      <element name="dc_plan_lc_fc_price_adj">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">/* Script to fetch Macro Revenue Forecast (1 year from current date) and History (1 year before current date) by YearMonth, Country */
+SELECT 
+    *
+FROM /shared/Common/Business/Business/Forecasting/Macro_Revenue_Forecast_History_By_YearMonth_Country</attribute>
+  <attribute name="creationDate" type="LONG">1574438872726</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">292778</attribute>
+  <attribute name="creatorUserName" type="STRING">aj83776</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1574439120941</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">292778</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aj83776</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1574438872726</attribute>
+</metadata>

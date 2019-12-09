@@ -1,0 +1,1308 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="createResourceProcess" path="/shared/ASAssets/Utilities/generate/helpers/createResourceProcess" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>createResourceProcess:
+
+	The is a helper procedure which is used to manage the creation of the folder and views 
+		within the Data Abstraction Best Practices layers.  It is invoked by generateViews().
+
+	Input:
+		IN parentLayerType			VARCHAR,		-- The layer type of the parent path.
+		IN sourcePath 				VARCHAR(32768),	-- The full source resource path.
+		IN sourceType				VARCHAR,		-- The source type.  May be DATA_SOURCE or CONTAINER.
+		IN targetPath 				VARCHAR(32768),	-- The target path.  This will always be a path of type CONTAINER.
+		IN tableNames 				LONGVARCHAR,	-- optional.  NULL=no specified table list OR one or more comma separated tables to introspect.
+													--		When NULL, all tables for the schema are introspected.
+		IN separator				VARCHAR,		-- Default=,  The separator used to separate lists for the input parameters: tableNames and procedureNames
+													--		The separator value should not exist within the table or procedure names.
+		IN tablePrefix 				VARCHAR,		-- A value to be prefixed to the table.  If null then no value is prefixed.  e.g. V_
+		IN tableQualifier			VARCHAR,		-- A value to be added as a table qualifer.  It goes after the prefix but before the table name.  If null then no value is added.
+		IN overwrite				SMALLINT,		-- 1=overwrite the resouce if it exists. 0=do not overwrite the resource.
+		IN copyAnnotation			SMALLINT,		-- 1=copy table and column annotations. 0=do not copy
+		IN copySqlIndexes			SMALLINT,		-- 1=copy SQL indexes from source to target.  0=do not copy 
+		IN copyForeignKeys			SMALLINT,		-- 1=copy foreign keys from source to target.  0=do not copy
+		IN inDebug					CHAR(1),		-- Y=debug on, N=debug off, null=N
+
+	Output: 
+		OUT numCreated				INTEGER,		-- The number of views created
+		OUT numUpdated				INTEGER			-- The number of views updated
+		OUT result					PIPE (			-- A cursor of results for each row created or updated
+			actionType				VARCHAR,		-- The action taken for this resource:  CREATED, OVERWRITTEN, SKIPPED [EXISTS].
+			layerType				VARCHAR,		-- The layer type that the view is being generated in:  METADATA, FORMATTING, BUSINESS, APPLICATION, PUBLISHED.
+			resName					VARCHAR,		-- The name of the resource.
+			resPath					LONGVARCHAR,	-- The full path to the resource.
+			resType					VARCHAR,		-- The type of the resource.
+			subtype					VARCHAR,		-- The subtype of the resource.
+			parentLineageLayerType	VARCHAR,		-- The layer type of the parent resource according to the lineage.
+			parentLineagePath		LONGVARCHAR,	-- The full path of the parent resource according to the lineage.
+			metadataLineageName		LONGVARCHAR,	-- Placeholder for generateViews - always null.
+			metadataLineagePath		LONGVARCHAR		-- Placeholder for generateViews - always null.
+		)
+
+	Exception: may throw exceptions if input is not valid.
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.2		04/14/2014		Venky Madireddi		6.2.6			Created new
+	2018.100	01/10/2018		Mike Tinius			7.0.5			Adapted and modified for a more complete view generation.
+	2019.200	05/14/2019		Mike Tinius			7.0.8			Modified call from copyResourcesPrivileges to copyResourcesPrivilegesV2 to remove VECTOR usage.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="parentLayerType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="layerType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="sourcePathIn" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="sourceType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="targetPathIn" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="tableNames" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="separator" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="tablePrefix" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="tableQualifier" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="overwrite" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="copyAnnotation" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="copySqlIndexes" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="copyForeignKeys" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="inDebug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="numCreated" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="numUpdated" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="actionType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="layerType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="resName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="resPath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="resType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="subtype">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="parentLineageLayerType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="parentLineagePath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="metadataLineageName">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="metadataLineagePath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/copyResourceAnnotations" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inSourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inSourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="inDestPath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inDestType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="copyResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/copyResourcesPrivilegesV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="updatePrivilegesRecursively" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="copyPrivilegeMode" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inCopyPrivilegeEntries" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/createAllFoldersPrivileges" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inSourceFolderPath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="updatePrivilegesRecursively" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="copyPrivilegeMode" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/createResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceSubType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/destroyResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE_FOREIGNKEYS" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="primaryKeyName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="primaryKeyTable">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="foreignKeyColumnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="primaryKeyColumnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE_SQLINDEXES" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="sqlIndexName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlIndexType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlIndexUnique">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="sqlIndexColName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlIndexColOrder">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceListChildren" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creationDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="creationDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="creatorUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creatorUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="lastModifiedDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="lastModifiedUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/publishResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="publishFolder" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="publishName" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceName" type="STRING" maxLength="255"/>
+      </element>
+      <element name="annotation" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="publishResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/updateResourcesSqlTableV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="inScripttext" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="annotation" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inColumnList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inSqlIndexList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inForeignKeyList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	createResourceProcess:
+
+	The is a helper procedure which is used to manage the creation of the folder and views 
+		within the Data Abstraction Best Practices layers.  It is invoked by generateViews().
+
+	Input:
+		IN parentLayerType			VARCHAR,		-- The layer type of the parent path.
+		IN sourcePath 				VARCHAR(32768),	-- The full source resource path.
+		IN sourceType				VARCHAR,		-- The source type.  May be DATA_SOURCE or CONTAINER.
+		IN targetPath 				VARCHAR(32768),	-- The target path.  This will always be a path of type CONTAINER.
+		IN tableNames 				LONGVARCHAR,	-- optional.  NULL=no specified table list OR one or more comma separated tables to introspect.
+													--		When NULL, all tables for the schema are introspected.
+		IN separator				VARCHAR,		-- Default=,  The separator used to separate lists for the input parameters: tableNames and procedureNames
+													--		The separator value should not exist within the table or procedure names.
+		IN tablePrefix 				VARCHAR,		-- A value to be prefixed to the table.  If null then no value is prefixed.  e.g. V_
+		IN tableQualifier			VARCHAR,		-- A value to be added as a table qualifer.  It goes after the prefix but before the table name.  If null then no value is added.
+		IN overwrite				SMALLINT,		-- 1=overwrite the resouce if it exists. 0=do not overwrite the resource.
+		IN copyAnnotation			SMALLINT,		-- 1=copy table and column annotations. 0=do not copy
+		IN copySqlIndexes			SMALLINT,		-- 1=copy SQL indexes from source to target.  0=do not copy 
+		IN copyForeignKeys			SMALLINT,		-- 1=copy foreign keys from source to target.  0=do not copy
+		IN inDebug					CHAR(1),		-- Y=debug on, N=debug off, null=N
+
+	Output: 
+		OUT numCreated				INTEGER,		-- The number of views created
+		OUT numUpdated				INTEGER			-- The number of views updated
+		OUT result					PIPE (			-- A cursor of results for each row created or updated
+			actionType				VARCHAR,		-- The action taken for this resource:  CREATED, OVERWRITTEN, SKIPPED [EXISTS].
+			layerType				VARCHAR,		-- The layer type that the view is being generated in:  METADATA, FORMATTING, BUSINESS, APPLICATION, PUBLISHED.
+			resName					VARCHAR,		-- The name of the resource.
+			resPath					LONGVARCHAR,	-- The full path to the resource.
+			resType					VARCHAR,		-- The type of the resource.
+			subtype					VARCHAR,		-- The subtype of the resource.
+			parentLineageLayerType	VARCHAR,		-- The layer type of the parent resource according to the lineage.
+			parentLineagePath		LONGVARCHAR,	-- The full path of the parent resource according to the lineage.
+			metadataLineageName		LONGVARCHAR,	-- Placeholder for generateViews - always null.
+			metadataLineagePath		LONGVARCHAR		-- Placeholder for generateViews - always null.
+		)
+
+	Exception: may throw exceptions if input is not valid.
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.2		04/14/2014		Venky Madireddi		6.2.6			Created new
+	2018.100	01/10/2018		Mike Tinius			7.0.5			Adapted and modified for a more complete view generation.
+	2019.200	05/14/2019		Mike Tinius			7.0.8			Modified call from copyResourcesPrivileges to copyResourcesPrivilegesV2 to remove VECTOR usage.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE createResourceProcess
+(
+	IN  parentLayerType			VARCHAR,		-- The layer type of the parent path.
+	IN  layerType				VARCHAR,		-- The layer type.  e.g. FORMATTING, BUSINESS, APPLICATION, PUBLISHED
+	IN  sourcePathIn			LONGVARCHAR,	-- The full source path.
+	IN  sourceType				VARCHAR,		-- The source type.  May be DATA_SOURCE or CONTAINER.
+	IN  targetPathIn			LONGVARCHAR,	-- The target path.  This will always be a path of type CONTAINER.
+	IN  tableNames 				LONGVARCHAR,	-- optional.  NULL=no specified table list OR one or more comma separated tables to introspect.
+												--		When NULL, all tables for the schema are introspected.
+	IN	separator				VARCHAR,		-- Default=,  The separator used to separate lists for the input parameters: tableNames and procedureNames
+												--		The separator value should not exist within the table or procedure names.
+	IN  tablePrefix 			VARCHAR,		-- A value to be prefixed to the table.  If null then no value is prefixed.  e.g. V_
+	IN  tableQualifier			VARCHAR,		-- A value to be added as a table qualifer.  It goes after the prefix but before the table name.  If null then no value is added.
+	IN  overwrite				SMALLINT,		-- 1=overwrite the resouce if it exists. 0=do not overwrite the resource.
+	IN  copyAnnotation			SMALLINT,		-- 1=copy table and column annotations. 0=do not copy
+	IN  copySqlIndexes			SMALLINT,		-- 1=copy SQL indexes from source to target.  0=do not copy 
+	IN  copyForeignKeys			SMALLINT,		-- 1=copy foreign keys from source to target.  0=do not copy
+	IN  inDebug					CHAR(1),		-- Y=debug on, N=debug off, null=N
+	OUT numCreated				INTEGER,		-- Number of new views created
+	OUT numUpdated				INTEGER,		-- Numbrer of existing views updated
+	OUT result					PIPE (			-- A cursor of results for each row created or updated
+		actionType				VARCHAR,		-- The action taken for this resource:  CREATED, OVERWRITTEN, SKIPPED [EXISTS].
+		layerType				VARCHAR,		-- The layer type that the view is being generated in:  METADATA, FORMATTING, BUSINESS, APPLICATION, PUBLISHED.
+		resName					VARCHAR,		-- The name of the resource.
+		resPath					LONGVARCHAR,	-- The full path to the resource.
+		resType					VARCHAR,		-- The type of the resource.
+		subtype					VARCHAR,		-- The subtype of the resource.
+		parentLineageLayerType	VARCHAR,		-- The layer type of the parent resource according to the lineage.
+		parentLineagePath		LONGVARCHAR,	-- The full path of the parent resource according to the lineage.
+		metadataLineageName		LONGVARCHAR,	-- Placeholder for generateViews - always null.
+		metadataLineagePath		LONGVARCHAR		-- Placeholder for generateViews - always null.
+	)
+)
+BEGIN
+	DECLARE moduleName					VARCHAR DEFAULT &apos;createResourceProcess&apos;;
+	DECLARE debug						CHAR(1) DEFAULT NVL(UPPER(inDebug), &apos;N&apos;);
+	DECLARE sep							VARCHAR DEFAULT NVL(separator, &apos;,&apos;);
+	DECLARE sourcePath					LONGVARCHAR DEFAULT TRIM(sourcePathIn);
+	DECLARE targetPath					LONGVARCHAR DEFAULT TRIM(targetPathIn);
+	DECLARE ScriptUpdatePath			VARCHAR(32768);
+	DECLARE SQLScript 					VARCHAR(32768);
+	DECLARE Res_Target_Full_Path_Name 	VARCHAR(32768);
+	DECLARE Res_Name					VARCHAR;
+	DECLARE Resource_Exists 			BOOLEAN;
+	DECLARE Table_Names					LONGVARCHAR DEFAULT null;
+	DECLARE Tab_Prefix 					VARCHAR DEFAULT &apos;&apos;;
+	DECLARE Tab_Qualifier				VARCHAR DEFAULT &apos;&apos;;
+	DECLARE i							INTEGER;
+	DECLARE copyPrivilegeEntry			LONGVARCHAR;
+	DECLARE sqlIndexList				LONGVARCHAR;
+	DECLARE sqlIndexNamePrev			VARCHAR;
+	DECLARE TYPE sqlIndexType			ROW (
+        sqlIndexName 	VARCHAR(255), 
+        sqlIndexType 	VARCHAR(255), 
+        sqlIndexUnique 	VARCHAR(255), 
+        sqlIndexColName VARCHAR(255), 
+        sqlIndexColOrder VARCHAR(255)
+        );
+	DECLARE sqlIndexRec					sqlIndexType;
+	DECLARE sqlIndexRecPrev				sqlIndexType;
+	DECLARE foreignKeyList				LONGVARCHAR;
+	DECLARE TYPE foreignKeyType			ROW (
+        fkName 					VARCHAR(255), 
+        primaryKeyName 			VARCHAR(255), 
+        primaryKeyTable 		VARCHAR(4000), 
+        foreignKeyColumnName 	VARCHAR(255), 
+        primaryKeyColumnName 	VARCHAR(255)
+        );
+	DECLARE foreignKeyRec				foreignKeyType;
+	DECLARE foreignKeyRecPrev			foreignKeyType;
+	DECLARE success						INTEGER;
+	DECLARE createResponse 				XML;
+	DECLARE faultResponse 				XML;
+	DECLARE ex							EXCEPTION;
+	DECLARE TYPE resultType				ROW (			-- A row type to capture results for each row created or updated
+		actionType						VARCHAR,		-- The action taken for this resource:  CREATED, OVERWRITTEN, SKIPPED [EXISTS].
+		layerType						VARCHAR,		-- The layer type that the view is being generated in:  METADATA, FORMATTING, BUSINESS, APPLICATION, PUBLISHED.
+		resName							VARCHAR,		-- The name of the resource.
+		resPath							LONGVARCHAR,	-- The full path to the resource.
+		resType							VARCHAR,		-- The type of the resource.
+		subtype							VARCHAR,		-- The subtype of the resource.
+		parentLineageLayerType			VARCHAR,		-- The layer type of the parent resource according to the lineage.
+		parentLineagePath				LONGVARCHAR,	-- The full path of the parent resource according to the lineage.
+		metadataLineageName				LONGVARCHAR,	-- Placeholder for generateViews - always null.
+		metadataLineagePath				LONGVARCHAR		-- Placeholder for generateViews - always null.
+	);
+	DECLARE resultRec					resultType;
+
+	-- Remove any white space and / at the end if exists.
+	IF (SUBSTRING(sourcePath, LENGTH(sourcePath), 1) = &apos;/&apos;) THEN
+		SET sourcePath = SUBSTRING(sourcePath, 1, LENGTH(sourcePath)-1);
+	END IF;
+	-- Remove any white space and / at the end if exists.
+	IF (SUBSTRING(targetPath, LENGTH(targetPath), 1) = &apos;/&apos;) THEN
+		SET targetPath = SUBSTRING(targetPath, 1, LENGTH(targetPath)-1);
+	END IF;
+	-- Set default values
+	SET numCreated = 0;
+	SET numUpdated = 0;
+	-- Enclose the table name list with separators on each side for searching purposes
+	IF (tableNames IS NOT NULL AND LENGTH(tableNames) &gt; 0) THEN
+		SET Table_Names = sep||tableNames||sep;
+	END IF;
+
+	-- Assign the table prefix
+	IF tablePrefix is not null THEN
+		SET Tab_Prefix = tablePrefix;
+	END IF;
+	-- Assign the table qualifer
+	IF tableQualifier is not null THEN
+		SET Tab_Qualifier = tableQualifier;
+	END IF;
+
+	IF (debug = &apos;Y&apos;) THEN
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;  INPUT:&apos;);
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;    SOURCE PATH=[&apos;||NVL(sourcePath,&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;    SOURCE TYPE=[&apos;||NVL(sourceType,&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;    TARTGET PATH=[&apos;||NVL(targetPath,&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;    TABLENAMES=[&apos;||NVL(tableNames,&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;    SEPARATOR=[&apos;||NVL(sep,&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;    PREFIX=[&apos;||NVL(tablePrefix,&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;    QUALIFIER=[&apos;||NVL(tableQualifier,&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;    OVERWRITRE=[&apos;||NVL(CAST(overwrite AS VARCHAR),&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;    COPY ANNOTATION=[&apos;||NVL(CAST(copyAnnotation AS VARCHAR),&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;    COPY SQL INDEXES=[&apos;||NVL(CAST(copySqlIndexes AS VARCHAR),&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT (moduleName||&apos; : &apos;||&apos;    COPY FOREIGN KEYS=[&apos;||NVL(CAST(copyForeignKeys AS VARCHAR),&apos;null&apos;)||&apos;]&apos;);
+	END IF;
+
+	-- Check to see if the target path exists
+	CALL /lib/resource/ResourceExists(targetPath, &apos;CONTAINER&apos;, null, Resource_Exists);
+	IF (NOT Resource_Exists) THEN 
+		BEGIN INDEPENDENT TRANSACTION
+			CALL /shared/ASAssets/Utilities/repository/createAllFoldersPrivileges(targetPath, 1, 1, success, faultResponse);
+		EXCEPTION
+			ELSE
+				RAISE;
+		END;
+	END IF;
+
+	-- Loop through the source path resources and create them in the target path
+	FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceListChildren(sourcePath, sourceType) DO
+		--CALL PRINT (moduleName||&apos; :     &apos;||r.name ||&apos; DISCOVERED&apos;);
+
+		-- If the resource is a table and the resource is in the table list or the table list is null then generate the view
+		IF (r.resType = &apos;TABLE&apos; AND ((Table_Names IS NOT NULL AND INSTR(Table_Names, sep||r.name||sep) &gt; 0) OR (Table_Names IS NULL))) THEN
+			SET Res_Target_Full_Path_Name = targetPath||&apos;/&apos;||Tab_Prefix||Tab_Qualifier||r.name;
+			SET resultRec.resName = Tab_Prefix||Tab_Qualifier||r.name;
+			SET resultRec.resPath = Res_Target_Full_Path_Name;
+			SET resultRec.actionType = &apos;UNKNOWN&apos;;
+			SET resultRec.layerType = layerType;
+			SET resultRec.parentLineageLayerType = parentLayerType;
+			SET resultRec.parentLineagePath = sourcePath||&apos;/&apos;||r.name;
+			SET resultRec.metadataLineageName = null;
+			SET resultRec.metadataLineagePath = null;
+
+			-- Determine if the target resource is to be published
+			IF (INSTR(Res_Target_Full_Path_Name, &apos;/services/databases/&apos;) &gt; 0) THEN
+				SET resultRec.resType = &apos;LINK&apos;;
+				SET resultRec.subtype = &apos;NONE&apos;;
+
+				-- Verify if the resources exists
+				CALL /lib/resource/ResourceExists(Res_Target_Full_Path_Name, &apos;LINK&apos;, null, Resource_Exists);
+				IF (NOT Resource_Exists OR (Resource_Exists AND overwrite = 1)) THEN 
+					IF (NOT Resource_Exists) THEN
+						set numCreated = numCreated + 1;
+					ELSE
+						set numUpdated = numUpdated + 1;
+					END IF;
+					IF (Resource_Exists and overwrite = 1) THEN
+						BEGIN INDEPENDENT TRANSACTION
+							call /shared/ASAssets/Utilities/repository/destroyResource(targetPath,Tab_Prefix||Tab_Qualifier||r.name,&apos;LINK&apos;,success,createResponse,faultResponse);
+							IF (faultResponse is not null) THEN
+								raise ex value  moduleName||&apos;: &apos;||CAST(faultResponse AS LONGVARCHAR);
+							END IF;
+						EXCEPTION
+							ELSE
+								RAISE;
+						END;
+					END IF;
+					-- Create the published resource link
+					BEGIN INDEPENDENT TRANSACTION
+						call /shared/ASAssets/Utilities/repository/publishResource(r.resPath, r.resType, targetPath, Tab_Prefix||Tab_Qualifier||r.name, null, success, createResponse, faultResponse);
+						IF (faultResponse is not null) THEN
+							raise ex value moduleName||&apos;: &apos;||CAST(faultResponse AS LONGVARCHAR);
+						END IF;
+
+						-- Set the privileges on the resource using the parent folder privileges
+						set copyPrivilegeEntry = 
+							&apos;  &lt;resource:copyPrivilegeEntry&gt;&apos;||CHR(10)||
+							&apos;    &lt;resource:srcResource&gt;&apos;||CHR(10)||
+							&apos;      &lt;resource:path&gt;&apos; || CAST(XMLTEXT(targetPath) AS LONGVARCHAR) || &apos;&lt;/resource:path&gt;&apos;||CHR(10)||
+							&apos;      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;&apos;||CHR(10)||
+							&apos;    &lt;/resource:srcResource&gt;&apos;||CHR(10)||
+							&apos;    &lt;resource:dstResource&gt;&apos;||CHR(10)||
+							&apos;      &lt;resource:path&gt;&apos; || CAST(XMLTEXT(targetPath||&apos;/&apos;||Tab_Prefix||Tab_Qualifier||r.name) AS LONGVARCHAR) || &apos;&lt;/resource:path&gt;&apos;||CHR(10)||
+							&apos;      &lt;resource:type&gt;LINK&lt;/resource:type&gt;&apos;||CHR(10)||
+							&apos;    &lt;/resource:dstResource&gt;&apos;||CHR(10)||
+							&apos;  &lt;/resource:copyPrivilegeEntry&gt;&apos;||CHR(10)||
+							&apos;&apos;;
+
+						-- Invoke the procedure to apply privileges
+						--		param1=updatePrivilegesRecursively, param2=copyPrivilegeMode, param3=copyPrivilegeEntry XML
+						call /shared/ASAssets/Utilities/repository/copyResourcesPrivilegesV2(0, 1, copyPrivilegeEntry, success, faultResponse);
+					EXCEPTION
+						ELSE
+							RAISE;
+					END;
+
+					BEGIN INDEPENDENT TRANSACTION
+						-- Copy the table annotation
+						IF (copyAnnotation IS NOT NULL AND copyAnnotation = 1) THEN
+							call /shared/ASAssets/Utilities/repository/copyResourceAnnotations(sourcePath||&apos;/&apos;||r.name, r.resType, targetPath||&apos;/&apos;||Tab_Prefix||Tab_Qualifier||r.name, &apos;LINK&apos;, success, createResponse, faultResponse);
+						END IF;
+					EXCEPTION
+						ELSE
+							RAISE;
+					END;
+
+					IF (Resource_Exists AND overwrite = 1) THEN
+						SET resultRec.actionType = &apos;OVERWRITTEN&apos;;
+					ELSE
+						SET resultRec.actionType = &apos;CREATED&apos;;
+					END IF;
+					IF (debug = &apos;Y&apos;) THEN
+						CALL PRINT (moduleName||&apos; : &apos;||&apos;  &apos;||Tab_Prefix||Tab_Qualifier||r.name ||&apos; &apos;|| resultRec.actionType);
+					END IF;
+				ELSE
+					SET resultRec.actionType = &apos;SKIPPED [EXISTS]&apos;;
+					IF (debug = &apos;Y&apos;) THEN
+						CALL PRINT (moduleName||&apos; : &apos;||&apos;  &apos;||Tab_Prefix||Tab_Qualifier||r.name ||&apos; &apos;|| resultRec.actionType);
+					END IF;
+				END IF;
+				INSERT INTO result VALUES (resultRec);
+			ELSE
+				SET resultRec.resType = &apos;TABLE&apos;;
+				SET resultRec.subtype = &apos;SQL_TABLE&apos;;
+
+				-- Verify if the resource exists
+				CALL /lib/resource/ResourceExists(Res_Target_Full_Path_Name, r.resType, null, Resource_Exists);
+				IF (NOT Resource_Exists OR (Resource_Exists AND overwrite = 1)) THEN 
+					IF (NOT Resource_Exists) THEN
+						BEGIN INDEPENDENT TRANSACTION
+							CALL /shared/ASAssets/Utilities/repository/createResource(targetPath, Tab_Prefix||Tab_Qualifier||r.name, &apos;TABLE&apos;, &apos;SQL_TABLE&apos;,success,createResponse, faultResponse);
+						EXCEPTION
+							ELSE
+								RAISE;
+						END;
+						set numCreated = numCreated + 1;
+					ELSE
+						set numUpdated = numUpdated + 1;
+					END IF;
+					-- Maps the Views with the below Layer table script
+					CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(targetPath||&apos;/&apos;||Tab_Prefix||Tab_Qualifier||r.name, NULL, ScriptUpdatePath);
+					CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(sourcePath||&apos;/&apos;||r.name, NULL, Res_Target_Full_Path_Name);
+					SET SQLScript= &apos;select * from &apos; ||Res_Target_Full_Path_Name;
+
+/*
+	SET sqlIndexList =
+		&apos;        &lt;resource:sqlIndexes&gt;&apos;||CHR(10)||
+		&apos;            &lt;resource:index&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:type&gt;&apos;||CAST(XMLTEXT(sqlIndexType) AS LONGVARCHAR)||&apos;&lt;/resource:type&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:unique&gt;&apos;||CAST(XMLTEXT(sqlIndexUnique) AS LONGVARCHAR)||&apos;&lt;/resource:unique&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:columns&gt;&apos;||CHR(10)||
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexColName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:order&gt;&apos;||CAST(XMLTEXT(sqlIndexColOrder) AS LONGVARCHAR)||&apos;&lt;/resource:order&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+		-- If it is a multi-column key then add more &lt;column&gt; nodes here:
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexColName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:order&gt;&apos;||CAST(XMLTEXT(sqlIndexColOrder) AS LONGVARCHAR)||&apos;&lt;/resource:order&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+
+		&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+		&apos;            &lt;/resource:index&gt;&apos;||CHR(10)||
+		&apos;        &lt;/resource:sqlIndexes&gt;&apos;||CHR(10)||
+		&apos;&apos;;
+*/
+					-- Get the SQL Indexes from the source resource
+					BEGIN INDEPENDENT TRANSACTION
+						IF (copySqlIndexes IS NOT NULL AND copySqlIndexes = 1) THEN
+							SET sqlIndexRecPrev = null;
+							SET i = 0;
+							SET sqlIndexList =
+								&apos;        &lt;resource:sqlIndexes&gt;&apos;||CHR(10);
+							FOR idx AS 
+									SELECT 
+										sqlIndexName,
+										sqlIndexType,
+										CASE WHEN sqlIndexUnique = 0 THEN &apos;false&apos;
+											 ELSE &apos;true&apos;
+										END sqlIndexUnique,
+										sqlIndexColName,
+										sqlIndexColOrder
+									FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE_SQLINDEXES(sourcePath||&apos;/&apos;||r.name, r.resType) 
+							DO
+								SET i = i + 1;
+								SET sqlIndexRec = idx;
+						
+								IF (sqlIndexRecPrev IS NULL OR sqlIndexRec.sqlIndexName &lt;&gt; sqlIndexRecPrev.sqlIndexName) THEN
+									IF (i &gt; 1) THEN
+										-- Close out the previous index
+										SET sqlIndexList = sqlIndexList ||
+											&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+											&apos;            &lt;/resource:index&gt;&apos;||CHR(10);
+									END IF;
+
+									SET sqlIndexList = sqlIndexList ||
+										&apos;            &lt;resource:index&gt;&apos;||CHR(10)||
+										&apos;                &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexRec.sqlIndexName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+										&apos;                &lt;resource:type&gt;&apos;||CAST(XMLTEXT(sqlIndexRec.sqlIndexType) AS LONGVARCHAR)||&apos;&lt;/resource:type&gt;&apos;||CHR(10)||
+										&apos;                &lt;resource:unique&gt;&apos;||CAST(XMLTEXT(sqlIndexRec.sqlIndexUnique) AS LONGVARCHAR)||&apos;&lt;/resource:unique&gt;&apos;||CHR(10)||
+										&apos;                &lt;resource:columns&gt;&apos;||CHR(10)||
+										&apos;                    &lt;column&gt;&apos;||CHR(10)||
+										&apos;                        &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexRec.sqlIndexColName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+										&apos;                        &lt;resource:order&gt;&apos;||CAST(XMLTEXT(sqlIndexRec.sqlIndexColOrder) AS LONGVARCHAR)||&apos;&lt;/resource:order&gt;&apos;||CHR(10)||
+										&apos;                    &lt;/column&gt;&apos;||CHR(10);
+
+								ELSE
+									SET sqlIndexList = sqlIndexList ||
+										&apos;                    &lt;column&gt;&apos;||CHR(10)||
+										&apos;                        &lt;resource:name&gt;&apos;||CAST(XMLTEXT(sqlIndexRec.sqlIndexColName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+										&apos;                        &lt;resource:order&gt;&apos;||CAST(XMLTEXT(sqlIndexRec.sqlIndexColOrder) AS LONGVARCHAR)||&apos;&lt;/resource:order&gt;&apos;||CHR(10)||
+										&apos;                    &lt;/column&gt;&apos;||CHR(10);
+
+								END IF; 
+								IF (debug = &apos;Y&apos;) THEN
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;  &apos;||Tab_Prefix||Tab_Qualifier||r.name||&apos;  SQL Index i=&apos;||i);
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;     sqlIndexName=&apos;||NVL(sqlIndexRec.sqlIndexName,&apos;null&apos;));
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;     sqlIndexType=&apos;||NVL(sqlIndexRec.sqlIndexType,&apos;null&apos;));
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;     sqlIndexUnique=&apos;||NVL(CAST(sqlIndexRec.sqlIndexUnique AS VARCHAR),&apos;null&apos;));
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;     sqlIndexColName=&apos;||NVL(sqlIndexRec.sqlIndexColName,&apos;null&apos;));
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;     sqlIndexColOrder=&apos;||NVL(sqlIndexRec.sqlIndexColOrder,&apos;null&apos;));
+								END IF;
+								SET sqlIndexRecPrev = sqlIndexRec;
+							END FOR;
+							IF (i = 0) THEN
+								SET sqlIndexList = &apos;&apos;;
+							ELSE
+								SET sqlIndexList = sqlIndexList ||
+									&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+									&apos;            &lt;/resource:index&gt;&apos;||CHR(10)||
+									&apos;        &lt;/resource:sqlIndexes&gt;&apos;||CHR(10)||
+									&apos;&apos;;
+							END IF;
+						END IF;
+					EXCEPTION
+						ELSE
+							RAISE;
+					END;
+/*
+	SET foreignKeyList =
+		&apos;        &lt;resource:sqlForeignKeys&gt;&apos;||CHR(10)||
+		&apos;            &lt;resource:foreignKey&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:name&gt;&apos;||CAST(XMLTEXT(fkName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:primaryKeyName&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyName&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:primaryKeyTable&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyTable) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyTable&gt;&apos;||CHR(10)||
+		&apos;                &lt;resource:columns&gt;&apos;||CHR(10)||
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:foreignKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkForeignKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:foreignKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:primaryKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+		-- If multiple foreign key columns then add more &lt;column&gt; nodes here:
+		&apos;                    &lt;column&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:foreignKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkForeignKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:foreignKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                        &lt;resource:primaryKeyColumnName&gt;&apos;||CAST(XMLTEXT(fkPrimaryKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyColumnName&gt;&apos;||CHR(10)||
+		&apos;                    &lt;/column&gt;&apos;||CHR(10)||
+
+		&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+		&apos;            &lt;/resource:foreignKey&gt;&apos;||CHR(10)||
+		&apos;        &lt;/resource:sqlForeignKeys&gt;&apos;||CHR(10)||
+		&apos;&apos;;
+*/
+					-- Get the Foreign Keys from the source resource
+					BEGIN INDEPENDENT TRANSACTION
+						IF (copyForeignKeys IS NOT NULL AND copyForeignKeys = 1) THEN
+							SET i = 0;
+							SET foreignKeyList =
+								&apos;        &lt;resource:sqlForeignKeys&gt;&apos;||CHR(10);
+							FOR fk AS 
+								SELECT * 
+								FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor_SQL_TABLE_FOREIGNKEYS(sourcePath||&apos;/&apos;||r.name, r.resType) 
+							DO
+								SET i = i + 1;
+								SET foreignKeyRec = fk;
+						
+								IF (foreignKeyRecPrev IS NULL OR foreignKeyRec.fkName &lt;&gt; foreignKeyRecPrev.fkName) THEN
+									IF (i &gt; 1) THEN
+										-- Close out the previous foreign key
+										SET foreignKeyList = foreignKeyList ||
+											&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+											&apos;            &lt;/resource:foreignKey&gt;&apos;||CHR(10);
+									END IF;
+
+									SET foreignKeyList = foreignKeyList ||
+										&apos;            &lt;resource:foreignKey&gt;&apos;||CHR(10)||
+										&apos;                &lt;resource:name&gt;&apos;||CAST(XMLTEXT(foreignKeyRec.fkName) AS LONGVARCHAR)||&apos;&lt;/resource:name&gt;&apos;||CHR(10)||
+										&apos;                &lt;resource:primaryKeyName&gt;&apos;||CAST(XMLTEXT(foreignKeyRec.primaryKeyName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyName&gt;&apos;||CHR(10)||
+										&apos;                &lt;resource:primaryKeyTable&gt;&apos;||CAST(XMLTEXT(foreignKeyRec.primaryKeyTable) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyTable&gt;&apos;||CHR(10)||
+										&apos;                &lt;resource:columns&gt;&apos;||CHR(10)||
+										&apos;                    &lt;column&gt;&apos;||CHR(10)||
+										&apos;                        &lt;resource:foreignKeyColumnName&gt;&apos;||CAST(XMLTEXT(foreignKeyRec.foreignKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:foreignKeyColumnName&gt;&apos;||CHR(10)||
+										&apos;                        &lt;resource:primaryKeyColumnName&gt;&apos;||CAST(XMLTEXT(foreignKeyRec.primaryKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyColumnName&gt;&apos;||CHR(10)||
+										&apos;                    &lt;/column&gt;&apos;||CHR(10);
+								ELSE
+									SET foreignKeyList = foreignKeyList ||
+										&apos;                    &lt;column&gt;&apos;||CHR(10)||
+										&apos;                        &lt;resource:foreignKeyColumnName&gt;&apos;||CAST(XMLTEXT(foreignKeyRec.foreignKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:foreignKeyColumnName&gt;&apos;||CHR(10)||
+										&apos;                        &lt;resource:primaryKeyColumnName&gt;&apos;||CAST(XMLTEXT(foreignKeyRec.primaryKeyColumnName) AS LONGVARCHAR)||&apos;&lt;/resource:primaryKeyColumnName&gt;&apos;||CHR(10)||
+										&apos;                    &lt;/column&gt;&apos;||CHR(10);
+								END IF; 
+								IF (debug = &apos;Y&apos;) THEN
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;  &apos;||Tab_Prefix||Tab_Qualifier||r.name||&apos;  Foreign Key i=&apos;||i);
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;     fkName=&apos;||NVL(foreignKeyRec.fkName,&apos;null&apos;));
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;     fkPrimaryKeyName=&apos;||NVL(foreignKeyRec.primaryKeyName,&apos;null&apos;));
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;     fkPrimaryKeyTable=&apos;||NVL(foreignKeyRec.primaryKeyTable,&apos;null&apos;));
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;     fkForeignKeyColumnName=&apos;||NVL(foreignKeyRec.foreignKeyColumnName,&apos;null&apos;));
+									CALL PRINT (moduleName||&apos; : &apos;||&apos;     fkPrimaryKeyColumnName=&apos;||NVL(foreignKeyRec.primaryKeyColumnName,&apos;null&apos;));
+								END IF;
+								SET foreignKeyRecPrev = foreignKeyRec;
+							END FOR;
+							IF (i = 0) THEN
+								SET foreignKeyList = &apos;&apos;;
+							ELSE
+								SET foreignKeyList = foreignKeyList || 
+									&apos;                &lt;/resource:columns&gt;&apos;||CHR(10)||
+									&apos;            &lt;/resource:foreignKey&gt;&apos;||CHR(10)||
+									&apos;        &lt;/resource:sqlForeignKeys&gt;&apos;||CHR(10)||
+									&apos;&apos;;
+							END IF;
+						END IF;
+					EXCEPTION
+						ELSE
+							RAISE;
+					END;
+
+					-- Update the resource table
+					BEGIN INDEPENDENT TRANSACTION
+						CALL /shared/ASAssets/Utilities/repository/updateResourcesSqlTableV2(ScriptUpdatePath, SQLScript, null, null, sqlIndexList, foreignKeyList, success, createResponse, faultResponse);
+					EXCEPTION
+						ELSE
+							RAISE;
+					END;
+
+					-- Set the privileges on the resource using the parent folder privileges
+					BEGIN INDEPENDENT TRANSACTION
+						set copyPrivilegeEntry = 
+							&apos;  &lt;resource:copyPrivilegeEntry&gt;&apos;||CHR(10)||
+							&apos;    &lt;resource:srcResource&gt;&apos;||CHR(10)||
+							&apos;      &lt;resource:path&gt;&apos; || CAST(XMLTEXT(targetPath) AS LONGVARCHAR) || &apos;&lt;/resource:path&gt;&apos;||CHR(10)||
+							&apos;      &lt;resource:type&gt;CONTAINER&lt;/resource:type&gt;&apos;||CHR(10)||
+							&apos;    &lt;/resource:srcResource&gt;&apos;||CHR(10)||
+							&apos;    &lt;resource:dstResource&gt;&apos;||CHR(10)||
+							&apos;      &lt;resource:path&gt;&apos; || CAST(XMLTEXT(targetPath||&apos;/&apos;||Tab_Prefix||Tab_Qualifier||r.name) AS LONGVARCHAR) || &apos;&lt;/resource:path&gt;&apos;||CHR(10)||
+							&apos;      &lt;resource:type&gt;TABLE&lt;/resource:type&gt;&apos;||CHR(10)||
+							&apos;    &lt;/resource:dstResource&gt;&apos;||CHR(10)||
+							&apos;  &lt;/resource:copyPrivilegeEntry&gt;&apos;||CHR(10)||
+							&apos;&apos;;
+
+						-- Invoke the procedure to apply privileges
+						--		param1=updatePrivilegesRecursively, param2=copyPrivilegeMode, param3=copyPrivilegeEntry XML
+						call /shared/ASAssets/Utilities/repository/copyResourcesPrivilegesV2(0, 1, copyPrivilegeEntry, success, faultResponse);
+					EXCEPTION
+						ELSE
+							RAISE;
+					END;
+
+					-- Copy the table and column annotation
+					BEGIN INDEPENDENT TRANSACTION
+						IF (copyAnnotation IS NOT NULL AND copyAnnotation = 1) THEN
+							call /shared/ASAssets/Utilities/repository/copyResourceAnnotations(sourcePath||&apos;/&apos;||r.name, r.resType, targetPath||&apos;/&apos;||Tab_Prefix||Tab_Qualifier||r.name, &apos;TABLE&apos;, success, createResponse, faultResponse);
+						END IF;
+					EXCEPTION
+						ELSE
+							RAISE;
+					END;
+
+					IF (Resource_Exists AND overwrite = 1) THEN
+						SET resultRec.actionType = &apos;OVERWRITTEN&apos;;
+					ELSE
+						SET resultRec.actionType = &apos;CREATED&apos;;
+					END IF;
+					IF (debug = &apos;Y&apos;) THEN
+						CALL PRINT (moduleName||&apos; : &apos;||&apos;  &apos;||Tab_Prefix||Tab_Qualifier||r.name ||&apos; &apos;|| resultRec.actionType);
+					END IF;
+				ELSE
+					SET resultRec.actionType = &apos;SKIPPED [EXISTS]&apos;;
+					IF (debug = &apos;Y&apos;) THEN
+						CALL PRINT (moduleName||&apos; : &apos;||&apos;  &apos;||Tab_Prefix||Tab_Qualifier||r.name ||&apos; &apos;|| resultRec.actionType);
+					END IF;
+				END IF;
+				INSERT INTO result VALUES (resultRec);
+			END IF;
+		END IF;
+	END FOR;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1398195366998</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zk5tunx</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564712138410</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">8/178</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/553</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/179</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/481</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/482</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/480</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/293</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/189</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/288</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/188</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/187</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/186</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/478</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/479</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/477</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/181</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/397</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/180</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/395</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/396</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/185</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/393</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/184</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/394</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/183</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/182</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/392</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/548</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

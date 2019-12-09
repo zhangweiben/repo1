@@ -1,0 +1,213 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="example_Create_or_Remove" path="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/Example/example_Create_or_Remove" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="create_or_remove" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/initCreateResources" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="organization" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="projectName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="subprojectName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="rootPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="enableAutoPublishTrigger" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="enableCleanupTrigger" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="publishDbPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="publishWsPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="servicesPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="applicationPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="businessPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="formattingPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="metadataPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/initRemoveResources" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="publishDbPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="publishWsPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="servicesPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="applicationPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="businessPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="formattingPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="metadataPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* example_Create_or_Remove:
+
+	This is an example script that demonstrates how to initialize a project folder for 
+		use with the Dynamic File Framework.
+	1. Copy this procedure and modify the paths and other variables to fit your needs.
+	2. Execute this procedure with 1 to create the generated framework.
+	3. Execute this procedure 2ith 2 to destroy the generated framework to insure it works.
+	4. Execute this procedure with 1 to create the generated framework.
+
+ 	Input:
+		create_or_remove:		0=remove, 1=create, null is ignored
+
+	Output:
+		result:					SUCCESS or an exception is thrown
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE example_Create_or_Remove(
+	IN  create_or_remove				BIT,		--0=remove, 1=create, null is ignored
+	OUT	result							VARCHAR
+)
+BEGIN
+	-- The organization name.  May be used as a filter for reporting on the DYNAMIC_FILE_QUEUE table.
+	DECLARE	organization					VARCHAR DEFAULT &apos;EXAMPLE&apos;;
+	-- The project name.  May be used as a filter for reporting on the DYNAMIC_FILE_QUEUE table.
+	DECLARE	projectName						VARCHAR DEFAULT &apos;ex_project&apos;;
+	-- The subproject name.  May be used as a filter for reporting on the DYNAMIC_FILE_QUEUE table.
+	DECLARE	subprojectName					VARCHAR DEFAULT &apos;ex_project_sub1&apos;;	
+	-- The root path where the files are located or the file system security root name mapping value.
+	DECLARE	rootPath						VARCHAR(4096) DEFAULT &apos;C:\MyFiles\DynamicFileFramework&apos;;
+	-- Enable the Auto Publish Trigger during installation
+	DECLARE enableAutoPublishTrigger		BIT DEFAULT 0;
+	-- Enable the Auto Cleanup Trigger during installation
+	DECLARE enableCleanupTrigger			BIT DEFAULT 1;
+
+	/********************************************************************************
+	 * Instructions:
+	 *   Paths are marked with MANDATORY or OPTIONAL.  If OPTIONAL set them to null.
+	 *   Each path must contain the word DYNAMIC or Dynamic on the end.
+	 *     If it is missing it will be added.  It is a way of segregating
+	 *     views generated from files from vs. the normal DV views.
+	*********************************************************************************/
+	-- The published database Dynamic schema path
+	DECLARE	publishDbPath					VARCHAR(4096) DEFAULT &apos;/services/databases/ex_project/cat1/Dynamic&apos;;
+	-- The published database Dynamic web services path
+	DECLARE	publishWsPath					VARCHAR(4096) DEFAULT &apos;/services/webservices/ex_project/cat1/Dynamic&apos;;
+	-- The target Application Layer Services Dynamic File procedures generation path
+	DECLARE servicesPath					LONGVARCHAR DEFAULT &apos;/shared/ASAssets/BestPractices_v81/DynamicFileFramework/Example/ex_project/Application/Services/Dynamic&apos;;
+	-- The target Application Layer Views Dynamic File generation path
+	DECLARE applicationPath					LONGVARCHAR DEFAULT &apos;/shared/ASAssets/BestPractices_v81/DynamicFileFramework/Example/ex_project/Application/Views/Dynamic&apos;;
+	-- The target Business Logical Layer Views Dynamic File generation path
+	DECLARE businessPath					LONGVARCHAR DEFAULT &apos;/shared/ASAssets/BestPractices_v81/DynamicFileFramework/Example/ex_project/Business/Logical/Dynamic&apos;;
+	-- The target Formatting Layer Views Dynamic File generation path
+	DECLARE formattingPath					LONGVARCHAR DEFAULT &apos;/shared/ASAssets/BestPractices_v81/DynamicFileFramework/Example/ex_project/Physical/Formatting/Dynamic&apos;;
+	-- The target Metadata Layer data source Dynamic File generation path
+	-- [MANDATORY path
+	DECLARE metadataPath					LONGVARCHAR DEFAULT &apos;/shared/ASAssets/BestPractices_v81/DynamicFileFramework/Example/ex_project/Physical/Metadata/Dynamic&apos;;
+
+	IF (create_or_remove IS NOT NULL) THEN
+		IF (create_or_remove = 1) THEN
+			call /shared/ASAssets/BestPractices_v81/DynamicFileFramework/initCreateResources(
+				organization,
+				projectName,
+				subprojectName,
+				rootPath,
+				enableAutoPublishTrigger,
+				enableCleanupTrigger,
+				publishDbPath,
+				publishWsPath,
+				servicesPath,
+				applicationPath,
+				businessPath,
+				formattingPath,
+				metadataPath,
+				result
+			);
+		END IF;
+		IF (create_or_remove = 0) THEN
+			call /shared/ASAssets/BestPractices_v81/DynamicFileFramework/initRemoveResources(
+				publishDbPath,
+				publishWsPath,
+				servicesPath,
+				applicationPath,
+				businessPath,
+				formattingPath,
+				metadataPath,
+				result
+			);
+		END IF;
+	ELSE
+		SET result = &apos;ERROR: Invalid option.  The input variable &quot;create_or_remove&quot; must be either 1=create or 0=remove.&apos;;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1517608202791</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1518725479162</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1517608202791</attribute>
+</metadata>

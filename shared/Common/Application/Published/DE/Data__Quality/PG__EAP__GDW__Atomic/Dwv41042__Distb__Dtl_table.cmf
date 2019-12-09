@@ -1,0 +1,911 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Dwv41042_Distb_Dtl" path="/shared/Common/Application/Published/DE/Data_Quality/PG_EAP_GDW_Atomic/Dwv41042_Distb_Dtl" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="etl_insert_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_ctl_aff" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_cntry_cd" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_src_trx_cd" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_src_trx_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_trx_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_pub_app" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_bufr_seq_nbr" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_src_file" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_doc_id" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="intgrt_priority" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_nbr" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_type" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_stat" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_class" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_spon" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_gl" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_dd" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_diamd" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_loa" nullable="true">
+      <datatype type="STRING" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_xpr_dt" nullable="true">
+      <datatype type="STRING" maxLength="23"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ctl_aff" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_cntry" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_curcy" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_lang" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="lbl_entty" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_shp_nm" nullable="true">
+      <datatype type="STRING" maxLength="55"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="wtd_dir_db_ord" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mtd_dir_db_ord" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_cust_nbr" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="pkup_canc" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="auhzd_mop" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_last_ord_dt" nullable="true">
+      <datatype type="STRING" maxLength="23"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_last_spong_dt" nullable="true">
+      <datatype type="STRING" maxLength="23"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_next_ord_nbr" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="dflt_vchr_reqst" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_bns_cycle" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_rstrc_flg" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_pin" nullable="true">
+      <datatype type="STRING" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="over_due_pay_flg" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_bus_natr" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_rescy_flg" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="whse_auhzd" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="dir_db_auhzd" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="ord_cpbl" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bns_cpbl" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="id_prt_ctl" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="mis_inf" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distrb_tax_class" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="dscnt" nullable="true">
+      <datatype type="STRING" maxLength="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_mail_grp" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="yrly_spon" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="entry_dt" nullable="true">
+      <datatype type="STRING" maxLength="23"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="auto_renew" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="auhzd_instl_mop" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="whi_instl_cpbl" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="czshp" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="trtry" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="prime_co" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_class_xcept" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_mol" nullable="true">
+      <datatype type="STRING" maxLength="5"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="confd_pers_inf" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="bns_paid_to_platm" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="hard_mail_hold" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_platm_grp_spon_blck" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="blck_chg_stat" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="distb_user" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_prog" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="wrkst" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_dt" nullable="true">
+      <datatype type="STRING" maxLength="23"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="audit_tm" nullable="true">
+      <datatype type="STRING" maxLength="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="error_flag" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="error_severity" nullable="true">
+      <datatype type="STRING" maxLength="40"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="last_load_dt_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="last_updt_dt_key_no" nullable="true">
+      <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_user_id" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/PostgreSQL_EAP/GDW_Atomic/Dwv41042_Distb_Dtl" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="etl_insert_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="intgrt_ctl_aff">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="intgrt_cntry_cd">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="intgrt_src_trx_cd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="intgrt_src_trx_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="intgrt_trx_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="intgrt_pub_app">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="intgrt_bufr_seq_nbr">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="intgrt_src_file">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="intgrt_doc_id">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="intgrt_priority">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="distb_nbr">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="distb_type">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="distb_stat">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="distb_class">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="distb_spon">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="distb_gl">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="distb_dd">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="distb_diamd">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="distb_loa">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="distb_xpr_dt">
+        <datatype type="STRING" maxLength="23"/>
+      </element>
+      <element name="ctl_aff">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="distb_cntry">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="distb_curcy">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="distb_lang">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="lbl_entty">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="distb_shp_nm">
+        <datatype type="STRING" maxLength="55"/>
+      </element>
+      <element name="wtd_dir_db_ord">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="mtd_dir_db_ord">
+        <datatype type="DECIMAL" maxDigits="15" minFractionalDigits="2" maxFractionalDigits="2"/>
+      </element>
+      <element name="distb_cust_nbr">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="pkup_canc">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="auhzd_mop">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="distb_last_ord_dt">
+        <datatype type="STRING" maxLength="23"/>
+      </element>
+      <element name="distb_last_spong_dt">
+        <datatype type="STRING" maxLength="23"/>
+      </element>
+      <element name="distb_next_ord_nbr">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="dflt_vchr_reqst">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="distb_bns_cycle">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="distb_rstrc_flg">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="distb_pin">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="over_due_pay_flg">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="distb_bus_natr">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="distb_rescy_flg">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="whse_auhzd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="dir_db_auhzd">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="ord_cpbl">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="bns_cpbl">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="id_prt_ctl">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="mis_inf">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="distrb_tax_class">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="dscnt">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="distb_mail_grp">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="yrly_spon">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="entry_dt">
+        <datatype type="STRING" maxLength="23"/>
+      </element>
+      <element name="auto_renew">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="auhzd_instl_mop">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="whi_instl_cpbl">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="czshp">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="trtry">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="prime_co">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="imc_class_xcept">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="imc_mol">
+        <datatype type="STRING" maxLength="5"/>
+      </element>
+      <element name="confd_pers_inf">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="bns_paid_to_platm">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="hard_mail_hold">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="imc_platm_grp_spon_blck">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="blck_chg_stat">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="distb_user">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="updt_prog">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="wrkst">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="audit_dt">
+        <datatype type="STRING" maxLength="23"/>
+      </element>
+      <element name="audit_tm">
+        <datatype type="STRING" maxLength="8"/>
+      </element>
+      <element name="error_flag">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="error_severity">
+        <datatype type="STRING" maxLength="40"/>
+      </element>
+      <element name="last_load_dt_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="last_updt_dt_key_no">
+        <datatype type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      </element>
+      <element name="insrt_proc_nm">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="insrt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="updt_user_id">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="updt_proc_nm">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="updt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(Dwv41042_Distb_Dtl.etl_insert_dt AS TIMESTAMP) AS etl_insert_dt,
+	CAST(Dwv41042_Distb_Dtl.intgrt_ctl_aff AS VARCHAR(3)) AS intgrt_ctl_aff,
+	CAST(Dwv41042_Distb_Dtl.intgrt_cntry_cd AS VARCHAR(3)) AS intgrt_cntry_cd,
+	CAST(Dwv41042_Distb_Dtl.intgrt_src_trx_cd AS VARCHAR(1)) AS intgrt_src_trx_cd,
+	CAST(Dwv41042_Distb_Dtl.intgrt_src_trx_dt AS TIMESTAMP) AS intgrt_src_trx_dt,
+	CAST(Dwv41042_Distb_Dtl.intgrt_trx_dt AS TIMESTAMP) AS intgrt_trx_dt,
+	CAST(Dwv41042_Distb_Dtl.intgrt_pub_app AS VARCHAR(10)) AS intgrt_pub_app,
+	CAST(Dwv41042_Distb_Dtl.intgrt_bufr_seq_nbr AS VARCHAR(15)) AS intgrt_bufr_seq_nbr,
+	CAST(Dwv41042_Distb_Dtl.intgrt_src_file AS VARCHAR(50)) AS intgrt_src_file,
+	CAST(Dwv41042_Distb_Dtl.intgrt_doc_id AS VARCHAR(50)) AS intgrt_doc_id,
+	CAST(Dwv41042_Distb_Dtl.intgrt_priority AS VARCHAR(3)) AS intgrt_priority,
+	CAST(Dwv41042_Distb_Dtl.distb_nbr AS DECIMAL(11,0)) AS distb_nbr,
+	CAST(Dwv41042_Distb_Dtl.distb_type AS VARCHAR(1)) AS distb_type,
+	CAST(Dwv41042_Distb_Dtl.distb_stat AS VARCHAR(1)) AS distb_stat,
+	CAST(Dwv41042_Distb_Dtl.distb_class AS VARCHAR(1)) AS distb_class,
+	CAST(Dwv41042_Distb_Dtl.distb_spon AS DECIMAL(11,0)) AS distb_spon,
+	CAST(Dwv41042_Distb_Dtl.distb_gl AS DECIMAL(11,0)) AS distb_gl,
+	CAST(Dwv41042_Distb_Dtl.distb_dd AS DECIMAL(11,0)) AS distb_dd,
+	CAST(Dwv41042_Distb_Dtl.distb_diamd AS DECIMAL(11,0)) AS distb_diamd,
+	CAST(Dwv41042_Distb_Dtl.distb_loa AS VARCHAR(5)) AS distb_loa,
+	CAST(Dwv41042_Distb_Dtl.distb_xpr_dt AS VARCHAR(23)) AS distb_xpr_dt,
+	CAST(Dwv41042_Distb_Dtl.ctl_aff AS VARCHAR(3)) AS ctl_aff,
+	CAST(Dwv41042_Distb_Dtl.distb_cntry AS VARCHAR(3)) AS distb_cntry,
+	CAST(Dwv41042_Distb_Dtl.distb_curcy AS VARCHAR(3)) AS distb_curcy,
+	CAST(Dwv41042_Distb_Dtl.distb_lang AS VARCHAR(3)) AS distb_lang,
+	CAST(Dwv41042_Distb_Dtl.lbl_entty AS VARCHAR(1)) AS lbl_entty,
+	CAST(Dwv41042_Distb_Dtl.distb_shp_nm AS VARCHAR(55)) AS distb_shp_nm,
+	CAST(Dwv41042_Distb_Dtl.wtd_dir_db_ord AS NUMERIC(15,2)) AS wtd_dir_db_ord,
+	CAST(Dwv41042_Distb_Dtl.mtd_dir_db_ord AS NUMERIC(15,2)) AS mtd_dir_db_ord,
+	CAST(Dwv41042_Distb_Dtl.distb_cust_nbr AS DECIMAL(11,0)) AS distb_cust_nbr,
+	CAST(Dwv41042_Distb_Dtl.pkup_canc AS DOUBLE) AS pkup_canc,
+	CAST(Dwv41042_Distb_Dtl.auhzd_mop AS VARCHAR(1)) AS auhzd_mop,
+	CAST(Dwv41042_Distb_Dtl.distb_last_ord_dt AS VARCHAR(23)) AS distb_last_ord_dt,
+	CAST(Dwv41042_Distb_Dtl.distb_last_spong_dt AS VARCHAR(23)) AS distb_last_spong_dt,
+	CAST(Dwv41042_Distb_Dtl.distb_next_ord_nbr AS DOUBLE) AS distb_next_ord_nbr,
+	CAST(Dwv41042_Distb_Dtl.dflt_vchr_reqst AS VARCHAR(1)) AS dflt_vchr_reqst,
+	CAST(Dwv41042_Distb_Dtl.distb_bns_cycle AS VARCHAR(2)) AS distb_bns_cycle,
+	CAST(Dwv41042_Distb_Dtl.distb_rstrc_flg AS VARCHAR(1)) AS distb_rstrc_flg,
+	CAST(Dwv41042_Distb_Dtl.distb_pin AS VARCHAR(5)) AS distb_pin,
+	CAST(Dwv41042_Distb_Dtl.over_due_pay_flg AS VARCHAR(1)) AS over_due_pay_flg,
+	CAST(Dwv41042_Distb_Dtl.distb_bus_natr AS VARCHAR(2)) AS distb_bus_natr,
+	CAST(Dwv41042_Distb_Dtl.distb_rescy_flg AS VARCHAR(1)) AS distb_rescy_flg,
+	CAST(Dwv41042_Distb_Dtl.whse_auhzd AS VARCHAR(1)) AS whse_auhzd,
+	CAST(Dwv41042_Distb_Dtl.dir_db_auhzd AS VARCHAR(1)) AS dir_db_auhzd,
+	CAST(Dwv41042_Distb_Dtl.ord_cpbl AS VARCHAR(1)) AS ord_cpbl,
+	CAST(Dwv41042_Distb_Dtl.bns_cpbl AS VARCHAR(1)) AS bns_cpbl,
+	CAST(Dwv41042_Distb_Dtl.id_prt_ctl AS VARCHAR(1)) AS id_prt_ctl,
+	CAST(Dwv41042_Distb_Dtl.mis_inf AS VARCHAR(1)) AS mis_inf,
+	CAST(Dwv41042_Distb_Dtl.distrb_tax_class AS VARCHAR(1)) AS distrb_tax_class,
+	CAST(Dwv41042_Distb_Dtl.dscnt AS VARCHAR(12)) AS dscnt,
+	CAST(Dwv41042_Distb_Dtl.distb_mail_grp AS DOUBLE) AS distb_mail_grp,
+	CAST(Dwv41042_Distb_Dtl.yrly_spon AS DECIMAL(11,0)) AS yrly_spon,
+	CAST(Dwv41042_Distb_Dtl.entry_dt AS VARCHAR(23)) AS entry_dt,
+	CAST(Dwv41042_Distb_Dtl.auto_renew AS VARCHAR(1)) AS auto_renew,
+	CAST(Dwv41042_Distb_Dtl.auhzd_instl_mop AS VARCHAR(1)) AS auhzd_instl_mop,
+	CAST(Dwv41042_Distb_Dtl.whi_instl_cpbl AS VARCHAR(1)) AS whi_instl_cpbl,
+	CAST(Dwv41042_Distb_Dtl.czshp AS VARCHAR(1)) AS czshp,
+	CAST(Dwv41042_Distb_Dtl.trtry AS VARCHAR(3)) AS trtry,
+	CAST(Dwv41042_Distb_Dtl.prime_co AS VARCHAR(2)) AS prime_co,
+	CAST(Dwv41042_Distb_Dtl.imc_class_xcept AS VARCHAR(1)) AS imc_class_xcept,
+	CAST(Dwv41042_Distb_Dtl.imc_mol AS VARCHAR(5)) AS imc_mol,
+	CAST(Dwv41042_Distb_Dtl.confd_pers_inf AS VARCHAR(1)) AS confd_pers_inf,
+	CAST(Dwv41042_Distb_Dtl.bns_paid_to_platm AS VARCHAR(1)) AS bns_paid_to_platm,
+	CAST(Dwv41042_Distb_Dtl.hard_mail_hold AS VARCHAR(1)) AS hard_mail_hold,
+	CAST(Dwv41042_Distb_Dtl.imc_platm_grp_spon_blck AS VARCHAR(1)) AS imc_platm_grp_spon_blck,
+	CAST(Dwv41042_Distb_Dtl.blck_chg_stat AS VARCHAR(1)) AS blck_chg_stat,
+	CAST(Dwv41042_Distb_Dtl.distb_user AS VARCHAR(50)) AS distb_user,
+	CAST(Dwv41042_Distb_Dtl.updt_prog AS VARCHAR(50)) AS updt_prog,
+	CAST(Dwv41042_Distb_Dtl.wrkst AS VARCHAR(50)) AS wrkst,
+	CAST(Dwv41042_Distb_Dtl.audit_dt AS VARCHAR(23)) AS audit_dt,
+	CAST(Dwv41042_Distb_Dtl.audit_tm AS VARCHAR(8)) AS audit_tm,
+	CAST(Dwv41042_Distb_Dtl.error_flag AS VARCHAR(2)) AS error_flag,
+	CAST(Dwv41042_Distb_Dtl.error_severity AS VARCHAR(40)) AS error_severity,
+	CAST(Dwv41042_Distb_Dtl.last_load_dt_key_no AS DOUBLE) AS last_load_dt_key_no,
+	CAST(Dwv41042_Distb_Dtl.last_updt_dt_key_no AS DOUBLE) AS last_updt_dt_key_no,
+	CAST(Dwv41042_Distb_Dtl.insrt_proc_nm AS VARCHAR(240)) AS insrt_proc_nm,
+	CAST(Dwv41042_Distb_Dtl.insrt_dt AS TIMESTAMP) AS insrt_dt,
+	CAST(Dwv41042_Distb_Dtl.updt_user_id AS VARCHAR(50)) AS updt_user_id,
+	CAST(Dwv41042_Distb_Dtl.updt_proc_nm AS VARCHAR(240)) AS updt_proc_nm,
+	CAST(Dwv41042_Distb_Dtl.updt_dt AS TIMESTAMP) AS updt_dt 
+FROM
+	/shared/Common/Physical/Formatting/PostgreSQL_EAP/GDW_Atomic/Dwv41042_Distb_Dtl Dwv41042_Distb_Dtl</attribute>
+  <attribute name="creationDate" type="LONG">1570036952887</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1570037006185</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1570036952887</attribute>
+</metadata>

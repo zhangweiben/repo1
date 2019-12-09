@@ -1,0 +1,1126 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="02_display_DYNAMIC_FILE_QUEUE" path="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/02_display_DYNAMIC_FILE_QUEUE" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>02_display_DYNAMIC_FILE_QUEUE:
+
+	Provides a mechanism to output the contents of the DYNAMIC_FILE_QUEUE table.
+
+	Input
+		debug					CHAR(1),		-- Y=debug on, N=debug off
+		sortOrder				VARCHAR,		-- Default=DESC if null.  Valid Values for sorting by REQUEST_DATE_START:   ASC|ASCENDING|DESC|DESCENDING
+		requestId				VARCHAR,		-- Filter applied on REQUEST_ID if not null.  The operators [&lt;,&gt;,&lt;=,&gt;=,&lt;&gt;] may be present before a valid integer.
+		requestDateStart		VARCHAR,		-- Filter applied on REQUEST_DATE_START if not null.  The operators [IS NULL, IS NOT NULL,&lt;,&gt;,&lt;=,&gt;=,&lt;&gt;] may be present before a valid timestamp.
+		requestDateEnd			VARCHAR,		-- Filter applied on REQUEST_DATE_END if not null.   The operators [IS NULL, IS NOT NULL,&lt;,&gt;,&lt;=,&gt;=,&lt;&gt;] may be present before a valid timestamp.
+		organization			VARCHAR,		-- Filter applied on ORGANIZATION if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		projectName				VARCHAR,		-- Filter applied on PROJECT_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		subProjectName			VARCHAR,		-- Filter applied on SUBPROJECT_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		actionOriginator		VARCHAR(50),	-- Filter applied on ACTION_ORIGINATOR if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		actionType				VARCHAR(1),		-- Filter applied on ACTION_TYPE if not null. Allowed values: [A, R, C]
+		status					VARCHAR(100),	-- Filter applied on STATUS if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		message					VARCHAR(4000),	-- Filter applied on MESSAGE if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		emailError				VARCHAR(4000),	-- Filter applied on EMAIL_ERROR if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		requestFileName			VARCHAR,		-- Filter applied on REQUEST_FILE_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		requestUserName			VARCHAR,		-- Filter applied on REQUEST_USER_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		requestDomainName		VARCHAR,		-- Filter applied on REQUEST_DOMAIN_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		fileName				VARCHAR,		-- Filter applied on FILE_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		proxyUserName			VARCHAR,		-- Filter applied on PROXY_USER_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		proxyUserEmail			VARCHAR(4000),	-- Filter applied on PROXY_USER_EMAIL if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		allowNullFileName		SMALLINT,		-- Filter applied on ALLOW_NULL_FILE_NAME if not null.  Value values are NULL, 0 and 1.
+		datasourcePath			VARCHAR(4000),	-- Filter applied on DATA_SOURCE_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		formattingLayerPath		VARCHAR(4000),	-- Filter applied on FORMATTING_LAYER_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		businessLayerPath		VARCHAR(4000),	-- Filter applied on BUSINESS_LAYER_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		applicationLayerPath	VARCHAR(4000),	-- Filter applied on APPLICATION_LAYER_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		publishedSchemaPath		VARCHAR(4000),	-- Filter applied on PUBLISHED_SCHEMA_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		publishedDatabase		VARCHAR,		-- Filter applied on PUBLISHED_DATABASE if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		constantsPath			VARCHAR(4000),	-- Filter applied on CONSTANTS_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		retentionPolicyDays		VARCHAR,		-- Filter applied on RETENTION_POLICY_DAYS if not null.  The operators [&lt;,&gt;,&lt;=,&gt;=,&lt;&gt;] may be present before a valid integer.
+	Output:
+		result					CURSOR 		-- Output of the DYNAMIC_FILE_QUEUE table
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="sortOrder" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="requestId" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="requestDateStart" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="requestDateEnd" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="organization" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="projectName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="subProjectName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="actionOriginator" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+    </parameter>
+    <parameter name="actionType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="1"/>
+    </parameter>
+    <parameter name="status" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="100"/>
+    </parameter>
+    <parameter name="message" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="emailError" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="requestFileName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="requestUserName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="requestDomainName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="fileName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="proxyUserName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="proxyUserEmail" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="allowNullFileName" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="datasourcePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="formattingLayerPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="businessLayerPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="applicationLayerPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="publishedSchemaPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="publishedDatabase" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="constantsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="retentionPolicyDays" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="queueResult" direction="OUT" nullable="true">
+      <datatype name="queueResult" type="TABLE" refId="1">
+        <element name="REQUEST_ID">
+          <datatype name="DECIMAL" type="DECIMAL" maxDigits="19" maxFractionalDigits="0"/>
+        </element>
+        <element name="REQUEST_DATE_START">
+          <datatype name="TIMESTAMP" type="DATETIME"/>
+        </element>
+        <element name="REQUEST_DATE_END">
+          <datatype name="TIMESTAMP" type="DATETIME"/>
+        </element>
+        <element name="ORGANIZATION">
+          <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+        </element>
+        <element name="PROJECT_NAME">
+          <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+        </element>
+        <element name="SUBPROJECT_NAME">
+          <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+        </element>
+        <element name="ACTION_ORIGINATOR">
+          <datatype name="VARCHAR" type="STRING" maxLength="50"/>
+        </element>
+        <element name="ACTION_TYPE">
+          <datatype name="VARCHAR" type="STRING" maxLength="1"/>
+        </element>
+        <element name="STATUS">
+          <datatype name="VARCHAR" type="STRING" maxLength="100"/>
+        </element>
+        <element name="MESSAGE">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="EMAIL_ERROR">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="REQUEST_FILE_NAME">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="REQUEST_USER_NAME">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="REQUEST_DOMAIN_NAME">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="FILE_NAME">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="PROXY_USER_NAME">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="PROXY_USER_EMAIL">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="ALLOW_NULL_FILE_NAME">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="DATA_SOURCE_PATH">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="FORMATTING_LAYER_PATH">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="BUSINESS_LAYER_PATH">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="APPLICATION_LAYER_PATH">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="PUBLISHED_SCHEMA_PATH">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="PUBLISHED_DATABASE">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="CONSTANTS_PATH">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="RETENTION_POLICY_DAYS">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/Pause" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="timeInMilliSeconds" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="EXECUTE_DDL_PACKAGE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="DATASOURCE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="CATALOG_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SCHEMA_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_SEQ" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_QUEUE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="TABLESPACE_FILEGROUP" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="PROCESS_WAIT_TIME_SECONDS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_RETENTION_POLICY_DAYS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CSV_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="EXCEL_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 02_display_DYNAMIC_FILE_QUEUE:
+
+	Provides a mechanism to output the contents of the DYNAMIC_FILE_QUEUE table.
+
+	Input
+		debug					CHAR(1),		-- Y=debug on, N=debug off
+		sortOrder				VARCHAR,		-- Default=DESC if null.  Valid Values for sorting by REQUEST_DATE_START:   ASC|ASCENDING|DESC|DESCENDING
+		requestId				VARCHAR,		-- Filter applied on REQUEST_ID if not null.  The operators [&lt;,&gt;,&lt;=,&gt;=,&lt;&gt;] may be present before a valid integer.
+		requestDateStart		VARCHAR,		-- Filter applied on REQUEST_DATE_START if not null.  The operators [IS NULL, IS NOT NULL,&lt;,&gt;,&lt;=,&gt;=,&lt;&gt;] may be present before a valid timestamp.
+		requestDateEnd			VARCHAR,		-- Filter applied on REQUEST_DATE_END if not null.   The operators [IS NULL, IS NOT NULL,&lt;,&gt;,&lt;=,&gt;=,&lt;&gt;] may be present before a valid timestamp.
+		organization			VARCHAR,		-- Filter applied on ORGANIZATION if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		projectName				VARCHAR,		-- Filter applied on PROJECT_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		subProjectName			VARCHAR,		-- Filter applied on SUBPROJECT_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		actionOriginator		VARCHAR(50),	-- Filter applied on ACTION_ORIGINATOR if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		actionType				VARCHAR(1),		-- Filter applied on ACTION_TYPE if not null. Allowed values: [A, R, C]
+		status					VARCHAR(100),	-- Filter applied on STATUS if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		message					VARCHAR(4000),	-- Filter applied on MESSAGE if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		emailError				VARCHAR(4000),	-- Filter applied on EMAIL_ERROR if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		requestFileName			VARCHAR,		-- Filter applied on REQUEST_FILE_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		requestUserName			VARCHAR,		-- Filter applied on REQUEST_USER_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		requestDomainName		VARCHAR,		-- Filter applied on REQUEST_DOMAIN_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		fileName				VARCHAR,		-- Filter applied on FILE_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		proxyUserName			VARCHAR,		-- Filter applied on PROXY_USER_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		proxyUserEmail			VARCHAR(4000),	-- Filter applied on PROXY_USER_EMAIL if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		allowNullFileName		SMALLINT,		-- Filter applied on ALLOW_NULL_FILE_NAME if not null.  Value values are NULL, 0 and 1.
+		datasourcePath			VARCHAR(4000),	-- Filter applied on DATA_SOURCE_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		formattingLayerPath		VARCHAR(4000),	-- Filter applied on FORMATTING_LAYER_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		businessLayerPath		VARCHAR(4000),	-- Filter applied on BUSINESS_LAYER_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		applicationLayerPath	VARCHAR(4000),	-- Filter applied on APPLICATION_LAYER_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		publishedSchemaPath		VARCHAR(4000),	-- Filter applied on PUBLISHED_SCHEMA_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		publishedDatabase		VARCHAR,		-- Filter applied on PUBLISHED_DATABASE if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		constantsPath			VARCHAR(4000),	-- Filter applied on CONSTANTS_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+		retentionPolicyDays		VARCHAR,		-- Filter applied on RETENTION_POLICY_DAYS if not null.  The operators [&lt;,&gt;,&lt;=,&gt;=,&lt;&gt;] may be present before a valid integer.
+	Output:
+		result					CURSOR 		-- Output of the DYNAMIC_FILE_QUEUE table
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE &quot;02_display_DYNAMIC_FILE_QUEUE&quot;(
+	IN  debug				CHAR(1),			-- Y=debug on, N=debug off
+	IN 	sortOrder				VARCHAR,		-- Valid Values for sorting by REQUEST_DATE_START:   ASC|ASCENDING|DESC|DESCENDING
+	IN 	requestId				VARCHAR,		-- Filter applied on REQUEST_ID if not null.  The operators [=,!=,&lt;&gt;,&lt;,&gt;,&lt;=,&gt;=] may be present before a valid integer.
+	IN 	requestDateStart		VARCHAR,		-- Filter applied on REQUEST_DATE_START if not null.  The operators [IS NULL, IS NOT NULL,=,!=,&lt;&gt;,&lt;,&gt;,&lt;=,&gt;=] may be present before a valid timestamp.
+	IN 	requestDateEnd			VARCHAR,		-- Filter applied on REQUEST_DATE_END if not null.   The operators [IS NULL, IS NOT NULL,=,!=,&lt;&gt;,&lt;,&gt;,&lt;=,&gt;=] may be present before a valid timestamp.
+	IN 	organization			VARCHAR,		-- Filter applied on ORGANIZATION if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	projectName				VARCHAR,		-- Filter applied on PROJECT_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	subProjectName			VARCHAR,		-- Filter applied on SUBPROJECT_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	actionOriginator		VARCHAR(50),	-- Filter applied on ACTION_ORIGINATOR if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	actionType				VARCHAR(1),		-- Filter applied on ACTION_TYPE if not null. Allowed values: [A, R, C]
+	IN 	status					VARCHAR(100),	-- Filter applied on STATUS if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	message					VARCHAR(4000),	-- Filter applied on MESSAGE if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	emailError				VARCHAR(4000),	-- Filter applied on EMAIL_ERROR if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	requestFileName			VARCHAR,		-- Filter applied on REQUEST_FILE_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	requestUserName			VARCHAR,		-- Filter applied on REQUEST_USER_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	requestDomainName		VARCHAR,		-- Filter applied on REQUEST_DOMAIN_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	fileName				VARCHAR,		-- Filter applied on FILE_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	proxyUserName			VARCHAR,		-- Filter applied on PROXY_USER_NAME if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	proxyUserEmail			VARCHAR(4000),	-- Filter applied on PROXY_USER_EMAIL if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN	allowNullFileName		SMALLINT,		-- Filter applied on ALLOW_NULL_FILE_NAME if not null.  Value values are NULL, 0 and 1.
+	IN 	datasourcePath			VARCHAR(4000),	-- Filter applied on DATA_SOURCE_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	formattingLayerPath		VARCHAR(4000),	-- Filter applied on FORMATTING_LAYER_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	businessLayerPath		VARCHAR(4000),	-- Filter applied on BUSINESS_LAYER_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	applicationLayerPath	VARCHAR(4000),	-- Filter applied on APPLICATION_LAYER_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	publishedSchemaPath		VARCHAR(4000),	-- Filter applied on PUBLISHED_SCHEMA_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	publishedDatabase		VARCHAR,		-- Filter applied on PUBLISHED_DATABASE if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN 	constantsPath			VARCHAR(4000),	-- Filter applied on CONSTANTS_PATH if not null.  Valid operator=[IS NULL, IS NOT NULL].  If % is present perform a LIKE otherwise perform = in WHERE clause.
+	IN	retentionPolicyDays		VARCHAR,		-- Filter applied on RETENTION_POLICY_DAYS if not null.  The operators [=,!=,&lt;&gt;,&lt;,&gt;,&lt;=,&gt;=] may be present before a valid integer.
+    OUT queueResult 	CURSOR /shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants.queueResultType
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;02_display_DYNAMIC_FILE_QUEUE&apos;;
+	DECLARE	globalConstantsPath		VARCHAR(4000) DEFAULT /shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants.globalConstantsPath;
+	DECLARE sortOrderVal			VARCHAR DEFAULT sortOrder;
+	DECLARE sqlStatement			LONGVARCHAR;
+	DECLARE queueDatasourcePath		LONGVARCHAR;
+	DECLARE queueCatalogName		VARCHAR;
+	DECLARE queueSchemaName			VARCHAR;
+	DECLARE queueTableName			VARCHAR;
+	DECLARE fullTablePath			LONGVARCHAR;
+	DECLARE validSortOrder			VARCHAR DEFAULT &apos;|ASC|ASCENDING|DESC|DESCENDING|&apos;;
+	DECLARE val						LONGVARCHAR;
+	DECLARE valINT					INTEGER;
+	DECLARE valTIMESTAMP			TIMESTAMP;
+	DECLARE col						VARCHAR;
+	DECLARE i						INTEGER;
+	DECLARE op						VARCHAR;
+	DECLARE ch						CHAR(1);
+	DECLARE whereClauseFilter		LONGVARCHAR;
+	DECLARE ex						EXCEPTION;
+
+	-- Determine the sort order validity
+	IF (sortOrderVal IS NULL OR LENGTH(TRIM(sortOrderVal)) = 0) THEN
+		SET sortOrderVal = &apos;DESC&apos;;
+	ELSE
+		IF (INSTR(validSortOrder, &apos;|&apos;||UPPER(sortOrderVal)||&apos;|&apos;) = 0) THEN
+			RAISE ex VALUE &apos;Invalid &quot;sortOrder&quot; value provided.  Valid=[&apos;||validSortOrder||&apos;]&apos;;
+		END IF;
+	END IF;
+	IF (globalConstantsPath IS NULL OR LENGTH(TRIM(globalConstantsPath)) = 0) THEN
+		RAISE ex VALUE &apos;The global constants path may not be null or emtpy.&apos;;
+	END IF;
+	-- Validate action type
+	IF (actionType IS NOT NULL AND actionType NOT IN (&apos;A&apos;,&apos;R&apos;,&apos;C&apos;)) THEN
+		RAISE ex VALUE &apos;The input parameter &quot;actionType&quot; must be a member of (&apos;&apos;A&apos;&apos;,&apos;&apos;R&apos;&apos;,&apos;&apos;C&apos;&apos;).  actionType=&apos;||actionType||&apos;.&apos;;
+	END IF;
+	-- Validate allowNullFileName
+	IF (allowNullFileName IS NOT NULL AND allowNullFileName &lt;&gt; 0 AND allowNullFileName &lt;&gt; 1) THEN
+		RAISE ex VALUE &apos;The input parameter &quot;allowNullFileName&quot; must be 0 or 1.  allowNullFileName=&apos;||allowNullFileName||&apos;.&apos;;
+	END IF;
+	
+	-- This procedure is used to provide a queue for processing &quot;Dynamic View Framework&quot; requests.
+	-- Get the datasource path, catalog and schema name to construct the path dynamically
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;DATASOURCE_PATH&apos;, 1, queueDatasourcePath);
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;CATALOG_NAME&apos;, 1, queueCatalogName);
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;SCHEMA_NAME&apos;, 1, queueSchemaName);
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;DYNAMIC_FILE_QUEUE&apos;, 1, queueTableName);
+	IF (queueDatasourcePath IS NULL OR LENGTH(TRIM(queueDatasourcePath)) = 0) THEN
+		RAISE ex VALUE &apos;The datasource path may not be null or empty:  &apos;||globalConstantsPath||&apos;.DATASOURCE_PATH&apos;;
+	END IF;
+	IF (queueSchemaName IS NULL OR LENGTH(TRIM(queueSchemaName)) = 0) THEN
+		RAISE ex VALUE &apos;The schema name may not be null or empty:  &apos;||globalConstantsPath||&apos;.SCHEMA_NAME&apos;;
+	END IF;
+	IF (queueCatalogName IS NULL OR LENGTH(TRIM(queueCatalogName)) = 0) THEN
+		SET queueCatalogName = &apos;&apos;;
+	ELSE
+		SET queueCatalogName = &apos;/&apos;||queueCatalogName;
+	END IF;
+	IF (queueTableName IS NULL OR LENGTH(TRIM(queueTableName)) = 0) THEN
+		RAISE ex VALUE &apos;The table name may not be null or empty:  &apos;||globalConstantsPath||&apos;.DYNAMIC_FILE_QUEUE&apos;;
+	END IF;
+	SET fullTablePath = queueDatasourcePath || queueCatalogName || &apos;/&apos;||queueSchemaName || &apos;/&apos;||queueTableName;
+	CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(fullTablePath, null, fullTablePath);
+
+	-- Determine the where clause
+	SET whereClauseFilter = &apos;&apos;;
+
+	-- Apply where clause for REQUEST_ID
+	SET col = &apos;REQUEST_ID&apos;;
+	SET val = TRIM(REPLACE(requestId,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		--The operators [=,!=,&lt;&gt;,&lt;,&gt;,&lt;=,&gt;=] may be present before a valid integer.
+		SET i = 1;
+		SET op = &apos;&apos;;
+		WHILE (i &lt;= LENGTH(val) AND SUBSTRING(val,i,1) NOT IN (&apos;0&apos;,&apos;1&apos;,&apos;2&apos;,&apos;3&apos;,&apos;4&apos;,&apos;5&apos;,&apos;6&apos;,&apos;7&apos;,&apos;8&apos;,&apos;9&apos;)) DO
+			SET op = TRIM(op || SUBSTRING(val,i,1));
+			SET i = i + 1;
+		END WHILE;
+		SET valINT = CAST(SUBSTRING(TRIM(val),i) AS INTEGER);
+		IF (LENGTH(op) = 0) THEN
+			SET op = &apos;=&apos;;
+		END IF;
+		IF (op NOT IN (&apos;=&apos;,&apos;!=&apos;,&apos;&lt;&gt;&apos;,&apos;&lt;&apos;,&apos;&gt;&apos;,&apos;&lt;=&apos;,&apos;&gt;=&apos;)) THEN
+			RAISE ex VALUE &apos;The operator=[&apos;||op||&apos;] is not valid for the request=[&apos;||val||&apos;]&apos;;
+		END IF;
+		-- Create the where clause
+		SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||op||&apos; &apos;||valINT;
+	END IF;
+
+	-- Apply where clause for REQUEST_DATE_START
+	SET col = &apos;REQUEST_DATE_START&apos;;
+	SET val = REPLACE(TRIM(REPLACE(requestDateStart,CHR(9),&apos; &apos;)),&apos;/&apos;,&apos;-&apos;);
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			--The operators [=,!=,&lt;&gt;,&lt;,&gt;,&lt;=,&gt;=] may be present before a valid integer.
+			SET i = 1;
+			SET op = &apos;&apos;;
+			-- YYYY-MM-DD HH24:MI:SS.FFF
+			WHILE (i &lt;= LENGTH(val) AND SUBSTRING(val,i,1) NOT IN (&apos;0&apos;,&apos;1&apos;,&apos;2&apos;,&apos;3&apos;,&apos;4&apos;,&apos;5&apos;,&apos;6&apos;,&apos;7&apos;,&apos;8&apos;,&apos;9&apos;)) DO
+				SET op = TRIM(op || SUBSTRING(val,i,1));
+				SET i = i + 1;
+			END WHILE;
+			SET valTIMESTAMP = CAST(SUBSTRING(TRIM(val),i) AS TIMESTAMP);
+			IF (LENGTH(op) = 0) THEN
+				SET op = &apos;=&apos;;
+			END IF;
+			IF (op NOT IN (&apos;=&apos;,&apos;!=&apos;,&apos;&lt;&gt;&apos;,&apos;&lt;&apos;,&apos;&gt;&apos;,&apos;&lt;=&apos;,&apos;&gt;=&apos;)) THEN
+				RAISE ex VALUE &apos;The operator=[&apos;||op||&apos;] is not valid for the request=[&apos;||val||&apos;]&apos;;
+			END IF;
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||op||&apos; &apos;&apos;&apos;||valTIMESTAMP||&apos;&apos;&apos;&apos;;
+		END IF;
+	END IF;
+
+	-- Apply where clause for REQUEST_DATE_END
+	SET col = &apos;REQUEST_DATE_END&apos;;
+	SET val = REPLACE(TRIM(REPLACE(requestDateEnd,CHR(9),&apos; &apos;)),&apos;/&apos;,&apos;-&apos;);
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			--The operators [=,!=,&lt;&gt;,&lt;,&gt;,&lt;=,&gt;=] may be present before a valid integer.
+			SET i = 1;
+			SET op = &apos;&apos;;
+			-- YYYY-MM-DD HH24:MI:SS.FFF
+			WHILE (i &lt;= LENGTH(val) AND SUBSTRING(val,i,1) NOT IN (&apos;0&apos;,&apos;1&apos;,&apos;2&apos;,&apos;3&apos;,&apos;4&apos;,&apos;5&apos;,&apos;6&apos;,&apos;7&apos;,&apos;8&apos;,&apos;9&apos;)) DO
+				SET op = TRIM(op || SUBSTRING(val,i,1));
+				SET i = i + 1;
+			END WHILE;
+			SET valTIMESTAMP = CAST(SUBSTRING(TRIM(val),i) AS TIMESTAMP);
+			IF (LENGTH(op) = 0) THEN
+				SET op = &apos;=&apos;;
+			END IF;
+			IF (op NOT IN (&apos;=&apos;,&apos;!=&apos;,&apos;&lt;&gt;&apos;,&apos;&lt;&apos;,&apos;&gt;&apos;,&apos;&lt;=&apos;,&apos;&gt;=&apos;)) THEN
+				RAISE ex VALUE &apos;The operator=[&apos;||op||&apos;] is not valid for the request=[&apos;||val||&apos;]&apos;;
+			END IF;
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||op||&apos; &apos;&apos;&apos;||valTIMESTAMP||&apos;&apos;&apos;&apos;;
+		END IF;
+	END IF;
+
+	-- Apply where clause for ORGANIZATION
+	SET col = &apos;ORGANIZATION&apos;;
+	SET val = TRIM(REPLACE(organization,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for PROJECT_NAME
+	SET col = &apos;PROJECT_NAME&apos;;
+	SET val = TRIM(REPLACE(projectName,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for SUBPROJECT_NAME
+	SET col = &apos;SUBPROJECT_NAME&apos;;
+	SET val = TRIM(REPLACE(subProjectName,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for ACTION_ORIGINATOR
+	SET col = &apos;ACTION_ORIGINATOR&apos;;
+	SET val = TRIM(REPLACE(actionOriginator,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for ACTION_TYPE
+	SET col = &apos;ACTION_TYPE&apos;;
+	SET val = actionType;
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+	END IF;
+
+	-- Apply where clause for STATUS
+	SET col = &apos;STATUS&apos;;
+	SET val = TRIM(REPLACE(status,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+		ELSE
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+		END IF;
+	END IF;
+
+	-- Apply where clause for MESSAGE
+	SET col = &apos;MESSAGE&apos;;
+	SET val = TRIM(REPLACE(message,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for EMAIL_ERROR
+	SET col = &apos;EMAIL_ERROR&apos;;
+	SET val = TRIM(REPLACE(emailError,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for REQUEST_FILE_NAME
+	SET col = &apos;REQUEST_FILE_NAME&apos;;
+	SET val = TRIM(REPLACE(requestFileName,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for REQUEST_USER_NAME
+	SET col = &apos;REQUEST_USER_NAME&apos;;
+	SET val = TRIM(REPLACE(requestUserName,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for REQUEST_DOMAIN_NAME
+	SET col = &apos;REQUEST_DOMAIN_NAME&apos;;
+	SET val = TRIM(REPLACE(requestDomainName,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for FILE_NAME
+	SET col = &apos;FILE_NAME&apos;;
+	SET val = TRIM(REPLACE(fileName,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for PROXY_USER_NAME
+	SET col = &apos;PROXY_USER_NAME&apos;;
+	SET val = TRIM(REPLACE(proxyUserName,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for PROXY_USER_EMAIL
+	SET col = &apos;PROXY_USER_EMAIL&apos;;
+	SET val = TRIM(REPLACE(proxyUserEmail,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for ALLOW_NULL_FILE_NAME
+	SET col = &apos;ALLOW_NULL_FILE_NAME&apos;;
+	SET valINT = allowNullFileName;
+	IF (valINT IS NOT NULL) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;||valINT;
+	END IF;
+
+	-- Apply where clause for DATA_SOURCE_PATH
+	SET col = &apos;DATA_SOURCE_PATH&apos;;
+	SET val = TRIM(REPLACE(datasourcePath,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for FORMATTING_LAYER_PATH
+	SET val = formattingLayerPath;
+	SET col = &apos;FORMATTING_LAYER_PATH&apos;;
+	SET val = TRIM(REPLACE(val,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for BUSINESS_LAYER_PATH
+	SET col = &apos;BUSINESS_LAYER_PATH&apos;;
+	SET val = TRIM(REPLACE(businessLayerPath,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for APPLICATION_LAYER_PATH
+	SET col = &apos;APPLICATION_LAYER_PATH&apos;;
+	SET val = TRIM(REPLACE(applicationLayerPath,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for PUBLISHED_SCHEMA_PATH
+	SET col = &apos;PUBLISHED_SCHEMA_PATH&apos;;
+	SET val = TRIM(REPLACE(publishedSchemaPath,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for PUBLISHED_DATABASE
+	SET col = &apos;PUBLISHED_DATABASE&apos;;
+	SET val = TRIM(REPLACE(publishedDatabase,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for CONSTANTS_PATH
+	SET col = &apos;CONSTANTS_PATH&apos;;
+	SET val = TRIM(REPLACE(constantsPath,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL AND LENGTH(TRIM(val)) &gt; 0) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		-- Reduce the number of double spaces to a single space
+		while (INSTR(val, &apos;  &apos;) &gt; 0) do
+			set val = REPLACE(val, &apos;  &apos;, &apos; &apos;);
+		end while;
+		-- Check for keywords: IS NULL or IS NOT NULL
+		IF (UPPER(val) = &apos;IS NULL&apos; OR UPPER(val) = &apos;IS NOT NULL&apos;) THEN
+			-- Create the where clause
+			SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||UPPER(val);
+		ELSE
+			IF (INSTR(val, &apos;%&apos;) &gt; 0) THEN
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; LIKE &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; = &apos;&apos;&apos;||val||&apos;&apos;&apos;&apos;;
+			END IF;
+		END IF;
+	END IF;
+
+	-- Apply where clause for RETENTION_POLICY_DAYS
+	SET col = &apos;RETENTION_POLICY_DAYS&apos;;
+	SET val = TRIM(REPLACE(retentionPolicyDays,CHR(9),&apos; &apos;));
+	IF (val IS NOT NULL) THEN
+		IF (length(whereClauseFilter) &gt; 0) THEN
+			SET whereClauseFilter = whereClauseFilter ||CHR(10)||&apos;      &apos;||&apos;AND&apos;;
+		END IF;
+		--The operators [=,!=,&lt;&gt;,&lt;,&gt;,&lt;=,&gt;=] may be present before a valid integer.
+		SET i = 1;
+		SET op = &apos;&apos;;
+		WHILE (i &lt;= LENGTH(val) AND SUBSTRING(val,i,1) NOT IN (&apos;0&apos;,&apos;1&apos;,&apos;2&apos;,&apos;3&apos;,&apos;4&apos;,&apos;5&apos;,&apos;6&apos;,&apos;7&apos;,&apos;8&apos;,&apos;9&apos;)) DO
+			SET op = TRIM(op || SUBSTRING(val,i,1));
+			SET i = i + 1;
+		END WHILE;
+		SET valINT = CAST(SUBSTRING(TRIM(val),i) AS INTEGER);
+		IF (LENGTH(op) = 0) THEN
+			SET op = &apos;=&apos;;
+		END IF;
+		IF (op NOT IN (&apos;=&apos;,&apos;!=&apos;,&apos;&lt;&gt;&apos;,&apos;&lt;&apos;,&apos;&gt;&apos;,&apos;&lt;=&apos;,&apos;&gt;=&apos;)) THEN
+			RAISE ex VALUE &apos;The operator=[&apos;||op||&apos;] is not valid for the request=[&apos;||val||&apos;]&apos;;
+		END IF;
+		-- Create the where clause
+		SET whereClauseFilter = whereClauseFilter || &apos; &apos;||col||&apos; &apos;||op||&apos; &apos;||valINT;
+	END IF;
+
+	-- Add the WHERE clause predicate if a where clause exists
+	IF (length(whereClauseFilter) &gt; 0) THEN
+		SET whereClauseFilter = CHR(10)||&apos;    &apos;||&apos;WHERE&apos; || whereClauseFilter;
+	END IF;
+
+	-- Add the where clause and order by clause
+	SET sqlStatement = CHR(10)||&apos;    &apos;||&apos;SELECT * FROM &apos;||fullTablePath||whereClauseFilter||CHR(10)||&apos;    &apos;||&apos;ORDER BY REQUEST_DATE_START &apos;||UPPER(sortOrderVal);
+
+	-- Debug if applicable
+	IF (upper(debug) = &apos;Y&apos;) THEN
+		CALL print(moduleName||&apos; : sqlStatement=&apos;||NVL(sqlStatement,&apos;null&apos;));
+		CALL PAUSE(1000);
+	END IF;
+
+	-- Execute the SQL Statement
+	OPEN queueResult FOR sqlStatement;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1410976495807</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564410509964</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">8/778</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>Pause</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/777</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

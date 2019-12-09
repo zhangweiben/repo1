@@ -1,0 +1,1366 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="dynamicFileQueueProcess" path="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/dynamicFileQueueProcess" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>dynamicFileQueueProcess:
+
+	This procedure manages the execution of requests for A=Add, R=Remove, and C=Clean it retrieves from the database queue table...DYNAMIC_FILE_QUEUE.
+	Since the requests are executed on a first-in first-out basis and in a single-threaded manner, this procedures servers as a way of 
+	throttling requests so that the DV server does not become overwhelmed by file/view generation.  The DYNAMIC_FILE_QUEUE servers as a 
+	historical log of activity and can be reported on and sorted using ORGANIZATION, PROJECT_NAME and SUBPROJECT_NAME.
+
+ 	Input:
+		debug						N=no, Y=yes
+	Output:
+		N/A
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/util/GetProperty" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="property" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyName" type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyValue" type="STRING" maxLength="4096"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/Pause" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="timeInMilliSeconds" direction="IN">
+        <datatype type="INTEGER"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/SendEMail" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="from" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="EMailAddress" type="STRING" maxLength="1024"/>
+      </element>
+      <element name="replyTo" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="EMailAddress" type="STRING" maxLength="1024"/>
+      </element>
+      <element name="to" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="EMailAddress" type="STRING" maxLength="1024"/>
+      </element>
+      <element name="cc" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="EMailAddress" type="STRING" maxLength="1024"/>
+      </element>
+      <element name="bcc" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="EMailAddress" type="STRING" maxLength="1024"/>
+      </element>
+      <element name="subject" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyValue" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="contentType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="PropertyName" type="STRING" maxLength="255"/>
+      </element>
+      <element name="content" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Content" type="STRING" maxLength="65535"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/02_display_DYNAMIC_FILE_QUEUE" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="sortOrder" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestId" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestDateStart" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestDateEnd" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="organization" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="projectName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="subProjectName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="actionOriginator" direction="IN">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="actionType" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="status" direction="IN">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="message" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="emailError" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="requestFileName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestDomainName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="fileName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="proxyUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="proxyUserEmail" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="allowNullFileName" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="datasourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="formattingLayerPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="businessLayerPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="applicationLayerPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="publishedSchemaPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="publishedDatabase" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="retentionPolicyDays" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="queueResult" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="REQUEST_ID">
+            <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="0"/>
+          </element>
+          <element name="REQUEST_DATE_START">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="REQUEST_DATE_END">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="ORGANIZATION">
+            <datatype type="STRING" maxLength="50"/>
+          </element>
+          <element name="PROJECT_NAME">
+            <datatype type="STRING" maxLength="50"/>
+          </element>
+          <element name="SUBPROJECT_NAME">
+            <datatype type="STRING" maxLength="50"/>
+          </element>
+          <element name="ACTION_ORIGINATOR">
+            <datatype type="STRING" maxLength="50"/>
+          </element>
+          <element name="ACTION_TYPE">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="STATUS">
+            <datatype type="STRING" maxLength="100"/>
+          </element>
+          <element name="MESSAGE">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="EMAIL_ERROR">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="REQUEST_FILE_NAME">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="REQUEST_USER_NAME">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="REQUEST_DOMAIN_NAME">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="FILE_NAME">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="PROXY_USER_NAME">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="PROXY_USER_EMAIL">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="ALLOW_NULL_FILE_NAME">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="DATA_SOURCE_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="FORMATTING_LAYER_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="BUSINESS_LAYER_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="APPLICATION_LAYER_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="PUBLISHED_SCHEMA_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="PUBLISHED_DATABASE">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="CONSTANTS_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="RETENTION_POLICY_DAYS">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/DYNAMIC_FILE_LOCAL_LOOPBACK/BestPractices_v81/DynamicFileFramework/dynamicFileCleanup" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="organization" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="projectname" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="subprojectname" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="retentionPolicy" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="datasourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="publishedDatabase" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="status">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="username">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="useremail">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="fileName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="publishedTableName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="publishedTablePath">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="publishedDatabase">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="metadataTableName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="metadataTablePath">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/DYNAMIC_FILE_LOCAL_LOOPBACK/BestPractices_v81/DynamicFileFramework/dynamicFileCreate" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inUsername" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inFileName" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="allowNullFileName" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="datasourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="formattingPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="businessPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="applicationPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="publishPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="status">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="fileName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="publishedTableName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="publishedTablePath">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="publishedDatabase">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="metadataTableName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="metadataTablePath">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/DYNAMIC_FILE_LOCAL_LOOPBACK/BestPractices_v81/DynamicFileFramework/dynamicFileRemove" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inUsername" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inFileName" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="datasourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="publishedDatabase" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="status">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="fileName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="publishedTableName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="publishedTablePath">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="publishedDatabase">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="metadataTableName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="metadataTablePath">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="EXECUTE_DDL_PACKAGE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="DATASOURCE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="CATALOG_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SCHEMA_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_SEQ" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_QUEUE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="TABLESPACE_FILEGROUP" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="PROCESS_WAIT_TIME_SECONDS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_RETENTION_POLICY_DAYS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CSV_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="EXCEL_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/environment/getEnvName" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="envName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* dynamicFileQueueProcess:
+
+	This procedure manages the execution of requests for A=Add, R=Remove, and C=Clean it retrieves from the database queue table...DYNAMIC_FILE_QUEUE.
+	Since the requests are executed on a first-in first-out basis and in a single-threaded manner, this procedures servers as a way of 
+	throttling requests so that the DV server does not become overwhelmed by file/view generation.  The DYNAMIC_FILE_QUEUE servers as a 
+	historical log of activity and can be reported on and sorted using ORGANIZATION, PROJECT_NAME and SUBPROJECT_NAME.
+
+ 	Input:
+		debug						N=no, Y=yes
+	Output:
+		N/A
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE dynamicFileQueueProcess(
+	IN debug					CHAR(1) -- N=no, Y=yes
+)
+BEGIN
+	DECLARE moduleName			VARCHAR DEFAULT &apos;dynamicFileQueueProcess&apos;;
+	DECLARE	globalConstantsPath	VARCHAR(4000) DEFAULT /shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants.globalConstantsPath;
+	DECLARE subModuleName		VARCHAR;
+	DECLARE nodehost			VARCHAR;
+	DECLARE nodeport			INTEGER;
+	DECLARE port_num			VARCHAR;
+	DECLARE filename			VARCHAR;
+	DECLARE prevfilename		VARCHAR DEFAULT &apos;&apos;;
+	DECLARE envName				VARCHAR;
+	DECLARE organization		VARCHAR;
+	DECLARE project				VARCHAR;
+	DECLARE subproject			VARCHAR;
+	DECLARE processWaitTimeCH	VARCHAR;
+	DECLARE processWaitTime		INTEGER;
+	DECLARE l_status			VARCHAR(4000);
+	DECLARE l_message			VARCHAR(4000);
+	DECLARE c_status			VARCHAR(4000);
+	DECLARE c_message			VARCHAR(4000);
+	DECLARE c_message_orig		VARCHAR(4000);
+	DECLARE default_email		LONGVARCHAR;
+	DECLARE user_email			LONGVARCHAR;
+	DECLARE email_subjectline	VARCHAR(1000);
+	DECLARE email_message		VARCHAR(4000);
+	DECLARE email_message2		VARCHAR(4000) DEFAULT &apos;&apos;;
+	DECLARE email_exception		LONGVARCHAR;
+	DECLARE sent_email			BOOLEAN DEFAULT true;
+	DECLARE publishedDatabase	VARCHAR;
+	DECLARE publishedTableName	VARCHAR;
+	DECLARE publishedTablePath	VARCHAR(4000);
+	DECLARE i					INTEGER;
+	DECLARE events				INTEGER;
+	DECLARE ex					EXCEPTION;
+	DECLARE sqlStatement		LONGVARCHAR;
+	DECLARE queueDatasourcePath	LONGVARCHAR;
+	DECLARE queueCatalogName	VARCHAR;
+	DECLARE queueCatalogNameTmp	VARCHAR;
+	DECLARE queueSchemaName		VARCHAR;
+	DECLARE queueTableName		VARCHAR;
+	DECLARE fullTablePath		LONGVARCHAR;
+
+	-- Get the DV Environment Indicator
+	CALL /shared/ASAssets/Utilities/environment/getEnvName(envName);
+	-- Get the hostname and port
+	SELECT A.result INTO nodehost FROM /lib/util/GetProperty(&apos;SERVER_HOSTNAME&apos;) A;
+	SELECT A.result INTO port_num FROM /lib/util/GetProperty(&apos;SERVER_JDBC_PORT&apos;) A;
+	SET nodeport = CAST(port_num AS INTEGER) - 1;
+
+	-- Get the datasource path, catalog and schema name to construct the path dynamically
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;DATASOURCE_PATH&apos;, 1, queueDatasourcePath);
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;CATALOG_NAME&apos;, 1, queueCatalogName);
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;SCHEMA_NAME&apos;, 1, queueSchemaName);
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;DYNAMIC_FILE_QUEUE&apos;, 1, queueTableName);
+	IF (queueDatasourcePath IS NULL OR LENGTH(TRIM(queueDatasourcePath)) = 0) THEN
+		RAISE ex VALUE &apos;The datasource path may not be null or empty:  &apos;||globalConstantsPath||&apos;.DATASOURCE_PATH&apos;;
+	END IF;
+	IF (queueSchemaName IS NULL OR LENGTH(TRIM(queueSchemaName)) = 0) THEN
+		RAISE ex VALUE &apos;The schema name may not be null or empty:  &apos;||globalConstantsPath||&apos;.SCHEMA_NAME&apos;;
+	END IF;
+	IF (queueCatalogName IS NULL OR LENGTH(TRIM(queueCatalogName)) = 0) THEN
+		SET queueCatalogNameTmp = &apos;&apos;;
+	ELSE
+		SET queueCatalogNameTmp = &apos;/&apos;||queueCatalogName;
+	END IF;
+	IF (queueTableName IS NULL OR LENGTH(TRIM(queueTableName)) = 0) THEN
+		RAISE ex VALUE &apos;The table name may not be null or empty:  &apos;||globalConstantsPath||&apos;.DYNAMIC_FILE_QUEUE&apos;;
+	END IF;
+	SET fullTablePath = queueDatasourcePath || queueCatalogNameTmp || &apos;/&apos;||queueSchemaName || &apos;/&apos;||queueTableName;
+	CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(fullTablePath, null, fullTablePath);
+
+	-- Get the email default
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;DEFAULT_EMAIL&apos;, 1, default_email);
+	-- Get the process wait time and calcuate the number of miliseconds to wait
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;PROCESS_WAIT_TIME_SECONDS&apos;, 1, processWaitTimeCH);
+	IF (processWaitTimeCH IS NULL OR LENGTH(TRIM(processWaitTimeCH)) = 0) THEN
+		SET processWaitTimeCH = &apos;0&apos;;
+	END IF;
+	SET processWaitTime = CAST(processWaitTimeCH AS INTEGER) * 1000;
+
+	IF (debug = &apos;Y&apos;) THEN
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;GLOBAL DATASOURCE_PATH: queueDatasourcePath=[&apos;||NVL(queueDatasourcePath,&apos;null&apos;)||&apos;]&apos;);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;GLOBAL CATALOG_NAME: queueCatalogName=[&apos;||NVL(queueCatalogName,&apos;null&apos;)||&apos;]&apos;);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;GLOBAL SCHEMA_NAME: queueSchemaName=[&apos;||NVL(queueSchemaName,&apos;null&apos;)||&apos;]&apos;);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;GLOBAL DEFAULT_EMAIL: default_email=[&apos;||NVL(default_email,&apos;null&apos;)||&apos;]&apos;);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;GLOBAL PROCESS_WAIT_TIME_SECONDS: processWaitTimeCH=[&apos;||NVL(processWaitTimeCH,&apos;null&apos;)||&apos;]&apos;);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;GLOBAL DV ENV: envName=[&apos;||NVL(envName,&apos;null&apos;)||&apos;]  nodehost=[&apos;||NVL(nodehost,&apos;null&apos;)||&apos;]  nodeport=[&apos;||NVL(CAST(nodeport as VARCHAR),&apos;null&apos;)||&apos;]&apos;);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL:  processWaitTime=[&apos;||CAST(processWaitTime AS VARCHAR)||&apos;]&apos;);
+	END IF;
+
+	-- Loop through the requests in single file that have not been processed yet 
+	SET i = 0;
+	SET events = 0;
+	FOR r AS 
+		SELECT * FROM /shared/ASAssets/BestPractices_v81/DynamicFileFramework/&quot;02_display_DYNAMIC_FILE_QUEUE&quot;(
+			debug,		-- Y=debug on, N=debug off
+			&apos;ASC&apos;,		-- Valid Values for sorting by REQUEST_DATE_START:   ASC|ASCENDING|DESC|DESCENDING
+			null, null, 
+			&apos;IS NULL&apos;,	-- REQUEST_DATE_END IS NULL:  This represents a request that has been initiated but not completed
+			null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
+			) 
+	DO
+		SET organization = r.ORGANIZATION;
+		SET project = r.PROJECT_NAME;
+		SET subproject = r.SUBPROJECT_NAME;
+		SET events = events + 1;
+		IF (events &gt; 1) THEN
+			CALL pause(processWaitTime);
+		END IF;
+		CASE
+			WHEN r.ACTION_TYPE = &apos;A&apos; THEN SET subModuleName = &apos;dynamicFileCreate&apos;;
+			WHEN r.ACTION_TYPE = &apos;R&apos; THEN SET subModuleName = &apos;dynamicFileRemove&apos;;
+			WHEN r.ACTION_TYPE = &apos;C&apos; THEN SET subModuleName = &apos;dynamicFileCleanup&apos;;
+			ELSE                          SET subModuleName = &apos;UNKNOWN&apos;;
+		END CASE;
+		IF (debug = &apos;Y&apos;) THEN
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;---------------------------------------------------&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: PROCESSING DYNAMIC FILE EVENT WHERE ACTION_TYPE=[&apos;||NVL(r.ACTION_TYPE,&apos;null&apos;)||&apos;]  event number=[&apos;||events||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: REQUEST_ID=[&apos;||NVL(CAST(r.REQUEST_ID AS VARCHAR),&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: REQUEST_DATE_START=[&apos;||NVL(CAST(r.REQUEST_DATE_START AS VARCHAR),&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: ORGANIZATION=[&apos;||NVL(r.ORGANIZATION,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: PROJECT_NAME=[&apos;||NVL(r.PROJECT_NAME,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: SUBPROJECT_NAME=[&apos;||NVL(r.SUBPROJECT_NAME,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: ACTION_ORIGINATOR=[&apos;||NVL(r.ACTION_ORIGINATOR,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: REQUEST_FILE_NAME=[&apos;||NVL(r.REQUEST_FILE_NAME,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: REQUEST_USER_NAME=[&apos;||NVL(r.REQUEST_USER_NAME,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: REQUEST_DOMAIN_NAME=[&apos;||NVL(r.REQUEST_DOMAIN_NAME,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: PROXY_USER_NAME=[&apos;||NVL(r.PROXY_USER_NAME,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: PROXY_USER_EMAIL=[&apos;||NVL(r.PROXY_USER_EMAIL,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: FILE_NAME=[&apos;||NVL(r.FILE_NAME,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: ALLOW_NULL_FILE_NAME=[&apos;||CAST(r.ALLOW_NULL_FILE_NAME AS VARCHAR)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: DATA_SOURCE_PATH=[&apos;||NVL(r.DATA_SOURCE_PATH,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: FORMAT_LAYER_PATH=[&apos;||NVL(r.FORMATTING_LAYER_PATH,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: BUSINESS_LAYER_PATH=[&apos;||NVL(r.BUSINESS_LAYER_PATH,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: APPLICATION_LAYER_PATH=[&apos;||NVL(r.APPLICATION_LAYER_PATH,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: PUBLISHED_SCHEMA_PATH=[&apos;||NVL(r.PUBLISHED_SCHEMA_PATH,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: PUBLISHED_DATABASE=[&apos;||NVL(r.PUBLISHED_DATABASE,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: CONSTANTS_PATH=[&apos;||NVL(r.CONSTANTS_PATH,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, subModuleName||&apos;: RETENTION_POLICY_DAYS=[&apos;||CAST(r.RETENTION_POLICY_DAYS AS VARCHAR)||&apos;]&apos;);
+		END IF;
+
+		-- Initialize variables
+		SET email_message = &apos;&apos;;
+		SET c_status = &apos;&apos;;
+		SET c_message = &apos;&apos;;
+
+		/*********************************************************
+		 * Add Dynamic File/Views
+		 ********************************************************/
+		IF (r.ACTION_TYPE = &apos;A&apos;) THEN 
+			SET i = 0;
+			manageViewLoop:
+			FOR m AS SELECT * FROM /shared/ASAssets/BestPractices_v81/DynamicFileFramework/DYNAMIC_FILE_LOCAL_LOOPBACK/BestPractices_v81/DynamicFileFramework/dynamicFileCreate(
+				debug,		-- N=no debug, Y=debug
+				r.PROXY_USER_NAME,
+				r.REQUEST_FILE_NAME,
+				r.ALLOW_NULL_FILE_NAME,
+				r.DATA_SOURCE_PATH,
+				r.FORMATTING_LAYER_PATH,
+				r.BUSINESS_LAYER_PATH,
+				r.APPLICATION_LAYER_PATH,
+				r.PUBLISHED_SCHEMA_PATH
+				)
+			DO
+				SET publishedTablePath = m.publishedTablePath;
+				SET i = i + 1;
+				SET l_status = &apos;&apos;&apos;&apos;||m.status||&apos;&apos;&apos;&apos;;
+				SET l_message = &apos;null&apos;;
+				IF (INSTR(UPPER(m.status), &apos;ERROR&apos;) &gt; 0 OR INSTR(UPPER(m.status), &apos;EXCEPTION&apos;) &gt; 0) THEN
+					SET l_status = &apos;&apos;&apos;ERROR&apos;&apos;&apos;;
+					SET l_message = &apos;&apos;&apos;&apos;||REPLACE(m.status,&apos;&apos;&apos;&apos;,&apos;&apos;)||&apos;&apos;&apos;&apos;;
+					IF (LENGTH(TRIM(c_status)) &gt; 0) THEN
+						SET c_status = c_status || &apos;.  &apos;;
+						SET c_message = c_message || &apos;.  &apos;;
+					END IF;
+					SET c_status = c_status || &apos;[ERROR] &apos;;
+					SET c_message = c_message || &apos;[&apos;||REPLACE(m.status,&apos;&apos;&apos;&apos;,&apos;&apos;)||&apos;] &apos;;
+				ELSE
+					IF (LENGTH(TRIM(c_status)) &gt; 0) THEN
+						IF (INSTR(c_status, m.status) = 0) THEN
+							SET c_status = c_status || &apos;.  &apos;||m.status;
+						END IF;
+					ELSE
+						SET c_status = c_status || m.status;
+					END IF;
+				END IF;
+
+				-- Construct the email message for each row returned
+				SET email_message = email_message ||
+&apos;    &lt;TR&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || REPLACE(NVL(l_status,&apos;null&apos;),&apos;&apos;&apos;&apos;,&apos;&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(m.fileName,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(m.publishedDatabase,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(m.publishedTableName,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(m.publishedTablePath,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos;|| REPLACE(l_message,&apos;&apos;&apos;&apos;,&apos;&apos;) || &apos;&lt;/TD&gt;
+     &lt;/TR&gt;
+&apos;;
+			END FOR; -- END OF FILE LOOP
+
+			-- If no error then set the message to null
+			IF (INSTR(c_status, &apos;ERROR&apos;) = 0) THEN
+				SET c_status = &apos;&apos;&apos;&apos;||SUBSTRING(c_status,1,100)||&apos;&apos;&apos;&apos;;
+				SET c_message = &apos;null&apos;;
+				SET c_message_orig = &apos;&apos;;
+			ELSE
+				SET c_status = &apos;&apos;&apos;&apos;||SUBSTRING(c_status,1,100)||&apos;&apos;&apos;&apos;;
+				SET c_message_orig = SUBSTRING(c_message,1,3998);
+				SET c_message = &apos;&apos;&apos;&apos;||c_message_orig||&apos;&apos;&apos;&apos;;
+			END IF;
+
+			BEGIN INDEPENDENT TRANSACTION
+				SET sqlStatement = 
+				&apos;UPDATE &apos;||fullTablePath||CHR(10)||
+				&apos;   SET REQUEST_DATE_END = CAST(&apos;&apos;&apos;||CURRENT_TIMESTAMP||&apos;&apos;&apos; AS TIMESTAMP),&apos;||CHR(10)||
+				&apos;       STATUS = &apos;||c_status||&apos;,&apos;||CHR(10)||
+				&apos;      MESSAGE = &apos;||c_message||CHR(10)||
+				&apos;  WHERE REQUEST_ID = &apos;||r.REQUEST_ID;
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: sqlStatement=[&apos;||sqlStatement||&apos;]&apos;);
+				EXECUTE IMMEDIATE sqlStatement;
+			EXCEPTION
+				ELSE
+					RAISE;
+			END;
+
+			-- Construct email to the user using m.USER_EMAIL
+			-- 1. Get email
+			SET user_email = r.PROXY_USER_EMAIL;
+
+			-- 2. If email exists then send email
+			IF (user_email IS NOT NULL AND LENGTH(TRIM(user_email)) &gt; 0 AND INSTR(user_email,&apos;@&apos;) &gt; 0) THEN
+				-- Construct email message
+				SET email_message = 
+&apos;&lt;H1&gt;Dynamic File: Creation Report&lt;/H1&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size:20px&quot;&gt;Environment: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(envName,&apos;null&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;Hostname: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(nodehost,&apos;null&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    Port: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(CAST(nodeport AS VARCHAR),&apos;null&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;Organization: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos;|| NVL(organization,&apos;N/A&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    Project: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(project,&apos;N/A&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    SubProject: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(subproject,&apos;N/A&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;TABLE border=1&gt;
+    &lt;TR&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Status&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;File Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Database Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Table Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Table Path&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Message&lt;/TH&gt;
+    &lt;/TR&gt;
+&apos; || email_message ||
+&apos;&lt;/TABLE&gt;&apos;;
+
+				SET email_subjectline = &apos;Dynamic File: [&apos;||NVL(envName,&apos;no env&apos;)||&apos;/&apos;||NVL(project,&apos;no project&apos;)||&apos;/&apos;||NVL(subproject,&apos;no subproject&apos;)||&apos;]&apos;||
+						&apos; Creation Report - &apos;||NVL(publishedTablePath,&apos;no published table path&apos;);
+				IF (debug = &apos;Y&apos;) THEN
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: Sending Email Subject [inside loop]:&apos;||CHR(10)||NVL(email_subjectline,&apos;null email subject line&apos;));
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: Sending Email Body [inside loop]:&apos;||CHR(10)||NVL(email_message,&apos;null email message&apos;));
+				END IF;
+
+				BEGIN INDEPENDENT TRANSACTION
+					SET email_exception = &apos;&apos;;
+
+					-- Send the email to the user
+					CALL /lib/util/SendEMail (
+						null, 
+						null,
+						user_email,
+						null, 
+						null,
+						email_subjectline,
+						&apos;TEXT_HTML&apos;,
+						email_message
+					);
+				EXCEPTION
+					ELSE
+						SET email_exception = CAST(CURRENT_EXCEPTION.message AS LONGVARCHAR);
+	 			END;
+
+				BEGIN INDEPENDENT TRANSACTION
+					IF (LENGTH(email_exception) &gt; 0) THEN
+						SET email_exception = &apos;&apos;&apos;&apos;||SUBSTRING(email_exception, 1, 3998)||&apos;&apos;&apos;&apos;;
+						SET sqlStatement = 
+						&apos;UPDATE &apos;||fullTablePath||CHR(10)||
+						&apos;   SET EMAIL_ERROR = &apos;||email_exception||CHR(10)||
+						&apos;  WHERE REQUEST_ID = &apos;||r.REQUEST_ID;
+						CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: sqlStatement=[&apos;||sqlStatement||&apos;]&apos;);
+						EXECUTE IMMEDIATE sqlStatement;
+					END IF;
+				EXCEPTION
+					ELSE
+						RAISE;
+				END;
+				SET email_exception = &apos;&apos;;
+
+				-- Raise an error
+				IF (INSTR(c_status, &apos;ERROR&apos;) &gt; 0) THEN
+					RAISE ex VALUE REPLACE(c_message,&apos;&apos;&apos;&apos;,&apos;&apos;);
+				END IF;
+			END IF;
+		END IF;
+
+		/*********************************************************
+		 * Remove Dynamic File/Views
+		 ********************************************************/
+		IF (r.ACTION_TYPE = &apos;R&apos;) THEN
+			SET i = 0;
+			removeViewLoop:
+			FOR m AS SELECT * FROM /shared/ASAssets/BestPractices_v81/DynamicFileFramework/DYNAMIC_FILE_LOCAL_LOOPBACK/BestPractices_v81/DynamicFileFramework/dynamicFileRemove(
+				debug,	-- N=no debug, Y=debug
+				r.PROXY_USER_NAME,
+				r.FILE_NAME,
+				r.DATA_SOURCE_PATH,
+				r.PUBLISHED_DATABASE
+				)
+			DO
+				SET publishedTablePath = m.publishedTablePath;
+				SET i = i + 1;
+				SET l_status = &apos;&apos;&apos;&apos;||m.status||&apos;&apos;&apos;&apos;;
+				SET l_message = &apos;null&apos;;
+				IF (INSTR(UPPER(m.status), &apos;ERROR&apos;) &gt; 0 OR INSTR(UPPER(m.status), &apos;EXCEPTION&apos;) &gt; 0) THEN
+					SET l_status = &apos;&apos;&apos;ERROR&apos;&apos;&apos;;
+					SET l_message = &apos;&apos;&apos;&apos;||REPLACE(m.status,&apos;&apos;&apos;&apos;,&apos;&apos;)||&apos;&apos;&apos;&apos;;
+					IF (LENGTH(TRIM(c_status)) &gt; 0) THEN
+						SET c_status = c_status || &apos;.  &apos;;
+						SET c_message = c_message || &apos;.  &apos;;
+					END IF;
+					SET c_status = c_status || &apos;[ERROR] &apos;;
+					SET c_message = c_message || &apos;[&apos;||REPLACE(m.status,&apos;&apos;&apos;&apos;,&apos;&apos;)||&apos;] &apos;;
+				ELSE
+					IF (LENGTH(TRIM(c_status)) &gt; 0) THEN
+						IF (INSTR(c_status, m.status) = 0) THEN
+							SET c_status = c_status || &apos;.  &apos;||m.status;
+						END IF;
+					ELSE
+						SET c_status = c_status || m.status;
+					END IF;
+				END IF;
+
+				-- Construct the email message for each row returned
+				SET email_message = email_message ||
+&apos;    &lt;TR&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || REPLACE(NVL(l_status,&apos;null&apos;),&apos;&apos;&apos;&apos;,&apos;&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(m.fileName,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(m.publishedDatabase,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(m.publishedTableName,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(m.publishedTablePath,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos;|| REPLACE(l_message,&apos;&apos;&apos;&apos;,&apos;&apos;) || &apos;&lt;/TD&gt;
+     &lt;/TR&gt;
+&apos;;
+			END FOR; -- END OF FILE LOOP
+
+			-- If no error then set the message to null
+			IF (INSTR(c_status, &apos;ERROR&apos;) = 0) THEN
+				SET c_status = &apos;&apos;&apos;&apos;||SUBSTRING(c_status,1,100)||&apos;&apos;&apos;&apos;;
+				SET c_message = &apos;null&apos;;
+				SET c_message_orig = &apos;&apos;;
+			ELSE
+				SET c_status = &apos;&apos;&apos;&apos;||SUBSTRING(c_status,1,100)||&apos;&apos;&apos;&apos;;
+				SET c_message_orig = SUBSTRING(c_message,1,3998);
+				SET c_message = &apos;&apos;&apos;&apos;||c_message_orig||&apos;&apos;&apos;&apos;;
+			END IF;
+
+			BEGIN INDEPENDENT TRANSACTION
+				SET sqlStatement = 
+				&apos;UPDATE &apos;||fullTablePath||CHR(10)||
+				&apos;   SET REQUEST_DATE_END = CAST(&apos;&apos;&apos;||CURRENT_TIMESTAMP||&apos;&apos;&apos; AS TIMESTAMP),&apos;||CHR(10)||
+				&apos;       STATUS = &apos;||c_status||&apos;,&apos;||CHR(10)||
+				&apos;      MESSAGE = &apos;||c_message||CHR(10)||
+				&apos;  WHERE REQUEST_ID = &apos;||r.REQUEST_ID;
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: sqlStatement=[&apos;||sqlStatement||&apos;]&apos;);
+				EXECUTE IMMEDIATE sqlStatement;
+			EXCEPTION
+				ELSE
+					RAISE;
+			END;
+
+			-- Construct email to the user using m.USER_EMAIL
+			-- 1. Get email
+			SET user_email = r.PROXY_USER_EMAIL;
+
+			-- 2. If email exists then send email
+			IF (user_email IS NOT NULL AND LENGTH(TRIM(user_email)) &gt; 0 AND INSTR(user_email,&apos;@&apos;) &gt; 0) THEN
+				-- Construct email message
+				SET email_message = 
+&apos;&lt;H1&gt;Dynamic File: Removal Report&lt;/H1&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size:20px&quot;&gt;Environment: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(envName,&apos;null&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;Hostname: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(nodehost,&apos;null&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    Port: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(CAST(nodeport AS VARCHAR),&apos;null&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;Organization: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos;|| NVL(organization,&apos;N/A&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    Project: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(project,&apos;N/A&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    SubProject: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(subproject,&apos;N/A&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;TABLE border=1&gt;
+    &lt;TR&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Status&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;File Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Database Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Table Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Table Path&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Message&lt;/TH&gt;
+    &lt;/TR&gt;
+&apos; || email_message ||
+&apos;&lt;/TABLE&gt;&apos;;
+
+				SET email_subjectline = &apos;Dynamic File: [&apos;||NVL(envName,&apos;no env&apos;)||&apos;/&apos;||NVL(project,&apos;no project&apos;)||&apos;/&apos;||NVL(subproject,&apos;no subproject&apos;)||&apos;]&apos;||
+						&apos; Removal Report - &apos;||NVL(publishedTablePath,NVL(r.FILE_NAME,&apos;no filename available&apos;));
+				IF (debug = &apos;Y&apos;) THEN
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: Sending Email Subject [inside loop]:&apos;||CHR(10)||NVL(email_subjectline,&apos;null email subject line&apos;));
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: Sending Email Body [inside loop]:&apos;||CHR(10)||NVL(email_message,&apos;null email message&apos;));
+				END IF;
+
+				BEGIN INDEPENDENT TRANSACTION
+					SET email_exception = &apos;&apos;;
+					-- Send the email to the user
+					CALL /lib/util/SendEMail (
+						null, 
+						null,
+						user_email,
+						null, 
+						null,
+						email_subjectline,
+						&apos;TEXT_HTML&apos;,
+						email_message
+					);
+				EXCEPTION
+					ELSE
+						SET email_exception = CAST(CURRENT_EXCEPTION.message AS LONGVARCHAR);
+	 			END;
+
+				BEGIN INDEPENDENT TRANSACTION
+					IF (LENGTH(email_exception) &gt; 0) THEN
+						SET email_exception = &apos;&apos;&apos;&apos;||SUBSTRING(email_exception, 1, 3998)||&apos;&apos;&apos;&apos;;
+						SET sqlStatement = 
+						&apos;UPDATE &apos;||fullTablePath||CHR(10)||
+						&apos;   SET EMAIL_ERROR = &apos;||email_exception||CHR(10)||
+						&apos;  WHERE REQUEST_ID = &apos;||r.REQUEST_ID;
+						CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: sqlStatement=[&apos;||sqlStatement||&apos;]&apos;);
+						EXECUTE IMMEDIATE sqlStatement;
+					END IF;
+				EXCEPTION
+					ELSE
+						RAISE;
+				END;
+				SET email_exception = &apos;&apos;;
+
+				-- Raise an error
+				IF (INSTR(c_status, &apos;ERROR&apos;) &gt; 0) THEN
+					RAISE ex VALUE REPLACE(l_message,&apos;&apos;&apos;&apos;,&apos;&apos;);
+				END IF;
+			END IF;
+		END IF;
+
+		/*********************************************************
+		 * Clean-up Dynamic File/Views
+		 ********************************************************/
+		IF (r.ACTION_TYPE = &apos;C&apos;) THEN
+			SET prevfilename = &apos;&apos;;
+			SET email_message2 = &apos;&apos;;
+			SET l_status = &apos;&apos;;
+			SET l_message = &apos;&apos;;
+			SET email_exception = &apos;&apos;;
+			SET i = 0;
+
+			-- Clean-up the file system files and views
+			FOR m AS SELECT * FROM /shared/ASAssets/BestPractices_v81/DynamicFileFramework/DYNAMIC_FILE_LOCAL_LOOPBACK/BestPractices_v81/DynamicFileFramework/dynamicFileCleanup(
+				debug,		-- N=no debug, Y=debug
+				r.ORGANIZATION,
+				r.PROJECT_NAME,
+				r.SUBPROJECT_NAME,
+				r.RETENTION_POLICY_DAYS,
+				r.DATA_SOURCE_PATH,
+				r.PUBLISHED_DATABASE
+				)
+			DO
+				SET filename = m.fileName;
+
+				IF (debug = &apos;Y&apos;) THEN
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: VARIABLES INSIDE LOOP&apos;);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: i=&apos;||i);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: filename=[&apos;||filename||&apos;]&apos;);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: Previous Variables INSIDE LOOP&apos;);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: prevfilename=[&apos;||prevfilename||&apos;]&apos;);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: sent_email=[&apos;||CAST(sent_email as varchar)||&apos;]&apos;);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: user_email=[&apos;||NVL(user_email,&apos;null&apos;)||&apos;]&apos;);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: publishedDatabase=[&apos;||NVL(publishedDatabase,&apos;null&apos;)||&apos;]&apos;);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: publishedTableName=[&apos;||NVL(publishedTableName,&apos;null&apos;)||&apos;]&apos;);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: publishedTablePath=[&apos;||NVL(publishedTablePath,&apos;null&apos;)||&apos;]&apos;);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: l_status=[&apos;||NVL(l_status,&apos;null&apos;)||&apos;]&apos;);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: l_message=[&apos;||NVL(l_message,&apos;null&apos;)||&apos;]&apos;);
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: email_message2=[&apos;||NVL(email_message2,&apos;null&apos;)||&apos;]&apos;);
+				END IF;
+
+				-- Send the email when it is not the first time through the loop and the filename changes
+				IF (i &gt; 0 AND prevfilename &lt;&gt; filename AND LENGTH(TRIM(prevfilename)) &gt; 0) THEN
+					-- Construct the clean-up message
+					SET c_message = c_message || CAST(i AS VARCHAR)||&apos;.[&apos;||REPLACE(prevfilename,&apos;&apos;&apos;&apos;,&apos;&apos;&apos;&apos;&apos;&apos;)||&apos;: &apos;||REPLACE(l_status,&apos;&apos;&apos;&apos;,&apos;&apos;)||&apos;]  &apos;;
+					IF (LENGTH(TRIM(l_message)) = 0) THEN
+						SET l_message = null;
+					END IF;
+
+					-- Construct email to the user using m.USER_EMAIL
+					-- 1. Get email
+					IF (user_email IS NULL) THEN
+						SET user_email = default_email;
+					ELSE
+						SET user_email = user_email || &apos;, &apos;||default_email;
+					END IF;
+
+					-- 2. If email exists then send email
+					IF (user_email IS NOT NULL AND LENGTH(TRIM(user_email)) &gt; 0 AND INSTR(user_email,&apos;@&apos;) &gt; 0) THEN
+						-- Construct email message
+						SET email_message = 
+&apos;&lt;H1&gt;Dynamic File: Clean-up Report&lt;/H1&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size:20px&quot;&gt;Environment: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(envName,&apos;null&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;Hostname: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(nodehost,&apos;null&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    Port: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(CAST(nodeport AS VARCHAR),&apos;null&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;Organization: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos;|| NVL(organization,&apos;N/A&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    Project: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(project,&apos;N/A&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    SubProject: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(subproject,&apos;N/A&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;TABLE border=1&gt;
+    &lt;TR&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Status&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;File Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Database Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Table Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Table Path&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Message&lt;/TH&gt;
+    &lt;/TR&gt;
+&apos;||NVL(email_message2,&apos;null message&apos;)||&apos;
+&lt;/TABLE&gt;&apos;;
+
+						SET email_subjectline = &apos;Dynamic File: [&apos;||NVL(envName,&apos;no env&apos;)||&apos;/&apos;||NVL(project,&apos;no project&apos;)||&apos;/&apos;||NVL(subproject,&apos;no subproject&apos;)||&apos;]&apos;||
+								&apos; Clean-up Report - &apos;||NVL(prevfilename,&apos;no filename available&apos;);
+						IF (debug = &apos;Y&apos;) THEN
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: Sending Email Subject [inside loop]:&apos;||CHR(10)||NVL(email_subjectline,&apos;null email subject line&apos;));
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: Sending Email Body [inside loop]:&apos;||CHR(10)||NVL(email_message,&apos;null email message&apos;));
+						END IF;
+
+						BEGIN INDEPENDENT TRANSACTION
+							-- Send the email to the user
+							CALL /lib/util/SendEMail (
+								null, 
+								null,
+								user_email,
+								null, 
+								null,
+								email_subjectline,
+								&apos;TEXT_HTML&apos;,
+								email_message
+							);
+						EXCEPTION
+							ELSE
+								-- If the exception is not found then add it to the exception list
+								IF (INSTR(email_exception, CAST(CURRENT_EXCEPTION.MESSAGE AS LONGVARCHAR)) = 0) THEN
+									IF (LENGTH(email_exception) &gt; 0) THEN
+										SET email_exception = email_exception || &apos; || &apos;;
+									END IF;
+									SET email_exception = email_exception || CAST(CURRENT_EXCEPTION.MESSAGE AS LONGVARCHAR);
+								END IF;
+						END;
+
+						-- Raise an error
+						IF (INSTR(m.status, &apos;ERROR&apos;) &gt; 0) THEN
+							RAISE ex VALUE REPLACE(l_message,&apos;&apos;&apos;&apos;,&apos;&apos;);
+						END IF;
+
+						SET l_status = &apos;&apos;;
+						SET l_message = &apos;&apos;;
+						SET email_message2 = &apos;&apos;;
+					END IF;
+				END IF; -- END: (i &gt; 0 and prevfilename &lt;&gt; filename and LENGTH(TRIM(prevfilename)) &gt; 0)
+
+				-- Get the current variable
+				SET user_email = m.useremail;
+				SET publishedDatabase = m.publishedDatabase;
+				SET publishedTableName = m.publishedTableName;
+				SET publishedTablePath = m.publishedTablePath;
+
+				-- Construct the status and message
+				IF (INSTR(UPPER(m.status), &apos;ERROR&apos;) &gt; 0 OR INSTR(UPPER(m.status), &apos;EXCEPTION&apos;) &gt; 0) THEN
+					IF (LENGTH(TRIM(l_status)) &gt; 0) THEN
+						IF (INSTR(l_status, &apos;ERROR&apos;) = 0) THEN
+							SET l_status = l_status ||&apos;.  &apos;||&apos;ERROR&apos;;
+						END IF;
+					ELSE
+						SET l_status = &apos;ERROR&apos;;
+					END IF;
+					IF (LENGTH(TRIM(l_message)) &gt; 0) THEN
+						IF (INSTR(l_message, m.status) = 0) THEN
+							SET l_message = l_message ||&apos;.  &apos;||REPLACE(m.status,&apos;&apos;&apos;&apos;,&apos;&apos;);
+						END IF;
+					ELSE
+						SET l_message = REPLACE(m.status,&apos;&apos;&apos;&apos;,&apos;&apos;);
+					END IF;
+				ELSE
+					IF (LENGTH(TRIM(l_status)) &gt; 0) THEN
+						IF (INSTR(l_status, m.status) = 0) THEN
+							SET l_status = l_status ||&apos;.  &apos;||m.status;
+						END IF;
+					ELSE
+						SET l_status = REPLACE(m.status,&apos;&apos;&apos;&apos;,&apos;&apos;);
+					END IF;
+				END IF;
+				SET email_message2 = email_message2 ||
+&apos;    &lt;TR&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(l_status,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(filename,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(publishedDatabase,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(publishedTableName,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(publishedTablePath,&apos;null&apos;) || &apos;&lt;/TD&gt;
+          &lt;TD style=&quot;font-size: 15px&quot;&gt;&apos; || NVL(l_message,&apos;null&apos;) || &apos;&lt;/TD&gt;
+     &lt;/TR&gt;&apos;;
+
+				IF (i = 0 OR prevfilename &lt;&gt; filename) THEN
+					SET i = i + 1;
+				END IF;
+				-- Track the previous file name
+				SET prevfilename = filename;
+				SET sent_email = false;
+			END FOR; -- END OF CLEAN-UP LOOP
+
+			/*************************************
+			 * Begin final end of loop processing
+			 *************************************/
+			IF (debug = &apos;Y&apos;) THEN
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: VARIABLES OUTSIDE LOOP&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: i=&apos;||i);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: filename=[&apos;||filename||&apos;]&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: Previous Variables OUTSIDE LOOP&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: prevfilename=[&apos;||prevfilename||&apos;]&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: sent_email=[&apos;||CAST(sent_email as varchar)||&apos;]&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: user_email=[&apos;||NVL(user_email,&apos;null&apos;)||&apos;]&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: publishedDatabase=[&apos;||NVL(publishedDatabase,&apos;null&apos;)||&apos;]&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: publishedTableName=[&apos;||NVL(publishedTableName,&apos;null&apos;)||&apos;]&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: publishedTablePath=[&apos;||NVL(publishedTablePath,&apos;null&apos;)||&apos;]&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: email_message2 [outside loop]:&apos;||CHR(10)||NVL(email_message2,&apos;null email_message2&apos;));
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: l_status=[&apos;||NVL(l_status,&apos;null&apos;)||&apos;]&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: l_message=[&apos;||NVL(l_message,&apos;null&apos;)||&apos;]&apos;);
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: email_message2=[&apos;||NVL(email_message2,&apos;null&apos;)||&apos;]&apos;);
+			END IF;
+
+			-- Send the final email when the filename changes
+			IF (i &gt; 0 AND NOT sent_email) THEN
+				-- Construct the clean-up message
+				SET c_message = c_message || CAST(i AS VARCHAR)||&apos;.[&apos;||REPLACE(prevfilename,&apos;&apos;&apos;&apos;,&apos;&apos;&apos;&apos;&apos;&apos;)||&apos;: &apos;||REPLACE(l_status,&apos;&apos;&apos;&apos;,&apos;&apos;)||&apos;]  &apos;;
+				IF (LENGTH(TRIM(l_message)) = 0) THEN
+					SET l_message = null;
+				END IF;
+
+				-- Construct email to the user using m.USER_EMAIL
+				-- 1. Get email
+				IF (user_email IS NULL) THEN
+					SET user_email = default_email;
+				ELSE
+					SET user_email = user_email || &apos;, &apos;||default_email;
+				END IF;
+
+				-- 2. If email exists then send email
+				IF (user_email IS NOT NULL AND LENGTH(TRIM(user_email)) &gt; 0 AND INSTR(user_email,&apos;@&apos;) &gt; 0) THEN
+					-- Construct email message
+					SET email_message = 
+&apos;&lt;H1&gt;Dynamic File: Clean-up Report&lt;/H1&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size:20px&quot;&gt;Environment: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(envName,&apos;null&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;Hostname: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(nodehost,&apos;null&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    Port: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(CAST(nodeport AS VARCHAR),&apos;null&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;Organization: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos;|| NVL(organization,&apos;N/A&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    Project: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(project,&apos;N/A&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    SubProject: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(subproject,&apos;N/A&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;TABLE border=1&gt;
+    &lt;TR&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Status&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;File Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Database Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Table Name&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Published Table Path&lt;/TH&gt;
+        &lt;TH style=&quot;font-size: 15px&quot;&gt;Message&lt;/TH&gt;
+    &lt;/TR&gt;
+&apos;||NVL(email_message2,&apos;null message&apos;)||&apos;
+&lt;/TABLE&gt;&apos;;
+
+					SET email_subjectline = &apos;Dynamic File: [&apos;||NVL(envName,&apos;no env&apos;)||&apos;/&apos;||NVL(project,&apos;no project&apos;)||&apos;/&apos;||NVL(subproject,&apos;no subproject&apos;)||&apos;]&apos;||
+							&apos; Clean-up Report - &apos;||NVL(prevfilename,&apos;no filename available&apos;);
+					IF (debug = &apos;Y&apos;) THEN
+						CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: Sending Email Subject [outside loop]:&apos;||CHR(10)||NVL(email_subjectline,&apos;null email subject line&apos;));
+						CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: Sending Email Body [outside loop]:&apos;||CHR(10)||NVL(email_message,&apos;null email message&apos;));
+					END IF;
+
+					BEGIN INDEPENDENT TRANSACTION
+						-- Send the email to the user
+						CALL /lib/util/SendEMail (
+							null, 
+							null,
+							user_email,
+							null, 
+							null,
+							email_subjectline,
+							&apos;TEXT_HTML&apos;,
+							email_message
+						);
+					EXCEPTION
+						ELSE
+							-- If the exception is not found then add it to the exception list
+							IF (INSTR(email_exception, CAST(CURRENT_EXCEPTION.MESSAGE AS LONGVARCHAR)) = 0) THEN
+								IF (LENGTH(email_exception) &gt; 0) THEN
+									SET email_exception = email_exception || &apos; || &apos;;
+								END IF;
+								SET email_exception = email_exception || CAST(CURRENT_EXCEPTION.MESSAGE AS LONGVARCHAR);
+							END IF;
+					END; -- end BEGIN INDEPENDENT TRANSACTION
+
+					-- Raise an error
+					IF (INSTR(l_status, &apos;ERROR&apos;) &gt; 0) THEN
+						RAISE ex VALUE REPLACE(l_message,&apos;&apos;&apos;&apos;,&apos;&apos;);
+					END IF;
+				END IF;
+			END IF;
+
+			-- Update the status for this record
+			IF (LENGTH(TRIM(c_message)) = 0) THEN
+				SET c_status = &apos;&apos;&apos;NO FILES/VIEWS REMOVED&apos;&apos;&apos;;
+				SET c_message = &apos;null&apos;;
+				SET c_message_orig = &apos;&apos;;
+			ELSE
+				SET c_status = &apos;&apos;&apos;FILE CLEAN UP ACTIVITY&apos;&apos;&apos;;
+				SET c_message_orig = SUBSTRING(c_message,1,3998);
+				SET c_message = &apos;&apos;&apos;&apos;||c_message_orig||&apos;&apos;&apos;&apos;;
+			END IF;
+			-- Check for any email exceptions
+			IF (LENGTH(email_exception) &gt; 0) THEN
+				SET email_exception = &apos;&apos;&apos;&apos;||SUBSTRING(email_exception,1,3998)||&apos;&apos;&apos;&apos;;
+			ELSE
+				SET email_exception = &apos;null&apos;;
+			END IF;
+
+			BEGIN INDEPENDENT TRANSACTION
+				SET sqlStatement = 
+					&apos;UPDATE &apos;||fullTablePath||CHR(10)||
+    	            &apos;   SET REQUEST_DATE_END = CAST(&apos;&apos;&apos;||CURRENT_TIMESTAMP||&apos;&apos;&apos; AS TIMESTAMP),&apos;||CHR(10)||
+        	        &apos;         STATUS = &apos;||c_status||&apos;,&apos;||CHR(10)||
+        	        &apos;        MESSAGE = &apos;||c_message||&apos;,&apos;||CHR(10)||
+       	     		&apos;    EMAIL_ERROR = &apos;||email_exception||CHR(10)||
+					&apos; WHERE REQUEST_ID = &apos;||r.REQUEST_ID;
+					CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: sqlStatement=[&apos;||sqlStatement||&apos;]&apos;);
+					EXECUTE IMMEDIATE sqlStatement;
+			EXCEPTION
+				ELSE
+					RAISE;
+			END; -- end BEGIN INDEPENDENT TRANSACTION
+
+			SET email_exception = &apos;&apos;;
+		END IF;
+	END FOR;
+	IF (debug = &apos;Y&apos;) THEN
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INTERNAL: TOTAL DYNAMIC FILE EVENTS PROCESSED.  events=[&apos;||events||&apos;]&apos;);
+	END IF;
+
+EXCEPTION
+	ELSE
+		IF (default_email IS NOT NULL AND LENGTH(TRIM(default_email)) &gt; 0) THEN
+			SET email_message = 
+&apos;&lt;H2 style=&quot;font-size: 20px&quot;&gt;Environment: &apos; || NVL(envName,&apos;null&apos;) || &apos;&lt;/H2&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size:20px&quot;&gt;Environment: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(envName,&apos;null&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;Hostname: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(nodehost,&apos;null&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    Port: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(CAST(nodeport AS VARCHAR),&apos;null&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;H2&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;Organization: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos;|| NVL(organization,&apos;N/A&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    Project: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(project,&apos;N/A&apos;) || &apos;&lt;/span&gt;&apos;||
+   &apos;&lt;span style=&quot;font-size:20px&quot;&gt;    SubProject: &lt;/span&gt;&lt;span style=&quot;font-size:20px;color:blue&quot;&gt;&apos; || NVL(subproject,&apos;N/A&apos;) || &apos;&lt;/span&gt;
+&lt;/H2&gt;
+&lt;H2 style=&quot;font-size: 15px&quot;&gt;Exception: &apos; || SUBSTRING(NVL(CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR),&apos;null&apos;),1,2000) ||&apos;&lt;/H2&gt;&apos;;
+
+			SET email_subjectline = &apos;Dynamic File: [&apos;||NVL(envName,&apos;no env&apos;)||&apos;/&apos;||NVL(project,&apos;no project&apos;)||&apos;/&apos;||NVL(subproject,&apos;no subproject&apos;)||&apos;]&apos;||
+				&apos; Error Report - &apos;||NVL(filename,&apos;no filename available.&apos;);
+			IF (debug = &apos;Y&apos;) THEN
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;EXCEPTION: Sending Email Subject [exception]:&apos;||CHR(10)||NVL(email_subjectline,&apos;null email subject line&apos;));
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;EXCEPTION: Sending Email Body [exception]:&apos;||CHR(10)||NVL(email_message,&apos;null email message&apos;));
+			END IF;
+
+			-- Send the email
+			CALL /lib/util/SendEMail (
+				null, 
+				null,
+				default_email,
+				null, 
+				null,
+				email_subjectline,
+				&apos;TEXT_HTML&apos;,
+				email_message
+			);
+		END IF;
+		RAISE;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1502831486145</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">1500</attribute>
+  <attribute name="creatorUserName" type="STRING">dynview</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564410509964</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">1500</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">9/141</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>Pause</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1502831486145</attribute>
+</metadata>

@@ -1,0 +1,417 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Hierarchy_P1_S1" path="/shared/Common/Business/Logical/Portfolio_Hierarchy/Hierarchy_P1_S1" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="AMWAY_CNTRY_CD" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RGN_DESC" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SUB_RGN_DESC" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="AFF_SHORT_NM" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CNTRY_SHORT_NM" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="BASE_7_ITEM_NO" nullable="true">
+      <datatype type="STRING" maxLength="15"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TO_BASE_7_ITEM_NO" nullable="true">
+      <datatype type="STRING" maxLength="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="FC_CLASS_CD_STRING" nullable="true">
+      <datatype type="STRING" maxLength="8000"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="FC_INTRO_CD_STRING" nullable="true">
+      <datatype type="STRING" maxLength="8000"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ITEM_DESC" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_BUS_LN_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_CTGRY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_SUB_CTGRY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_PRDCT_IND_CUT_CD" nullable="true">
+      <datatype type="STRING" maxLength="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_PRDCT_IND_CUT_DESC" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_PRDCT_FMLY_DESC" nullable="true">
+      <datatype type="STRING" maxLength="300"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_BRAND_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="GLBL_SUB_BRAND_DESC" nullable="true">
+      <datatype type="STRING" maxLength="100"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="COUNT_SKU" nullable="true">
+      <datatype type="STRING" minLength="2" maxLength="3" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="LAST_ORD_DATE" nullable="true">
+      <datatype type="DATE"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/FC_Item_Classes" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="cachekey" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="CORP_CD">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="ITEM_NO">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="CLASS_CD">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/FC_Item_Intro_Cds" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="cachekey" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="CORP_CD">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="ITEM_NO">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="PROG_CD">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/Portfolio_Hierarchy/FC_Beauty_Serums_Masks_Body" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="CORP_CD">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="ITEM_NO">
+        <datatype type="STRING" maxLength="50" trailingSpaces="false"/>
+      </element>
+      <element name="SUB_CTGRY_DESC">
+        <datatype type="STRING" minLength="4" maxLength="6" trailingSpaces="false"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/Portfolio_Hierarchy/FC_Demand_Corrections" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="CORP_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="TO_CORP_CD">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="TO_BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/Common/Business/Logical/Portfolio_Hierarchy/GDW_Initial_P1_S2" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="CNTRY_KEY_NO">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="AMWAY_CNTRY_CD">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="SUB_RGN_DESC">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="AFF_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="CNTRY_SHORT_NM">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="CORP_CD">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="ITEM_NO">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="ITEM_KEY_NO">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="BASE_7_ITEM_NO">
+        <datatype type="STRING" maxLength="15"/>
+      </element>
+      <element name="ITEM_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="ITEM_ENG_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BUS_LN_CD">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="GLBL_BUS_LN_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_CTGRY_CD">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="GLBL_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_SUB_CTGRY_CD">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="GLBL_SUB_CTGRY_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_PRDCT_IND_CUT_CD">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="GLBL_PRDCT_IND_CUT_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_PRDCT_FMLY_CD">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+      <element name="GLBL_PRDCT_FMLY_DESC">
+        <datatype type="STRING" maxLength="300"/>
+      </element>
+      <element name="GLBL_BRAND_CD">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="GLBL_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="GLBL_SUB_BRAND_CD">
+        <datatype type="STRING" maxLength="10"/>
+      </element>
+      <element name="GLBL_SUB_BRAND_DESC">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="STAT_CD">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="LAST_ORD_DATE">
+        <datatype type="DATE"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    DISTINCT IS2.AMWAY_CNTRY_CD,
+    IS2.RGN_DESC,
+    IS2.SUB_RGN_DESC,
+    IS2.AFF_SHORT_NM,
+    IS2.CNTRY_SHORT_NM,
+    IS2.BASE_7_ITEM_NO,
+    DC.TO_BASE_7_ITEM_NO,
+    FCC.CLASS_CD AS FC_CLASS_CD_STRING,
+    FCI.PROG_CD AS FC_INTRO_CD_STRING,
+    CASE 
+        WHEN IS2.CNTRY_SHORT_NM IN (&apos;TAIWAN&apos;, &apos;AUSTRALIA&apos;, &apos;NEW ZEALAND&apos;, &apos;SOUTH AFRICA&apos;) THEN IS2.ITEM_DESC
+        ELSE IS2.ITEM_ENG_DESC
+    END AS ITEM_DESC,
+    IS2.GLBL_BUS_LN_DESC,
+    CASE 
+		WHEN GLBL_BUS_LN_DESC = &apos;BEAUTY&apos; AND GLBL_SUB_CTGRY_CD = &apos;S14&apos; THEN &apos;SKIN CARE&apos;
+        WHEN GLBL_BUS_LN_DESC = &apos;BEAUTY&apos; AND GLBL_CTGRY_DESC NOT IN (&apos;COSMETICS&apos;, &apos;SKIN CARE&apos;) THEN &apos;OTHER BEAUTY&apos;
+        WHEN GLBL_BUS_LN_DESC = &apos;DURABLES&apos; AND GLBL_CTGRY_DESC NOT IN (&apos;AIR TREATMENT&apos;, &apos;COOKWARE&apos;, &apos;WATER TREATMENT&apos;) THEN &apos;OTHER DURABLES&apos;
+        WHEN GLBL_BUS_LN_DESC = &apos;HOME CARE&apos; AND GLBL_CTGRY_DESC NOT IN (&apos;AGRICULTURE CARE&apos;, &apos;AIR CARE&apos;, &apos;CAR CARE&apos;, &apos;DISH CARE&apos;, &apos;LAUNDRY CARE&apos;, &apos;SURFACE CARE&apos;) THEN &apos;OTHER HOME CARE&apos;
+        WHEN GLBL_BUS_LN_DESC = &apos;NUTRITION&apos; THEN 
+			CASE 
+            	WHEN FCC.CLASS_CD LIKE &apos;%C87%&apos; AND FCC.CLASS_CD NOT LIKE &apos;%C30%&apos; THEN &apos;BFW&apos;
+            	WHEN FCC.CLASS_CD LIKE &apos;%A68%&apos; AND FCC.CLASS_CD NOT LIKE &apos;%C30%&apos; THEN &apos;WEIGHT&apos;
+            	WHEN FCC.CLASS_CD LIKE &apos;%A63%&apos; AND FCC.CLASS_CD NOT LIKE &apos;%C30%&apos; THEN &apos;SPORTS NUTRITION&apos;
+            	WHEN FCC.CLASS_CD LIKE &apos;%C84%&apos; AND FCC.CLASS_CD NOT LIKE &apos;%A63%&apos; THEN &apos;ENERGY&apos;
+            	WHEN FCC.CLASS_CD LIKE &apos;%C30%&apos; THEN &apos;KIDS&apos;
+            	WHEN (FCC.CLASS_CD LIKE &apos;%A74%&apos; OR FCC.CLASS_CD LIKE &apos;%A72%&apos; ) AND (FCC.CLASS_CD NOT LIKE &apos;%C30%&apos; OR FCC.CLASS_CD NOT LIKE &apos;%A68%&apos; OR FCC.CLASS_CD NOT LIKE &apos;%C84%&apos; or FCC.CLASS_CD NOT LIKE &apos;%C87%&apos; or FCC.CLASS_CD NOT LIKE &apos;%A63%&apos;) THEN &apos;SUPPLEMENTS&apos;
+            ELSE &apos;OTHER NUTRITION&apos;
+        	END
+        WHEN GLBL_BUS_LN_DESC = &apos;PERSONAL CARE&apos; AND GLBL_CTGRY_DESC NOT IN (&apos;BABY CARE&apos;, &apos;BATH/BODY CARE&apos;, &apos;FRAGRANCES&apos;, &apos;HAIR CARE&apos;, &apos;MENS GROOMING&apos;, &apos;ORAL CARE&apos;, &apos;SUN CARE&apos;) THEN &apos;OTHER PERSONAL CARE&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;COSMETICS&apos; THEN &apos;COLOR&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;AGRICULTURE CARE&apos; THEN &apos;AGRICULTURE&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;CAR CARE&apos; THEN &apos;CAR&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;DISH CARE&apos; THEN &apos;DISH&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;LAUNDRY CARE&apos; THEN &apos;LAUNDRY&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;SURFACE CARE&apos; THEN &apos;SURFACE&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;AIR TREATMENT&apos; THEN &apos;AIR&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;COOKWARE&apos; THEN &apos;COOKING&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;WATER TREATMENT&apos; THEN &apos;WATER&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;BABY CARE&apos; THEN &apos;KIDS PC&apos;
+        ELSE GLBL_CTGRY_DESC
+    END AS GLBL_CTGRY_DESC,
+	CASE 
+        WHEN GLBL_BUS_LN_DESC = &apos;BEAUTY&apos; THEN 
+			CASE 
+            	WHEN SMB.SUB_CTGRY_DESC IS NOT NULL THEN SMB.SUB_CTGRY_DESC
+				WHEN GLBL_CTGRY_CD = &apos;A04&apos; AND GLBL_BRAND_CD NOT IN (&apos;ART&apos;) THEN &apos;LOCAL SKIN CARE&apos;
+				WHEN GLBL_CTGRY_CD = &apos;A04&apos; AND GLBL_SUB_CTGRY_DESC IN (&apos;LOCAL PRODUCT&apos;, &apos;PENDING&apos;, &apos;OTHER&apos;) THEN &apos;OTHER SKIN CARE&apos;
+				WHEN GLBL_CTGRY_CD = &apos;A04&apos; AND GLBL_SUB_BRAND_CD = &apos;B12&apos; THEN &apos;ESSENTIALS&apos;
+   				WHEN GLBL_CTGRY_CD = &apos;A04&apos; AND GLBL_SUB_BRAND_CD = &apos;B69&apos; THEN &apos;HYDRATING&apos;
+				WHEN GLBL_SUB_CTGRY_CD = &apos;S14&apos; THEN &apos;SKIN CARE DEVICE&apos;
+				WHEN GLBL_SUB_CTGRY_CD = &apos;S06&apos; THEN &apos;ANTI AGING&apos;
+				WHEN GLBL_SUB_CTGRY_CD = &apos;S12&apos; THEN &apos;WHITENING&apos;
+	 			WHEN GLBL_SUB_CTGRY_CD = &apos;S11&apos; THEN &apos;MENS SKIN CARE&apos;
+				WHEN GLBL_SUB_CTGRY_CD = &apos;S09&apos; THEN &apos;LUXURY&apos;
+				WHEN GLBL_SUB_CTGRY_CD = &apos;S08&apos; THEN &apos;INTENSIVES&apos;        
+				WHEN GLBL_SUB_CTGRY_CD IN (&apos;S95&apos;, &apos;S07&apos;, &apos;S10&apos;) THEN &apos;OTHER SKIN NUTRITION&apos;
+        		WHEN IS2.GLBL_CTGRY_DESC = &apos;COSMETICS&apos; AND GLBL_BRAND_DESC NOT IN (&apos;ARTISTRY&apos;) THEN &apos;LOCAL COLOR&apos;
+				WHEN IS2.GLBL_SUB_CTGRY_DESC = &apos;COSMETIC-CHEEK&apos; AND FCC.CLASS_CD LIKE &apos;%12Z%&apos; THEN &apos;COLLECTIONS-CHEEK&apos;
+            	WHEN IS2.GLBL_SUB_CTGRY_DESC = &apos;COSMETIC-EYE&apos; AND FCC.CLASS_CD LIKE &apos;%12Z%&apos; THEN &apos;COLLECTIONS-EYE&apos;
+            	WHEN IS2.GLBL_SUB_CTGRY_DESC = &apos;COSMETIC-FACE&apos; AND FCC.CLASS_CD LIKE &apos;%12Z%&apos; THEN &apos;COLLECTIONS-FACE&apos;
+            	WHEN IS2.GLBL_SUB_CTGRY_DESC = &apos;COSMETIC-LIP&apos; AND FCC.CLASS_CD LIKE &apos;%12Z%&apos; THEN &apos;COLLECTIONS-LIP&apos;
+            	WHEN IS2.GLBL_CTGRY_DESC = &apos;COSMETICS&apos; AND IS2.GLBL_SUB_CTGRY_DESC NOT IN (&apos;COSMETIC-CHEEK&apos;, &apos;COSMETIC-EYE&apos;, &apos;COSMETIC-FACE&apos;, &apos;COSMETIC-LIP&apos;) AND FCC.CLASS_CD LIKE &apos;%12Z%&apos; THEN &apos;COLLECTIONS-OTHER COLOR&apos;
+				WHEN IS2.GLBL_SUB_CTGRY_DESC = &apos;COSMETIC-CHEEK&apos; AND (FCC.CLASS_CD NOT LIKE &apos;%12Z%&apos; OR FCC.CLASS_CD IS NULL) THEN &apos;CORE-CHEEK&apos;
+				WHEN IS2.GLBL_SUB_CTGRY_DESC = &apos;COSMETIC-EYE&apos; AND (FCC.CLASS_CD NOT LIKE &apos;%12Z%&apos; OR FCC.CLASS_CD IS NULL) THEN &apos;CORE-EYE&apos;
+            	WHEN IS2.GLBL_SUB_CTGRY_DESC = &apos;COSMETIC-FACE&apos; AND (FCC.CLASS_CD NOT LIKE &apos;%12Z%&apos; OR FCC.CLASS_CD IS NULL) THEN &apos;CORE-FACE&apos;
+            	WHEN IS2.GLBL_SUB_CTGRY_DESC = &apos;COSMETIC-LIP&apos; AND (FCC.CLASS_CD NOT LIKE &apos;%12Z%&apos; OR FCC.CLASS_CD IS NULL) THEN &apos;CORE-LIP&apos;
+            	WHEN IS2.GLBL_CTGRY_DESC = &apos;COSMETICS&apos; AND IS2.GLBL_SUB_CTGRY_DESC NOT IN (&apos;COSMETIC-CHEEK&apos;, &apos;COSMETIC-EYE&apos;, &apos;COSMETIC-FACE&apos;, &apos;COSMETIC-LIP&apos;) AND (FCC.CLASS_CD NOT LIKE &apos;%12Z%&apos; OR FCC.CLASS_CD IS NULL) THEN &apos;CORE-OTHER COLOR&apos;
+            	ELSE GLBL_SUB_CTGRY_DESC
+        	END
+        ELSE IS2.GLBL_SUB_CTGRY_DESC
+    END AS GLBL_SUB_CTGRY_DESC,
+    IS2.GLBL_PRDCT_IND_CUT_CD,
+    IS2.GLBL_PRDCT_IND_CUT_DESC,
+    IS2.GLBL_PRDCT_FMLY_DESC,
+    CASE 
+        WHEN GLBL_BRAND_DESC = &apos;SATINIQUE ADVANCE&apos; THEN &apos;SATINIQUE&apos;
+        WHEN GLBL_BRAND_DESC = &apos;BODY SERIES&apos; THEN &apos;G&amp;H&apos;
+        WHEN GLBL_BRAND_DESC = &apos;SPREEDENT&apos; THEN &apos;GLISTER&apos;
+        WHEN GLBL_BUS_LN_DESC = &apos;PERSONAL CARE&apos; AND GLBL_BRAND_DESC IN (&apos;PETER ISLAND&apos;, &apos;PROTIQUE&apos;, &apos;UNDEFINED&apos;, &apos;CATALOG&apos;) THEN &apos;OTHER BRAND-PERSONAL CARE&apos;
+        WHEN GLBL_BUS_LN_DESC = &apos;BEAUTY&apos; AND GLBL_BRAND_DESC IN (&apos;BEAUTYCYCLE&apos;, &apos;EDDIE FUNKHOUSER&apos;, &apos;NAO&apos;, &apos;NONE&apos;, &apos;UNDEFINED&apos;, &apos;OTHER BRAND-PERSONAL CARE&apos;, &apos;SATINIQUE&apos;) THEN &apos;OTHER BRAND-BEAUTY&apos;
+        WHEN GLBL_BUS_LN_DESC = &apos;HOME CARE&apos; THEN &apos;AMWAY HOME&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;AIR&apos; THEN &apos;ATMOSPHERE&apos;
+        WHEN GLBL_CTGRY_DESC = &apos;WATER&apos; THEN &apos;ESPRING&apos;
+        WHEN GLBL_BUS_LN_DESC = &apos;DURABLES&apos; AND GLBL_BRAND_DESC IN (&apos;CATALOG&apos;, &apos;NONE&apos;, &apos;UNDEFINED&apos;) THEN &apos;OTHER BRAND-DURABLES&apos;
+        WHEN GLBL_BUS_LN_DESC = &apos;NUTRITION&apos; AND GLBL_BRAND_DESC IN (&apos;CATALOG&apos;, &apos;GENSONA&apos;, &apos;OTHER BRAND-DURABLES&apos;, &apos;OTHER BRAND-HOME CARE&apos;, &apos;NONE&apos;, &apos;UNDEFINED&apos;) THEN &apos;OTHER BRAND-NUTRITION&apos;
+        WHEN GLBL_BUS_LN_DESC = &apos;PERSONAL CARE&apos; AND GLBL_BRAND_DESC IN (&apos;CATALOG&apos;, &apos;OTHER BRAND-NUTRITION&apos;, &apos;OTHER BRAND-HOME CARE&apos;, &apos;OTHER BRAND-PERSONAL CARE&apos;, &apos;NONE&apos;, &apos;UNDEFINED&apos;) THEN &apos;OTHER BRAND-PERSONAL CARE&apos;
+        ELSE GLBL_BRAND_DESC
+    END AS GLBL_BRAND_DESC,
+    IS2.GLBL_SUB_BRAND_DESC,
+    CASE 
+        WHEN GLBL_PRDCT_IND_CUT_CD IN (&apos;G285&apos;, &apos;G17&apos;, &apos;G44&apos;, &apos;G48&apos;, &apos;G212&apos;, &apos;G302&apos;, &apos;G58&apos;, &apos;G296&apos;, &apos;G103&apos;, &apos;G296&apos;, &apos;G70&apos;, &apos;G276&apos;, &apos;G277&apos;, &apos;G279&apos;, &apos;G45&apos;, &apos;G212&apos;, &apos;G46&apos;, &apos;G291&apos;, &apos;G117&apos;, &apos;G292&apos;, &apos;G41&apos;, &apos;G212&apos;, &apos;G294&apos;, &apos;G293&apos;, &apos;G212&apos;, &apos;G292&apos;, &apos;G219&apos;, &apos;G220&apos;, &apos;G221&apos;, &apos;G222&apos;, &apos;G255&apos;) THEN &apos;NO&apos;
+        WHEN FCC.CLASS_CD LIKE &apos;%C07%&apos; OR FCC.CLASS_CD LIKE &apos;%E41%&apos; THEN &apos;NO&apos;
+        ELSE &apos;YES&apos;
+    END AS COUNT_SKU,
+    IS2.LAST_ORD_DATE
+FROM /shared/Common/Business/Logical/Portfolio_Hierarchy/GDW_Initial_P1_S2 IS2 LEFT OUTER JOIN 
+        /shared/Common/Business/Logical/Portfolio_Hierarchy/FC_Demand_Corrections DC
+    ON IS2.AMWAY_CNTRY_CD = DC.CORP_CD AND IS2.BASE_7_ITEM_NO = DC.BASE_7_ITEM_NO LEFT OUTER JOIN 
+        (SELECT 
+            CASE 
+                WHEN CORP_CD = &apos;850&apos; THEN &apos;360&apos;
+                ELSE CORP_CD
+            END AS CORP_CD,
+            ITEM_NO AS BASE_7_ITEM_NO,
+            CLASS_CD
+        FROM /shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/FC_Item_Classes
+        ) FCC
+    ON IS2.AMWAY_CNTRY_CD = FCC.CORP_CD AND IS2.BASE_7_ITEM_NO = FCC.BASE_7_ITEM_NO LEFT OUTER JOIN 
+        (SELECT 
+            CASE 
+                WHEN CORP_CD = &apos;850&apos; THEN &apos;360&apos;
+                ELSE CORP_CD
+            END AS CORP_CD,
+            ITEM_NO AS BASE_7_ITEM_NO,
+            PROG_CD
+        FROM /shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/FC_Item_Intro_Cds
+        ) FCI
+    ON IS2.AMWAY_CNTRY_CD = FCI.CORP_CD AND IS2.BASE_7_ITEM_NO = FCI.BASE_7_ITEM_NO LEFT OUTER JOIN 
+        /shared/Common/Business/Logical/Portfolio_Hierarchy/FC_Beauty_Serums_Masks_Body SMB
+    ON IS2.AMWAY_CNTRY_CD = SMB.CORP_CD AND IS2.BASE_7_ITEM_NO = SMB.ITEM_NO
+ORDER BY IS2.AMWAY_CNTRY_CD,
+    IS2.BASE_7_ITEM_NO</attribute>
+  <attribute name="cacheLastTracking" type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/cache_tracking</attribute>
+  <attribute name="creationDate" type="LONG">1564497953371</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1574653297592</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1564497953371</attribute>
+</metadata>

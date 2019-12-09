@@ -1,0 +1,84 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="SUBPROJECT_TYPE" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DB_LLE_ORA/CMPPRV/SUBPROJECT_TYPE" type="TABLE" subtype="DATABASE_TABLE" changeToken="0" tableType="TABLE">
+  <annotation>	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <columns>
+    <column name="SUBPROJECT_NAME" nullable="false">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="PROJECT_NAME" nullable="false">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ORGANIZATION_NAME" nullable="false">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(255)" subType="DATASOURCE_TYPE" type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="ISACTIVE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(1)" subType="DATASOURCE_TYPE" type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes>
+    <index name="SUBPROJECT_TYPE_PK" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="PROJECT_NAME" sortOrder="ASCENDING"/>
+      <indexColumn name="SUBPROJECT_NAME" sortOrder="ASCENDING"/>
+      <indexColumn name="ORGANIZATION_NAME" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">CMPPRV</attribute>
+    </index>
+  </indexes>
+  <foreignKeys>
+    <foreignKey name="SUBPROJECT_TYPE_R01" primaryKeyName="PROJECT_TYPE_PK" primaryKeyTableName="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DB_LLE_ORA/CMPPRV/PROJECT_TYPE">
+      <foreignKeyColumn primaryColumnName="ORGANIZATION_NAME" foreignColumnName="ORGANIZATION_NAME"/>
+      <foreignKeyColumn primaryColumnName="PROJECT_NAME" foreignColumnName="PROJECT_NAME"/>
+    </foreignKey>
+  </foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DB_LLE_ORA/CMPPRV/PROJECT_TYPE" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="PROJECT_NAME" nullable="false">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ORGANIZATION_NAME" nullable="false">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="ISACTIVE">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="creationDate" type="LONG">1426084942657</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="i:0:indexSchema" type="STRING">CMPPRV</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1513891747563</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+</metadata>

@@ -1,0 +1,156 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="getLatestCopy_scripts" path="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/getLatestCopy_scripts" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <parameters>
+    <parameter name="scriptsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="scriptsPathCopy" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/repository/getChildResourcesCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="childResCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="isNullable">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeBaseType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nativeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="mode" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="folderName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="folderPath" direction="OUT">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	getLatestCopy_scripts:
+
+	This procedure is used to get the latest _Copy_nn of the _scripts folder.
+
+	Input: 
+		scriptsPath - the full path to the _scripts folder.
+	Output:
+		scriptsPathCopy - the full path to the latest copy of the _scripts folder.
+	Exceptions: none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	07/26/2019		Mike Tinius			7.0.8			Created new
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE getLatestCopy_scripts(
+	IN scriptsPath			VARCHAR(4000),
+	OUT scriptsPathCopy		VARCHAR(4000)
+)
+BEGIN
+	DECLARE parentPath		VARCHAR(4000);
+	DECLARE folderName		VARCHAR;
+	DECLARE folderNumStr	VARCHAR;
+	DECLARE folderNum		INTEGER;
+	DECLARE folderNumMax	INTEGER DEFAULT 0;
+	DECLARE ex				EXCEPTION;
+
+	IF (scriptsPath IS NULL OR LENGTH(scriptsPath) = 0) THEN
+		RAISE ex VALUE &apos;The input &quot;scriptsPath&quot; cannot be null or emtpy.&apos;;
+	END IF;
+
+	CALL /shared/ASAssets/Utilities/repository/returnFolderNameAndFolderPath(scriptsPath, &apos;E&apos;, folderName, parentPath);
+	FOR r AS SELECT * FROM /shared/ASAssets/Utilities/repository/getChildResourcesCursor(parentPath, &apos;CONTAINER&apos;) DO
+		IF (INSTR(r.resourceName, folderName||&apos;_Copy_&apos;) &gt; 0) THEN
+			SET folderNumStr = REPLACE(r.resourceName, folderName||&apos;_Copy_&apos;, &apos;&apos;);
+			BEGIN
+				SET folderNum = CAST(folderNumStr AS INTEGER);
+				IF (folderNum &gt; folderNumMax) THEN
+					SET folderNumMax = folderNum;
+				END IF;
+			EXCEPTION
+				ELSE
+			END;
+		END IF;
+	END FOR;
+	IF (folderNumMax &gt; 0) THEN
+		SET scriptsPathCopy = parentPath || &apos;/&apos; || folderName || &apos;_Copy_&apos; || folderNumMax;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1564184368915</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564229378636</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1564184368915</attribute>
+</metadata>

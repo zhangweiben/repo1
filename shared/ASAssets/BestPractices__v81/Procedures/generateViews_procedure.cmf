@@ -1,0 +1,463 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateViews" path="/shared/ASAssets/BestPractices_v81/Procedures/generateViews" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="ConfigParamsVector" direction="IN" nullable="true">
+      <datatype name="ConfigParamsVector" type="ARRAY" maxLength="0">
+        <itemDatatype>
+          <datatype name="ConfigParamsType" referenceDefinitionSet="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" referenceType="ConfigParamsType" type="TREE" refId="1">
+            <element name="generateMode">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="outputMode">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="generateViews">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="resourceCaseRule">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="columnCaseRule">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="separator">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="useAliasRule">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="resourcePrefix">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="resourceSuffix">
+              <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+            </element>
+            <element name="generateWithSourceColumn">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="generateCast">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="generateIndexes">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+            <element name="debug">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="debug2">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="debug3">
+              <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+            </element>
+            <element name="basePath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="scriptsPath">
+              <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+            </element>
+            <element name="padAmount">
+              <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+            </element>
+          </datatype>
+        </itemDatatype>
+      </datatype>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="layerType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="groupId" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="derivedFilterPath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="datasourceName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="projectFolderName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="greatGrandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="grandParentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="parentName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="containerName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="containerType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="columnName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="logicalColumnName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="logicalColumnType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="logicalStatus">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="containerPath">
+          <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+        </element>
+        <element name="duration">
+          <datatype name="IntervalDay" type="INTERVAL_DAY" intervalMode="INTERVAL_HOUR_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/generateViewsXML" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="ConfigParamsXML" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="layerType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="groupId" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="derivedFilterPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="datasourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="projectFolderName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="greatGrandParentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="grandParentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="parentName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="containerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="containerType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="columnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalColumnName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalColumnType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="logicalStatus">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="containerPath">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="duration">
+            <datatype type="INTERVAL_DAY" intervalMode="INTERVAL_HOUR_TO_SECOND" intervalPrecision="2" fractionalSecondPrecision="6"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* generateViews: 
+	-- Data Virtualization Best Practices --
+	This is the main procedure used for generating any layer of views from data sources or other view layers including
+		&quot;Physical Views&quot;, &quot;Formatting Views&quot;, &quot;Logical Views&quot;, and  &quot;Client Views&quot;
+
+	Whether you have 10&apos;s, 100&apos;s or 1000&apos;s of relational tables that you want to map into a canonical
+	format, this auto-generation utility will aid in the mapping of data abstraction layers to the 
+	physical tables.
+	
+	1) Edit the /&lt;project-name&gt;/generationScripts/ConfigureParams and ConfigureStartingFolders file to set up the processing
+		startingFolderVector - 
+			defines which data source folders to process, 
+			where the views get generated, 
+			and whether the sub-folders are derived from the source or defined absolutely
+
+	2) Execute the top level procedure which is:
+		/&lt;project-name&gt;/generationScripts/generatePhysicalViews
+		/&lt;project-name&gt;/generationScripts/generateFormattingViews
+	3) Refresh Studio to see the Views that were generated
+
+	Cautions:
+	   CAUTION(1): Overlapping sourceFolderPath definitions will result in duplicated views being produced
+		Take the 2 source folder paths expressed below.  The 2nd one is a sub-directory of the first one.
+		This will result in the same source folders being processed twice which generates the same mapping views
+		but in different target folders.
+	    (1,&apos;PV&apos;,&apos;D&apos;,&apos;/shared/DataAbstractSample/PhysicalLayer&apos;,		null, &apos;/shared/DataAbstractSample/FormattingLayer&apos;),
+	    (1,&apos;PV&apos;,&apos;D&apos;,&apos;/shared/DataAbstractSample/PhysicalLayer/ORDERS&apos;,	null, &apos;/shared/DataAbstractSample/FormattingLayer/Orders&apos;)
+
+	    CAUTION(2): Source Folder Path definitions are case sensitive and must match the actual source path that you
+		want to introspect to create mapping views from.
+
+	    CAUTION(3): Only relational sources are supported at this time.
+
+	Input:
+		Environmnet Variables set by invoking generate...Views procedures:
+			This is an alternative approach to setting variables without modiffying the signature of a procedure.
+
+			Local Variable			Environment Variable				Desscription
+			-----------------------	---------------------------			----------------------------------------
+			generateType 			best.practices.generateType			VIEW or LINK - differentiates the type of generation to be performed
+			generateViewsWrapper	best.practices.generateViewsWrapper generate the view wrapper print out
+																			0=Do not print out row information to console window (print to cursor result window)
+																			1=Do print out row information for TABLE only to consle window
+																			2=Do print out row information for TABLE and COLUMNS to console window
+			overwrite				best.practices.overwrite			overwrite a target resource or not: 
+																			0=&quot;FAIL_IF_EXISTS&quot;=do not overwrite the resource.  If the resource exists, raise an exception.
+																			1=&quot;SKIP_IF_EXISTS&quot;=skip the resource if it exists and continue processing
+																			2=&quot;OVERWRITE_IF_EXISTS&quot;=do overwrite the resource if it exists.
+			copyAnnotation 			best.practices.copyAnnotation		copy a resource annotation (TABLE or COLUMN), 0=false (default), 1=true
+			copyPrivilegeMode		best.practices.copyPrivilegeMode	determine the type of copy: null (default)=do set privileges at all, 0=OVERWRITE_APPEND, 1=SET_EXACTLY
+			sourceResource 			best.practices.sourceResource		user supplied source folder or specific resource for generating a LINK or VIEW from.
+			generateToFolder 		best.practices.generateToFolder		user supplied folder for generating LINKS or VIEWS into
+			exactMatch				best.practices.exactMatch			determine how to filter on the source resources
+																			0=fuzzy match - sourcePath + derivedFilterPath must simply be contained within resourcePath
+																			1=exact match - sourcePath + derivedFilterPath must match exactly in resourcePath
+			executeModuleName		best.practices.executeModuleName	the name of the executing module/procedure
+
+			-- The vector of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+		ConfigParamsVector 
+
+			-- the designator for the layer in which to generate from
+			-- FV=Formatting Views - generateFormattingViews invokes generateViews
+			-- BV=Business Views - use generateViews
+			-- LV=Logical Views - generateLoicalViews invokes generateViews
+			-- CV=Client Views - generateClientViews invokes generateViews
+			-- CP=Client Published - generateClientPublished invokes generateViews
+   		layerType
+
+			-- this is the group id located in the /generationScripts/Configure/ConfigureStartingFolders.  
+			This is a filter that allows the user to only generate for a specific group
+		inGroupId 
+
+			-- The list &quot;derivedFilterPath&quot; is a comma-separated list of resources and may be used with either generateToFolder (option 1) to groupId (option 2) 
+			-- The path is derived by concatenating the partial filter path with the source path of the designated layer type.
+			-- The layerType and the groupId are used to filter the rows from the configureStartingFolders.  The source path is
+			--    defined in configureStartingFolders per the layerType and groupId combination.
+			--   e.g. layerType=CP and sourceFolderPath=/shared/BestPractices_v73/DataAbstractionSample/L1_Mapping_Layer/Client_Views
+			--        The derivedFilterPath list=Orders_Closed,/Orders/Customers,Orders/Product
+			--        Even though there are several other views in the /Orders folder under the Client_Views only the ones specified
+			--	      will be generated to the Client_Published.  Views directly under the source path do not require any qualifying path except the view name.
+			--        Lastly, a leading &apos;/&apos; is not required but may be present if desired.
+			-- Correlate the groupId position with the derivedFilterPath position
+			--		derivedFilterPath=&quot;customers,orders&quot;,shippingmethods
+			--                         |                     |
+			--                         v                     v
+			--		          groupId=ds_inventory.tutorial,ds_orders.tutorial
+			-- If null, generate views from all source folders as directed by the &quot;configure starting folders&quot; and the designated layer type.
+		derivedFilterPath	LONGVARCHAR, 
+
+	Output:
+		-- View Generation results
+			generateViewsRow - 	CURSOR (
+		 		datasourceName			VARCHAR(255), 
+				projectFolderName		VARCHAR(255), 
+				greatGrandParentName	VARCHAR(255), 
+				grandParentName			VARCHAR(255), 
+				parentName				VARCHAR(255),
+		        containerName 			VARCHAR(255), 
+		        containerType 			VARCHAR(255), - the resource type of the container resource (i.e. TABLE)
+		        columnName 				VARCHAR(255), - the name of the original column within the source resource.
+		        logicalColumnName 		VARCHAR(255), - the name of the target column that will be created.
+        		logicalColumnType 		VARCHAR(255), - the type of the target column that will be created.
+		        logicalStatus 			VARCHAR(4000), - the status for the usage of this column
+ 						-- on input, when generateMode = &apos;G&apos; possible values are:
+						-- 		GENERATED - generated the column name based on rules supplied
+						-- 		UNCHANGED - remains unchanged when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=1
+						-- on input, when generateMode = &apos;R&apos; possible values are:
+						-- 		FOUND - found when it finds a match to physical name in the spreadsheet
+						-- 		UNCHANGED - remains unchanged when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=1
+						-- 		DROPPED - gets dropped from the list when it cannot match to the physical resourceName and the ConfigureParams.generateWithSourceColumn=0
+       			containerPath 			VARCHAR(4000), - the full path to the container resource.
+				duration				INTERVAL HOUR TO SECOND
+			)
+Sample:
+containerName,containerType,columnName,logicalColumnName,logicalStatus,containerPath
+transforms,CONTAINER,productCatalog_Transformation,productCatalog_Transformation,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,ProductID,ProductID,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,ProductName,ProductName,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,CategoryID,CategoryID,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,CategoryName,CategoryName,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,ProductDescription,ProductDescription,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,SerialNumber,SerialNumber,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,UnitPrice,UnitPrice,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,ReorderLevel,ReorderLevel,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+productCatalog_Transformation,PROCEDURE,LeadTime,LeadTime,GENERATED,/shared/BestPractices_v73/DataAbstractionSample/L4_Physical_Layer/Physical_Views/XML
+View Generation Complete,,,,,
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	06/15/2010		Mike Tinius			5.2.0			Created new
+	05/17/2013		Mike Tinius			5.2.0			Updated for Best Practices 7.1 - added overwrite, copyAnnotation, updatePrivilegesRecursively, copyPrivilegeMode, publishToFolder, targetResource
+	07/31/2013		Mike Tinius			6.0.0			B.P. 7.3: Add printout of begin and end time and duration.
+	09/16/2013		Mike Tinius			6.1.0			B.P. 7.3.1: patch - modified generateViewsWrapper to allow 0, 1, 2
+	11/08/2013		Mike Tinius			6.1.0			B.P. 8.0: added projectFolderName, greatGrandParentName, and duration to output
+	10/28/2014		Mike Tinius			6.2.6			B.P. 8.1.5: Fixed output message to print the line instead of null when view is SKIPPED.
+	11/21/2014		Mike Tinius			6.2.6			B.P. 8.1.5: Fixed display of last view for conditions generateViewsWrapper = 1 and generateViewsWrapper = 2.
+	11/25/2014		Mike Tinius			6.2.6			B.P. 8.1.5: Fixed issue when groupId contains a single quote which is caused by data source name having a single quote.														
+	09/21/2015		Mike Tinius			7.0.x			B.P. 8.1.7: Added generateViews=2 for a select * projection.  Requires Utilities_2015Q3
+	12/11/2015		Mike Tinius			7.0.x			B.P. 8.1.8: Fix to allow a derived filter path longer than VARCHAR(4000).  Changed to LONGVARCHAR.
+	03/02/2018		Mike Tinius			7.0.5			Replaced RegexSplit with extractDelimitedText
+	01/24/2019		Mike Tinius			8.0.0			B.P. 2019.1: Added the ability to handle columnCaseRule, resourcePrefix, resourceSuffix and newColumnList for generateMode=&apos;G&apos;. 
+	01/29/2019		Mike Tinius			8.0.0			B.P. 2019.101: Fix bug so derivedFilterPath could be used with generateToFolder.
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE generateViews(
+		-- The vector of configuration parameters.  A full description can be found in /generationScripts/Configure/ConfigureParams
+	IN ConfigParamsVector	VECTOR(/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.ConfigParamsType),
+
+		-- FV=Formatting Views - generateFormattingViews invokes generateViews
+		-- BV=Business Views - use generateViews
+		-- LV=Logical Views - generateLoicalViews invokes generateViews
+		-- CV=Client Views - generateClientViews invokes generateViews
+		-- CP=Client Published - generateClientPublished invokes generateViews
+    IN layerType			VARCHAR,
+
+		-- This is a comma separate list group ids to process from the configureStartingFolders
+		-- This is a comma separated list of derived paths to generate views from.  It is not the full path of the resource.
+	IN groupId				LONGVARCHAR, 
+
+		-- The list &quot;derivedFilterPath&apos; is a comma-separated list of resources and may be used with either generateToFolder (option 1) to groupId (option 2) 
+		-- The path is derived by concatenating the partial filter path with the source path of the designated layer type.
+		-- The layerType and the groupId are used to filter the rows from the configureStartingFolders.  The source path is
+		--    defined in configureStartingFolders per the layerType and groupId combination.
+		--   e.g. layerType=CP and sourceFolderPath=/shared/BestPractices_v73/DataAbstractionSample/L1_Mapping_Layer/Client_Views
+		--        The derivedFilterPath list=Orders_Closed,/Orders/Customers,Orders/Product
+		--        Even though there are several other views in the /Orders folder under the Client_Views only the ones specified
+		--	      will be generated to the Client_Published.  Views directly under the source path do not require any qualifying path except the view name.
+		--        Lastly, a leading &apos;/&apos; is not required but may be present if desired.
+		-- Correlate the groupId position with the derivedFilterPath position
+		--		derivedFilterPath=&quot;customers,orders&quot;,shippingmethods
+		--                         |                     |
+		--                         v                     v
+		--		          groupId=ds_inventory.tutorial,ds_orders.tutorial
+		-- If null, generate views from all source folders as directed by the &quot;configure starting folders&quot; and the designated layer type.
+		-- Note: exactMatch is defaulted to 0 so a partial path match is the only thing required
+	IN derivedFilterPath	LONGVARCHAR, 
+
+    OUT result CURSOR 		/shared/ASAssets/BestPractices_v81/Procedures/TypeDefinitions.generateViewsRow
+)
+BEGIN
+	DECLARE moduleName			VARCHAR DEFAULT &apos;generateViews&apos;;
+	DECLARE ConfigParamsXML		LONGVARCHAR;
+
+	SET ConfigParamsXML = 
+&apos;&lt;ConfigParamsType&gt;
+    &lt;generateMode&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].generateMode,&apos;  &apos;))||&apos;&lt;/generateMode&gt;
+    &lt;outputMode&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].outputMode,&apos;  &apos;))||&apos;&lt;/outputMode&gt;
+    &lt;generateViews&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateViews AS VARCHAR),&apos;  &apos;))||&apos;&lt;/generateViews&gt;
+    &lt;resourceCaseRule&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].resourceCaseRule,&apos;  &apos;))||&apos;&lt;/resourceCaseRule&gt;
+    &lt;columnCaseRule&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].columnCaseRule,&apos;  &apos;))||&apos;&lt;/columnCaseRule&gt;
+    &lt;separator&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].separator,&apos;  &apos;))||&apos;&lt;/separator&gt;
+    &lt;useAliasRule&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].useAliasRule AS VARCHAR),&apos;  &apos;))||&apos;&lt;/useAliasRule&gt;
+    &lt;resourcePrefix&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].resourcePrefix,&apos;  &apos;))||&apos;&lt;/resourcePrefix&gt;
+    &lt;resourceSuffix&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].resourceSuffix,&apos;  &apos;))||&apos;&lt;/resourceSuffix&gt;
+    &lt;generateWithSourceColumn&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateWithSourceColumn AS VARCHAR),&apos;  &apos;))||&apos;&lt;/generateWithSourceColumn&gt;
+    &lt;generateCast&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateCast AS VARCHAR),&apos;  &apos;))||&apos;&lt;/generateCast&gt;
+    &lt;generateIndexes&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].generateIndexes AS VARCHAR),&apos;  &apos;))||&apos;&lt;/generateIndexes&gt;
+    &lt;debug&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].debug,&apos;  &apos;))||&apos;&lt;/debug&gt;
+    &lt;debug2&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].debug2,&apos;  &apos;))||&apos;&lt;/debug2&gt;
+    &lt;debug3&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].debug3,&apos;  &apos;))||&apos;&lt;/debug3&gt;
+    &lt;basePath&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].basePath,&apos;  &apos;))||&apos;&lt;/basePath&gt;
+    &lt;scriptsPath&gt;&apos;||TRIM(NVL(ConfigParamsVector[1].scriptsPath,&apos;  &apos;))||&apos;&lt;/scriptsPath&gt;
+    &lt;padAmount&gt;&apos;||TRIM(NVL(CAST(ConfigParamsVector[1].padAmount AS VARCHAR),&apos;  &apos;))||&apos;&lt;/padAmount&gt;
+&lt;/ConfigParamsType&gt;&apos;;
+
+	IF (UPPER(ConfigParamsVector[1].debug) = &apos;Y&apos;) THEN
+		CALL PRINT(moduleName||&apos;: ConfigParamsXML:&apos;||CHR(10)||NVL(ConfigParamsXML,&apos;null&apos;));
+	END IF;
+
+	-- Invoke the generateViews
+	OPEN result FOR 
+		SELECT * FROM /shared/ASAssets/BestPractices_v81/Procedures/generateViewsXML(ConfigParamsXML, layerType, groupId, derivedFilterPath);
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564602622827</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:0:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">8/225</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

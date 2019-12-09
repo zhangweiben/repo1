@@ -1,0 +1,246 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="score_output" path="/shared/Common/Application/Published/DE/Core_Plus/VCS/score_output" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation/>
+  <columns>
+    <column name="sourceapplication" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sourcetimestamp" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sourceeventid" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="entitytype" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="entityid" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="eventtype" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="event_affiliatecode" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="isocountrycode" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sourcehost" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amwaysalesentity" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="entity_affiliatecode" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="salesorderid" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="vcsscore" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="vcsflag" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sourceeventgenerationtime" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="scoregenerationtime" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="reasoncode" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="reasondescription" nullable="true">
+      <datatype type="STRING" maxLength="256"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="latest_flag" nullable="true">
+      <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="score_date_key" nullable="true">
+      <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Business/Logical/Core_Plus/VCS_Score_Output_Latest" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="sourceapplication">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="sourcetimestamp">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="sourceeventid">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="entitytype">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="entityid">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="eventtype">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="event_affiliatecode">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="isocountrycode">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="sourcehost">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="amwaysalesentity">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="entity_affiliatecode">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="salesorderid">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="vcsscore">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="vcsflag">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="sourceeventgenerationtime">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="scoregenerationtime">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="reasoncode">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="reasondescription">
+        <datatype type="STRING" maxLength="256"/>
+      </element>
+      <element name="latest_flag">
+        <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	VCS_Score_Output_Latest.sourceapplication sourceapplication,
+	VCS_Score_Output_Latest.sourcetimestamp sourcetimestamp,
+	VCS_Score_Output_Latest.sourceeventid sourceeventid,
+	VCS_Score_Output_Latest.entitytype entitytype,
+	VCS_Score_Output_Latest.entityid entityid,
+	VCS_Score_Output_Latest.eventtype eventtype,
+	VCS_Score_Output_Latest.event_affiliatecode event_affiliatecode,
+	VCS_Score_Output_Latest.isocountrycode isocountrycode,
+	VCS_Score_Output_Latest.sourcehost sourcehost,
+	VCS_Score_Output_Latest.amwaysalesentity amwaysalesentity,
+	VCS_Score_Output_Latest.entity_affiliatecode entity_affiliatecode,
+	VCS_Score_Output_Latest.salesorderid salesorderid,
+	VCS_Score_Output_Latest.vcsscore vcsscore,
+	VCS_Score_Output_Latest.vcsflag vcsflag,
+	VCS_Score_Output_Latest.sourceeventgenerationtime sourceeventgenerationtime,
+	VCS_Score_Output_Latest.scoregenerationtime scoregenerationtime,
+	VCS_Score_Output_Latest.reasoncode reasoncode,
+	VCS_Score_Output_Latest.reasondescription reasondescription,
+	VCS_Score_Output_Latest.latest_flag latest_flag,
+	CAST(FORMAT_DATE(CAST(VCS_Score_Output_Latest.scoregenerationtime AS DATE), &apos;yyyymmdd&apos;) AS INT) score_date_key 
+FROM
+	/shared/Common/Business/Logical/Core_Plus/VCS_Score_Output_Latest VCS_Score_Output_Latest</attribute>
+  <attribute name="creationDate" type="LONG">1567179684835</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1567193089643</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1567179684835</attribute>
+</metadata>

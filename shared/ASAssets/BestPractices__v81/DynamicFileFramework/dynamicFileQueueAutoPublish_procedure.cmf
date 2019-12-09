@@ -1,0 +1,841 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="dynamicFileQueueAutoPublish" path="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/dynamicFileQueueAutoPublish" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>dynamicFileQueueAutoPublish:
+
+	This procedure manages the auto publishing for the Dynamic File Framework.  Auto Published is invoked by 
+		the trigger &quot;DynamicFileFrameworkAutoPublishTrigger&quot; resident in the project&apos;s services folder.
+		The user may choose to turn on the trigger so that the file creation happens automatically and does not have to be manually invoked.
+
+ 	Input:
+		debug						N=no, Y=yes
+		actionOriginator			Mandatory - The originating procedure.
+		organization:				Mandatory - the organization name.  Used for filtering on the DYNAMIC_FILE_QUEUE table.
+		projectName:				Mandatory - the project name.  Used for filtering on the DYNAMIC_FILE_QUEUE table.
+		subprojectName:				Optional - the sub-project name.  Used for filtering on the DYNAMIC_FILE_QUEUE table.
+		allownullfilename			Mandatory - 0=Do not allow user to pass in null/empty for the file name.  Throw an exception.
+											  - 1=Allow the user to pass in null/empty for the file name which results in picking up all unclaimed 
+												(not introspected) files in the file system for the invoking user.
+		constantslocation			Mandatory - the location of the project &quot;constants&quot; procedure
+		metadatalayerpath			Mandatory - Fully qualified path to the Dynamic physical metadata data source folder where the file tables will be introspeted.
+			e.g. /shared/ex_project/Physical/Metadata/Dynamic
+		formattinglayerpath			Optional - Fully qualified path to the Dynamic physical formatting views folder where the views will be generated.
+			e.g. /shared/ex_project/Physical/Formatting/Dynamic
+		businesslayerpath			Optional - Fully qualified path to the Dynamic business logical views folder where the views will be generated.
+			e.g. /shared/ex_project/Business/Logical/Dynamic
+		applicationlayerpath		Optional - Fully qualified path to the Dynamic application views folder where the views will be generated.
+			e.g. /shared/ex_project/Application/Views/Dynamic
+		publishedschemapath			Mandatory - Fully Qualified path to the Dynamic database schema in the publish area.
+			e.g. /services/databases/published_data_source/catalog/Dynamic
+		publisheddatabase			Mandatory - The published database name
+		retentionpolicydays			Mandatory - Delete files and DV resources older than x days.  This is a numeric value that will be converted from text to integer.
+	Output:
+		Cursor with columns:
+		status					VARCHAR
+										FILE ADD QUEUED				actiontype=&apos;A&apos;
+										INVALID FILENAME			actiontype=&apos;A&apos;,&apos;R&apos;
+										DUPLICATE REQUEST IGNORED	actiontype=&apos;A&apos;,&apos;R&apos;,&apos;C&apos;
+
+            fileName 			- file name from the file system
+            publishedTableName 	- name of the published file associated with the file 
+            publishedTablePath 	- SQL URL of the published table
+	    	publishedDatabase	- published database name
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="actionOriginator" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="organization" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="projectname" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="subprojectname" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="allownullfilename" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="constantslocation" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="metadatalayerpath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="formattinglayerpath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="businesslayerpath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="applicationlayerpath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="publishedschemapath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="publisheddatabase" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="retentionpolicydays" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="status">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="fileName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="publishedTableName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="publishedTablePath">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="publishedDatabase">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/02_display_DYNAMIC_FILE_QUEUE" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="sortOrder" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestId" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestDateStart" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestDateEnd" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="organization" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="projectName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="subProjectName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="actionOriginator" direction="IN">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="actionType" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="status" direction="IN">
+        <datatype type="STRING" maxLength="100"/>
+      </element>
+      <element name="message" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="emailError" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="requestFileName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestDomainName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="fileName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="proxyUserName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="proxyUserEmail" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="allowNullFileName" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="datasourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="formattingLayerPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="businessLayerPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="applicationLayerPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="publishedSchemaPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="publishedDatabase" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="retentionPolicyDays" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="queueResult" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="REQUEST_ID">
+            <datatype type="DECIMAL" maxDigits="19" maxFractionalDigits="0"/>
+          </element>
+          <element name="REQUEST_DATE_START">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="REQUEST_DATE_END">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="ORGANIZATION">
+            <datatype type="STRING" maxLength="50"/>
+          </element>
+          <element name="PROJECT_NAME">
+            <datatype type="STRING" maxLength="50"/>
+          </element>
+          <element name="SUBPROJECT_NAME">
+            <datatype type="STRING" maxLength="50"/>
+          </element>
+          <element name="ACTION_ORIGINATOR">
+            <datatype type="STRING" maxLength="50"/>
+          </element>
+          <element name="ACTION_TYPE">
+            <datatype type="STRING" maxLength="1"/>
+          </element>
+          <element name="STATUS">
+            <datatype type="STRING" maxLength="100"/>
+          </element>
+          <element name="MESSAGE">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="EMAIL_ERROR">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="REQUEST_FILE_NAME">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="REQUEST_USER_NAME">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="REQUEST_DOMAIN_NAME">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="FILE_NAME">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="PROXY_USER_NAME">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="PROXY_USER_EMAIL">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="ALLOW_NULL_FILE_NAME">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="DATA_SOURCE_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="FORMATTING_LAYER_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="BUSINESS_LAYER_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="APPLICATION_LAYER_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="PUBLISHED_SCHEMA_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="PUBLISHED_DATABASE">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="CONSTANTS_PATH">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="RETENTION_POLICY_DAYS">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="EXECUTE_DDL_PACKAGE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="DATASOURCE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="CATALOG_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SCHEMA_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_SEQ" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_QUEUE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="TABLESPACE_FILEGROUP" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="PROCESS_WAIT_TIME_SECONDS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_RETENTION_POLICY_DAYS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CSV_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="EXCEL_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/dynamicFileList" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="datasourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="status">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="fileName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="userEmail">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="fileTimestamp">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="fileSize">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="publishedTableName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="publishedTablePath">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+          <element name="publishedDatabase">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="metadataTableName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="metadataTablePath">
+            <datatype type="STRING" maxLength="4000"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/dynamicFileQueueInsert" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="organization" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="projectname" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="subprojectname" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="actionOriginator" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="actiontype" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestusername" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestdomain" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="requestfilename" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="allownullfilename" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="constantslocation" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="metadatalayerpath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="formattinglayerpath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="businesslayerpath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="appliationlayerpath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="publishedschemapath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="publisheddatabase" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="retentionpolicydays" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="proxyfilename" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="status" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/user/getDomainUsers" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="domainName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="results" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="domainName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="explicitRights">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="effectiveRights">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="inheritedRights">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="1024"/>
+          </element>
+          <element name="isLocked">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="groupName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="groupDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* dynamicFileQueueAutoPublish:
+
+	This procedure manages the auto publishing for the Dynamic File Framework.  Auto Published is invoked by 
+		the trigger &quot;DynamicFileFrameworkAutoPublishTrigger&quot; resident in the project&apos;s services folder.
+		The user may choose to turn on the trigger so that the file creation happens automatically and does not have to be manually invoked.
+
+ 	Input:
+		debug						N=no, Y=yes
+		actionOriginator			Mandatory - The originating procedure.
+		organization:				Mandatory - the organization name.  Used for filtering on the DYNAMIC_FILE_QUEUE table.
+		projectName:				Mandatory - the project name.  Used for filtering on the DYNAMIC_FILE_QUEUE table.
+		subprojectName:				Optional - the sub-project name.  Used for filtering on the DYNAMIC_FILE_QUEUE table.
+		allownullfilename			Mandatory - 0=Do not allow user to pass in null/empty for the file name.  Throw an exception.
+											  - 1=Allow the user to pass in null/empty for the file name which results in picking up all unclaimed 
+												(not introspected) files in the file system for the invoking user.
+		constantslocation			Mandatory - the location of the project &quot;constants&quot; procedure
+		metadatalayerpath			Mandatory - Fully qualified path to the Dynamic physical metadata data source folder where the file tables will be introspeted.
+			e.g. /shared/ex_project/Physical/Metadata/Dynamic
+		formattinglayerpath			Optional - Fully qualified path to the Dynamic physical formatting views folder where the views will be generated.
+			e.g. /shared/ex_project/Physical/Formatting/Dynamic
+		businesslayerpath			Optional - Fully qualified path to the Dynamic business logical views folder where the views will be generated.
+			e.g. /shared/ex_project/Business/Logical/Dynamic
+		applicationlayerpath		Optional - Fully qualified path to the Dynamic application views folder where the views will be generated.
+			e.g. /shared/ex_project/Application/Views/Dynamic
+		publishedschemapath			Mandatory - Fully Qualified path to the Dynamic database schema in the publish area.
+			e.g. /services/databases/published_data_source/catalog/Dynamic
+		publisheddatabase			Mandatory - The published database name
+		retentionpolicydays			Mandatory - Delete files and DV resources older than x days.  This is a numeric value that will be converted from text to integer.
+	Output:
+		Cursor with columns:
+		status					VARCHAR
+										FILE ADD QUEUED				actiontype=&apos;A&apos;
+										INVALID FILENAME			actiontype=&apos;A&apos;,&apos;R&apos;
+										DUPLICATE REQUEST IGNORED	actiontype=&apos;A&apos;,&apos;R&apos;,&apos;C&apos;
+
+            fileName 			- file name from the file system
+            publishedTableName 	- name of the published file associated with the file 
+            publishedTablePath 	- SQL URL of the published table
+	    	publishedDatabase	- published database name
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE dynamicFileQueueAutoPublish(
+	IN	debug					CHAR(1), -- N=no, Y=yes
+	IN	actionOriginator		VARCHAR,
+	IN	organization			VARCHAR,
+	IN	projectname				VARCHAR,
+	IN	subprojectname			VARCHAR,
+	IN	allownullfilename		SMALLINT,
+	IN	constantslocation		VARCHAR(4000),
+	IN	metadatalayerpath		VARCHAR(4000),
+	IN	formattinglayerpath		VARCHAR(4000),
+	IN	businesslayerpath		VARCHAR(4000),
+	IN	applicationlayerpath	VARCHAR(4000),
+	IN	publishedschemapath		VARCHAR(4000),
+	IN	publisheddatabase		VARCHAR,
+	IN 	retentionpolicydays		SMALLINT,
+    OUT result 					PIPE (
+        status 				VARCHAR(4000),
+		fileName			VARCHAR(255),
+        publishedTableName 	VARCHAR(255), 
+        publishedTablePath 	VARCHAR(4000),
+		publishedDatabase	VARCHAR(255)
+        )
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;dynamicFileQueueAutoPublish&apos;;
+	DECLARE	globalConstantsPath		VARCHAR(4000) DEFAULT /shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants.globalConstantsPath;
+	DECLARE requestfilename			VARCHAR;
+	DECLARE datasourcepath			VARCHAR(4000) DEFAULT null;
+	DECLARE requestusername			VARCHAR;
+	DECLARE	requestdomain			VARCHAR;
+	DECLARE proxyfilename			VARCHAR;
+	DECLARE filenamePendingActions	BOOLEAN;
+	DECLARE status					VARCHAR;
+	DECLARE pos						INTEGER;
+	DECLARE ex						EXCEPTION;
+	DECLARE sqlStatement			LONGVARCHAR;
+	DECLARE queueDatasourcePath		LONGVARCHAR;
+	DECLARE queueCatalogName		VARCHAR;
+	DECLARE queueSchemaName			VARCHAR;
+	DECLARE queueTableName			VARCHAR;
+	DECLARE fullTablePath			LONGVARCHAR;
+    DECLARE queueResult 			CURSOR /shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants.queueResultType;
+
+	-- Get the datasource path, catalog and schema name to construct the path dynamically
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;DATASOURCE_PATH&apos;, 1, queueDatasourcePath);
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;CATALOG_NAME&apos;, 1, queueCatalogName);
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;SCHEMA_NAME&apos;, 1, queueSchemaName);
+	CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;DYNAMIC_FILE_EMAIL&apos;, 1, queueTableName);
+	IF (queueDatasourcePath IS NULL OR LENGTH(TRIM(queueDatasourcePath)) = 0) THEN
+		raise ex value &apos;The datasource path may not be null or empty:  &apos;||globalConstantsPath||&apos;.DATASOURCE_PATH&apos;;
+	END IF;
+	IF (queueSchemaName IS NULL OR LENGTH(TRIM(queueSchemaName)) = 0) THEN
+		raise ex value &apos;The schema name may not be null or empty:  &apos;||globalConstantsPath||&apos;.SCHEMA_NAME&apos;;
+	END IF;
+	IF (queueCatalogName IS NULL OR LENGTH(TRIM(queueCatalogName)) = 0) THEN
+		SET queueCatalogName = &apos;&apos;;
+	ELSE
+		SET queueCatalogName = &apos;/&apos;||queueCatalogName;
+	END IF;
+	IF (queueTableName IS NULL OR LENGTH(TRIM(queueTableName)) = 0) THEN
+		RAISE ex VALUE &apos;The table name may not be null or empty:  &apos;||globalConstantsPath||&apos;.DYNAMIC_FILE_EMAIL&apos;;
+	END IF;
+	SET fullTablePath = queueDatasourcePath || queueCatalogName || &apos;/&apos;||queueSchemaName || &apos;/&apos;||queueTableName;
+	CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(fullTablePath, null, fullTablePath);
+
+	-- The file extension [.csv, .txt].
+	SET datasourcepath = metadatalayerpath||&apos;/DynamicTempFiles_CSV&apos;;
+	FOR r AS 
+		SELECT * FROM /shared/ASAssets/BestPractices_v81/DynamicFileFramework/dynamicFileList(debug, datasourcepath) 
+		WHERE status = &apos;NOT PUBLISHED&apos;
+	DO
+		-- Determine if the file request has already been initiated but not completed
+		SET filenamePendingActions = false;
+		FOR p AS
+			SELECT * FROM /shared/ASAssets/BestPractices_v81/DynamicFileFramework/&quot;02_display_DYNAMIC_FILE_QUEUE&quot;(
+				debug,				-- Y=debug on, N=debug off
+				&apos;DESC&apos;,				-- Valid Values for sorting by REQUEST_DATE_START:   ASC|ASCENDING|DESC|DESCENDING
+				null, null, 
+				&apos;IS NULL&apos;,			-- REQUEST_DATE_END IS NULL:  This represents a request that has been initiated but not completed
+				organization,		-- Filter applied on ORGANIZATION if not null.
+				projectname,		-- Filter applied on PROJECT_NAME if not null.
+				subprojectname,		-- Filter applied on SUBPROJECT_NAME if not null.
+				null,
+				&apos;A&apos;,				-- Filter applied on ACTION_TYPE if not null.
+				null, null, null, null, null, null,
+				r.fileName,			-- Filter applied on FILE_NAME if not null.
+				null, null, null,
+				datasourcepath,		-- Filter applied on DATA_SOURCE_PATH if not null.
+				null, null, null, null, null, null, null
+				) 
+		DO
+			SET filenamePendingActions = true;
+			IF (debug = &apos;Y&apos;) THEN
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Found pending actions for file=[&apos;||r.fileName||&apos;]&apos;);
+			END IF;
+		END FOR;
+
+		-- If there are no pending file actions then add the file automatically
+		IF (NOT filenamePendingActions) THEN
+			-- Get the file username
+			SET pos = INSTR(r.fileName, &apos;-&apos;);
+			IF (pos &gt; 0) THEN
+				SET requestusername = SUBSTRING(r.fileName, 1, pos-1);
+
+				-- Get the file username&apos;s domain
+				FOR du AS
+					SELECT DISTINCT name, domainName FROM /shared/ASAssets/Utilities/repository/&quot;user&quot;/getDomainUsers(null)
+						WHERE name = requestusername
+						ORDER BY domainName DESC
+				DO
+					SET requestdomain = du.domainName;
+				END FOR;
+
+				-- Construct the proxy file name.  This syntax is required since the actual user is not submitting the request.
+				SET requestfilename = &apos;USERNAME[&apos;||requestusername||&apos;]&apos;||r.fileName;
+			ELSE
+				SET requestusername = null;
+				SET requestdomain = null;
+				SET requestfilename = r.fileName;
+			END IF;
+
+			-- Insert a request into the database table queue
+			CALL /shared/ASAssets/BestPractices_v81/DynamicFileFramework/dynamicFileQueueInsert(
+				debug,
+				organization,
+				projectname,
+				subprojectname,
+				actionOriginator,
+				&apos;A&apos;,	-- Add file
+				requestusername,
+				requestdomain,
+				requestfilename,
+				allownullfilename,
+				constantslocation,
+				metadatalayerpath,
+				formattinglayerpath,
+				businesslayerpath,
+				applicationlayerpath,
+				publishedschemapath,
+				publisheddatabase,
+				retentionpolicydays,
+				proxyfilename,
+				status
+			);
+
+			-- Report the file as queued
+			INSERT INTO result(status, fileName, publishedTableName, publishedTablePath, publishedDatabase) 
+				VALUES (status, r.fileName, &apos;TBD&apos;, &apos;TBD&apos;, &apos;TBD&apos;);		
+		END IF;
+	END FOR;
+
+	-- The file extension [.xls, .xlsx].
+	SET datasourcepath = metadatalayerpath||&apos;/DynamicTempFiles_Excel&apos;;
+	FOR r AS 
+		SELECT * FROM /shared/ASAssets/BestPractices_v81/DynamicFileFramework/dynamicFileList(debug, datasourcepath) 
+		WHERE status = &apos;NOT PUBLISHED&apos;
+	DO
+		-- Determine if the file request has already been initiated but not completed
+		SET filenamePendingActions = false;
+		FOR p AS
+			SELECT * FROM /shared/ASAssets/BestPractices_v81/DynamicFileFramework/&quot;02_display_DYNAMIC_FILE_QUEUE&quot;(
+				debug,				-- Y=debug on, N=debug off
+				&apos;DESC&apos;,				-- Valid Values for sorting by REQUEST_DATE_START:   ASC|ASCENDING|DESC|DESCENDING
+				null, null,
+				&apos;IS NULL&apos;,			-- REQUEST_DATE_END IS NULL:  This represents a request that has been initiated but not completed
+				organization,		-- Filter applied on ORGANIZATION if not null.
+				projectname,		-- Filter applied on PROJECT_NAME if not null.
+				subprojectname,		-- Filter applied on SUBPROJECT_NAME if not null.
+				null,
+				&apos;A&apos;,				-- Filter applied on ACTION_TYPE if not null.
+				null, null, null, null, null, null,
+				r.fileName,			-- Filter applied on FILE_NAME if not null.
+				null, null, null,
+				datasourcepath,		-- Filter applied on DATA_SOURCE_PATH if not null.
+				null, null, null, null, null, null, null
+				) 
+		DO
+			SET filenamePendingActions = true;
+			IF (debug = &apos;Y&apos;) THEN
+				CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Found pending actions for file=[&apos;||r.fileName||&apos;]&apos;);
+			END IF;
+		END FOR;
+
+		-- If there are no pending file actions then add the file automatically
+		IF (NOT filenamePendingActions) THEN
+			-- Get the file username
+			SET requestusername = null;
+			SET pos = INSTR(r.fileName, &apos;-&apos;);
+			IF (pos &gt; 0) THEN
+				SET requestusername = SUBSTRING(r.fileName, 1, pos-1);
+
+				-- Get the file username&apos;s domain
+				FOR du AS
+					SELECT DISTINCT name, domainName from /shared/ASAssets/Utilities/repository/&quot;user&quot;/getDomainUsers(null)
+						WHERE name = requestusername
+						ORDER BY domainName DESC
+				DO
+					SET requestdomain = du.domainName;
+				END FOR;
+			ELSE
+				SET requestusername = &apos;admin&apos;;
+				SET requestdomain = &apos;composite&apos;;
+			END IF;
+			-- Construct the proxy file name.  This syntax is required since the actual user is not submitting the request.
+			SET requestfilename = &apos;USERNAME[&apos;||requestusername||&apos;]&apos;||r.fileName;
+
+			-- Insert a request into the database table queue
+			CALL /shared/ASAssets/BestPractices_v81/DynamicFileFramework/dynamicFileQueueInsert(
+				debug,
+				organization,
+				projectname,
+				subprojectname,
+				actionOriginator,
+				&apos;A&apos;,	-- ADD File
+				requestusername,
+				requestdomain,
+				requestfilename,
+				allownullfilename,
+				constantslocation,
+				metadatalayerpath,
+				formattinglayerpath,
+				businesslayerpath,
+				applicationlayerpath,
+				publishedschemapath,
+				publisheddatabase,
+				retentionpolicydays,
+				proxyfilename,
+				status
+			);
+
+			-- Report the file as queued
+			INSERT INTO result(status, fileName, publishedTableName, publishedTablePath, publishedDatabase) 
+				VALUES (status, r.fileName, &apos;TBD&apos;, &apos;TBD&apos;, &apos;TBD&apos;);		
+		END IF;
+	END FOR;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1507149898115</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserId" type="INTEGER">1535</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564410931006</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">1535</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1507149898115</attribute>
+</metadata>

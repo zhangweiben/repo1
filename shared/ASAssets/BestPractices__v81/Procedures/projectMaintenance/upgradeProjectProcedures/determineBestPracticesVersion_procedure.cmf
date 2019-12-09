@@ -1,0 +1,354 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="determineBestPracticesVersion" path="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/upgradeProjectProcedures/determineBestPracticesVersion" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="projectPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="scriptsPath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="bestPracticesVersion" direction="OUT" nullable="true">
+      <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+    </parameter>
+    <parameter name="bestPracticesMinorVersion" direction="OUT" nullable="true">
+      <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/vector_upgradeVersionVector" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="upgradeVersionVector" direction="OUT">
+        <datatype type="ARRAY" maxLength="0">
+          <itemDatatype>
+            <datatype name="upgradeVersionVector" type="TREE" refId="2">
+              <element name="bestPracticesVersionFrom">
+                <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+              </element>
+              <element name="bestPracticesVersionTo">
+                <datatype name="DOUBLE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+              </element>
+              <element name="backupType">
+                <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+              </element>
+            </datatype>
+          </itemDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceListRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creationDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="creationDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="creatorUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creatorUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="lastModifiedDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="lastModifiedUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* 
+	determineBestPracticesVersion:
+
+	This procedure returns the version of the Best Practices for a given project
+		When this procedure exists: $PROJECT_PATH/_scripts/Constants/getBestPracticesVersion, invoke it to get the version
+		When this folder exists but not the procedure &quot;getBestPracticesVersion&quot;, $PROJECT_PATH/_scripts the version is 7.0
+		When neither this folder does not exist $PROJECT_PATH/_scripts, the version is pre-7.0 and must be upgarded manually.
+	Input: 
+		projectPath - the path to the target project to upgrade.
+
+	Output:
+		bestPracticesVersion - The version of the Best Practices
+			Values: A double in the format M.m (Major.Minor)
+			Returns the version of the best practices scripts
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	05/14/2010		Mike Tinius			6.0.0			Created new
+	08/25/2014		Mike Tinius			6.2.6			B.P. 8.1.4 Added ability to upgrade an empty or non-existent _scripts folder.
+	03/01/2018		Mike Tinius			7.0.5			Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists
+	07/26/2019		Mike Tinius			7.0.8			Added scriptsPath to the input.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE determineBestPracticesVersion(
+	IN debug						CHAR(1),
+	IN projectPath					VARCHAR(4000),
+	IN scriptsPath					VARCHAR(4000),
+    OUT bestPracticesVersion 		DOUBLE,
+	OUT bestPracticesMinorVersion 	DOUBLE
+)
+BEGIN
+	DECLARE moduleName				VARCHAR DEFAULT &apos;determineBestPracticesVersion&apos;;
+	DECLARE resourcePath			VARCHAR(4000);
+	DECLARE resourceType			VARCHAR;
+	DECLARE resourceExists 			BOOLEAN;
+	DECLARE sqlScript				LONGVARCHAR;
+	DECLARE curs					CURSOR(bestPracticesVersion double);
+	DECLARE ex						EXCEPTION;
+	DECLARE i						INTEGER DEFAULT 1;
+	-- Provides a vector of pre-7.0 versions to check for
+	DECLARE resourceVect			VECTOR(ROW(resourcePath VARCHAR(4000), resourceType VARCHAR, compatibleVersion DOUBLE)) DEFAULT VECTOR[
+		(REPLACE(REPLACE(&apos;$PROJECT_PATH/L1_Mapping_Layer/Client_Published&apos;,&apos;$PROJECT_PATH&apos;,projectPath),&apos;//&apos;,&apos;/&apos;),			&apos;CONTAINER&apos;,6.0),
+		(REPLACE(REPLACE(&apos;$PROJECT_PATH/L1_Mapping_Layer/Client_Views&apos;,&apos;$PROJECT_PATH&apos;,projectPath),&apos;//&apos;,&apos;/&apos;),				&apos;CONTAINER&apos;,5.0),
+		(REPLACE(REPLACE(&apos;$PROJECT_PATH/L1_Mapping_Layer/L1_2_Client_Views&apos;,&apos;$PROJECT_PATH&apos;,projectPath),&apos;//&apos;,&apos;/&apos;),			&apos;CONTAINER&apos;,1.0)];
+	DECLARE upgradeVersionVector	VECTOR(ROW(bestPracticesVersionFrom DOUBLE, bestPracticesVersionTo DOUBLE, backupType INTEGER)); -- backupType: [0=backup individual folders in place, 1=backup entire folder]
+	DECLARE bestPracticesVersionVectFrom DOUBLE;
+	DECLARE resourcePathReserved	VARCHAR(4000);
+
+	/***************************************************************
+	 * Check to make sure the project exists
+	 ***************************************************************/
+	call /lib/resource/ResourceExists(projectPath, &apos;CONTAINER&apos;, null, resourceExists);
+	if (NOT resourceExists) then
+		raise ex value moduleName||&apos;:  The project path does not exist. projectPath=&apos;||NVL(projectPath,&apos;null&apos;);
+	end if;
+	call /lib/resource/ResourceExists(scriptsPath, &apos;CONTAINER&apos;, null, resourceExists);
+	if (NOT resourceExists) then
+		raise ex value moduleName||&apos;:  The scripts path does not exist. scriptsPath=&apos;||NVL(scriptsPath,&apos;null&apos;);
+	end if;
+
+	/***************************************************************
+	 * Check to see if &quot;$PROJECT_PATH/_scripts/Constants/defaultValues&quot; exists
+	 *   This means the project is 7.1 or higher
+	 ***************************************************************/
+	set resourcePath = REPLACE(REPLACE(&apos;$SCRIPTS_PATH/Constants/defaultValues&apos;,&apos;$SCRIPTS_PATH&apos;,scriptsPath),&apos;//&apos;,&apos;/&apos;);
+	call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  Check for path exists:  resourcePath=&apos;||NVL(resourcePath,&apos;null&apos;));
+	call /lib/resource/ResourceExists(resourcePath, &apos;PROCEDURE&apos;, null, resourceExists);
+	if (resourceExists) then
+			-- Get the bestPracticesVersion_ Constant
+			call /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(resourcePath, null, resourcePathReserved);
+			call /shared/ASAssets/Utilities/string/getConstantV2(resourcePathReserved, &apos;bestPracticesVersion_&apos;, 1, bestPracticesVersion);
+			set bestPracticesMinorVersion = bestPracticesVersion;
+	else
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:     Procedure &quot;getBestPracticesVersion&quot; does not exist.&apos;);
+		/***************************************************************
+		 * Check to see if the folder &quot;$PROJECT_PATH/_scripts&quot; exists
+		 *   This means the project is 7.0
+		 ***************************************************************/
+		set resourcePath = REPLACE(REPLACE(&apos;$PROJECT_PATH/_scripts&apos;,&apos;$PROJECT_PATH&apos;,projectPath),&apos;//&apos;,&apos;/&apos;);
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  Check for path exists: resourcePath=&apos;||NVL(resourcePath,&apos;null&apos;));
+		call /lib/resource/ResourceExists(resourcePath, &apos;CONTAINER&apos;, null, resourceExists);
+		if (resourceExists) then
+			-- Default to 7.0
+			set bestPracticesVersion = 7.0;
+			set bestPracticesMinorVersion = bestPracticesVersion;
+
+			set i = 0;
+			-- Handle the use case where the _scrpits directory is empty or the only contains a shell of folders but no procedures
+			for r as select * from /shared/ASAssets/Utilities/repository/getResourceListRecursive(resourcePath, &apos;CONTAINER&apos;) do
+				if (r.resType != &apos;CONTAINER&apos;) then
+					set i = i + 1;
+				end if;
+			end for;
+			-- If no resources found then assume the _scripts can be copied using the most current pattern for upgrade
+			if (i = 0) then
+				call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/vector_upgradeVersionVector(upgradeVersionVector);
+				set bestPracticesVersionVectFrom = 0;
+				set i = 1;
+				WHILE (i &lt;= CARDINALITY(upgradeVersionVector)) DO
+					if (upgradeVersionVector[i].bestPracticesVersionFrom &gt; bestPracticesVersionVectFrom) then
+						set bestPracticesVersionVectFrom = upgradeVersionVector[i].bestPracticesVersionFrom;
+					end if;
+					set i = i + 1;
+				end while;
+				set bestPracticesVersion = bestPracticesVersionVectFrom;
+				set bestPracticesMinorVersion = bestPracticesVersion;
+			end if;
+		else
+			/***************************************************************
+			 * Otherwise, the Best Practices scripts are pre-7.0
+			 *   The following chart provides compatibility:
+			 *    1.0 compatible:  1.0 through 4.0
+			 *    5.0 compatible:  5.0 through 5.2
+			 *    6.0 compatible:  6.0 through 6.6
+			 ***************************************************************/
+			set bestPracticesVersion = null;
+			versionLoop:
+			while (i &lt;= CARDINALITY(resourceVect)) do
+				set resourcePath = resourceVect[i].resourcePath;
+				set resourceType = resourceVect[i].resourceType;
+				call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  Check for path exists: resourcePath=&apos;||NVL(resourcePath,&apos;null&apos;));
+				call /lib/resource/ResourceExists(resourcePath, resourceType, null, resourceExists);
+				if (resourceExists) then
+					set bestPracticesVersion = resourceVect[i].compatibleVersion;
+					set bestPracticesMinorVersion = bestPracticesVersion;
+					if (bestPracticesVersion = 6.0) then
+						set resourcePath = REPLACE(REPLACE(&apos;$PROJECT_PATH/documentation&apos;,&apos;$PROJECT_PATH&apos;,projectPath),&apos;//&apos;,&apos;/&apos;);
+						set resourceType = &apos;CONTAINER&apos;;
+						call /lib/resource/ResourceExists(resourcePath, resourceType, null, resourceExists);
+						if (resourceExists) then
+							set bestPracticesMinorVersion = 6.6;
+						end if;
+					end if;
+					leave versionLoop;
+				end if;
+				set i = i + 1;
+			end while;			
+		end if;
+	end if;
+	if (bestPracticesVersion is null) then
+		call /shared/ASAssets/BestPractices_v81/Procedures/projectMaintenance/vector_upgradeVersionVector(upgradeVersionVector);
+		set bestPracticesVersionVectFrom = 0;
+		set i = 1;
+		WHILE (i &lt;= CARDINALITY(upgradeVersionVector)) DO
+			if (upgradeVersionVector[i].bestPracticesVersionFrom &gt; bestPracticesVersionVectFrom) then
+				set bestPracticesVersionVectFrom = upgradeVersionVector[i].bestPracticesVersionFrom;
+			end if;
+			set i = i + 1;
+		end while;
+		set bestPracticesVersion = bestPracticesVersionVectFrom;
+		set bestPracticesMinorVersion = bestPracticesVersion;
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  Unable to determine project version.  Upgrade using bestPracticesVersion=[&apos;||NVL(cast(bestPracticesVersion as varchar),&apos;null&apos;)||&apos;]  for project path=&apos;||NVL(projectPath,&apos;null&apos;));
+	else
+		call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;:  Project current bestPracticesVersion=[&apos;||NVL(cast(bestPracticesVersion as varchar),&apos;null&apos;)||&apos;]  for project path=&apos;||NVL(projectPath,&apos;null&apos;));
+	end if;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564410631553</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

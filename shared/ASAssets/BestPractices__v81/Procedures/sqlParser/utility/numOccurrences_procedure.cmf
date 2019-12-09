@@ -1,0 +1,174 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="numOccurrences" path="/shared/ASAssets/BestPractices_v81/Procedures/sqlParser/utility/numOccurrences" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>findString:
+	Given two input strings, this function returns an integer value representing the starting 
+	position of the first string within the second string.  The third parameter indicates which direction
+	to begin searching.  When &apos;F&apos;, begin searching forward from the beginning of the second string.
+	When &apos;R&apos;, begin search in reverse from the end of the second string.
+		* This function is case-sensitive.
+		* All string types, all numeric types, and all data types are accepted as input arguments.
+		* The output is always an integer provided none of the input strings is NULL. Otherwise, NULL is returned.
+		* If any of the arguments is NULL, the function returns NULL.
+		* If the first argument is a blank string, the function returns 1 (one).
+		* If the first argument is not found within the second argument, the function returns 0 (zero).
+ 
+	Input:
+		searchString - The search string is what you are looking for.  If this value is null, then the output is null
+						A blank (&apos;&apos;) non-null string for the search string always produces 1 for an output.
+			Values: Any text value
+		stringToSearch - The string to search within for the search string. If this value is null, then the output is null
+			Values: Any text value
+		direction - The direction which you want to search
+			Values: &apos;F&apos;=search forward, &apos;R&apos;=search in reverse
+	Output:
+		pos - an integer value representing the position of the string
+			Values: null, or any positive integer
+
+		Examples: 
+	  		direction=&apos;F&apos;
+				POSITION(‘it’ IN ‘case-sensitivity’),  
+					Output: 10           ^
+				POSITION(‘’ IN ‘mistake’) -- a blank non-null string for the search string always produces 1 for an output.
+					Output: 1
+				POSITION(‘no’ IN ’yes’)
+					Output: 0
+	  		direction=&apos;R&apos;
+				POSITION(‘it’ IN ‘case-sensitivity’)
+					Output: 14               ^
+				POSITION(‘no’ IN ’yes’)
+					Output: 0
+
+	Exceptions:  none
+	Author:      Mike Tinius
+	Date:        8/17/2010
+	CSW Version: 5.1.0
+
+    Copyright (c) 2010
+    Composite Software, Inc.
+    All Rights Reserved
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="searchString" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="inStringToSearch" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="num" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="Script" type="STRING">/* 
+	numOccurrences:
+	Given two input strings, this function returns an integer value representing the starting 
+	position of the first string within the second string.  The third parameter indicates which direction
+	to begin searching.  When &apos;F&apos;, begin searching forward from the beginning of the second string.
+	When &apos;R&apos;, begin search in reverse from the end of the second string.
+		* This function is case-sensitive.
+		* All string types, all numeric types, and all data types are accepted as input arguments.
+		* The output is always an integer provided none of the input strings is NULL. Otherwise, NULL is returned.
+		* If any of the arguments is NULL, the function returns NULL.
+		* If the first argument is a blank string, the function returns 1 (one).
+		* If the first argument is not found within the second argument, the function returns 0 (zero).
+ 
+	Input:
+		searchString - The search string is what you are looking for.  If this value is null, then the output is null
+						A blank (&apos;&apos;) non-null string for the search string always produces 1 for an output.
+			Values: Any text value
+		stringToSearch - The string to search within for the search string. If this value is null, then the output is null
+			Values: Any text value
+	Output:
+		num - an integer value representing the number of occurrences of the string
+			Values: null, or any positive integer
+
+		Examples: 
+				POSITION(‘it’ IN ‘case-sensitivity’),  
+					Output: 10           ^
+				POSITION(‘’ IN ‘mistake’) -- a blank non-null string for the search string always produces 1 for an output.
+					Output: 1
+				POSITION(‘no’ IN ’yes’)
+					Output: 0
+
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	11/11/2011		Mike Tinius			5.2.0			Created new
+	03/15/2013		Mike Tinius			5.2.0			Modifications for Best Practices 7.0
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE numOccurrences(
+	IN searchString		LONGVARCHAR,
+	IN inStringToSearch	LONGVARCHAR,
+	OUT num				INTEGER	
+)
+BEGIN
+	DECLARE nextpos			INTEGER;
+	DECLARE countpos		INTEGER DEFAULT 0;
+	DECLARE stringToSearch	LONGVARCHAR DEFAULT inStringToSearch;
+	DECLARE pos				INTEGER;
+
+--	call print(&apos;searchString=[&apos;||emptyStr(searchString)||&apos;]&apos;);
+--	call print(&apos;stringToSearch=[&apos;||emptyStr(stringToSearch)||&apos;]&apos;);
+	set num = 0;
+	IF (searchString is not null and stringToSearch is not null) THEN
+		posLoop:
+		WHILE (true) DO
+			set nextpos = POSITION(searchString IN stringToSearch);
+			set countpos = countpos + nextpos;
+			IF (nextpos = 0 or nextpos is null) THEN
+				leave posLoop;
+			ELSE
+				set stringToSearch = SUBSTRING(stringToSearch, nextpos+1, LENGTH(stringToSearch));
+				set num = num + 1;
+			END IF;
+		END WHILE;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1513829825991</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

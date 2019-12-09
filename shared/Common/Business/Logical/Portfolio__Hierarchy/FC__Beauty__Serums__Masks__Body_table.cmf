@@ -1,0 +1,80 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="FC_Beauty_Serums_Masks_Body" path="/shared/Common/Business/Logical/Portfolio_Hierarchy/FC_Beauty_Serums_Masks_Body" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <columns>
+    <column name="CORP_CD" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ITEM_NO" nullable="true">
+      <datatype type="STRING" maxLength="50" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SUB_CTGRY_DESC" nullable="true">
+      <datatype type="STRING" minLength="4" maxLength="6" trailingSpaces="false"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/FC_Item_Classes" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="cachekey" nullable="false">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="CORP_CD">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="ITEM_NO">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="CLASS_CD">
+        <datatype type="STRING" maxLength="8000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    INC.*
+FROM (SELECT 
+        DISTINCT CORP_CD,
+        ITEM_NO,
+        &apos;SERUMS&apos; AS SUB_CTGRY_DESC
+    FROM /shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/FC_Item_Classes
+    WHERE CLASS_CD LIKE &apos;%B97%&apos;
+    UNION
+    SELECT 
+        DISTINCT CORP_CD,
+        ITEM_NO,
+        &apos;MASKS&apos; AS SUB_CTGRY_DESC
+    FROM /shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/FC_Item_Classes
+    WHERE CLASS_CD LIKE &apos;%B25%&apos;
+	UNION
+    SELECT 
+        DISTINCT CORP_CD,
+        ITEM_NO,
+        &apos;BODY&apos; AS SUB_CTGRY_DESC
+    FROM /shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/FC_Item_Classes
+    WHERE CLASS_CD LIKE &apos;%B27%&apos;) INC</attribute>
+  <attribute name="cacheLastTracking" type="STRING">/shared/Cache/Physical/Metadata/PostgreSQL_Cache/cache/cache_tracking</attribute>
+  <attribute name="creationDate" type="LONG">1565398131336</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1574653194683</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1565398131336</attribute>
+</metadata>

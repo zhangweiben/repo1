@@ -1,0 +1,251 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Dwv41149_Account_Party_Subsc" path="/shared/Common/Application/Published/DE/Data_Quality/PG_EAP_MDMS/Dwv41149_Account_Party_Subsc" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="abono" nullable="true">
+      <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff" nullable="true">
+      <datatype type="STRING" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="publicationid" nullable="true">
+      <datatype type="STRING" maxLength="12"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="optoutstartdate" nullable="true">
+      <datatype type="DATE"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="optoutenddate" nullable="true">
+      <datatype type="DATE"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="communicationtypecode" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="subscriptionlevel" nullable="true">
+      <datatype type="STRING" maxLength="20"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="languagecodelist" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="deliverychoicecode" nullable="true">
+      <datatype type="STRING" maxLength="2"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="eventid" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="eventcode" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sourcetimestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="publishtimestamp" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="actioncode" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="sourceintegrationid" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="insrt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_user_id" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_proc_nm" nullable="true">
+      <datatype type="STRING" maxLength="240"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="updt_dt" nullable="true">
+      <datatype type="DATETIME"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/PostgreSQL_EAP/MDMS/Dwv41149_Account_Party_Subsc" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="abono">
+        <datatype type="DECIMAL" maxDigits="11" maxFractionalDigits="0"/>
+      </element>
+      <element name="aff">
+        <datatype type="STRING" maxLength="3"/>
+      </element>
+      <element name="publicationid">
+        <datatype type="STRING" maxLength="12"/>
+      </element>
+      <element name="optoutstartdate">
+        <datatype type="DATE"/>
+      </element>
+      <element name="optoutenddate">
+        <datatype type="DATE"/>
+      </element>
+      <element name="communicationtypecode">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="subscriptionlevel">
+        <datatype type="STRING" maxLength="20"/>
+      </element>
+      <element name="languagecodelist">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="deliverychoicecode">
+        <datatype type="STRING" maxLength="2"/>
+      </element>
+      <element name="eventid">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      </element>
+      <element name="eventcode">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="sourcetimestamp">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="publishtimestamp">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="actioncode">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="sourceintegrationid">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="insrt_proc_nm">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="insrt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+      <element name="updt_user_id">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="updt_proc_nm">
+        <datatype type="STRING" maxLength="240"/>
+      </element>
+      <element name="updt_dt">
+        <datatype type="DATETIME"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(Dwv41149_Account_Party_Subsc.abono AS DECIMAL(11,0)) AS abono,
+	CAST(Dwv41149_Account_Party_Subsc.aff AS VARCHAR(3)) AS aff,
+	CAST(Dwv41149_Account_Party_Subsc.publicationid AS VARCHAR(12)) AS publicationid,
+	CAST(Dwv41149_Account_Party_Subsc.optoutstartdate AS DATE) AS optoutstartdate,
+	CAST(Dwv41149_Account_Party_Subsc.optoutenddate AS DATE) AS optoutenddate,
+	CAST(Dwv41149_Account_Party_Subsc.communicationtypecode AS VARCHAR(2)) AS communicationtypecode,
+	CAST(Dwv41149_Account_Party_Subsc.subscriptionlevel AS VARCHAR(20)) AS subscriptionlevel,
+	CAST(Dwv41149_Account_Party_Subsc.languagecodelist AS VARCHAR(50)) AS languagecodelist,
+	CAST(Dwv41149_Account_Party_Subsc.deliverychoicecode AS VARCHAR(2)) AS deliverychoicecode,
+	CAST(Dwv41149_Account_Party_Subsc.eventid AS DECIMAL(15,0)) AS eventid,
+	CAST(Dwv41149_Account_Party_Subsc.eventcode AS VARCHAR(50)) AS eventcode,
+	CAST(Dwv41149_Account_Party_Subsc.sourcetimestamp AS TIMESTAMP) AS sourcetimestamp,
+	CAST(Dwv41149_Account_Party_Subsc.publishtimestamp AS TIMESTAMP) AS publishtimestamp,
+	CAST(Dwv41149_Account_Party_Subsc.actioncode AS VARCHAR(1)) AS actioncode,
+	CAST(Dwv41149_Account_Party_Subsc.sourceintegrationid AS VARCHAR(50)) AS sourceintegrationid,
+	CAST(Dwv41149_Account_Party_Subsc.insrt_proc_nm AS VARCHAR(240)) AS insrt_proc_nm,
+	CAST(Dwv41149_Account_Party_Subsc.insrt_dt AS TIMESTAMP) AS insrt_dt,
+	CAST(Dwv41149_Account_Party_Subsc.updt_user_id AS VARCHAR(50)) AS updt_user_id,
+	CAST(Dwv41149_Account_Party_Subsc.updt_proc_nm AS VARCHAR(240)) AS updt_proc_nm,
+	CAST(Dwv41149_Account_Party_Subsc.updt_dt AS TIMESTAMP) AS updt_dt 
+FROM
+	/shared/Common/Physical/Formatting/PostgreSQL_EAP/MDMS/Dwv41149_Account_Party_Subsc Dwv41149_Account_Party_Subsc</attribute>
+  <attribute name="creationDate" type="LONG">1569986668320</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569987607439</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1569986668320</attribute>
+</metadata>

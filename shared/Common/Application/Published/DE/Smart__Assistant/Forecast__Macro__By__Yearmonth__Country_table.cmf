@@ -1,0 +1,118 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Forecast_Macro_By_Yearmonth_Country" path="/shared/Common/Application/Published/DE/Smart_Assistant/Forecast_Macro_By_Yearmonth_Country" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="country_name" nullable="true">
+      <datatype type="STRING" maxLength="50"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="amway_country_code" nullable="true">
+      <datatype type="STRING" minLength="3" maxLength="3"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="calen_yr4" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="calen_mo" nullable="true">
+      <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rev_dist_sales_amt_lcl" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="dcost_rev_target_lcl" nullable="true">
+      <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="rev_dist_sales_amt_bdgt_usd" nullable="true">
+      <datatype type="DECIMAL" maxDigits="26" maxFractionalDigits="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="dcost_rev_target_bdgt_usd" nullable="true">
+      <datatype type="DECIMAL" maxDigits="26" maxFractionalDigits="8"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Business/Logical/Forecasting/Forecast_Macro_By_YearMonth_Country" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="country_name">
+        <datatype type="STRING" maxLength="50"/>
+      </element>
+      <element name="amway_country_code">
+        <datatype type="STRING" minLength="3" maxLength="3"/>
+      </element>
+      <element name="calen_yr4">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="calen_mo">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="rev_dist_sales_amt_lcl">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      </element>
+      <element name="dcost_rev_target_lcl">
+        <datatype type="DECIMAL" maxDigits="15" maxFractionalDigits="0"/>
+      </element>
+      <element name="rev_dist_sales_amt_bdgt_usd">
+        <datatype type="DECIMAL" maxDigits="26" maxFractionalDigits="8"/>
+      </element>
+      <element name="dcost_rev_target_bdgt_usd">
+        <datatype type="DECIMAL" maxDigits="26" maxFractionalDigits="8"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+    Forecast_Macro_By_YearMonth_Country.country_name, 
+    Forecast_Macro_By_YearMonth_Country.amway_country_code, 
+    Forecast_Macro_By_YearMonth_Country.calen_yr4, 
+    Forecast_Macro_By_YearMonth_Country.calen_mo, 
+    Forecast_Macro_By_YearMonth_Country.rev_dist_sales_amt_lcl, 
+    Forecast_Macro_By_YearMonth_Country.dcost_rev_target_lcl, 
+    Forecast_Macro_By_YearMonth_Country.rev_dist_sales_amt_bdgt_usd, 
+    Forecast_Macro_By_YearMonth_Country.dcost_rev_target_bdgt_usd
+FROM      
+    /shared/Common/Business/Logical/Forecasting/Forecast_Macro_By_YearMonth_Country Forecast_Macro_By_YearMonth_Country</attribute>
+  <attribute name="creationDate" type="LONG">1573160186312</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">292774</attribute>
+  <attribute name="creatorUserName" type="STRING">asp5665</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1573578051391</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">292774</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">asp5665</attribute>
+  <attribute name="model" type="BYTE_ARRAY">EIEJBAAAAAEQUQYBACMARgBvAHIAZQBjAGEAcwB0AF8ATQBhAGMAcgBvAF8AQgB5AF8AWQBlAGEAcgBNAG8AbgB0AGgAXwBDAG8AdQBuAHQAcgB5BgIAIwBGAG8AcgBlAGMAYQBzAHQAXwBNAGEAYwByAG8AXwBCAHkAXwBZAGUAYQByAE0AbwBuAHQAaABfAEMAbwB1AG4AdAByAHkDC/////8DCgAGS0IDDP////8LEQAGAAYAcwBoAGEAcgBlAGQABgBDAG8AbQBtAG8AbgAIAEIAdQBzAGkAbgBlAHMAcwAHAEwAbwBnAGkAYwBhAGwACwBGAG8AcgBlAGMAYQBzAHQAaQBuAGcAIwBGAG8AcgBlAGMAYQBzAHQAXwBNAGEAYwByAG8AXwBCAHkAXwBZAGUAYQByAE0AbwBuAHQAaABfAEMAbwB1AG4AdAByAHn//wMFAAAAAAgCEDEGAf//AQIBAQYAAQMAAQQAAQUAAwcAAAAABwkAAAABAAAAAAkKAAAACBBBBgEADABjAG8AdQBuAHQAcgB5AF8AbgBhAG0AZQYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBAAAAAAAAAAyARMB//8DCwAAAAD//xBBBgEAEgBhAG0AdwBhAHkAXwBjAG8AdQBuAHQAcgB5AF8AYwBvAGQAZQYCAAAGA///BgT//wMK/////wgMEBsDEgAAAAEEBQAAAAAAAAADBAQAAAAAAAAAAwETAf//AwsAAAAA//8QQQYBAAkAYwBhAGwAZQBuAF8AeQByADQGAgAABgP//wYE//8DCv////8IDBAZAxIAAAABBAf///////+AAAQGAAAAAAAAf////wMLAAAAAP//EEEGAQAIAGMAYQBsAGUAbgBfAG0AbwYCAAAGA///BgT//wMK/////wgMEBkDEgAAAAEEB////////4AABAYAAAAAAAB/////AwsAAAAA//8QQQYBABYAcgBlAHYAXwBkAGkAcwB0AF8AcwBhAGwAZQBzAF8AYQBtAHQAXwBsAGMAbAYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAAA8DEAAAAAD//wMLAAAAAP//EEEGAQAUAGQAYwBvAHMAdABfAHIAZQB2AF8AdABhAHIAZwBlAHQAXwBsAGMAbAYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAAA8DEAAAAAD//wMLAAAAAP//EEEGAQAbAHIAZQB2AF8AZABpAHMAdABfAHMAYQBsAGUAcwBfAGEAbQB0AF8AYgBkAGcAdABfAHUAcwBkBgIAAAYD//8GBP//Awr/////CAwQFwMSAAAAAQMOAAAAGgMQAAAACP//AwsAAAAA//8QQQYBABkAZABjAG8AcwB0AF8AcgBlAHYAXwB0AGEAcgBnAGUAdABfAGIAZABnAHQAXwB1AHMAZAYCAAAGA///BgT//wMK/////wgMEBcDEgAAAAEDDgAAABoDEAAAAAj//wMLAAAAAP////8JBgAAAAEQggMKAAAAHgMLAAAAHgMMAAAAyAMNAAAAyP//CAMQcQMBAAAACwMCAAAAMgkDAAACJhB0AwYAAAAA//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAH//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAAAv//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAD//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAT//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdAMGAAAABf//EHIGBP////8QcwMFAAAAAP//EHUBBwH//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0AwYAAAAG//8QcgYE/////xBzAwUAAAAA//8QdQEHAf//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHQDBgAAAAf//xByBgT/////EHMDBQAAAAD//xB1AQcB//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2//8QdP//EHIGBP////8Qc///EHUBBwD//xB4Bgv/////EHcDCv///////xB5Bgz/////EHb//xB2//8Qdv//EHb//xB0//8QcgYE/////xBz//8QdQEHAP//EHgGC/////8QdwMK////////EHkGDP////8Qdv//EHb//xB2//8Qdv//EHT//xByBgT/////EHP//xB1AQcA//8QeAYL/////xB3Awr///////8QeQYM/////xB2//8Qdv//EHb//xB2////////</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1573160186312</attribute>
+</metadata>

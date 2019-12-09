@@ -1,0 +1,311 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="vGroups_Compare_Excel_DB" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Oracle/Compare_LLE_Excel/vGroups_Compare_Excel_DB" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>Modified Date:	Modified By:		CSW Version:	Reason:
+	05/16/2017		Mike Tinius			7.0.5			Adapted for Data Abstraction Best Practices.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <columns>
+    <column name="Env Type" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Project" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="GroupName" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Domain" nullable="true">
+      <datatype type="STRING" maxLength="255"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Access" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Unlock" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Config_R" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Config_M" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Resources_R" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Resources_M" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Status_R" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Status_M" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Users_R" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+    <column name="Users_M" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="admin" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Excel/vGroups_All_Excel" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="rownum">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="sheetRownum">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="datasource">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="sheetName">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Organization">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Project">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SubProject">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="GroupName">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Description">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="Domain">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Env Type">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="Access">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Unlock">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Config_R">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Config_M">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Resources_R">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Resources_M">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Status_R">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Status_M">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Users_R">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="Users_M">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="IsActive">
+        <datatype type="STRING" minLength="1" maxLength="1" trailingSpaces="false"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Oracle/LLE_vGroups" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="rownum">
+        <datatype type="DECIMAL" maxDigits="38" maxFractionalDigits="0"/>
+      </element>
+      <element name="sheetRownum">
+        <datatype type="INTEGER" minValue="-128" maxValue="127"/>
+      </element>
+      <element name="datasource">
+        <datatype type="STRING" minLength="10" maxLength="10" trailingSpaces="false"/>
+      </element>
+      <element name="sheetName">
+        <datatype type="STRING" minLength="13" maxLength="13" trailingSpaces="false"/>
+      </element>
+      <element name="ORGANIZATION_NAME">
+        <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      </element>
+      <element name="PROJECT_NAME">
+        <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      </element>
+      <element name="SUBPROJECT_NAME">
+        <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      </element>
+      <element name="GROUP_NAME">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="GROUP_DESC">
+        <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      </element>
+      <element name="DOMAIN_NAME">
+        <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      </element>
+      <element name="ENVIRONMENT_NAME">
+        <datatype type="STRING" maxLength="255" trailingSpaces="false"/>
+      </element>
+      <element name="ACCESS_FLAG">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="UNDO_LOCK">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="READ_ALL_CONFIG">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="MODIFY_ALL_CONFIG">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="READ_ALL_RESOURCES">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="MODIFY_ALL_RESOURCES">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="READ_ALL_STATUS">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="MODIFY_ALL_STATUS">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="READ_ALL_USER">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="MODIFY_ALL_USER">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="ISACTIVE">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">/*
+	Return rows that exist in the spreadsheet but do not exist in the database or are different.
+*/
+SELECT 
+    vGroups_All_Excel.&quot;Env Type&quot;, 
+    vGroups_All_Excel.Project, 
+    vGroups_All_Excel.GroupName, 
+    vGroups_All_Excel.&quot;Domain&quot;, 
+    vGroups_All_Excel.Access, 
+    vGroups_All_Excel.Unlock, 
+    vGroups_All_Excel.Config_R, 
+    vGroups_All_Excel.Config_M, 
+    vGroups_All_Excel.Resources_R, 
+    vGroups_All_Excel.Resources_M, 
+    vGroups_All_Excel.Status_R, 
+    vGroups_All_Excel.Status_M, 
+    vGroups_All_Excel.Users_R, 
+    vGroups_All_Excel.Users_M
+FROM      
+    /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Excel/vGroups_All_Excel vGroups_All_Excel
+WHERE Organization IS NOT NULL AND LENGTH(TRIM(Organization)) &gt; 0 
+  AND Project IS NOT NULL AND LENGTH(TRIM(Project)) &gt; 0 
+  AND SubProject IS NOT NULL AND LENGTH(TRIM(SubProject)) &gt; 0 
+  AND &quot;Env Type&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Env Type&quot;)) &gt; 0 
+  AND &quot;Domain&quot; IS NOT NULL AND LENGTH(TRIM(&quot;Domain&quot;)) &gt; 0 
+  AND GroupName IS NOT NULL AND LENGTH(TRIM(GroupName)) &gt; 0
+
+EXCEPT ALL
+
+SELECT 
+    vGroups_All_DB.ENVIRONMENT_NAME, 
+    vGroups_All_DB.PROJECT_NAME, 
+    vGroups_All_DB.GROUP_NAME, 
+    vGroups_All_DB.DOMAIN_NAME, 
+    vGroups_All_DB.ACCESS_FLAG, 
+    vGroups_All_DB.UNDO_LOCK, 
+    vGroups_All_DB.READ_ALL_CONFIG, 
+    vGroups_All_DB.MODIFY_ALL_CONFIG, 
+    vGroups_All_DB.READ_ALL_RESOURCES,
+    vGroups_All_DB.MODIFY_ALL_RESOURCES, 
+    vGroups_All_DB.READ_ALL_STATUS, 
+    vGroups_All_DB.MODIFY_ALL_STATUS, 
+    vGroups_All_DB.READ_ALL_USER, 
+    vGroups_All_DB.MODIFY_ALL_USER
+FROM      
+    /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Formatting/Oracle/LLE_vGroups vGroups_All_DB
+
+</attribute>
+  <attribute name="creationDate" type="LONG">1415634258559</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1513835500910</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+</metadata>

@@ -1,0 +1,53 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Wwt01002_Lgl_Entty_Typ" path="/shared/Common/Physical/Formatting/PostgreSQL_EAP/MDMS/Wwt01002_Lgl_Entty_Typ" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="legalenttytypecd" nullable="true">
+      <datatype type="STRING" maxLength="1"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="lglenttydesc" nullable="true">
+      <datatype type="STRING" maxLength="30"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_mdms_wwsdms01/wwt01002_lgl_entty_typ" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="LegalEnttyTypeCd" nullable="false">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="LglEnttyDesc" nullable="false">
+        <datatype type="STRING" maxLength="30"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	wwt01002_lgl_entty_typ.LegalEnttyTypeCd legalenttytypecd,
+	CAST(wwt01002_lgl_entty_typ.LglEnttyDesc AS VARCHAR(30)) AS lglenttydesc 
+FROM
+	/shared/Common/Physical/Metadata/AWS/PostgreSQL_EAP/ods_mdms_wwsdms01/wwt01002_lgl_entty_typ wwt01002_lgl_entty_typ</attribute>
+  <attribute name="creationDate" type="LONG">1569986031317</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569986031317</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1569986031317</attribute>
+</metadata>

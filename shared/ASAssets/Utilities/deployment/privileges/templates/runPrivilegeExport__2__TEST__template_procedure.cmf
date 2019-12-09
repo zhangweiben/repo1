@@ -1,0 +1,213 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="runPrivilegeExport_2_TEST_template" path="/shared/ASAssets/Utilities/deployment/privileges/templates/runPrivilegeExport_2_TEST_template" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>runPrivilegeExport_2_TEST_template:
+
+	This procedure is a template for determining what folders should have privileges exported and subsequently imported and applied.
+	This template should be used for higher environments such as TEST  becuase it has admin:composite ownership:domain settings.
+
+	The concept behind this is simple.  
+		1. This procedure is used to take the &quot;AS-IS&quot; snapshot of privileges for the given folder paths listed below at the time of execution.
+		2. It is very important that the folder privileges for each folder listed be set exactly as they should be set before exporting the privilege snapshot to the privileges.xml file.
+		3. Subsequently, the privilege can be re-applied from the snapshot [privileges.xml] using importResourcePrivileges.
+		4. For deployment, it is recommended to invoke the published importResourcePrivileges after importing the car file.
+				DataSource=ASAssets		Procedure: Utilities.deployment.importResourcePrivileges
+
+	Instructions:
+		1. Modify /shared/ASAssets/Utilities/environment/getEnvName() and provide an environment name such as DEV, TEST, PROD etc based on the TDV server environment.
+		2. Copy this template to a different location outside of the /shared/ASAssets/Utilities folder so that it does not get overwritten if the Utilities are updated.
+		3. Modify the variable &quot;scriptEnv&quot; below to match environment name that comes from getEnvName().
+		4. Modify the paths and ownership.  For DEV environments the ownership:domain should always be null:null because you don&apos;t want to change ownership of your DEV resources.
+		5. Execute the procedure to export the privilege.xml file and the resource_ownership.txt file to the TDV server path that you provide.
+
+	Input:
+		debug							CHAR(1),	  - Y=debug on, N=debug off
+		privilegeFileName				VARCHAR(4096) - The full TDV server path location to privileges.xml file.		
+			e.g. /home/filedatasources/privileges/privileges.xml
+		resourceOwnershipFileName		VARCHAR(4096) - The full TDV server path location to the resource_ownership.txt file.
+			e.g. /home/filedatasources/privileges/resource_ownership.txt
+	Output:
+		invalidPathList					LONGVARCHAR   - A comm-separated list of paths from this procedure that are not valid [do not exist].
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.4		10/16/2014      Jeremy Akers        6.2.6           Created new
+	2019.200	05/30/2019		Mike Tinius			7.0.8			Modified to include resource ownership.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="privilegeFileName" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="resourceOwnershipFileName" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="invalidPathList" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/deployment/privileges/helpers/exportResourcesPrivileges" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="ownerPathList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="privilegeFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="includeColumns" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="privilegeFileName" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceOwnershipFileName" direction="IN">
+        <datatype type="STRING" maxLength="4096"/>
+      </element>
+      <element name="invalidPathList" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/environment/getEnvName" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="envName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	runPrivilegeExport_2_TEST_template:
+
+	This procedure is a template for determining what folders should have privileges exported and subsequently imported and applied.
+	This template should be used for higher environments such as TEST because it has admin:composite ownership:domain settings.
+	This procedure should be copied to a different location so that it does not get overwritten when the Utilities are upgraded.
+
+	The concept behind this is simple.  
+		1. This procedure is used to take the &quot;AS-IS&quot; snapshot of privileges for the given folder paths listed below at the time of execution.
+		2. It is very important that the folder privileges for each folder listed be set exactly as they should be set before exporting the privilege snapshot to the privileges.xml file.
+		3. Subsequently, the privilege can be re-applied from the snapshot [privileges.xml] using importResourcePrivileges.
+		4. For deployment, it is recommended to invoke the published importResourcePrivileges after importing the car file.
+				DataSource=ASAssets		Procedure: Utilities.deployment.importResourcePrivileges
+
+	Instructions:
+		1. Modify /shared/ASAssets/Utilities/environment/getEnvName() and provide an environment name such as DEV, TEST, PROD etc based on the TDV server environment.
+		2. Copy this template to a different location outside of the /shared/ASAssets/Utilities folder so that it does not get overwritten if the Utilities are updated.
+		3. Modify the variable &quot;scriptEnv&quot; below to match environment name that comes from getEnvName().
+		4. Modify the paths and ownership.  For DEV environments the ownership:domain should always be null:null because you don&apos;t want to change ownership of your DEV resources.
+		5. Execute the procedure to export the privilege.xml file and the resource_ownership.txt file to the TDV server path that you provide.
+
+	Input:
+		debug							CHAR(1),	- Y=debug on, N=debug off
+		privilegeFileName				LONGVARCHAR - The full TDV server path location to privileges.xml file.		
+			e.g. /home/files/deployment/privileges/privileges.xml
+		resourceOwnershipFileName		LONGVARCHAR - The full TDV server path location to the resource_ownership.txt file.
+			e.g. /home/files/deployment/privileges/resource_ownership.txt
+	Output:
+		invalidPathList					LONGVARCHAR - A comm-separated list of paths from this procedure that are not valid [do not exist].
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.4		10/16/2014      Jeremy Akers        6.2.6           Created new
+	2019.200	05/30/2019		Mike Tinius			7.0.8			Modified to include resource ownership.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE runPrivilegeExport_2_TEST_template(
+	IN debug							CHAR(1),		-- Y=debug on, N=debug off
+	IN privilegeFileName 				LONGVARCHAR,	-- The full TDV server path location to privileges.xml file.
+	IN resourceOwnershipFileName 		LONGVARCHAR,	-- The full TDV server path location to the resource_ownership.txt file.
+	OUT invalidPathList					LONGVARCHAR		-- If not null, then a comma-separated list of paths [path:type] that are invalid as they do not exist.
+)
+BEGIN
+	-- Modify this value to match the actual environment as set in /shared/ASAssets/Utilities/environment/getEnvName().
+	DECLARE scriptEnv 	VARCHAR DEFAULT &apos;TEST&apos;;
+	DECLARE env			VARCHAR;
+	DECLARE ex 			EXCEPTION;
+
+	-- Modify the value in getEnvName to represent the environment.
+	CALL /shared/ASAssets/Utilities/environment/getEnvName(env);
+	IF (env is null or env &lt;&gt; scriptEnv) THEN
+		RAISE ex VALUE &apos;You cannot generate &apos;||scriptEnv||&apos; privileges and ownership for the current environment of &apos;||NVL(env,&apos;null&apos;)||&apos;.&apos;;
+	END IF;
+/*
+		exportResourcesPrivileges Row Definition:
+			owner: 			What the resource ownership should be set to.  If null then no resource owner is set and the path is bypassed.
+							Ownership is explicitly declared here.  It is not determined by how the resourcePath is currently set.
+			domain: 		The domain of the owner.  Ignored if owner is null.  Required if owner is not null.
+			resourcePath:	The path from which to read (derive) the privileges for the given DV environment.
+			resourceType:	The resource type for the given resourcePath.  i.e. CONTAINER, DATA_SOURCE, TABLE, PROCEDURE, TRIGGER, DEFINITION_SET, etc.
+		Row Format:			&apos;owner:domain:resourcePath:resourceType,&apos;
+*/
+	CALL /shared/ASAssets/Utilities/deployment/&quot;privileges&quot;/helpers/exportResourcesPrivileges(debug,&apos;&apos;
+------------------ Shared -------------------
+		||&apos;admin:composite:/shared/ASAssets/BestPractices_v81:CONTAINER,&apos;
+		||&apos;metrics_app_id:composite:/shared/ASAssets/KPImetrics:CONTAINER,&apos;
+		||&apos;admin:composite:/shared/ASAssets/Utilities:CONTAINER,&apos;
+		||&apos;admin:composite:/shared/Tools:CONTAINER,&apos;
+------------------ Data Bases -------------------
+		||&apos;admin:composite:/services/databases/ASAssets:DATA_SOURCE,&apos;
+		||&apos;admin:composite:/services/databases/ADMIN:DATA_SOURCE,&apos;
+		||&apos;admin:composite:/services/databases/ASAssets/BestPractices_v81:CONTAINER,&apos;
+		||&apos;admin:composite:/services/databases/ASAssets/KPImetrics:CONTAINER,&apos;
+		||&apos;admin:composite:/services/databases/ASAssets_Test:DATA_SOURCE,&apos;
+------------------ Web Services -------------------	
+
+		, 								-- Separator between path list above and other arguments below
+		&apos;&apos;, 							-- No filter needed.
+		0, 								-- Don&apos;t want to include columns
+		privilegeFileName, 				-- The full TDV server file path to put the privileges into.
+		resourceOwnershipFileName, 		-- The full TDV server file path to put the resource ownership into.
+		invalidPathList 				-- Output the list of paths that are invalid from the above list.
+	);
+END</attribute>
+  <attribute name="creationDate" type="LONG">1559248846541</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564683372089</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1559248846541</attribute>
+</metadata>

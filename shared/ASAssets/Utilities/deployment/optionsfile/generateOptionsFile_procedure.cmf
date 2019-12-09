@@ -1,0 +1,218 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="generateOptionsFile" path="/shared/ASAssets/Utilities/deployment/optionsfile/generateOptionsFile" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>generateOptionsFile:
+
+	This procedure is used to generate an options file on the TDV server.  The procedure invokes generateOptions.
+	If a file already exists, it adds an _copy# to the end of the file name. 
+	You don&apos;t want to accidently overwrite the real file which contains the valid passwords.
+	Once the copy is generated, it needs to be updated with the correct passwords.
+	If the file path is left null or blank, the file options are simply returned in the output variable.
+
+    Input:
+		filePath			LONGVARCHAR,	-- The path of the options file on the TDV server to generate.
+		resourcePathList	LONGVARCHAR,	-- null=retrieve options for all paths.  comma-separated path list=retrieve options for paths in the list.
+		excludePathList		LONGVARCHAR,	-- null=no path exclusions.  comma-separated path list=exclude paths in the list.  
+
+    Output:
+        options				LONGVARCHAR		-- The generated list of options.
+
+    Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.4		10/16/2014      Jeremy Akers        6.2.6           Created new
+	2019.200	05/30/2019		Mike Tinius			7.0.8			Derived from original to write out a file only.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="filePath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="resourcePathList" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="excludePathList" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="message" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="options" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/deployment/optionsfile/helpers/generateOptions" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePathList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="excludePathList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resultPipe" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="line">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/file/FileProcessingCJP/createFileAscii" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="filePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="append" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="fileContent" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/file/FileProcessingCJP/existsFile" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="filePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	generateOptionsFile:
+
+	This procedure is used to generate an options file on the TDV server.  The procedure invokes generateOptions.
+	If a file already exists, it adds an _copy# to the end of the file name. 
+	You don&apos;t want to accidently overwrite the real file which contains the valid passwords.
+	Once the copy is generated, it needs to be updated with the correct passwords.
+	If the file path is left null or blank, the file options are simply returned in the output variable.
+
+    Input:
+		filePath			LONGVARCHAR,	-- The path of the options file on the TDV server to generate.
+		resourcePathList	LONGVARCHAR,	-- null=retrieve options for all paths.  comma-separated path list=retrieve options for paths in the list.
+		excludePathList		LONGVARCHAR,	-- null=no path exclusions.  comma-separated path list=exclude paths in the list.  
+
+    Output:
+		message				LONGVARCHAR,	-- Indicates whether the file was written or not.  
+        options				LONGVARCHAR		-- The generated list of options.
+
+    Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.4		10/16/2014      Jeremy Akers        6.2.6           Created new
+	2019.200	05/30/2019		Mike Tinius			7.0.8			Derived from original to write out a file only.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE generateOptionsFile(
+	IN  filePath			LONGVARCHAR,	-- The path of the options file on the TDV server to generate.
+	IN	resourcePathList	LONGVARCHAR,	-- null=retrieve options for all paths.  comma-separated path list=retrieve options for paths in the list.
+	IN	excludePathList		LONGVARCHAR,	-- null=no path exclusions.  comma-separated path list=exclude paths in the list.
+	OUT message				LONGVARCHAR,	-- Indicates whether the file was written or not.  
+	OUT options				LONGVARCHAR 	-- The generated list of options.
+)
+BEGIN
+	DECLARE filePathCopy	LONGVARCHAR DEFAULT filePath;
+	DECLARE fileExists		BOOLEAN;
+	DECLARE i				INTEGER DEFAULT 1;
+	DECLARE pos				INTEGER;
+	DECLARE fileRoot		LONGVARCHAR;
+	DECLARE fileName		LONGVARCHAR;
+	DECLARE fileExt			LONGVARCHAR;
+
+	SET options = &apos;&apos;;
+	FOR r AS SELECT * FROM /shared/ASAssets/Utilities/deployment/optionsfile/helpers/generateOptions(resourcePathList, excludePathList) DO
+		SET options = options || r.line ||CHR(10);
+	END FOR;
+
+	IF (filePathCopy IS NOT NULL AND LENGTH(filePathCopy) &gt; 0) THEN
+		-- Normalize the path
+		SET filePathCopy = REPLACE(filePathCopy, &apos;\&apos;, &apos;/&apos;);
+
+		-- Get the file root, name and extenstion
+		SET pos = INSTR(filePathCopy, &apos;/&apos;, -1, 1);
+		--CALL print (&apos;pos=&apos;||pos);
+		IF (pos &gt; 0) THEN
+			SET fileRoot = SUBSTRING(filePathCopy, 1, pos);
+			SET fileName = SUBSTRING(filePathCopy, pos+1);
+			SET pos = INSTR(fileName, &apos;.&apos;, -1, 1);
+			IF (pos &gt; 0) THEN
+				SET fileExt = SUBSTRING(fileName, pos);
+				SET fileName = SUBSTRING(fileName, 1, pos-1);
+			END IF;
+		END IF;
+		IF (fileName IS NULL) THEN
+			SET fileName = &apos;&apos;;
+		END IF;
+		--CALL print(&apos;fileRoot=&apos;||NVL(fileRoot,&apos;null&apos;));
+		--CALL print(&apos;fileName=&apos;||NVL(fileName,&apos;null&apos;));
+		--CALL print(&apos;fileExt=&apos;||NVL(fileExt,&apos;null&apos;));
+
+		-- Check to see if the file exists
+		CALL /shared/ASAssets/Utilities/file/FileProcessingCJP/existsFile(filePathCopy, fileExists);
+		WHILE (fileExists) DO
+			SET filePathCopy = fileRoot || fileName || &apos;_copy&apos; || i || fileExt;
+			--CALL print(&apos;filePathCopy=&apos;||NVL(filePathCopy,&apos;null&apos;));
+			CALL /shared/ASAssets/Utilities/file/FileProcessingCJP/existsFile(filePathCopy, fileExists);
+			SET i = i + 1;
+		END WHILE;
+
+		-- Save the options to the file
+		IF (filePath IS NOT NULL AND LENGTH(filePath) &gt; 0) THEN
+			CALL /shared/ASAssets/Utilities/file/FileProcessingCJP/createFileAscii(filePathCopy, 0, options);
+			SET message = &apos;SUCCESS - File was written to path=&apos;||filePath;
+		ELSE
+			SET message = &apos;FAIL - File was not written.&apos;;
+		END IF;
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1558474995822</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564683415918</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1558474995822</attribute>
+</metadata>

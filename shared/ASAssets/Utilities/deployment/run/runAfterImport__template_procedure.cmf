@@ -1,0 +1,204 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="runAfterImport_template" path="/shared/ASAssets/Utilities/deployment/run/runAfterImport_template" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>runAfterImport_template:
+
+	This procedure is a template for running internal DV procedure after import of a DV migration.
+	This procedure should be copied to a different location so that it does not get overwritten when the Utilities are upgraded.
+
+	Instructions:
+		1. Modify /shared/ASAssets/Utilities/environment/getEnvName() and provide an environment name such as DEV, TEST, PROD etc based on the TDV server environment.
+		2. Copy this template to a different location outside of the /shared/ASAssets/Utilities folder so that it does not get overwritten if the Utilities are updated.
+		3. Modify the variable &quot;scriptEnv&quot; below to match environment name that comes from getEnvName().
+		4. Modify this procedure and add procedure calls to additional logic that you want to &quot;run after import&quot;.
+		5. Publish the copied procedure &quot;runAfterImport&quot; to /services/databases/ASAssets/Utilities/deployment
+		6. The script deployProject.sh would invoke runAfterImport.
+
+	Input:
+		NONE
+	Output:
+		NONE
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+ 	2014.4		10/16/2014      Jeremy Akers        6.2.6           Created new
+	2019.200	05/30/2019		Mike Tinius			7.0.8			Modified from original
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Log" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToLog" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/environment/getEnvName" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="envName" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	runAfterImport_template:
+
+	This procedure is a template for running internal DV procedures after import of a CAR file during a DV migration.
+	This procedure should be copied to a different location so that it does not get overwritten when the Utilities are upgraded.
+
+	Instructions:
+		1. Modify /shared/ASAssets/Utilities/environment/getEnvName() and provide an environment name such as DEV, TEST, PROD etc based on the TDV server environment.
+		2. Copy this template to a different location outside of the /shared/ASAssets/Utilities folder so that it does not get overwritten if the Utilities are updated.
+		3. Modify the copied procedure
+			a. Modify the variable &quot;scriptEnv&quot; to match environment name that comes from getEnvName().
+			b. Add procedure calls to add additional logic that you want to &quot;run after import&quot;.
+		4. Publish the copied procedure &quot;runAfterImport&quot; to /services/databases/ASAssets/Utilities/deployment
+		5. The script deployProject.[bat|sh] would invoke runAfterImport.  
+			See the following for script details: /shared/ASAssets/Utilities/deployment/_README
+
+	Input:
+		debug			CHAR(1)		-- Y=debug on,  N=debug off.  Debug writes to CONSOLE and LOG.
+	Output:
+		result			VARCHAR		-- SUCCESS otherwise an exception is thrown.
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+ 	2014.4		10/16/2014      Jeremy Akers        6.2.6           Created new
+	2019.200	05/30/2019		Mike Tinius			7.0.8			Modified from original
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE runAfterImport_template(
+	IN debug			CHAR(1),	-- Y=debug on,  N=debug off.  Debug writes to CONSOLE and LOG.
+	OUT result			VARCHAR		-- SUCCESS otherwise an exception is thrown.
+)
+BEGIN
+	-- Modify this value to match the actual environment as set in /shared/ASAssets/Utilities/environment/getEnvName().
+	DECLARE scriptEnv 	VARCHAR DEFAULT &apos;PROD&apos;;
+	DECLARE moduleName	VARCHAR DEFAULT &apos;runAfterImport&apos;;
+	DECLARE env			VARCHAR;
+	DECLARE message		LONGVARCHAR;
+	DECLARE ex 			EXCEPTION;
+
+	-- Modify the value in getEnvName to represent the environment.
+	CALL /shared/ASAssets/Utilities/environment/getEnvName(env);
+	IF (UPPER(debug) = &apos;Y&apos;) THEN
+		SET message = moduleName||&apos; :: BEGIN execute &apos;||moduleName||&apos;() [&apos;||scriptEnv||&apos;]  for the current environment of &apos;||NVL(env,&apos;null&apos;)||&apos;.&apos;;
+		CALL PRINT(message);
+		CALL LOG(message);
+	END IF;
+	IF (env is null or env &lt;&gt; scriptEnv) THEN
+		RAISE ex VALUE &apos;You cannot execute &apos;||moduleName||&apos;() [&apos;||scriptEnv||&apos;]  for the current environment of &apos;||NVL(env,&apos;null&apos;)||&apos;.&apos;;
+	END IF;
+
+	-- Execute environment specific actions here:
+	CASE
+		WHEN env = &apos;TEST&apos; THEN
+
+		WHEN env = &apos;PROD&apos; THEN
+
+		ELSE
+	END CASE;
+
+	-- Execute other customized procedure actions here:
+	
+
+	IF (UPPER(debug) = &apos;Y&apos;) THEN
+		SET message = moduleName||&apos; :: END sucessfully executed.&apos;;
+		CALL PRINT(message);
+		CALL LOG(message);
+	END IF;
+	SET result = &apos;SUCCESS&apos;;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1459950192081</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserId" type="INTEGER">-1973</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564683337085</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">-1973</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">8/59</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/80</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/81</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Log</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/60</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Log</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1459950192081</attribute>
+</metadata>

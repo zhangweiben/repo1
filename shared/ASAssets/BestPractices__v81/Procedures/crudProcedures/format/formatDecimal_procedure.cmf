@@ -1,0 +1,239 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="formatDecimal" path="/shared/ASAssets/BestPractices_v81/Procedures/crudProcedures/format/formatDecimal" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="inValue" direction="IN" nullable="true">
+      <datatype name="DECIMAL" type="DECIMAL" maxDigits="32" maxFractionalDigits="2"/>
+    </parameter>
+    <parameter name="columnName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inOperator" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="explicit" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="formatType" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="formatClause" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="outFormatClause" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/string/findString" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="searchString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="stringToSearch" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="direction" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="pos" direction="OUT">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE formatDecimal(
+	IN inValue				DECIMAL,	-- column value
+	IN columnName			VARCHAR,	-- column name 
+	IN inOperator			VARCHAR,	-- operator such as =,&lt;,&gt;,&lt;&gt;,&gt;=,&lt;=,is null, is not null,like
+	IN explicit				BIT,		-- 0=no explicit null check, 1=explicit null check
+	IN formatType			CHAR(1), 	-- U=update clause, W=where clause
+	IN formatClause			LONGVARCHAR,-- update or where clause to be formatted
+	OUT outFormatClause 	LONGVARCHAR -- formatted update or where clause
+)
+BEGIN
+	DECLARE preFormat			VARCHAR(6) DEFAULT &apos;&apos;;
+	DECLARE begLen, endLen, len	INTEGER DEFAULT 0;
+	DECLARE begFormatClause 	LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE endFormatClause 	LONGVARCHAR DEFAULT &apos;&apos;;
+	DECLARE tempFormatClause	LONGVARCHAR;
+	DECLARE formatException		EXCEPTION;
+	DECLARE opVector			VECTOR(VARCHAR) DEFAULT VECTOR[&apos;=&apos;,&apos;&lt;&apos;,&apos;&gt;&apos;,&apos;&lt;=&apos;,&apos;&gt;=&apos;,&apos;&lt;&gt;&apos;,&apos;IN&apos;,&apos;LIKE&apos;,&apos;IS NULL&apos;,&apos;IS NOT NULL&apos;];
+	DECLARE operator			VARCHAR DEFAULT UPPER(TRIM(inOperator));
+	DECLARE i					INTEGER DEFAULT 1;
+	DECLARE formatSpecificString LONGVARCHAR;
+
+	-- This is the only specific code for this procedure besides the inValue data type
+	set formatSpecificString = CAST(inValue AS LONGVARCHAR);
+
+	-- Validate the operator
+	opLoop:
+	WHILE (i &lt;= CARDINALITY(opVector)) DO
+		if (operator = opVector[i]) then
+			set len = 1;
+			leave opLoop;
+		END IF;
+		set i = i + 1;
+	END WHILE;
+	IF (len = 0) THEN
+		RAISE formatException value &apos;FORMAT EXECPTION: operator is not valid (&apos;||NVL(operator,&apos;null&apos;)||&apos;).&apos;;
+	END IF;
+	-- Validate the formatType
+	IF (UPPER(formatType) &lt;&gt; &apos;U&apos; and UPPER(formatType) &lt;&gt; &apos;W&apos;) THEN
+		RAISE formatException value &apos;FORMAT EXECPTION: format type can only be &quot;U&quot; or &quot;W&quot; (&apos;||NVL(formatType,&apos;null&apos;)||&apos;).&apos;;
+	END IF;
+	-- Validate that the only valid operator with a formatType=&quot;U&quot; is an equal.  A WHERE clause can have other valid operators.
+	IF (UPPER(formatType) = &apos;U&apos; and UPPER(operator) &lt;&gt; &apos;=&apos;) THEN
+		RAISE formatException value &apos;FORMAT EXECPTION: operator mismatch with format type.  Operator must be &quot;=&quot; when format type=&quot;U&quot; (&apos;||NVL(operator,&apos;null&apos;)||&apos;, &apos;||NVL(formatType,&apos;null&apos;)||&apos;).&apos;;
+	END IF;
+	-- Initialize the out format clause
+	set outFormatClause = &apos;&apos;;
+	IF (formatClause is not null) THEN
+		set outFormatClause = TRIM(formatClause);
+	END IF;
+	-- Determine what pre-formatting should be applied to the update or where clause
+	IF (UPPER(formatType) = &apos;U&apos;) THEN
+		set preFormat = &apos;,&apos;; 	-- (U):Format type is for an update clause so separate statements with a comma and a space
+	ELSE
+		set preFormat = &apos; AND&apos;;-- (W):Format type is for a where clause so separate statements with a space only
+	END IF;
+
+/* Examples of formatClause and the position of the columnName and lengths:
+	Scenarios 1-7 are shown below
+1            1315        25        35
+col1 = &apos;xxxx&apos;, col2 = &apos;xx&apos;, col3 = 1 (1) found in the middle with a separator before and after
+1            1315        25
+col1 = &apos;xxxx&apos;, col2 = &apos;xx&apos;			 (2) found at beginning with a separator, (3) found at end with no separator following
+1           12
+col1 = &apos;xxxx&apos;						 (4) found at beginning with no separator following, (5) not found at all
+0
+									 (6) null or blank is passed in
+(7) when explicit=0 and inValue is null and the column exists in the original formatClause 
+	then the column statement and separator must be removed from the format clause
+*/
+	-- Locate the beginning of the column statement
+	set begLen = POSITION(columnName||&apos; &apos; IN outFormatClause);
+	-- only look for the separator end length if the column was found in the first place
+	IF (begLen &gt; 0) THEN
+		-- Locate the end of the column statement starting at where the column is found
+		set tempFormatClause = SUBSTRING(outFormatClause,begLen,LENGTH(outFormatClause)-begLen+1);
+		set endLen = POSITION(preFormat IN  tempFormatClause);
+		IF (endLen = 0) THEN
+			-- Only extract the beginning format clause if it is not the column we are updating.
+			IF (begLen &gt; 1) THEN
+				set len = begLen-1;
+				set begFormatClause = SUBSTRING(outFormatClause,1,len);
+			END IF;
+		ELSE
+			-- Capture the beginning format clause only if there is no column match at the beginning.
+			IF (begLen &gt; 1) THEN
+				set len = begLen-1;
+				set begFormatClause = SUBSTRING(outFormatClause,1,len);
+			END IF;
+			set len = LENGTH(tempFormatClause)-endLen+1;
+			set endFormatClause = SUBSTRING(tempFormatClause,endLen,len);
+		END IF;
+		-- Take care of scenario (7) when the column and separator are removed 
+		-- (7) when explicit=0 and inValue is null and the column exists in the original formatClause 
+		-- then the column statement and separator must be removed from the format clause
+		IF ( (explicit = 0) and (inValue is null) ) THEN
+			IF (endLen &gt; 0) THEN
+				set endFormatClause = TRIM(endFormatClause);
+				IF (POSITION(TRIM(preFormat) IN endFormatClause) = 1) THEN
+					set endFormatClause = SUBSTRING(endFormatClause,LENGTH(TRIM(preFormat))+1,LENGTH(endFormatClause));
+				END IF;
+			ELSE
+				set begFormatClause = TRIM(begFormatClause);
+				call /shared/ASAssets/Utilities/string/findString(preFormat, begFormatClause, &apos;R&apos;, len);
+				IF (len &gt; 0) THEN
+					set begFormatClause = SUBSTRING(begFormatClause,1,len-1);
+				END IF;
+			END IF;
+		END IF;
+		set outFormatClause = begFormatClause;
+	END IF;
+
+	-- Explicitly check for null values and include those columns in the format clause
+	IF (explicit = 1) THEN
+		-- if not empty then add pre-formatting text
+		IF (outFormatClause IS NOT NULL AND LENGTH(&apos;|&apos;||outFormatClause||&apos;|&apos;) &gt; 2 and begLen = 0) THEN
+			set outFormatClause = outFormatClause || preFormat||&apos; &apos;; 
+		END IF;
+		IF (operator = &apos;IS NULL&apos; or operator = &apos;IS NOT NULL&apos;) THEN
+			SET outFormatClause = outFormatClause || columnName||&apos; &apos; || operator;
+		ELSE
+			IF (inValue is null) THEN
+				IF (formatType = &apos;U&apos;) THEN
+					SET outFormatClause = outFormatClause || columnName||&apos; &apos; || operator ||&apos; NULL&apos;;
+				ELSE
+					SET outFormatClause = outFormatClause || columnName||&apos; IS NULL&apos;;
+				END IF;
+			ELSE
+				SET outFormatClause = outFormatClause || columnName||&apos; &apos; || operator ||&apos; &apos;||formatSpecificString;
+			END IF; 
+		END IF;
+	ELSE -- Don&apos;t include columns with null values since explicit=0
+		IF (inValue is not null) THEN
+			IF (outFormatClause IS NOT NULL AND LENGTH(&apos;|&apos;||outFormatClause||&apos;|&apos;) &gt; 2 and begLen = 0) THEN
+				set outFormatClause = outFormatClause || preFormat||&apos; &apos;; 
+			END IF;
+			IF (operator = &apos;IS NULL&apos; or operator = &apos;IS NOT NULL&apos;) THEN
+				SET outFormatClause = outFormatClause || columnName||&apos; &apos; || operator;
+			ELSE
+				SET outFormatClause = outFormatClause || columnName||&apos; &apos; || operator ||&apos; &apos;||formatSpecificString;
+			END IF; 
+		END IF;
+	END IF;
+	IF (begLen &gt; 0) THEN
+		set outFormatClause = outFormatClause || endFormatClause;
+	END IF;
+	set outFormatClause = TRIM(outFormatClause);
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1554520549020</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

@@ -1,0 +1,329 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="reintrospectCJPs" path="/shared/ASAssets/Utilities/reintrospectCJPs" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>reintrospectCJPs:
+
+    This procedure locates all the CJP data sources within the Utilities folder and introspects them.
+    It expects that the Utilities are installed in /shared/ASAssets/Utilities. If not installed there,
+    update the UTILITIES_HOME constant at the beginning of the procedure.
+
+    Input:
+        N/A
+
+    Output:
+        success - A bit value indicating success or failure of the introspections
+            Values: 1 = success, 0 = failure.
+
+    Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+    2014.4		11/06/2014      Calvin Goodrich     6.2.6           Created new
+
+	(c) 2017 TIBCO Software Inc. All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="success" direction="OUT" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource" type="CONTAINER">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/lib/resource/GetDataSourceReintrospectReport" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="reintrospectId" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ReintrospectId" type="STRING" maxLength="255"/>
+      </element>
+      <element name="isBlocking" direction="IN">
+        <datatype type="BOOLEAN"/>
+      </element>
+      <element name="status" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="OperationStatus" type="STRING" maxLength="255"/>
+      </element>
+      <element name="report" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ReintrospectReport" type="STRING" maxLength="32767"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ReintrospectDataSource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="reintrospectId" direction="OUT">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ReintrospectId" type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceDefs" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/lib/util/System" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/ForceWriteRepoUtils" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="result" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceListRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creationDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="creationDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="creatorUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creatorUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="lastModifiedDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="lastModifiedUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+    reintrospectCJPs:
+
+    This procedure locates all the CJP data sources within the Utilities folder and introspects them.
+    It expects that the Utilities are installed in /shared/ASAssets/Utilities. If not installed there,
+    update the UTILITIES_HOME constant at the beginning of the procedure.
+
+    Input:
+        N/A
+
+    Output:
+        success - A bit value indicating success or failure of the introspections
+            Values: 1 = success, 0 = failure.
+
+    Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+    2014.4		11/06/2014      Calvin Goodrich     6.2.6           Created new
+
+	(c) 2017 TIBCO Software Inc. All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE reintrospectCJPs(
+    OUT success BIT
+)
+BEGIN
+    PATH /lib/resource;
+	DECLARE result		BOOLEAN;
+
+    -- update if the Utilties are not installed in /shared/ASAssets/Utilities
+    --
+    DECLARE UTILITIES_HOME CONSTANT ResourceDefs.ResourcePath DEFAULT &apos;/shared/ASAssets/Utilities&apos;;
+
+    DECLARE reintrospectID ResourceDefs.ReintrospectId;
+    DECLARE operationStatus System.OperationStatus;
+    DECLARE reintrospectReport ResourceDefs.ReintrospectReport;
+
+    SET success = 0;
+
+    -- iterate through the list of CJP data sources found in UTILITIES_HOME
+    --
+    FOR r AS 
+        SELECT 
+            resPath 
+        FROM 
+            /shared/ASAssets/Utilities/repository/getResourceListRecursive (UTILITIES_HOME, ResourceDefs.RESOURCE_TYPE_CONTAINER) 
+        WHERE 
+            resType = &apos;DATA_SOURCE&apos; AND 
+            subType = &apos;NONE&apos;
+    DO
+        CALL PRINT (&apos;Reintrospecting CJP data source &apos; || r.resPath || &apos; ...&apos;);
+
+        -- initiate the reintrospection
+        --
+        CALL ReintrospectDataSource (
+            r.resPath, 
+            reintrospectID
+        );
+
+        -- wait for the reintrospection to complete
+        --
+        CALL GetDataSourceReintrospectReport(
+            reintrospectID,
+            TRUE, -- block until reintrospect complete
+            operationStatus,
+            reintrospectReport
+        );
+
+        CALL PRINT (&apos;Done. (OperationStatus = &apos;&apos;&apos; || operationStatus || &apos;&apos;&apos;)&apos;);
+
+		IF (INSTR(r.resPath, &apos;RepoUtils&apos;) &gt; 0) THEN
+			-- Force writing out a new RepoUtils.properties file
+			CALL /shared/ASAssets/Utilities/repository/RepoUtils/ForceWriteRepoUtils(result);
+			CALL PRINT (&apos;Done. (ForceWriteRepoUtils = &apos;&apos;&apos; || cast(result as varchar) || &apos;&apos;&apos;)&apos;);
+		END IF; 
+    END FOR;
+
+    SET success = 1;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1415310831341</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564694941607</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">14/65</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/76</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>resource</item>
+        <item>GetDataSourceReintrospectReport</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">93/60</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>resource</item>
+        <item>ResourceDefs</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">37/46</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>resource</item>
+        <item>ResourceDefs</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/69</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>resource</item>
+        <item>ReintrospectDataSource</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">29/49</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>System</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">28/48</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>resource</item>
+        <item>ResourceDefs</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/88</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">32/50</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>resource</item>
+        <item>ResourceDefs</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/83</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

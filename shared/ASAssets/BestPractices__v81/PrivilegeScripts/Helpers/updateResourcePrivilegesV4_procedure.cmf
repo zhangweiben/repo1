@@ -1,0 +1,1292 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="updateResourcePrivilegesV4" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/updateResourcePrivilegesV4" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+</annotation>
+  <parameters>
+    <parameter name="inDebug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebugConsole" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inDebugCISLog" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="owner" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="ownerDomain" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="resourcePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="resourceType" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="recurse" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="recurseDependencies" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+    <parameter name="recurseDependents" direction="IN" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="mode" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="privilegeStr" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+      <attribute name="Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+    </parameter>
+    <parameter name="logOutput" direction="INOUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/util/System" type="DEFINITION_SET">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <dependency target="/services/webservices/system/admin/resource/operations/changeResourceOwner" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="changeResourceOwner" direction="IN">
+        <datatype name="changeResourceOwner" extendedName="{http://www.compositesw.com/services/system/admin/resource}changeResourceOwner" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}changeResourceOwner" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}changeResourceOwner">
+          <schemaDatatype>
+            <datatype name="changeResourceOwner" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="changeResourceOwnerRequest" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="2">
+              <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="detail" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="detailLevel" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="newOwnerName" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="newOwnerDomain" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="currentOwnerName" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="currentOwnerDomain" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+              </element>
+              <element name="recurse" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="changeResourceOwnerResponse" direction="OUT">
+        <datatype name="changeResourceOwnerResponse" extendedName="{http://www.compositesw.com/services/system/admin/resource}changeResourceOwnerResponse" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}changeResourceOwnerResponse" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}changeResourceOwnerResponse">
+          <schemaDatatype>
+            <datatype name="changeResourceOwnerResponse" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="changeResourceOwnerResponse" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="3">
+              <element name="resources" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="resourceList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="4">
+                  <element name="resource" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                    <datatype name="resource" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="5">
+                      <element name="name" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="subtype" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceSubType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="id" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="changeId" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="int" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="long" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+                      </element>
+                      <element name="version" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="introspectState" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="introspectState" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="ownerDomain" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="ownerName" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="impactLevel" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="impactLevel" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="impactMessage" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="enabled" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                      </element>
+                      <element name="lockState" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="lockState" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="6">
+                          <element name="lockOwnerDomain" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="lockOwnerName" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                          <element name="lockCreateTime" namespace="http://www.compositesw.com/services/system/admin/resource">
+                            <datatype name="dateTime" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="DATETIME"/>
+                          </element>
+                          <element name="lockParentPath" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                            <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="hints" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="7">
+                          <element name="hint" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                            <datatype name="attribute" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="8">
+                              <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="type" namespace="http://www.compositesw.com/services/system/util/common">
+                                <datatype name="attributeType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="value" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="valueList" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="attributeTypeValueList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="9">
+                                  <element name="item" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                    <datatype name="attributeTypeValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="10">
+                                      <element name="type" namespace="http://www.compositesw.com/services/system/util/common">
+                                        <datatype name="attributeType" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                      </element>
+                                      <element name="value" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                      </element>
+                                      <element name="valueList" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <reference refId="9"/>
+                                      </element>
+                                      <element name="valueMap" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeTypeValueMap" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="11">
+                                          <element name="entry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                            <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="12">
+                                              <element name="key" namespace="http://www.compositesw.com/services/system/util/common">
+                                                <reference refId="10"/>
+                                              </element>
+                                              <element name="value" namespace="http://www.compositesw.com/services/system/util/common">
+                                                <reference refId="10"/>
+                                              </element>
+                                            </datatype>
+                                          </element>
+                                        </datatype>
+                                      </element>
+                                      <element name="valueArray" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                        <datatype name="attributeSimpleValueList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="attributeComplexValue" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="COMPLEX_TYPE" type="TREE" refId="13">
+                                          <element name="item" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                                            <datatype name="attributeSimpleValue" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                                          </element>
+                                        </datatype>
+                                      </element>
+                                    </datatype>
+                                  </element>
+                                </datatype>
+                              </element>
+                              <element name="valueMap" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <reference refId="11"/>
+                              </element>
+                              <element name="valueArray" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <reference refId="13"/>
+                              </element>
+                              <element name="unset" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+                              </element>
+                            </datatype>
+                          </element>
+                        </datatype>
+                      </element>
+                      <element name="annotation" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="attributes" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                        <datatype name="attributeList" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="14">
+                          <element name="attribute" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                            <reference refId="8"/>
+                          </element>
+                        </datatype>
+                      </element>
+                    </datatype>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="fault" direction="OUT">
+        <datatype name="fault" extendedName="{http://www.compositesw.com/services/system/util/common}fault" namespace="http://www.compositesw.com/services/system/util/common" referenceDefinitionSet="/services/webservices/system/util/common/operations/CommonSchema" referenceType="{http://www.compositesw.com/services/system/util/common}fault" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/util/common}fault">
+          <schemaDatatype>
+            <datatype name="fault" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="fault" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="ELEMENT_DECL" type="TREE" refId="15">
+              <element name="errorEntry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                <datatype name="messageEntry" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="16">
+                  <element name="code" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="message" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="detail" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="severity" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="messageSeverity" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/services/webservices/system/admin/resource/operations/updateResourcePrivileges" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="updateResourcePrivileges" direction="IN">
+        <datatype name="updateResourcePrivileges" extendedName="{http://www.compositesw.com/services/system/admin/resource}updateResourcePrivileges" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}updateResourcePrivileges" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}updateResourcePrivileges">
+          <schemaDatatype>
+            <datatype name="updateResourcePrivileges" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="updateResourcePrivilegesRequest" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="2">
+              <element name="updateRecursively" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+              </element>
+              <element name="updateDependenciesRecursively" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+              </element>
+              <element name="updateDependentsRecursively" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="boolean" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="INTEGER" minValue="0" maxValue="1"/>
+              </element>
+              <element name="privilegeEntries" namespace="http://www.compositesw.com/services/system/admin/resource">
+                <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="3">
+                  <element name="privilegeEntry" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                    <datatype name="privilegeEntry" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="4">
+                      <element name="path" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="type" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype name="resourceOrColumnType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                      </element>
+                      <element name="privileges" namespace="http://www.compositesw.com/services/system/admin/resource">
+                        <datatype superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="5">
+                          <element name="privilege" namespace="http://www.compositesw.com/services/system/admin/resource" maxOccurs="2147483647" minOccurs="0">
+                            <datatype name="privilege" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="6">
+                              <element name="domain" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="name" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="nameType" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                <datatype name="userNameType" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="privs" namespace="http://www.compositesw.com/services/system/admin/resource">
+                                <datatype name="privList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="combinedPrivs" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="privList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                              <element name="inheritedPrivs" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                                <datatype name="privList" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                              </element>
+                            </datatype>
+                          </element>
+                        </datatype>
+                      </element>
+                    </datatype>
+                  </element>
+                </datatype>
+              </element>
+              <element name="mode" namespace="http://www.compositesw.com/services/system/admin/resource" minOccurs="0">
+                <datatype name="updatePrivilegesMode" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="updateResourcePrivilegesResponse" direction="OUT">
+        <datatype name="updateResourcePrivilegesResponse" extendedName="{http://www.compositesw.com/services/system/admin/resource}updateResourcePrivilegesResponse" namespace="http://www.compositesw.com/services/system/admin/resource" referenceDefinitionSet="/services/webservices/system/admin/resource/operations/ResourceSchema" referenceType="{http://www.compositesw.com/services/system/admin/resource}updateResourcePrivilegesResponse" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/admin/resource}updateResourcePrivilegesResponse">
+          <schemaDatatype>
+            <datatype name="updateResourcePrivilegesResponse" namespace="http://www.compositesw.com/services/system/admin/resource" superTypeName="updateResourcePrivilegesResponse" superTypeNamespace="http://www.compositesw.com/services/system/admin/resource" subType="ELEMENT_DECL" type="TREE" refId="7"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="fault" direction="OUT">
+        <datatype name="fault" extendedName="{http://www.compositesw.com/services/system/util/common}fault" namespace="http://www.compositesw.com/services/system/util/common" referenceDefinitionSet="/services/webservices/system/util/common/operations/CommonSchema" referenceType="{http://www.compositesw.com/services/system/util/common}fault" subType="ELEMENT_DECL" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="ELEMENT" componentName="{http://www.compositesw.com/services/system/util/common}fault">
+          <schemaDatatype>
+            <datatype name="fault" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="fault" superTypeNamespace="http://www.compositesw.com/services/system/util/common" subType="ELEMENT_DECL" type="TREE" refId="8">
+              <element name="errorEntry" namespace="http://www.compositesw.com/services/system/util/common" maxOccurs="2147483647" minOccurs="0">
+                <datatype name="messageEntry" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="anyType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="COMPLEX_TYPE" type="TREE" refId="9">
+                  <element name="code" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="name" namespace="http://www.compositesw.com/services/system/util/common">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="message" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="detail" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="string" namespace="http://www.w3.org/2001/XMLSchema" superTypeName="anySimpleType" superTypeNamespace="http://www.w3.org/2001/XMLSchema" type="STRING" maxLength="2147483647"/>
+                  </element>
+                  <element name="severity" namespace="http://www.compositesw.com/services/system/util/common" minOccurs="0">
+                    <datatype name="messageSeverity" namespace="http://www.compositesw.com/services/system/util/common" superTypeName="string" superTypeNamespace="http://www.w3.org/2001/XMLSchema" subType="SIMPLE_TYPE" type="STRING" maxLength="2147483647"/>
+                  </element>
+                </datatype>
+              </element>
+            </datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="printConsole" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="printLog" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="inLogOutput" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="addLogOutput" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="outLogOutput" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getResourcePrivileges" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="nameTypeFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="domainFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="privilegeEntryType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="includeNameEqualFilter" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="includeNameLikeFilter" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="excludeNameNotEqualFilter" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="excludeNameNotLikeFilter" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="includePrivsEqualFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="includePrivsLikeFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="excludePrivsNotEqualFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="excludePrivsNotLikeFilter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="includeColumnPrivs" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="path">
+            <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="nameType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="domain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="privs">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="combinedPrivs">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="inheritedPrivs">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="p_N">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_R">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_W">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_E">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_S">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_U">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_I">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_D">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="p_G">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_N">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_R">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_W">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_E">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_S">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_U">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_I">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_D">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="c_G">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_N">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_R">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_W">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_E">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_S">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_U">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_I">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_D">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="i_G">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getUsedResourcesCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="usedResCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* updateResourcePrivileges:
+    * Assign privileges and ownership to all resources.
+    * The resourcelist is an array of resources - usually folders (CONTAINER) and virtual
+    * databases (DATA_SOURCE).  For each resource, an array is provided with the users or
+    * groups who can access that resource, and a set of resource privileges for each.
+    * If the recurse flag is &apos;1&apos; the same permissions will be applied to sub-resources.
+ 
+	Input:
+    	inDebug 			- N/Null (default)=No debug, Y=Debug.  Determines whether to capture any debug output and return it in logOutput.
+		inDebugConsole		- N/Null (default)=No debug, Y=Debug console.  Determines whether to print the studio console window or not.
+		inDebugCISLog		- N/Null (default)=No debug, Y=Debug log.  Determines whether to print to the CIS log or not.
+		owner 				- Owner should be set to the name of the user which should own all the objects
+		ownerDomain 		- Domain for owner - default is &apos;composite&apos;
+    	resourcePath 		- full resource path to the composite resource
+    	resourceType 		- resource type e.g. CONTAINER, DATA_SOURCE, PROCEDURE, VIEW
+		recurse 			- 0=no recurse, 1=recurse through folders if the resource is a folder.
+		recurseDependencies	- 0=no recurse, 1=recurse through all dependencies of the given resource and update them with the privileges assigned to their parent.
+		recurseDependents 	- 0=no recurse, 1=recurse through all dependents of the given resource and update them with the privileges assigned to the resource passed in.
+		mode 				- &quot;OVERWRITE_APPEND&quot;=Only apply modification, &quot;SET_EXACTLY&quot;=Make child resources look like this resource. 
+				When &quot;mode&quot;is &quot;OVERWRITE_APPEND&quot;, or is not supplied, privileges are applied on a
+					per-user or per-group basis, so that updating privileges for one user or group does not
+					alter privileges from any other user or group.  The privileges applied for a user or
+					group replace the previous value for that user or group. 
+				When &quot;mode&quot; is &quot;SET_EXACTLY&quot;, all privileges on the resource are made to look exactly like the provided privileges.
+		privilegeStr		- LONGVARCHAR, -- domainName::name::nameType::privilegeList| [repeat row]
+		logOutput - the current log output value
+	Output:
+		logOutput - the appended log output value.  Will only be set if inDebug=Y
+		result	- null if no error else an error string
+	Exceptions:  none
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	11/07/2013		Mike Tinius			6.2.0			Created new
+	07/15/2016		Mike Tinius			7.0.3			Removed use of vectors to improve performance and reduce memory leak issues.
+	05/16/2017		Mike Tinius			7.0.5			Adapted for Data Abstraction Best Practices.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+---------------------------------------------------------------------------------
+/services/webservices/system/admin/resource/operations/updateResourcePrivileges:
+----------------------------------------------------------------------------------
+Set the privilege information for a list of resources.
+
+Only a user with GRANT privilege on a resource can modify the privileges for that
+resource.  The owner of a resource always has GRANT privilege, as do users with the
+MODIFY_ALL_RESOURCES right.
+
+When &quot;mode&quot; is &quot;OVERWRITE_APPEND&quot;, or is not supplied, privileges are applied on a
+per-user or per-group basis, so that updating privileges for one user or group does not
+alter privileges from any other user or group.  The privileges applied for a user or
+group replace the previous value for that user or group. When &quot;mode&quot; is &quot;SET_EXACTLY&quot;,
+all privileges on the resource are made to look exactly like the provided privileges.
+
+When &quot;updateRecursively&quot; is &quot;false&quot;, the privileges are applied only the specified
+resources.  When it is &quot;true&quot;, the privileges are recursively applied into any 
+CONTAINER or DATA_SOURCE resource specified.  When recursively applying privileges, 
+the privilege change is ignored for any resource the user lacks owner privileges for.
+
+Privileges that are not applicable for a given resource type are automatically stripped
+down to the set that is legal for each resource.  TABLE resources support NONE, READ,
+WRITE, SELECT, INSERT, UPDATE, and DELETE.  PROCEDURE resources support NONE, READ,
+WRITE, and EXECUTE.  All other resource types only support NONE, READ, and WRITE.
+
+The &quot;combinedPrivs&quot; and &quot;inheritedPrivs&quot; elements on each &quot;privilegeEntry&quot; will be
+ignored and can be left unset.
+
+Request Elements:
+    updateRecursively: If &quot;true&quot;, then all children of the given resources will
+       recursively be updated with the privileges assigned to their parent.
+    updateDependenciesRecursively: If &quot;true&quot;, then all dependencies of the given resources will
+       recursively be updated with the privileges assigned to their parent.
+    privilegeEntries: A list of resource names, types, and the privileges.
+    mode (optional): Determines whether privileges are merged with existing ones,
+       default is &quot;OVERWRITE_APPEND&quot;, which merges and does not update privileges for
+       users or groups not mentioned.  &quot;SET_EXACTLY&quot; makes privileges look exactly like
+       those provided in the call.
+
+Response Elements:
+    N/A
+
+Faults:
+    IllegalArgument: If any path is malformed or any type or privilege entry is illegal,
+       or mode is not one of the legal values.
+    NotAllowed: If an attempt is made to use this operation with an insufficient license.
+    NotFound: If a path refers to a resource that does not exist.
+    NotFound: If an unknown domain is provided.
+    NotFound: If an unknown user is provided.
+    NotFound: If an unknown group is provided.
+    Security: If for a given entry path the user does not have READ access on any item
+       in a path other than the last item, or does not have GRANT access on the last item.
+    Security: If the user does not have the ACCESS_TOOLS right.
+*/
+PROCEDURE updateResourcePrivilegesV4(
+	IN inDebug 				CHAR(1),	 -- Y or N (default).  Determines whether to capture any debug output and return it in logOutput.
+	IN inDebugConsole		CHAR(1), 	 -- Y or N (default).  Determines whether to print the studio console window or not.
+	IN inDebugCISLog		CHAR(1), 	 -- Y or N (default).  Determines whether to print to the CIS log or not.
+	IN owner				VARCHAR(255),-- Owner should be set to the name of the user which should own all the objects
+	IN ownerDomain			VARCHAR(255),-- Domain for owner - default is &apos;composite&apos;
+	IN resourcePath			VARCHAR(4000),-- full resource path to the composite resource
+	IN resourceType 		VARCHAR(255),-- resource type e.g. CONTAINER, DATA_SOURCE, PROCEDURE, VIEW
+	IN recurse 				BIT,	 	 -- 0=no recurse, 1=recurse through folders if the resource is a folder.
+	IN recurseDependencies	BIT,		 -- 0=no recurse, 1=recurse through all dependencies of the given resource and update them with the privileges assigned to their parent.
+	IN recurseDependents	BIT,		 -- 0=no recurse, 1=recurse through all dependents of the given resource and update them with the privileges assigned to the resource passed in.
+	IN mode					VARCHAR(255),-- &quot;OVERWRITE_APPEND&quot;=Only apply modification, &quot;SET_EXACTLY&quot;=Make child resources look like this resource. 
+	IN privilegeStr			LONGVARCHAR, -- domainName::name::nameType::privilegeList| [repeat row]
+	INOUT logOutput			LONGVARCHAR,
+	OUT result				LONGVARCHAR
+)
+BEGIN
+	DECLARE moduleName 				VARCHAR DEFAULT &apos;updateResourcePrivilegesV4&apos;;
+	DECLARE debug					CHAR(1) DEFAULT NVL(UPPER(inDebug),&apos;N&apos;);
+	DECLARE debugConsole			CHAR(1) DEFAULT NVL(UPPER(inDebugConsole),&apos;N&apos;);
+	DECLARE debugCISLog				CHAR(1) DEFAULT NVL(UPPER(inDebugCISLog),&apos;N&apos;);
+	DECLARE localDebug				CHAR(1) DEFAULT &apos;N&apos;;
+	DECLARE error 					LONGVARCHAR;
+	DECLARE request 				LONGVARCHAR;
+	DECLARE response 				XML;
+	DECLARE fault 					XML;
+    DECLARE user_exists 			BOOLEAN;
+	DECLARE message 				LONGVARCHAR;
+	DECLARE padChar					CHAR(1) DEFAULT &apos; &apos;;
+	DECLARE privilegesXML			VARCHAR;
+	DECLARE privilegeListStr		VARCHAR;
+	DECLARE privilegeNameList		LONGVARCHAR DEFAULT &apos; &apos;;
+	DECLARE priv					VARCHAR(4000);
+	DECLARE privItem				VARCHAR(4000);
+	DECLARE resExists				BOOLEAN;
+	DECLARE resourceName			VARCHAR;
+	DECLARE parentPath				LONGVARCHAR;
+	DECLARE getPrivsResourcePath	LONGVARCHAR;
+	DECLARE pos						INTEGER;
+	DECLARE j,k						INTEGER;
+	DECLARE start2					INTEGER;
+	DECLARE pos1,pos2,lastpos1		INTEGER;
+	DECLARE object					VARCHAR(4000);
+	DECLARE moreToDo1,moreToDo2		BOOLEAN;
+	DECLARE objectList1,objectList2	LONGVARCHAR;
+	DECLARE expression1,expression2	VARCHAR;
+	DECLARE explen1,explen2,poslen	INTEGER;
+    DECLARE ex						EXCEPTION; 	
+   /*
+    * The resourcelist is an array of resources - usually folders (CONTAINER) and virtual
+    * databases (DATA_SOURCE).  For each resource, an array is provided with the users or
+    * groups who can access that resource, and a set of resource privileges for each.
+    * If the recurse flag is &apos;1&apos; the same permissions will be applied to sub-resources.
+    */
+	DECLARE TYPE privsType	ROW(	 -- Array (vector) of privileges to be set for a given resource path/tpye.
+		domainName			VARCHAR(255),-- composite domain
+		name				VARCHAR(255),-- name of the user or group to assign the privilege
+		nameType			VARCHAR(255),-- USER or GROUP
+		privilegeList		VARCHAR(255) -- space separated list of privileges: NONE or READ WRITE SELECT EXECUTE INSERT UPDATE DELETE GRANT
+	);
+	DECLARE privRec			privsType;
+    DECLARE resourcelist	ROW(resource VARCHAR, resourceType VARCHAR, recurse CHAR(1), recurseDependencies CHAR(1), recurseDependents CHAR(1), mode VARCHAR, resourcePrivs LONGVARCHAR);
+/*
+(&apos;/shared&apos;, &apos;CONTAINER&apos;, &apos;1&apos;, VECTOR[ (&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE&apos;) ]),
+(&apos;/shared/ASAssets/BestPractices+v81&apos;, &apos;CONTAINER&apos;, &apos;1&apos;, VECTOR[  (&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE INSERT UPDATE DELETE&apos;)    ]),
+(&apos;/shared/ASAssets/Utilities&apos;, &apos;CONTAINER&apos;, &apos;1&apos;, VECTOR[      (&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE INSERT UPDATE DELETE&apos;)    ]),
+
+(&apos;/services/databases/VIPSAPP&apos;, &apos;DATA_SOURCE&apos;, &apos;1&apos;, VECTOR[(&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE INSERT UPDATE DELETE&apos;) ]),
+(&apos;/shared/VIPS_02&apos;, &apos;CONTAINER&apos;, &apos;1&apos;, VECTOR[ (&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE INSERT UPDATE DELETE&apos;)  ]),
+(&apos;/shared/VIPS_03&apos;, &apos;CONTAINER&apos;, &apos;1&apos;, VECTOR[ (&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE INSERT UPDATE DELETE&apos;)  ]),
+(&apos;/shared/VIPS_DataSources&apos;, &apos;CONTAINER&apos;, &apos;1&apos;, VECTOR[ (&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE INSERT UPDATE DELETE&apos;)  ]),
+
+
+(&apos;/services/webservices/spiral1&apos;, &apos;CONTAINER&apos;, &apos;1&apos;, VECTOR[  (&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE INSERT UPDATE DELETE&apos;)   ]),
+(&apos;/services/webservices/vipsApplicationWS_v1_1&apos;, &apos;DATA_SOURCE&apos;, &apos;1&apos;, VECTOR[  (&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE INSERT UPDATE DELETE&apos;)   ]),
+(&apos;/services/webservices/vipsMedicalPrescreenFormWS_v1_1&apos;, &apos;DATA_SOURCE&apos;, &apos;1&apos;, VECTOR[ (&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE INSERT UPDATE DELETE&apos;)    ]),
+(&apos;/services/webservices/vipsMedicalPrescreenWS_v1_1&apos;, &apos;DATA_SOURCE&apos;, &apos;1&apos;, VECTOR[  (&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE INSERT UPDATE DELETE&apos;)     ]),
+(&apos;/services/webservices/vipsStatusWS_v1_1&apos;, &apos;DATA_SOURCE&apos;, &apos;1&apos;, VECTOR[  (&apos;vipsuser&apos;, &apos;composite&apos;, &apos;GROUP&apos;, &apos;READ SELECT EXECUTE INSERT UPDATE DELETE&apos;)    ])    ];
+*/
+	set result = null;
+	-- Initialize logOutput
+	IF (logOutput IS NULL) THEN
+		set logOutput = &apos;&apos;;
+	END IF;
+
+  BEGIN INDEPENDENT TRANSACTION
+
+	-- Validate resource path and type
+	if ((resourcePath is not null and LENGTH(resourcePath) &gt; 0) and (resourceType is not null and LENGTH(resourceType) &gt; 0)) then
+		if (resourceType != &apos;COLUMN&apos;) then
+			call /lib/resource/ResourceExists(resourcePath, resourceType, null, resExists);
+			if (not resExists) then
+				raise ex value &apos;The specified resource does not exist. path=&apos;||resourcePath||&apos;  type=&apos;||resourceType;
+			end if;
+		end if;
+	else
+		raise ex value &apos;The specified resource path or type cannot be null or empty.&apos;;
+	end if;
+
+	-- Build the resource list vector
+	set resourcelist.resource = resourcePath;
+	set resourcelist.resourceType = resourceType;
+	set resourcelist.resourcePrivs = privilegeStr;
+
+	-- Validate recurse and set the default to 0 if needed
+	set resourcelist.recurse = &apos;0&apos;;
+	if (recurse is not null and (recurse = 1 or recurse = 0)) then
+		set resourcelist.recurse = CAST(recurse AS VARCHAR);
+	end if;
+
+	-- Validate recurseDependencies and set the default to 0 if needed
+	set resourcelist.recurseDependencies = &apos;0&apos;;
+	if (recurseDependencies is not null and (recurseDependencies = 1 or recurseDependencies = 0)) then
+		set resourcelist.recurseDependencies = CAST(recurseDependencies AS VARCHAR);
+	end if;
+
+	-- Validate recurseDependents and set the default to 0 if needed
+	set resourcelist.recurseDependents = &apos;0&apos;;
+	if (recurseDependents is not null and (recurseDependents = 1 or recurseDependents = 0)) then
+		set resourcelist.recurseDependents = CAST(recurseDependents AS VARCHAR);
+	end if;
+
+	-- Validate the mode and set the default to &quot;OVERWRITE_APPEND&quot; if needed
+	set resourcelist.mode = &apos;OVERWRITE_APPEND&apos;;
+	if (mode is not null and (UPPER(mode) = &apos;OVERWRITE_APPEND&apos; or UPPER(mode) = &apos;SET_EXACTLY&apos;)) then
+		set resourcelist.mode = UPPER(mode);
+	end if;
+
+	-- Validate the list of privileges
+	IF (debug = &apos;Y&apos;) THEN
+		IF (privilegeStr IS NULL OR LENGTH(TRIM(privilegeStr)) = 0) THEN
+			set message = &apos;LENGTH(privilegeStr)=0 --- EMPTY: NO PRIVILEGES TO APPLY&apos;;
+		ELSE
+			set message = &apos;LENGTH(privilegeStr)=&apos; || CAST(LENGTH(TRIM(privilegeStr)) AS VARCHAR);
+		END IF;
+		call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+	END IF;
+/*
+    * Step three: Display the existing privileges
+ 		   OUT result CURSOR (
+				&quot;domain&quot; VARCHAR(32768), 
+				name VARCHAR(32768), 
+				nameType VARCHAR(32768), 
+				privs VARCHAR(32768), 
+				combinedPrivs VARCHAR(32768), 
+				inheritedPrivs VARCHAR(32768)
+   		     )
+*/
+	IF (privilegeStr IS NOT NULL AND LENGTH(TRIM(privilegeStr)) &gt; 0) THEN
+
+		IF (debug = &apos;Y&apos;) THEN
+			set message = &apos;EXISTING PRIVILEGES FOR PATH: &apos; || TRIM(NVL(resourcelist.resource,&apos; &apos;));
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+		END IF;
+
+		IF (debug = &apos;Y&apos;) THEN
+			set message = 	&apos;EXISTING PRIVILEGES:&apos; || 
+							RPAD(&apos;domain&apos;,12,padChar) ||&apos; &apos;||
+							RPAD(&apos;name&apos;,50,padChar) || &apos; &apos;||
+							RPAD(&apos;type&apos;,5,padChar) || &apos; &apos;||
+							RPAD(&apos;privs&apos;,55,padChar) || &apos; &apos;||
+							RPAD(&apos;combinedPrivs&apos;,55,padChar) || &apos; &apos;||
+							RPAD(&apos;inheritedPrivs&apos;,55,padChar);							
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+		END IF;
+
+		IF (debug = &apos;Y&apos;) THEN
+			set message = 	&apos;EXISTING PRIVILEGES:&apos; || 
+							RPAD(&apos;-&apos;,12,&apos;-&apos;) ||&apos; &apos;||
+							RPAD(&apos;-&apos;,50,&apos;-&apos;) || &apos; &apos;||
+							RPAD(&apos;-&apos;,5,&apos;-&apos;) || &apos; &apos;||
+							RPAD(&apos;-&apos;,55,&apos;-&apos;) || &apos; &apos;||
+							RPAD(&apos;-&apos;,55,&apos;-&apos;) || &apos; &apos;||
+							RPAD(&apos;-&apos;,55,&apos;-&apos;);							
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+		END IF;
+
+		/*
+		Get Lineage for Published Resource Column
+			If resourcePath in /services/databases and resourceType = COLUMN then get the lineage to the view immediately publishing to the database.  
+			This is where the actual privileges are set
+		*/
+		SET getPrivsResourcePath = resourcelist.resource;
+		IF (POSITION(&apos;/services/databases/&apos; IN getPrivsResourcePath) &gt; 0 AND resourcelist.resourceType = &apos;COLUMN&apos;) THEN
+			SET resourceName = null;
+			SET parentPath = null;
+			SET pos = INSTR(getPrivsResourcePath, &apos;/&apos;, -1, 1);
+			IF (pos &gt; 0) THEN
+				SET resourceName = SUBSTRING(getPrivsResourcePath, pos+1);
+				SET parentPath = SUBSTRING(getPrivsResourcePath, 1, pos-1);
+			END IF;
+			-- Retrieve the first level depth resource
+			FOR r AS select * from /shared/ASAssets/Utilities/repository/getUsedResourcesCursor(parentPath, &apos;LINK&apos;) DO
+				set getPrivsResourcePath = r.resourcePath||&apos;/&apos;||resourceName;
+			END FOR;
+		END IF;
+
+	/*  getResourcePrivilegesV2:
+	        resourcePath - path to resource
+			resourceType - type of resource (e.g. LINK, CONTAINER, TABLE, PROCEDURE, TREE, DEFINITION_SET, TRIGGER, etc.)
+			nameTypeFilter - (optional) A filter that is set to null, USER or GROUP.
+			domainFilter - (optional) A filter that is set to null or the domain such as composite, dynamic or an LDAP domain name.
+			privilegeEntryType	- [mandatory:  privs, combinedPrivs, inheritedPrivs] 1 of the selection list.  
+											   privs=the actual privileges. 
+											   combinedPrivs=Combination of actual privileges and inherited privileges.
+											   inheritedPrivs=Inherited privileges.
+			includeNameEqualFilter - (optional) A comma separated filter list that is used to retrieve privileges where the &quot;name =&quot; the incoming string.
+									When a list of names are passed in the where clause constructs &quot;OR&quot; statements where (name = &apos;name1&apos; or nanme = &apos;name2&apos;).
+			includeNameLikeFilter - (optional) A comma separated filter list that is used to retrieve privileges where the &quot;name LIKE&quot; the incoming string.
+									When a list of name are passed in the where clause constructs &quot;OR&quot; statements where (name LIKE &apos;name%&apos; or name LIKE &apos;myname%&apos;).
+			excludeNameNotEqualFilter - (optional) A comma separated filter list that is used to retrieve privileges where the &quot;name !=&quot; to the incoming string.
+									When a list of name are passed in the where clause constructs &quot;AND&quot; statements where name != &apos;name&apos; AND name != &apos;myname&apos;.
+			excludeNameNotLikeFilter - (optional) A comma separated filter list that is used to retrieve privileges where the &quot;name NOT LIKE&quot; the incoming string.
+									When a list of name are passed in the where clause constructs &quot;AND&quot; statements where name NOT LIKE &apos;name%&apos; AND name NOT LIKE &apos;myname%&apos;.
+			includePrivsEqualFilter - (optional) A comma separated filter list that is used to retrieve privileges where the &quot;combinedPrivs =&quot; the incoming string.
+									When a list of privs are passed in the where clause constructs &quot;OR&quot; statements where (combinedPrivs = &apos;NONE&apos; or combinedPrivs = &apos;READ&apos;).
+									&quot;combinedPrivs&quot; should be in this order: READ WRITE EXECUTE SELECT UPDATE INSERT DELETE GRANT
+									       &quot;combinedPrivs&quot; with no settings: NONE
+			includePrivsLikeFilter - (optional) A comma separated filter list that is used to retrieve privileges where the &quot;combinedPrivs LIKE&quot; the incoming string.
+									When a list of privs are passed in the where clause constructs &quot;OR&quot; statements where (combinedPrivs LIKE &apos;READ EXECUTE%&apos; or combinedPrivs LIKE &apos;READ%&apos;).
+									&quot;combinedPrivs&quot; should be in this order: READ WRITE EXECUTE SELECT UPDATE INSERT DELETE GRANT
+									       &quot;combinedPrivs&quot; with no settings: NONE
+			excludePrivsNotEqualFilter - (optional) A comma separated filter list that is used to retrieve privileges where the &quot;combinedPrivs !=&quot; to the incoming string.
+									When a list of privs are passed in the where clause constructs &quot;AND&quot; statements where combinedPrivs != &apos;NONE&apos; AND combinedPrivs != &apos;READ&apos;.
+									&quot;combinedPrivs&quot; should be in this order: READ WRITE EXECUTE SELECT UPDATE INSERT DELETE GRANT
+									       &quot;combinedPrivs&quot; with no settings: NONE
+			excludePrivsNotLikeFilter - (optional) A comma separated filter list that is used to retrieve privileges where the &quot;combinedPrivs NOT LIKE&quot; the incoming string.
+									When a list of privs are passed in the where clause constructs &quot;AND&quot; statements where combinedPrivs NOT LIKE &apos;READ EXECUTE%&apos; AND combinedPrivs NOT LIKE &apos;READ%&apos;.
+									&quot;combinedPrivs&quot; should be in this order: READ WRITE EXECUTE SELECT UPDATE INSERT DELETE GRANT
+									       &quot;combinedPrivs&quot; with no settings: NONE
+			includeColumnPrivs - (optional) A bit (1 or 0) that instructs whether to return column level privileges for resources such as tables that contain columns.
+									1=yes include column privileges, 0=no do not include column privileges
+			debug - (optional) A char(1) (null, Y or N) indicating whether to output debug statements like the SQL Stateement that will be executed.
+		*/
+		IF (debug = &apos;Y&apos;) THEN
+			for r as select * 
+				from /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/getResourcePrivileges(getPrivsResourcePath,resourcelist.resourceType,NULL,NULL,&apos;privs&apos;,NULL,NULL,NULL,NULL,NULL,NULL,&apos;NONE&apos;,NULL,NULL,&apos;N&apos;)
+				order by nameType, name
+			do
+					set message = &apos;EXISTING PRIVILEGES:&apos; || 
+									RPAD(r.&quot;domain&quot;,12,padChar) ||&apos; &apos;||
+									RPAD(r.name,50,padChar) || &apos; &apos;||
+									RPAD(r.nameType,5,padChar) || &apos; &apos;||
+									RPAD(r.privs,55,padChar) || &apos; &apos;||
+									RPAD(r.combinedPrivs,55,padChar) || &apos; &apos;||
+									RPAD(r.inheritedPrivs,55,padChar);							
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+			end for;
+		END IF;
+
+	   /*
+		* Step three: Assign privileges and ownership to all resources
+		*/
+		IF (debug = &apos;Y&apos;) THEN
+			set message = &apos;Assigning PRIVILEGES TO: &apos; || TRIM(NVL(resourcelist.resource,&apos; &apos;));
+			call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+		END IF;
+
+		BEGIN
+			DECLARE privs LONGVARCHAR DEFAULT &apos;&apos;;
+			set j = 1;
+			-- Extract the object from the object list
+			SET objectList1 = privilegeStr;
+			SET expression1 = &apos;|&apos;;
+			SET explen1 = length(expression1);
+			SET moreToDo1 = true;
+			SET j = 0;
+			WHILE (moreToDo1) DO
+				-- Extract the source column type
+				set j = j + 1;
+				SET object = null;
+				IF (j = 1) THEN
+					SET pos1 = INSTR(objectList1, expression1, 1, j);
+					IF (pos1 &gt; 0) THEN
+						SET object = SUBSTRING(objectList1, 1, pos1-1);
+					ELSE
+						IF (LENGTH(TRIM(objectList1)) &gt; 0) THEN
+							SET object = objectList1;
+						END IF;
+						SET moreToDo1 = false;
+					END IF;
+				ELSE
+					SET pos1 = INSTR(objectList1, expression1, 1, j-1);
+					SET pos2 = INSTR(objectList1, expression1, 1, j);
+					IF (pos1 &gt; 0 and pos2 &gt; 0) THEN
+						SET object = SUBSTRING(objectList1, pos1+explen1, pos2-pos1-explen1);
+					ELSEIF (pos1 &gt; 0 and pos2 = 0) THEN
+						SET object = SUBSTRING(objectList1, pos1+explen1);
+						SET moreToDo1 = false;
+					END IF;
+				END IF;
+				SET object = TRIM(object);
+				--CALL print(&apos;priv object=[&apos;||TRIM(NVL(object,&apos;  &apos;))||&apos;]&apos;);
+				IF (object IS NOT NULL and LENGTH(TRIM(object)) &gt; 0) then
+					set priv = object;
+
+					IF (localDebug = &apos;Y&apos;) THEN
+						call print(moduleName||&apos;:: priv=&apos;||priv);
+					END IF;
+						/*
+							domainName			VARCHAR(255),-- composite domain
+							name				VARCHAR(255),-- name of the user or group to assign the privilege
+							nameType			VARCHAR(255),-- USER or GROUP
+							privilegeList		VARCHAR(255) -- space separated list of privileges: NONE or READ WRITE SELECT EXECUTE INSERT UPDATE DELETE GRANT
+						*/
+					-- Extract the object from the object list
+					SET objectList2 = priv;
+					SET expression2 = &apos;::&apos;;
+					SET moreToDo2 = true;
+					SET explen2 = length(expression2);
+					SET start2 = 1;
+					SET lastpos1 = 0;
+					SET k = 0;
+					WHILE (moreToDo2) DO
+						set k = k + 1;
+						SET object = null;
+						IF (k = 1) THEN
+							SET pos1 = INSTR(objectList2, expression2, start2, 1);
+							--call print(&apos;&quot;privRow&quot; start2=&apos;||start2||&apos;  pos1=&apos;||pos1||&apos;  pos1-1=&apos;||CAST(pos1-1 AS VARCHAR));
+							IF (pos1 &gt; 0) THEN
+								SET poslen = pos1-1;
+								IF (poslen &lt; 0) THEN
+									SET poslen = 0;
+								END IF;
+								SET object = SUBSTRING(objectList2, 1, poslen);
+							ELSE
+								IF (LENGTH(TRIM(objectList2)) &gt; 0) THEN
+									SET object = objectList2;
+								END IF;
+								SET moreToDo2 = false;
+							END IF;
+							SET lastpos1 = pos1;
+							SET start2 = lastpos1+explen2;
+						ELSE
+							SET pos2 = INSTR(objectList2, expression2, start2, 1);
+							--call print(&apos;&quot;privRow&quot; start2=&apos;||start2||&apos;  lastpos1=&apos;||lastpos1||&apos;  pos2=&apos;||pos2||&apos;  explen2=&apos;||explen2||&apos;  pos2-lastpos1-explen2=&apos;||CAST(pos2-lastpos1-explen2 AS VARCHAR));
+							IF (lastpos1 &gt; 0 and pos2 &gt; 0) THEN
+								SET poslen = pos2-lastpos1-explen2;
+								IF (poslen &lt; 0) THEN
+									SET poslen = 0;
+								END IF;
+								SET object = SUBSTRING(objectList2, lastpos1+explen2, poslen);
+							ELSEIF (lastpos1 &gt; 0 and pos2 = 0) THEN
+								SET object = SUBSTRING(objectList2, lastpos1+explen2);
+								SET moreToDo2 = false;
+							END IF;
+							SET lastpos1 = pos2;
+							SET start2 = lastpos1+explen2;
+						END IF;
+						SET object = TRIM(object);
+						--CALL print(&apos;priv k=&apos;||k||&apos;  object=[&apos;||TRIM(NVL(object,&apos;  &apos;))||&apos;]&apos;);
+						set privItem = object;
+						IF (localDebug = &apos;Y&apos;) THEN
+							call print(moduleName||&apos;::    privItem=&apos;||privItem);
+						END IF;
+						if (k = 1) then
+							set privRec.domainName = privItem;
+						end if;
+						if (k = 2) then
+							set privRec.name = privItem;
+						end if;
+						if (k = 3) then
+							set privRec.nameType = privItem;
+						end if;
+						if (k = 4) then
+							set privRec.privilegeList = privItem;
+						end if;
+					END WHILE;
+
+					-- Validate the required privilege fields - &quot;name&quot;
+					if (privRec.name is null or LENGTH(TRIM(privRec.name)) = 0) then
+						raise ex value &apos;Row=&apos;||cast(j as varchar)||&apos;  The &quot;privRec.name&quot; field cannot be null or empty.&apos;;
+					end if;
+					-- Validate the required privilege fields - &quot;domainName&quot;
+					if (privRec.domainName is null or LENGTH(TRIM(privRec.domainName)) = 0) then
+						raise ex value &apos;Row=&apos;||cast(j as varchar)||&apos;  The &quot;privRec.domainName&quot; field cannot be null or empty.&apos;;
+					end if;
+					-- Validate the required privilege fields - &quot;nameType&quot;
+					if (privRec.nameType is null or LENGTH(TRIM(privRec.nameType)) = 0) then
+						raise ex value &apos;Row=&apos;||cast(j as varchar)||&apos;  The &quot;privRec.nameType&quot; field cannot be null or empty.&apos;;
+					ELSE
+						if (UPPER(privRec.nameType) != &apos;USER&apos; and UPPER(privRec.nameType) != &apos;GROUP&apos;) then
+							raise ex value &apos;Row=&apos;||cast(j as varchar)||&apos;  The &quot;privRec.nameType&quot; field must be either &quot;USER&quot; or &quot;GROUP&quot;.&apos;;
+						end if;	
+					end if;
+					-- Validate the required privilege fields - &quot;privilegeList&quot;
+					if (privRec.privilegeList is null or LENGTH(TRIM(privRec.privilegeList)) = 0) then
+						raise ex value &apos;Row=&apos;||cast(j as varchar)||&apos;  The &quot;privRec.privilegeList&quot; field cannot be null or empty.&apos;;
+					end if;
+
+					-- Set the complete list of names
+					set privilegeNameList = privilegeNameList || privRec.name||&apos; &apos;;
+
+					-- Make the name and domain are lower case when the domain is &quot;composite&quot;
+					if (LOWER(privRec.domainName) = &apos;composite&apos;) then
+						set privRec.domainName = LOWER(privRec.domainName);
+						set privRec.name = LOWER(privRec.name);
+					end if;		
+
+					IF (debug = &apos;Y&apos;) THEN
+						set message = &apos;    &apos; || TRIM(NVL(privRec.nameType,&apos; &apos;)) || &apos; &apos; || 
+							TRIM(NVL(privRec.name,&apos; &apos;)) || &apos; SET TO: &apos; || TRIM(NVL(privRec.privilegeList,&apos; &apos;));
+						call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+					END IF;
+
+					SET privs = privs || &apos;
+							 &lt;ns1:privilege&gt;
+								&lt;ns1:domain&gt;&apos; || privRec.domainname || &apos;&lt;/ns1:domain&gt;
+								&lt;ns1:name&gt;&apos; || privRec.name || &apos;&lt;/ns1:name&gt;
+								&lt;ns1:nameType&gt;&apos; || privRec.nameType || &apos;&lt;/ns1:nameType&gt;
+								&lt;ns1:privs&gt;&apos; || TRIM(privRec.privilegeList) || &apos;&lt;/ns1:privs&gt;
+							 &lt;/ns1:privilege&gt;&apos;;
+				END IF;
+			END WHILE;
+				  
+			set request =
+			   &apos;&lt;ns1:updateResourcePrivileges xmlns:ns1=&quot;http://www.compositesw.com/services/system/admin/resource&quot;
+					 xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;
+					 xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+				   &lt;ns1:updateRecursively&gt;&apos; || resourcelist.recurse || &apos;&lt;/ns1:updateRecursively&gt;
+&apos;;
+			if (resourcelist.recurseDependencies = 1) then
+				set request = request ||
+&apos;                   &lt;ns1:updateDependenciesRecursively&gt;&apos; || resourcelist.recurseDependencies || &apos;&lt;/ns1:updateDependenciesRecursively&gt;
+&apos;;
+			end if;
+			if (resourcelist.recurseDependents = 1) then
+				set request = request ||
+&apos;                   &lt;ns1:updateDependentsRecursively&gt;&apos; || resourcelist.recurseDependents || &apos;&lt;/ns1:updateDependentsRecursively&gt;
+&apos;;
+			end if;
+			set request = request ||
+&apos;                   &lt;ns1:privilegeEntries&gt;
+					 &lt;ns1:privilegeEntry&gt;
+					   &lt;ns1:path&gt;&apos; || resourcelist.resource || &apos;&lt;/ns1:path&gt;
+					   &lt;ns1:type&gt;&apos; || resourcelist.resourceType || &apos;&lt;/ns1:type&gt;
+					   &lt;ns1:privileges&gt;&apos; || privs || &apos;
+					   &lt;/ns1:privileges&gt;
+					 &lt;/ns1:privilegeEntry&gt;
+				   &lt;/ns1:privilegeEntries&gt;
+				   &lt;ns1:mode&gt;&apos;||resourcelist.mode||&apos;&lt;/ns1:mode&gt;
+				&lt;/ns1:updateResourcePrivileges&gt;&apos;;
+
+			IF (debug = &apos;Y&apos;) THEN
+				--call print(request);  -- Print the full XML with carriage return / line feed.
+				set message = TRIM(NVL(request,&apos; &apos;)) || CHR(10); -- This version of the print trims out carriage return and line feeds so it prints the XML on one line.
+				call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+			END IF;
+
+			CALL /services/webservices/system/admin/resource/operations/updateResourcePrivileges(request, response, fault);
+			if (fault is not null) then
+				raise ex value CAST(fault as LONGVARCHAR);
+			end if;
+		EXCEPTION                     
+			WHEN System.SOAPFaultException THEN
+				set message = &apos;&apos;;
+				IF (CURRENT_EXCEPTION.NAME IS NOT NULL) THEN set message = message || &apos;NAME=&apos;||CURRENT_EXCEPTION.NAME; END IF;
+				IF (CURRENT_EXCEPTION.ID IS NOT NULL) THEN set message = message || &apos;  ID=&apos;||CAST(CURRENT_EXCEPTION.ID AS VARCHAR); END IF;
+				IF (CURRENT_EXCEPTION.MESSAGE IS NOT NULL) THEN set message = message || &apos;  MESSAGE=&apos;||CURRENT_EXCEPTION.MESSAGE; END IF;
+				IF (CURRENT_EXCEPTION.TRACE IS NOT NULL) THEN set message = message || &apos;  TRACE=&apos;||CURRENT_EXCEPTION.TRACE; END IF;
+				set message = &apos;EXCEPTION: &apos; || message;
+				call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+			RAISE;                                   
+		END;
+ 
+		-- Change the ownership of the resource if it is not a COLUMN
+		if (resourcelist.resourceType != &apos;COLUMN&apos; and owner is not null and LENGTH(owner) &gt; 0 and ownerDomain is not null and LENGTH(ownerDomain) &gt; 0) then
+			IF (debug = &apos;Y&apos;) THEN
+				set message = &apos;Assigning ownership FOR &apos;||TRIM(NVL(owner,&apos; &apos;))||&apos; TO &apos; || TRIM(NVL(resourcelist.resource,&apos; &apos;));
+				call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+			END IF;
+ 
+			BEGIN
+				set request =
+				   &apos;&lt;ns1:changeResourceOwner xmlns:ns1=&quot;http://www.compositesw.com/services/system/admin/resource&quot;
+						 xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;
+						 xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;
+					   &lt;ns1:path&gt;&apos; || resourcelist.resource || &apos;&lt;/ns1:path&gt;
+					   &lt;ns1:type&gt;&apos; || resourcelist.resourceType || &apos;&lt;/ns1:type&gt;
+					   &lt;ns1:detail&gt;NONE&lt;/ns1:detail&gt;
+					   &lt;ns1:newOwnerName&gt;&apos; || owner || &apos;&lt;/ns1:newOwnerName&gt;
+					   &lt;ns1:newOwnerDomain&gt;&apos; || ownerDomain || &apos;&lt;/ns1:newOwnerDomain&gt;
+					   &lt;ns1:recurse&gt;TRUE&lt;/ns1:recurse&gt;
+					&lt;/ns1:changeResourceOwner&gt;&apos;;
+				IF (debug = &apos;Y&apos;) THEN
+					set message = TRIM(NVL(request,&apos; &apos;)) || CHR(10);
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+				END IF;
+			
+			CALL /services/webservices/system/admin/resource/operations/changeResourceOwner(request, response, fault);
+			EXCEPTION                     
+				WHEN System.SOAPFaultException THEN
+					set message = &apos;&apos;;
+					IF (CURRENT_EXCEPTION.NAME IS NOT NULL) THEN set message = message || &apos;NAME=&apos;||CURRENT_EXCEPTION.NAME; END IF;
+					IF (CURRENT_EXCEPTION.ID IS NOT NULL) THEN set message = message || &apos;  ID=&apos;||CAST(CURRENT_EXCEPTION.ID AS VARCHAR); END IF;
+					IF (CURRENT_EXCEPTION.MESSAGE IS NOT NULL) THEN set message = message || &apos;  MESSAGE=&apos;||CURRENT_EXCEPTION.MESSAGE; END IF;
+					IF (CURRENT_EXCEPTION.TRACE IS NOT NULL) THEN set message = message || &apos;  TRACE=&apos;||CURRENT_EXCEPTION.TRACE; END IF;
+					set message = &apos;EXCEPTION: &apos; || message;
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+				RAISE;                                   
+			END;
+		else
+			IF (resourcelist.resourceType = &apos;COLUMN&apos; and debug = &apos;Y&apos;) THEN
+				IF (debug = &apos;Y&apos;) THEN
+					set message = &apos;Ownership does not get set for COLUMN types.  resource=&apos; || TRIM(NVL(resourcelist.resource,&apos; &apos;));
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+				END IF;
+			ELSEIF (debug = &apos;Y&apos;) THEN
+				IF (debug = &apos;Y&apos;) THEN
+					set message = &apos;Unable to assign ownership to resource=&apos; || TRIM(NVL(resourcelist.resource,&apos; &apos;) || &apos;  for owner=[&apos;||TRIM(NVL(owner,&apos;  &apos;))||&apos;]  and domain=[&apos;||TRIM(NVL(ownerDomain,&apos;  &apos;))||&apos;]&apos;);
+					call /shared/ASAssets/BestPractices_v81/PrivilegeScripts/Helpers/addLogOutput(debugConsole, debugCISLog, logOutput, moduleName||&apos; : &apos;||message||chr(10), logOutput);
+				END IF;
+			END IF;
+		end if;
+	END IF;
+
+  EXCEPTION
+	ELSE
+		set result = CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR);
+  END;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="p:11:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="p:9:Customized" type="STRING">datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed;datatype.changed</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">13/460</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/561</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>System</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/598</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>util</item>
+        <item>System</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/404</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+</metadata>

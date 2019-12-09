@@ -1,0 +1,1376 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="destroyUsedLineage" path="/shared/ASAssets/Utilities/generate/destroyUsedLineage" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>destroyUsedLineage: [CONTAINER/LINK/TABLE only]
+ 
+		This procedure recursively destroys the &quot;used&quot; resource for a given starting published resource, shared resource or folder. 
+			The general use case is to destroy a published folder or view which in turn destroys their used lineage from top to bottom 
+			with respect to the data abstraction layers.
+		The resource &quot;may&quot; be a published link resource or folder container.  If it is a published link then the &quot;used&quot; lineage is
+			destroyed except any related foreign key and cache resources.  If it is a published folder then all of the link/table 
+			resources are destroyed along with their &quot;used&quot; resource lineage.  Related foreign key and cache are not destroyed.
+		The resource &quot;may&quot; be a /shared table/view resource or folder container.  The same rules apply as above. However, an additional
+			rule pertains to the dependent resources of a table resource.  If a shared table is removed and it has a dependent resource, 
+			the dependent resource is left orphaned and will show up as red/impacted in Studio.  
+		The valid resource types are CONTAINER (a.k.a FOLDER), LINK (published) or TABLE (shared).  
+			Procedures and non-TABLE/LINK resources are not supported and will be bypassed.
+
+		A cursor of metadata is returned that shows which resources were destroyed.
+			For example, if the invoker of this procedure wants to destroy the published schema table and all views that the resource 
+			is using throughout the layers, then this procedure will accomplish that goal.
+
+		A specific view (link) resource may be deleted with its lineage or an entire schema of resources and their lineage may be deleted.
+			The following is an example of the fullResourcePath:
+				Values: ex1 (view):    /services/databases/TEST/CAT1/SCH1/V_T1
+					In this scenario, only the published view &quot;V_T1&quot; and its lineage is removed.
+					The database table T1 will be destroyed if the input destroyDatasourceResource=1.
+					If a folder is empty the folder will be removed if the input destroyEmptyParentFolder=1.
+
+					/services/databases
+						/TEST
+							/CAT1
+								/SCH1									| 	
+									/V_T1				&lt;-- start here	v destroy this view and its lineage only
+									/V_T2								v 	
+					/shared												| [Optional starting point may be any folder or table resource in the /shared folder]
+						/TEST											|
+							/Application								|
+								/Published/SCH1/V_T1	&lt;-- destroy		v - destroy V_T1 and SCH1 if no objects remain 
+											   /V_T2					v
+								    /Views/SCH1/V_T1	&lt;-- destroy		v - destroy V_T1 and SCH1 if no objects remain
+								    		   /V_T2					v
+							/Business									|
+								/Business/SCH1/V_T1		&lt;-- destroy		v - destroy V_T1 and SCH1 if no objects remain
+											  /V_T2						v
+								 /Logical/SCH1/V_T1		&lt;-- destroy		v - destroy V_T1 and SCH1 if no objects remain
+								 			  /V_T2						v
+							/Physical									|
+								/Formatting/SCH1/T1		&lt;-- destroy		v - destroy T1 and SCH1 if no objects remain
+												/T2						v
+								/Metadata/Oracle/DS1					|
+												  /SCH1	&lt;-- destroy		| - destroy SCH1 if no objects remain
+													/T1	&lt;-- destroy		| - destroy T1 if destroyDatasourceResource=1
+													/T2 
+
+				Values: ex2 (folder): /services/databases/TEST/CAT1/SCH1
+					In this scenario, the entire published schema &quot;SCH1&quot; and its lineage is removed.  
+					This includes all layers and the metadata schema as long as the metadata schema is empty and
+						the input destroyEmptyParentFolder=1.
+
+					/services/databases
+						/TEST
+							/CAT1
+								/SCH1					&lt;-- start here	| - destroy the schema, all views and lineage
+									/V_T1				&lt;-- destroy		v
+									/V_T2				&lt;-- destroy		v 	
+					/shared												| [Optional starting point may be any folder or table resource in the /shared folder]
+						/TEST											|
+							/Application								|
+								/Published/SCH1/V_T1	&lt;-- destroy		v - destroy all views and SCH1 if no objects remain 
+											   /V_T2	&lt;-- destroy		v
+								    /Views/SCH1/V_T1	&lt;-- destroy		v - destroy all vews and SCH1 if no objects remain
+								    		   /V_T2	&lt;-- destroy		v
+							/Business									|
+								/Business/SCH1/V_T1		&lt;-- destroy		v - destroy all views and SCH1 if no objects remain
+											  /V_T2		&lt;-- destroy		v
+								 /Logical/SCH1/V_T1		&lt;-- destroy		v - destroy all views and SCH1 if no objects remain
+								 			  /V_T2		&lt;-- destroy		v
+							/Physical									|
+								/Formatting/SCH1/T1		&lt;-- destroy		v - destroy all views and SCH1 if no objects remain
+												/T2		&lt;-- destroy		v
+								/Metadata/Oracle/DS1					|
+												  /SCH1	&lt;-- destroy		| - destroy SCH1 if no objects remain
+													/T1	&lt;-- destroy  	| - destroy T1 if destroyDatasourceResource=1
+													/T2 &lt;-- destroy	 	| - destroy T2 if destroyDatasourceResource=1
+
+		Input:
+			destroyDatasourceResource - 0=do not destroy final datasource resource, 1=destroy the final datasource resource at the root folder level.
+			destroyEmptyParentFolder  - 0=do not destroy empty parent folder, 1=destroy the parent folder when the last resource has been deleted therefore it is empty.
+            fullResourcePath - Full resource path which includes the path and the resource name  
+							   Values: e.g. /services/databases/TEST/CAT1/SCH1/V_T1 - Destroy the published table and its lineage including metadata layer.
+							   Values: e.g. /services/databases/TEST/CAT1/SCH1		 - Destroy the entire published schema and all of its lineage including metadata layer.
+			inDebug - Y=debug on, N=debug off, null=N
+
+		Output:
+            result  - response containing the resource metadata
+        CURSOR (
+			actionType			VARCHAR(255),	-- &apos;removed&apos;, &apos;datasource table not removed&apos;, &apos;resource does not exist&apos;
+			seqNum 				INTEGER, 
+			resourceDepth 		INTEGER, 
+			treeType 			VARCHAR(255),
+			parentID 			INTEGER, 
+			id	 				INTEGER, 
+			enabled 			BIT,
+			resourceName 		VARCHAR(255), 
+			resourcePath 		VARCHAR(4096), 
+			resourceType 		VARCHAR(255), 
+			subtype 			VARCHAR(255),
+			ownerDomain 		VARCHAR(255), 
+			ownerName 			VARCHAR(255), 
+			impactLevel 		VARCHAR(255), 
+			impactMessage 		VARCHAR(32768)
+         )
+ 
+      Exceptions:  none
+ 
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.2		04/26/2017		Mike Tinius			7.0.2			Created new
+	2018.100	01/10/2018		Mike Tinius			7.0.5			Adapted for usage with &quot;resourceGeneration&quot;
+	2019.200	05/20/2019		Mike Tinius			7.0.8			Removed the use of a VECTOR and replaced with a LONGVARCHAR to track parentList.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="destroyDatasourceResource" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="destroyEmptyParentFolder" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="fullResourcePath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="inDebug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="actionType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="seqNum">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="resourceDepth">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="treeType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="parentID">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="id">
+          <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+        </element>
+        <element name="enabled">
+          <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+        </element>
+        <element name="resourceName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="resourcePath">
+          <datatype name="VARCHAR" type="STRING" maxLength="4096"/>
+        </element>
+        <element name="resourceType">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="subtype">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="ownerDomain">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="ownerName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="impactLevel">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="impactMessage">
+          <datatype name="VARCHAR" type="STRING" maxLength="32768"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/debug/Print" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textToPrint" direction="IN">
+        <datatype referenceDefinitionSet="/lib/util/System" referenceType="Text" type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/destroyResource" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="createResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <datatype name="XML" type="TREE" refId="2"></datatype>
+          </schemaDatatype>
+        </datatype>
+      </element>
+      <element name="faultResponse" direction="OUT">
+        <datatype name="XML" referenceType="XML" type="XML" contentConstraint="SEQUENCE" schemaConstraint="ANY" componentType="TYPE" componentName="XML">
+          <schemaDatatype>
+            <reference refId="2"/>
+          </schemaDatatype>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="path">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="changeid">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="version">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="introspectState">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactMessage">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="scriptText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="childCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="dataSourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceLineageDirectRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inSeqNum" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inParentID" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inResourceDepth" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inLineageResourceIdList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="excludePathsList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="datasourceAncestor" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inIgnoreResourceDoesNotExist" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="seqNum">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="resourceID">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="parentID">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="resDepth">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="treeType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="dsID">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="dsResName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="dsResPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="dsResType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="dsResSubType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="dsEnabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="dsChildCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="dataSourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getResourceListRecursive" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="resourceTreeList" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resPath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creationDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="creationDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="creatorUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="creatorUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedDate">
+            <datatype type="DATETIME"/>
+          </element>
+          <element name="lastModifiedDateBigint">
+            <datatype type="INTEGER"/>
+          </element>
+          <element name="lastModifiedUserDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="lastModifiedUserName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getUsedResourcesDirectCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="resourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="usedResCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractTextList" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="textList" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="separator" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="preserveDoubleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveSingleQuotes" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveParenthesis" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="preserveQualifier" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="trimResults" direction="IN">
+        <datatype type="INTEGER" minValue="0" maxValue="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="textExpression">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/*
+    destroyUsedLineage: [CONTAINER/LINK/TABLE only]
+ 
+		This procedure recursively destroys the &quot;used&quot; resource for a given starting published resource, shared resource or folder. 
+			The general use case is to destroy a published folder or view which in turn destroys their used lineage from top to bottom 
+			with respect to the data abstraction layers.
+		The resource &quot;may&quot; be a published link resource or folder container.  If it is a published link then the &quot;used&quot; lineage is
+			destroyed except any related foreign key and cache resources.  If it is a published folder then all of the link/table 
+			resources are destroyed along with their &quot;used&quot; resource lineage.  Related foreign key and cache are not destroyed.
+		The resource &quot;may&quot; be a /shared table/view resource or folder container.  The same rules apply as above. However, an additional
+			rule pertains to the dependent resources of a table resource.  If a shared table is removed and it has a dependent resource, 
+			the dependent resource is left orphaned and will show up as red/impacted in Studio.  
+		The valid resource types are CONTAINER (a.k.a FOLDER), LINK (published) or TABLE (shared).  
+			Procedures and non-TABLE/LINK resources are not supported and will be bypassed.
+
+		A cursor of metadata is returned that shows which resources were destroyed.
+			For example, if the invoker of this procedure wants to destroy the published schema table and all views that the resource 
+			is using throughout the layers, then this procedure will accomplish that goal.
+
+		A specific view (link) resource may be deleted with its lineage or an entire schema of resources and their lineage may be deleted.
+			The following is an example of the fullResourcePath:
+				Values: ex1 (view):    /services/databases/TEST/CAT1/SCH1/V_T1
+					In this scenario, only the published view &quot;V_T1&quot; and its lineage is removed.
+					The database table T1 will be destroyed if the input destroyDatasourceResource=1.
+					If a folder is empty the folder will be removed if the input destroyEmptyParentFolder=1.
+
+					/services/databases
+						/TEST
+							/CAT1
+								/SCH1									| 	
+									/V_T1				&lt;-- start here	v destroy this view and its lineage only
+									/V_T2								v 	
+					/shared												| [Optional starting point may be any folder or table resource in the /shared folder]
+						/TEST											|
+							/Application								|
+								/Published/SCH1/V_T1	&lt;-- destroy		v - destroy V_T1 and SCH1 if no objects remain 
+											   /V_T2					v
+								    /Views/SCH1/V_T1	&lt;-- destroy		v - destroy V_T1 and SCH1 if no objects remain
+								    		   /V_T2					v
+							/Business									|
+								/Business/SCH1/V_T1		&lt;-- destroy		v - destroy V_T1 and SCH1 if no objects remain
+											  /V_T2						v
+								 /Logical/SCH1/V_T1		&lt;-- destroy		v - destroy V_T1 and SCH1 if no objects remain
+								 			  /V_T2						v
+							/Physical									|
+								/Formatting/SCH1/T1		&lt;-- destroy		v - destroy T1 and SCH1 if no objects remain
+												/T2						v
+								/Metadata/Oracle/DS1					|
+												  /SCH1	&lt;-- destroy		| - destroy SCH1 if no objects remain
+													/T1	&lt;-- destroy		| - destroy T1 if destroyDatasourceResource=1
+													/T2 
+
+				Values: ex2 (folder): /services/databases/TEST/CAT1/SCH1
+					In this scenario, the entire published schema &quot;SCH1&quot; and its lineage is removed.  
+					This includes all layers and the metadata schema as long as the metadata schema is empty and
+						the input destroyEmptyParentFolder=1.
+
+					/services/databases
+						/TEST
+							/CAT1
+								/SCH1					&lt;-- start here	| - destroy the schema, all views and lineage
+									/V_T1				&lt;-- destroy		v
+									/V_T2				&lt;-- destroy		v 	
+					/shared												| [Optional starting point may be any folder or table resource in the /shared folder]
+						/TEST											|
+							/Application								|
+								/Published/SCH1/V_T1	&lt;-- destroy		v - destroy all views and SCH1 if no objects remain 
+											   /V_T2	&lt;-- destroy		v
+								    /Views/SCH1/V_T1	&lt;-- destroy		v - destroy all vews and SCH1 if no objects remain
+								    		   /V_T2	&lt;-- destroy		v
+							/Business									|
+								/Business/SCH1/V_T1		&lt;-- destroy		v - destroy all views and SCH1 if no objects remain
+											  /V_T2		&lt;-- destroy		v
+								 /Logical/SCH1/V_T1		&lt;-- destroy		v - destroy all views and SCH1 if no objects remain
+								 			  /V_T2		&lt;-- destroy		v
+							/Physical									|
+								/Formatting/SCH1/T1		&lt;-- destroy		v - destroy all views and SCH1 if no objects remain
+												/T2		&lt;-- destroy		v
+								/Metadata/Oracle/DS1					|
+												  /SCH1	&lt;-- destroy		| - destroy SCH1 if no objects remain
+													/T1	&lt;-- destroy  	| - destroy T1 if destroyDatasourceResource=1
+													/T2 &lt;-- destroy	 	| - destroy T2 if destroyDatasourceResource=1
+
+		Input:
+			destroyDatasourceResource - 0=do not destroy final datasource resource, 1=destroy the final datasource resource at the root folder level.
+			destroyEmptyParentFolder  - 0=do not destroy empty parent folder, 1=destroy the parent folder when the last resource has been deleted therefore it is empty.
+            fullResourcePath - Full resource path which includes the path and the resource name  
+							   Values: e.g. /services/databases/TEST/CAT1/SCH1/V_T1 - Destroy the published table and its lineage including metadata layer.
+							   Values: e.g. /services/databases/TEST/CAT1/SCH1		 - Destroy the entire published schema and all of its lineage including metadata layer.
+			inDebug - Y=debug on, N=debug off, null=N
+
+		Output:
+            result  - response containing the resource metadata
+        CURSOR (
+			actionType			VARCHAR(255),	-- &apos;removed&apos;, &apos;datasource table not removed&apos;, &apos;resource does not exist&apos;
+			seqNum 				INTEGER, 
+			resourceDepth 		INTEGER, 
+			treeType 			VARCHAR(255),
+			parentID 			INTEGER, 
+			id	 				INTEGER, 
+			enabled 			BIT,
+			resourceName 		VARCHAR(255), 
+			resourcePath 		VARCHAR(4096), 
+			resourceType 		VARCHAR(255), 
+			subtype 			VARCHAR(255),
+			ownerDomain 		VARCHAR(255), 
+			ownerName 			VARCHAR(255), 
+			impactLevel 		VARCHAR(255), 
+			impactMessage 		VARCHAR(32768)
+         )
+ 
+      Exceptions:  none
+ 
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2014.2		04/26/2017		Mike Tinius			7.0.2			Created new
+	2018.100	01/10/2018		Mike Tinius			7.0.5			Adapted for usage with &quot;resourceGeneration&quot;
+	2019.200	05/20/2019		Mike Tinius			7.0.8			Removed the use of a VECTOR and replaced with a LONGVARCHAR to track parentList.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE destroyUsedLineage(
+	IN  destroyDatasourceResource 	SMALLINT,		-- 0=do not destroy final datasource resource, 1=destroy the final datasource resource at the root folder level.
+	IN  destroyEmptyParentFolder 	SMALLINT,		-- 0-do not destroy empty parent folder, 1=destroy the parent folder when the last resource has been deleted therefore it is empty.
+	IN  fullResourcePath 			LONGVARCHAR,	-- Full resource path which includes the path and the resource name  
+													--	Values: ex1 (view):    /services/databases/TEST/CAT1/SCH1/V_T1
+													--	Values: ex2 (folder): /services/databases/TEST/CAT1/SCH1
+	IN  inDebug						CHAR(1),		-- Y=debug on, N=debug off, null=N
+	OUT result  	     			PIPE (			-- response containing the resource metadata
+		actionType			VARCHAR(255),			-- &apos;removed&apos;, &apos;datasource table not removed&apos;, &apos;resource does not exist&apos;
+		seqNum 				INTEGER, 
+		resourceDepth 		INTEGER, 
+		treeType 			VARCHAR(255),
+		parentID 			INTEGER, 
+		id	 				INTEGER, 
+		enabled 			BIT,
+		resourceName 		VARCHAR(255), 
+		resourcePath 		VARCHAR(4096), 
+		resourceType 		VARCHAR(255), 
+		subtype 			VARCHAR(255),
+		ownerDomain 		VARCHAR(255), 
+		ownerName 			VARCHAR(255), 
+		impactLevel 		VARCHAR(255), 
+		impactMessage 		VARCHAR(32768)
+       )
+)
+BEGIN
+	DECLARE moduleName			VARCHAR DEFAULT &apos;destroyUsedLineage&apos;;
+	DECLARE debug				CHAR(1) DEFAULT NVL(UPPER(inDebug), &apos;N&apos;);
+	DECLARE resourceListPath 	LONGVARCHAR;
+	DECLARE resourceListType	VARCHAR(255);
+	DECLARE resourcePath		LONGVARCHAR;
+	DECLARE resourceType		VARCHAR;
+	DECLARE resourceNameFilter	VARCHAR;
+	DECLARE parentPath			LONGVARCHAR;
+	DECLARE ownerName			VARCHAR;
+	DECLARE ownerDomain			VARCHAR;
+	DECLARE impactLevel			VARCHAR;
+	DECLARE impactMessage		LONGVARCHAR;
+	DECLARE message				LONGVARCHAR;
+	DECLARE i, idx				INTEGER DEFAULT 0;
+	DECLARE numResources		INTEGER DEFAULT 0;
+	DECLARE pos					INTEGER;
+	DECLARE performDelete		BOOLEAN;
+	DECLARE resExists			BOOLEAN;
+	DECLARE success				BIT;
+	DECLARE createResponse 		XML;
+	DECLARE resourceResponse	XML;
+	DECLARE faultResponse		XML;
+	DECLARE actionType			VARCHAR;
+	DECLARE parentList			LONGVARCHAR DEFAULT &apos;  &apos;;
+	DECLARE parentResourceCount	INTEGER;
+	DECLARE starttime1			TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+	DECLARE starttime2			TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+	DECLARE starttime3			TIMESTAMP;
+	DECLARE duration			INTERVAL DAY TO SECOND(3);
+	DECLARE TYPE resultType		ROW (
+		actionType			VARCHAR(255),			-- &apos;removed&apos;, &apos;datasource table not removed&apos;, &apos;resource does not exist&apos;
+		seqNum 				INTEGER, 
+		resourceDepth 		INTEGER, 
+		treeType 			VARCHAR(255),
+		parentID 			INTEGER, 
+		id	 				INTEGER, 
+		enabled 			BIT,
+		resourceName 		VARCHAR(255), 
+		resourcePath 		VARCHAR(4096), 
+		resourceType 		VARCHAR(255), 
+		subtype 			VARCHAR(255),
+		ownerDomain 		VARCHAR(255), 
+		ownerName 			VARCHAR(255), 
+		impactLevel 		VARCHAR(255), 
+		impactMessage 		VARCHAR(32768)
+	);
+	DECLARE resultRec			resultType;
+	DECLARE ex					EXCEPTION;
+
+	-- Input debug statement
+	IF (debug = &apos;Y&apos;) THEN
+		CALL PRINT(moduleName||&apos; : INPUT:&apos;);
+		CALL PRINT(moduleName||&apos; :    destroyDatasourceResource=[&apos;||TRIM(NVL(cast(destroyDatasourceResource as varchar),&apos;null&apos;))||&apos;]&apos;); 
+		CALL PRINT(moduleName||&apos; :    destroyEmptyParentFolder=[&apos;||TRIM(NVL(cast(destroyEmptyParentFolder as varchar),&apos;null&apos;))||&apos;]&apos;); 
+		CALL PRINT(moduleName||&apos; :    fullResourcePath=[&apos;||TRIM(NVL(fullResourcePath,&apos;null&apos;))||&apos;]&apos;); 
+		CALL PRINT(&apos;&apos;);
+	END IF;
+
+	-- A null or blank resource path is invalid
+	IF (fullResourcePath is null or LENGTH(fullResourcePath) = 0) THEN
+		raise ex value &apos;The path provided by &quot;fullResourcePath&quot; may not be null or blank.&apos;;
+	END IF;
+
+	BEGIN INDEPENDENT TRANSACTION
+		SET resourcePath = null;
+		SET resourceType = null;
+		SET resourceNameFilter = null;
+		-- Get the absolute type of the resource.  
+		-- If the fullResourcePath is /services/databases then there may be more than 1 record returned for both LINK and TABLE.
+		--		If this is the case then the resourceType should be LINK.
+		getBasicResourceCursorLoop:
+		FOR b AS
+			SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor(fullResourcePath, null) 
+			ORDER BY &quot;type&quot; ASC
+		DO
+			-- Only allow published LINK resources, shared TABLE resources, CONTAINER resources or DATA_SOURCE resources to be deleted
+			IF (b.&quot;type&quot; = &apos;LINK&apos; or b.&quot;type&quot; = &apos;TABLE&apos; or b.&quot;type&quot; = &apos;CONTAINER&apos; or b.&quot;type&quot; = &apos;DATA_SOURCE&apos;) THEN
+				SET resourcePath = b.&quot;path&quot;;
+				SET resourceType = b.&quot;type&quot;;
+				SET resourceNameFilter = null;
+				IF (debug = &apos;Y&apos;) THEN
+					CALL PRINT(moduleName||&apos; : PATH RESOLUTION:&apos;);
+					CALL PRINT(moduleName||&apos; :    resourcePath=[&apos;||NVL(resourcePath,&apos;null&apos;)||&apos;]&apos;);
+					CALL PRINT(moduleName||&apos; :    resourceType=[&apos;||NVL(resourceType,&apos;null&apos;)||&apos;]&apos;);
+					CALL PRINT(&apos;&apos;);
+				END IF;
+				-- A single resource was specified so get the parent folder and set the resourceName as a filter
+				IF (b.&quot;type&quot; &lt;&gt; &apos;CONTAINER&apos; and b.&quot;type&quot; &lt;&gt; &apos;DATA_SOURCE&apos;) THEN
+					-- Get the parent folder path and resource name for the given resource path.
+					SET parentPath = null;
+					SET pos = INSTR(resourcePath, &apos;/&apos;, -1, 1);
+					IF (pos &gt; 0) THEN
+						SET resourceNameFilter = SUBSTRING(resourcePath, pos+1);
+						SET parentPath = SUBSTRING(resourcePath, 1, pos-1);
+						SET resourcePath = parentPath;
+						SET resourceType = &apos;CONTAINER&apos;; -- default setting
+						FOR b2 AS
+							SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor(resourcePath, null) 
+							ORDER BY &quot;type&quot; ASC
+						DO
+							SET resourceType = b2.&quot;type&quot;;
+						END FOR;
+					END IF;
+				END IF;
+				-- 	When type=LINK, there are 2 rows returned.  Since the rows are sorted ascending,
+				--		we want to capture the LINK type and then exit the loop.
+				IF (b.&quot;type&quot; = &apos;LINK&apos;) THEN
+					leave getBasicResourceCursorLoop;
+				END IF;
+			END IF;
+		END FOR;
+	EXCEPTION
+		ELSE
+			RAISE;
+	END;
+
+	IF (debug = &apos;Y&apos;) THEN
+		CALL PRINT(moduleName||&apos; : RESOURCE FILTER PATH:&apos;);
+		CALL PRINT(moduleName||&apos; :    resourcePath=[&apos;||NVL(resourcePath,&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT(moduleName||&apos; :    resourceType=[&apos;||NVL(resourceType,&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT(moduleName||&apos; :    resourceNameFilter=[&apos;||NVL(resourceNameFilter,&apos;null&apos;)||&apos;]&apos;);
+		SET duration = CURRENT_TIMESTAMP - starttime2;
+		CALL PRINT(moduleName||&apos; : Total preparation duration=&apos;||CAST(duration AS VARCHAR));
+		CALL PRINT(&apos;&apos;);
+	END IF;
+
+	/*****************************
+	 * Destroy Resource Lineage
+	 *****************************/
+	-- Destroy the lineage of resources for each child resource found in the starting folder unless a resource name filter is provided.
+	IF (resourcePath IS NOT NULL AND resourceType IS NOT NULL AND (resourceType = &apos;CONTAINER&apos; OR resourceType = &apos;DATA_SOURCE&apos;)) THEN
+		SET starttime2 = CURRENT_TIMESTAMP;
+		-- Since the type is a folder &quot;CONTAINER&quot;, get all the LINK resources in the published catalog or schema folder or TABLE resources in the shared folder
+		getResourceListRecursiveLoop:
+		FOR r AS
+			SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceListRecursive(resourcePath, resourceType) 
+			WHERE resType = &apos;LINK&apos; or resType = &apos;TABLE&apos;
+		DO
+			SET starttime3 = CURRENT_TIMESTAMP;
+			SET numResources = numResources + 1;
+			SET resourceListPath = r.resPath;
+			SET resourceListType = r.resType;
+
+			-- If the resource name is null then remove all resources in the folder based on the returned list
+			--   otherwise use the resource name as a filter to delete only a single resource.
+			-- 		This was done to harmonize the code to a single code-line whether it is folder or single table.
+			IF (resourceNameFilter is null or (resourceNameFilter IS NOT NULL AND resourceNameFilter = r.name)) THEN
+				-- Only allow published LINK resources or shared TABLE resources to be deleted
+				IF (resourceListPath IS NOT NULL AND resourceListType is not null) THEN
+
+					BEGIN INDEPENDENT TRANSACTION
+
+						SET performDelete = false;
+						-- Only destroy resources that are of type TABLE or LINK
+						IF (resourceListType = &apos;TABLE&apos; OR resourceListType = &apos;LINK&apos;) THEN
+							SET performDelete = true;
+							-- Only destroy LINK resources derived from type TABLE and not PROCEDURE
+							IF (resourceListType = &apos;LINK&apos;) THEN
+								FOR u AS 
+									SELECT * FROM /shared/ASAssets/Utilities/repository/getUsedResourcesDirectCursor(resourceListPath, resourceListType)
+								DO
+									-- Don&apos;t delete a published resource that is not a derived from a TABLE resource.
+									IF (u.resourceType &lt;&gt; &apos;TABLE&apos;) THEN
+										SET performDelete = false;
+									END IF;
+								END FOR;
+							END IF;
+						END IF;
+
+						IF (performDelete) THEN
+							IF (debug = &apos;Y&apos;) THEN
+								CALL PRINT(moduleName||&apos; : Begin destroy &quot;used&quot; resource:  resourceListType=&apos;||resourceListType||&apos;  resourceListPath=&apos;||resourceListPath); 
+							END IF;
+							-- Get the lineage of the published LINK resource
+							FOR rl AS
+								-- Find the database table
+								SELECT * FROM /shared/ASAssets/Utilities/repository/getResourceLineageDirectRecursive(null, null, null, null, resourceListPath, resourceListType, null, 1, 1)
+								ORDER BY resDepth ASC
+							DO
+								SET resourcePath = rl.resPath;
+								SET resourceType = rl.resType;
+								SET ownerName = null;
+								SET ownerDomain = null;
+								SET impactLevel = null;
+								SET impactMessage = null;
+
+								-- Check to see if resource exists
+								CALL /lib/resource/ResourceExists(resourcePath, resourceType, null, resExists);
+
+								-- Destroy the resource
+								IF (resExists) THEN
+									-- Get the basic resource information.
+									FOR b AS SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor(resourcePath, resourceType) DO
+										SET ownerName = b.ownerName;
+										SET ownerDomain = b.ownerDomain;
+										SET impactLevel = b.impactLevel;
+										SET impactMessage = b.impactMessage;
+									END FOR;
+
+									-- Determine if this is a database table or regular CIS table
+									IF (rl.subtype = &apos;DATABASE_TABLE&apos;) THEN
+										/*****************************
+										 * Destroy Database Table
+										 *****************************/
+										IF (destroyDatasourceResource IS NOT NULL AND destroyDatasourceResource = 1) THEN
+											SET actionType = &apos;removed&apos;;
+											CALL /shared/ASAssets/Utilities/repository/destroyResource(resourcePath, null, resourceType, success, createResponse, faultResponse);
+											IF (faultResponse IS NOT NULL) THEN
+												RAISE ex VALUE CAST(faultResponse AS LONGVARCHAR);
+											END IF;
+										ELSE
+											SET actionType = &apos;datasource table not removed&apos;;
+										END IF;
+									ELSE
+										SET actionType = &apos;removed&apos;;
+										CALL /shared/ASAssets/Utilities/repository/destroyResource(resourcePath, null, resourceType, success, createResponse, faultResponse);
+										IF (faultResponse IS NOT NULL) THEN
+											RAISE ex VALUE CAST(faultResponse AS LONGVARCHAR);
+										END IF;
+									END IF;
+								ELSE
+									SET actionType = &apos;resource does not exist&apos;;
+								END IF;
+
+								IF (debug = &apos;Y&apos;) THEN
+									CALL PRINT(moduleName||&apos; : actionType=&apos;||actionType||&apos;  resDepth=&apos;||rl.resDepth||&apos;  resType=&apos;||TRIM(NVL(rl.resType,&apos;null&apos;))||&apos;  subType=&apos;||TRIM(NVL(rl.subType,&apos;null&apos;))||&apos;  resPath=&apos;||TRIM(NVL(rl.resPath,&apos;null&apos;)));
+								END IF;
+								-- Insert the record logging the resource action
+								INSERT INTO result VALUES (actionType, rl.seqNum, rl.resDepth, rl.treeType, rl.parentID, rl.resourceID, rl.enabled, rl.resName, rl.resPath, rl.resType, rl.subType, ownerName, ownerDomain, impactLevel, impactMessage);
+
+								-- Check parent folder for resource to detect empty or not
+								IF (destroyEmptyParentFolder IS NOT NULL AND destroyEmptyParentFolder = 1) THEN
+									-- Get the parent folder path for the given resource and save it
+									SET parentPath = null;
+									SET pos = INSTR(resourcePath, &apos;/&apos;, -1, 1);
+									IF (pos &gt; 0) THEN
+										SET parentPath = SUBSTRING(resourcePath, 1, pos-1);
+										SET idx = INSTR(parentList, &apos;|&apos;||parentPath||&apos;|&apos;);
+										CALL print(&apos;idx=&apos;||NVL(CASt(idx as varchar),&apos;null&apos;)||&apos;  parentList=&apos;||NVL(parentList,&apos;null&apos;)||&apos;  parentPath=&apos;||NVL(parentPath,&apos;null&apos;));
+										-- If the parentPath is not found then add it to the list
+										IF (idx = 0) THEN
+											SET i = i + 1;
+											IF (LENGTH(parentList) = 0) THEN
+												SET parentList = TRIM(parentList) || &apos;|&apos;;
+											END IF;
+											SET parentList = parentList || parentPath||&apos;|&apos;;
+											--CALL print(&apos;i=&apos;||i||&apos;  parentList=&apos;||NVL(parentList,&apos;null&apos;));
+										END IF;
+									END IF;
+								END IF;
+							END FOR;
+						ELSE
+							IF (debug = &apos;Y&apos;) THEN
+								CALL PRINT(moduleName||&apos; : Skipping non-TABLE resource: resExists=true  resourceType=&apos;||TRIM(NVL(resourceListType,&apos;null&apos;))||&apos;  resourcePath=&apos;||TRIM(NVL(resourceListPath,&apos;null&apos;)));
+							END IF;
+						END IF;
+
+					EXCEPTION
+						ELSE
+							SET message = CAST(CURRENT_EXCEPTION.trace AS LONGVARCHAR);
+							IF (INSTR(lower(message), &apos;does not exist&apos;) = 0) THEN
+								RAISE ex value message;
+							END IF;
+					END;
+
+				END IF;
+				IF (debug = &apos;Y&apos;) THEN
+					SET duration = CURRENT_TIMESTAMP - starttime3;
+					CALL PRINT(moduleName||&apos; : Destroy &quot;&apos;||NVL(r.name,&apos;null&apos;)||&apos;&quot; duration=&apos;||CAST(duration AS VARCHAR));
+					CALL PRINT(&apos;&apos;);
+				END IF;
+				-- Leave the loop once the resource name filter has been processed.  No sense in looping for no reason.
+				IF (resourceNameFilter IS NOT NULL AND resourceNameFilter = r.name) THEN
+					IF (debug = &apos;Y&apos;) THEN
+						CALL PRINT(moduleName||&apos; : Leaving resource loop:  numResources=&apos;||numResources); 
+						CALL PRINT(&apos;&apos;);
+					END IF;
+					LEAVE getResourceListRecursiveLoop;
+				END IF;
+			END IF;
+		END FOR;
+		IF (debug = &apos;Y&apos;) THEN
+			SET duration = CURRENT_TIMESTAMP - starttime2;
+			CALL PRINT(moduleName||&apos; : Total destroy used resources loop duration=&apos;||CAST(duration AS VARCHAR));
+			CALL PRINT(&apos;&apos;);
+		END IF;
+	END IF;
+
+	/*****************************
+	 * Destroy Folders
+	 *****************************/
+		-- Destroy the empty lineage folders if applicable
+		SET starttime2 = CURRENT_TIMESTAMP;
+		SET i = 1;
+
+		--call print(&apos;parentList=&apos;||NVL(parentList,&apos;null&apos;));
+		IF (destroyEmptyParentFolder IS NOT NULL AND destroyEmptyParentFolder = 1 AND parentList IS NOT NULL AND LENGTH(parentList) &gt; 0) THEN
+			FOR r AS
+				SELECT * FROM /shared/ASAssets/Utilities/string/extractTextList(parentList, &apos;|&apos;, 0, 0, 0, 0, 0)
+				WHERE textExpression IS NOT NULL AND LENGTH(TRIM(textExpression)) &gt; 0
+			DO
+				SET parentPath = r.textExpression;
+				SET resultRec = null;
+				SET resultRec.resourcePath = parentPath;
+				SET resultRec.seqNum = 1;
+				SET resultRec.resourceDepth = 0;
+				SET resultRec.treeType = &apos;Parent&apos;;
+				SET resultRec.parentID = null;
+
+				-- Check to see if parent folder exists and get the resource details
+				BEGIN INDEPENDENT TRANSACTION
+					FOR b AS SELECT * FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor(parentPath, null) DO
+						SET resultRec.id = b.id;
+						SET resultRec.enabled = b.enabled;
+						SET resultRec.resourceName = b.name;
+						SET resultRec.resourceType = b.&quot;type&quot;;
+						SET resultRec.subtype = b.subtype;
+						SET resultRec.ownerDomain = b.ownerDomain;
+						SET resultRec.ownerName = b.ownerName;
+						SET resultRec.impactLevel = b.impactLevel;
+						SET resultRec.impactMessage = null;
+						SET parentResourceCount = b.childCount;
+					END FOR;
+					-- Check the resource type for CONTAINER
+					IF (resultRec.resourceType = &apos;CONTAINER&apos;) THEN
+						SET resultRec.actionType = &apos;removed&apos;;
+						SET resExists = true;
+					ELSEIF (resultRec.resourceType = &apos;DATA_SOURCE&apos;) THEN
+						SET resultRec.actionType = &apos;cannot remove parent data source folder&apos;;
+						SET resExists = true;
+					ELSE
+						SET resExists = false;
+					END IF;
+				EXCEPTION
+					ELSE
+						SET message = CAST(CURRENT_EXCEPTION.TRACE AS LONGVARCHAR);
+						IF (INSTR(LOWER(message), &apos;does not exist&apos;) &gt; 0) THEN
+							SET resExists = false;
+						ELSE
+							RAISE;
+						END IF;
+				END;
+
+				IF (resExists) THEN
+					-- Get the number of resources in the parent folder for the current resource
+					IF (parentResourceCount = 0) THEN
+						IF (resultRec.resourceType = &apos;CONTAINER&apos;) THEN
+							IF (debug = &apos;Y&apos;) THEN
+								CALL PRINT(moduleName||&apos; : Destroy parent folder with no child resources:  parentResourceCount=&apos;||CAST(parentResourceCount AS VARCHAR)||
+													   &apos;  resExists=&apos;||TRIM(CAST(resExists AS VARCHAR))||&apos;  resourceType=&apos;||resultRec.resourceType||&apos;  parentPath=&apos;||TRIM(NVL(parentPath,&apos;null&apos;)));
+							END IF;
+
+							BEGIN INDEPENDENT TRANSACTION
+								-- Destroy the parent path resource
+								CALL /shared/ASAssets/Utilities/repository/destroyResource(parentPath, null, resultRec.resourceType, success, createResponse, faultResponse);
+								IF (faultResponse IS NOT NULL) THEN
+									RAISE ex VALUE CAST(faultResponse AS LONGVARCHAR);
+								END IF;
+							EXCEPTION
+								ELSE
+									RAISE;
+							END;
+
+							-- Insert the record logging the destroy resource
+							INSERT INTO result VALUES(resultRec);
+						ELSE
+							IF (debug = &apos;Y&apos;) THEN
+								CALL PRINT(moduleName||&apos; : Cannot destroy parent data source with no child resources:  parentResourceCount=&apos;||CAST(parentResourceCount AS VARCHAR)||
+													   &apos;  resExists=&apos;||TRIM(CAST(resExists AS VARCHAR))||&apos;  resourceType=&apos;||resultRec.resourceType||&apos;  parentPath=&apos;||TRIM(NVL(parentPath,&apos;null&apos;)));
+							END IF;
+							-- Insert the record logging the destroy resource
+							INSERT INTO result VALUES(resultRec);
+						END IF;
+					ELSE
+						IF (debug = &apos;Y&apos;) THEN
+							CALL PRINT(moduleName||&apos; : INFO: Parent folder num resources:  parentResourceCount=&apos;||CAST(parentResourceCount AS VARCHAR)||&apos;  parentPath=&apos;||TRIM(NVL(parentPath,&apos;null&apos;)));
+						END IF;
+					END IF; -- IF (parentResourceCount = 0) THEN
+				END IF; -- IF (resExists) THEN
+				SET i = i + 1;
+			END FOR;
+			IF (debug = &apos;Y&apos;) THEN
+				SET duration = CURRENT_TIMESTAMP - starttime2;
+				CALL PRINT(moduleName||&apos; : Destroy folders duration=&apos;||CAST(duration AS VARCHAR));
+				CALL PRINT(&apos;&apos;);
+			END IF;
+		END IF;
+
+	IF (debug = &apos;Y&apos;) THEN
+		SET duration = CURRENT_TIMESTAMP - starttime1;
+		CALL PRINT(moduleName||&apos; : Finished destroying &quot;used&quot; resource lineage for fullResourcePath=[&apos;||NVL(fullResourcePath,&apos;null&apos;)||&apos;]&apos;);
+		CALL PRINT(moduleName||&apos; : Total duration=&apos;||CAST(duration AS VARCHAR));
+		CALL PRINT(&apos;&apos;);
+	END IF;
+END</attribute>
+  <attribute name="creationDate" type="LONG">1493256681004</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap_im</attribute>
+  <attribute name="creatorUserId" type="INTEGER">4306</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564748421231</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">4306</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="MAP">
+    <item>
+      <key type="STRING">14/529</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/430</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/431</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/552</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/215</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/214</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/213</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/279</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/554</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/553</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">15/387</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/446</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/436</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">12/437</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/545</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">10/546</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/245</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/246</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/243</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">11/244</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">16/400</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">9/445</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/217</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/216</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">13/537</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/285</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/333</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/280</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/510</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/284</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">14/415</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/282</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+    <item>
+      <key type="STRING">8/281</key>
+      <value type="STRING_ARRAY">
+        <item>lib</item>
+        <item>debug</item>
+        <item>Print</item>
+      </value>
+    </item>
+  </attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1493256681004</attribute>
+</metadata>

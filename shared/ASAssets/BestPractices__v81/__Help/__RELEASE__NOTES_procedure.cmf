@@ -1,0 +1,577 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="_RELEASE_NOTES" path="/shared/ASAssets/BestPractices_v81/_Help/_RELEASE_NOTES" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters></parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <attribute name="Script" type="STRING">/*  _RELEASE_NOTES
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+	=========================================================
+	Best Practices View Generation Scripts
+	=========================================================
+	Author:         Mike Tinius
+	DV Versions:   7.0.x, 8.0.x
+
+	-----------------------------------------
+	08/01/2019 - Best Practices 2019.300 features
+	-----------------------------------------
+	1. Fixed bugs in generateDatasourceListXML:
+			Modified to account for null &quot;inDerivedFilterPath&quot; parameter which through an exception.
+			Fixed bug where duration was only calculated when debug2=Y.  Now it is calculated all the time.
+			Fixed bug where new columns were generated when the resource was not a valid used resource.
+	2. Modified all occurrences of getConstant to getConstantV2.  Deprecating getConstant.
+	3. Set minimum Utilities requirement to 2019.301 due to getConstant() and modifyConstnt() modification.
+	4. Modified upgradeProject() and determineBestPracticesVersion() to more accurately detect version. 
+	5. Added upgradeRestoreDefaultValues() called by updateProject() to restore original values from the _scripts_Copy_nn/Constants/defaultValues() to the current defaultValues().
+	6. Added upgradeRestoreDocumentationConstants() called by updateProject() to restore original values from the _scripts_Copy_nn/Documentation/constants() to the current constants().
+	7. Added an entry to upgrade 2019.200 to 2019.300 in vector_masterUpgradeVector() and vector_masterUpgradeVector().
+	8. Modified generateProject to work with new documentation triggers in Best Practices Template.
+	9. Modified all procedures to place the comments above the variable instead of below.
+	10. Modified generateDatasourceListInsertDB() to add an input parameter &quot;performDeleteProjectRows&quot; to allow deleting all project rows before inserting.
+	11. Modified generateDatasourceListXMLInsertDB() base code to allow for new parameter &quot;performDeleteProjectRows&quot;.
+	12. Modified the Documentation Triggers to reduce the number of parameters and remove path dependencies.  Modified Documentation constants.
+			Added documentationDriverWrapper to resolve paths dynamically.
+
+	-----------------------------------------
+	06/13/2019 - Best Practices 2019.200 features
+	-----------------------------------------
+	1. Added scriptsPath for flexibility of the location of the _scripts folder.
+	2. Fixed a bug in generateProject.
+	3. Removed all references to custom functions in favor of calling explicit paths so as to avoid name collisions at customer sites.
+	4. Converted as many vectors to XML as possible:  ConfigParamVector  ConfigParamXML and startingFolderVector  startingFolderXML.
+	5. Retained the original interfaces that contain vectors for backwards compatibility but
+		the implementation procedures will use XML as input instead of vectors.
+	6. Fix a bug with derivedFilterPath correlating with the list of groupIds.
+
+	-----------------------------------------
+	01/29/2019 - Best Practices 2019.101 features
+	-----------------------------------------
+	1. Fixed bug so derivedFilterPath could be used with generateToFolder.  
+		Allows for the ability to pass in a comma-separated list of tables to generate.
+		The issue before was that it only generated the first resource in the list and not the rest of them.
+		Correlate the groupId position with the derivedFilterPath position
+				derivedFilterPath=&quot;customers,orders&quot;,shippingmethods
+		                         |                     |
+		                         v                     v
+			          groupId=ds_inventory.tutorial,ds_orders.tutorial
+
+	-----------------------------------------
+	01/25/2019 - Best Practices 2019.1 features
+	-----------------------------------------
+	1. Added the ability to handle resourceCaseRule [formerly caseRule], columnCaseRule, resourcePrefix, resourceSuffix and newColumnList for generateMode=&apos;G&apos;.
+		This functionality is supported for both generatViews and its various derivatives and generateDatasourceList and its derivatives.
+			resourceCaseRule - case rule for tables.
+			columnCaseRule - case rule for columns.
+			resourcePrefix - prefix for tables.
+			resourceSuffix - suffix for tables.
+			newColumnList - inject a new columns at the end of each table being generated. 
+				newColumnList Format: column1&amp;&amp;type1&amp;&amp;value1//column2&amp;&amp;type2&amp;&amp;value2//column3&amp;&amp;type3&amp;&amp;value3
+				The delimiters were chosen strategically because commas and pipes may appear as a transformation within the value. 
+	2. Added the ability to read physical to logical mappings from the postgres cache database.  Resources modified in this release:
+		/shared/ASAssets/BestPractices_v81/_ProjectMaintenance/defaultValues
+		/shared/ASAssets/BestPractices_v81/DataSource/CommonModelCache
+		/shared/ASAssets/BestPractices_v81/DataSource/pCommon_Model_Union
+		/shared/ASAssets/BestPractices_v81/DataSource/pkg_create_tables
+		/shared/ASAssets/BestPractices_v81/DataSource/common_model
+		/shared/ASAssets/BestPractices_v81/DataSource/common_model_v3 
+	3. Added the ability to generate physical to logical mappings and save into the postgres cache database.
+		Implementation: 
+			/shared/ASAssets/BestPractices_v81/Procedures/generateDatasourceListInsertDB
+		Interface:
+			/shared/ASAssets/BestPractices_v81/DataAbstraction_GENERIC_Template/_scripts/Generate/generateDatasourceListInsertDB
+	4. Upgrade Projects:
+		a. If any pre-existing data abstraction best practices folders have been created the installer &quot;MUST&quot; execute the upgrade project on each of them
+			as the interface procedures have changed and the current installed ones will be impacted.  Additionally, new variables have been added to several
+			generate procedures.  Resources affected:
+				/shared/&lt;project&gt;/_scripts/Configure/ConfigureParams 				- structure changes causing impact in old version.
+
+				/shared/&lt;project&gt;/_scripts/Generate/generateViews 					- parameter changes causing impact in old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generateDatasourceList 			- parameter changes causing impact in old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generateDatasourceListCSV 		- parameter changes causing impact in old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generateDatasourceListInsertDB 	- new procedure.  no impact to old version.
+
+				/shared/&lt;project&gt;/_scripts/Generate/generateBusinessViews 			- internal variables added for new features.  no impact to old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generateCastViews 				- internal variables added for new features.  no impact to old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generateClientPublished 		- internal variables added for new features.  no impact to old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generateClientViews 			- internal variables added for new features.  no impact to old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generateCRUDOperations 			- internal variables added for new features.  no impact to old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generateFormattingViews 		- internal variables added for new features.  no impact to old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generateLogicalViews 			- internal variables added for new features.  no impact to old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generatePhysicalViews 			- internal variables added for new features.  no impact to old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generatePublishedResource 		- internal variables added for new features.  no impact to old version.
+				/shared/&lt;project&gt;/_scripts/Generate/generateTypeDefinitions 		- internal variables added for new features.  no impact to old version.
+
+		b. Execute /shared/ASAssets/BestPractices_v81/_ProjectMaintenance/upgradeProject()
+ 
+	-----------------------------------------
+	03/20/2018 - Best Practices 2018.1 features
+	-----------------------------------------
+	1. Add new major capability: Dynamic File Framework
+	2. Removed getEnv and setEnv and called the /lib/util functions directly.
+	3. Replaced RegexSplit with extractDelimitedText throughout.
+	4. Replaced /shared/ASAssets/Utilities/repository/resourceExists with /lib/resource/ResourceExists throughout.
+	5. Replaced references to mysql with postgres
+	6. Requires Utilities 2018Q1.
+	7. Changed release number to YYYYQn.  Year.Calendar Quarter [1-4].  If there is a fix/patch then it begins incrementing 401, 402, 403, etc
+
+	-----------------------------------------
+	12/22/2017 - Best Practices 8.1.9 features
+	-----------------------------------------
+	1.  Transitioned to TIBCO Software open source
+
+	-----------------------------------------
+	05/24/2017 - Best Practices 8.1.8 features
+	-----------------------------------------
+	1.  Added Privilege Scripts to the Best Practices.
+	2.  Added Manage Annotations to the Best Practices.
+
+	-----------------------------------------
+	12/11/2015 - Best Practices 8.1.7.2 features
+	-----------------------------------------
+	1.  Fixed &quot;generateViews&quot; to allow a derived filter path longer than VARCHAR(1024).  Changed to LONGVARCHAR.
+
+	-----------------------------------------
+	09/21/2015 - Best Practices 8.1.7 features
+	-----------------------------------------
+	1.	Procedure: generatViews
+		1.1.	Parameter: Added generateViews=2 to allow generating views with a SELECT * projection list instead of a column projection list.
+			1.1.1.	0=Do not generate - (browse only) print out what will happen but don&apos;t perform the generation
+			1.1.2.	1=Do generate [DEFAULT] - Perform the VIEW Generation with a column projection.
+			1.1.3.	2= Do generate - Perform the VIEW Generation with a select * projection.
+	2.  Validated with CIS 7.0.x
+	3.  Fixed procedures to work with Utilities_2015Q3.car or higher.
+
+	-----------------------------------------
+	05/20/2015 - Best Practices 8.1.6 features
+	-----------------------------------------
+	1.	Validated with CIS 7.0.x
+	2.  Updated Powerpoint format to Cisco format
+	3.  Works with Utilities_2014Q4.car or higher
+
+	-----------------------------------------
+	11/26/2014 - Best Practices 8.1.5 features
+	-----------------------------------------
+	1.	Works with Utilities_2014Q4.car or higher
+			1.1. Updated to work with new updateTrigger procedure in Utilities which has a new signature.
+	2.  Fixed output message to print the line instead of null when view is SKIPPED.
+	3.  Increased size of logicalStatus from 255 to 1024 and fixed it to output a SKIPPED message no greater than 1024 characters.
+	4.  Fixed generateDatasourceListCSV parsing
+			4.1. parseColumnExpression() goes into infinite recursion trying to parse the expression: extract(day from SNAPSHOT_MTH + 32)
+			4.2. Lines commented using single-line comments (--) are still being processed. If commented line happens to contain an invalid 
+					resource/table, thegetBasicResourceXML() fails with &quot;Resource does not exist&quot; message
+			4.3. getUsedResourcesXML() throws an exception when the resource being analyzed has a cache which is not properly configured. 
+					A case is open with support to fix getUsedResources admin API (CIS-50706).
+			4.4. When the ‘from’ keyword in view definition is in lower-case, extractSQLParts() script throws &quot;Error evaluating function substring&quot; error.
+			4.5. Improved the handling of special characters within column names and paths to eliminate failures.  All non-alpha-numeric columns were tested.
+	5. Improvements in view generation
+			5.1. Improved performance of generate views &quot;R&quot; (retrieve name from spreadsheet).  Changed methodology to retrieve all column metadata on first invocation as
+				 opposed to doing a database lookup for each column.  Large views that would take several minutes to create have dropped down to under 5 seconds.  
+				 This timing is consistent no matter how many columns.
+			5.2. CRUD - ConfigureStartingFolders: Modified CT_FOLDER (CRUD Target) to use the groupPath so that there is a unique path for each data source in the target CRUD folder.
+	6. Update to generateProject() and upgradeProject() to resolve defaultValues() version number.
+
+	-----------------------------------------
+	08/25/2014 - Best Practices 8.1.4 features
+	-----------------------------------------
+	1.	Works with Utilities_2014Q301.car or higher
+		1.1.	Fixed issue in Utilities getBasicResourceCursor_ActionAttributes() where it cut off the attribute value response to 255 characters.  
+				Increased size of attribute value.
+	2.	Upgrade Modifications
+		2.1.	Added ability to upgrade a project folder that has no previous versions of Data Abstraction Best Practices.   
+				It detects the absence and creates “_scripts” with the latest version of the Data Abstraction Best Practices.
+		2.2.	Added ability to upgrade a project folder that only has “_scripts” with or without the subfolders.  
+				The folders may not contain any procedures however.  It can only be an empty shell structure.
+		2.3.	Added the ability to upgrade a project and copy any data abstraction template folders/resources that do not 
+				exist in the target project folder but don’t overwrite any pre-existing resources such as “_Custom”, “Configure” and “Documentation”.
+		2.4.	Fixed the upgrade for /Documentation folder to correctly modify the “keyVerifyText” when $PROJECT_PATH_SRC or $PROJECT_PATH_DST was 
+				being used in the upgrade vector “vector_masterUpgradeVector”.
+
+	-----------------------------------------
+	08/08/2014 - Best Practices 8.1.3 features
+	-----------------------------------------
+	1.	Works with Utilities_2014Q2.car or higher
+		1.1.	Validated with Utilities_2014Q3.car
+	2.	View Generation Modifications
+		2.1.	Added check for dependency views in target path.  If either the actual view or a different view name with a dependency to the source exists then don’t generate when 0 or 1.  
+				0=throw exception, 
+				1=skip generating if exists.  Changed default 1=overwrite instead of 2=overwrite if exists.  
+					Added an output message when “SKIPPED”.  The qualifying message will indicate the following scenarios: 
+						SKIPPED: Dependent resource exists.  targetResourcePath=&lt;path&gt;
+						SKIPPED: Target resource exists.  targetResourcePath=&lt;path&gt;
+						SKIPPED: Dependent resource exists.  Target resource exists.  targetResourcePath=&lt;path&gt;
+				2=overwrite if exists
+	3.	Modifications to “generateCast” variable for the various generateView... methods and is applicable when used when generateMode=&apos;G&apos; or ‘R’.  
+			Previously, a cast statements were only available when generateMode=’G’.  Now this feature is being expanded to include generateMode=’R’ 
+			and providing additional cast options. The recommended value would be to use generateCast=2 which would generate cast statements 
+			only around non-index columns.  The CIS optimizer will be more efficient with query push-down on some databases that have indexes.  
+			The cast statements prevent the optimizer from choosing the correct push-down query
+		3.1.	Added generateCast=2,3,4,5 allowing for &quot;NO&quot; CAST around index columns and adding a CAST display column for index columns.  
+				This will help with the CIS optimizer to be able to push down SQL to databases that support indexes.  The optimizer will be able to make better choices.
+		3.2.	0=Do not generate CAST statement.  Pass through column as is.  Default behavior.
+		3.3.	1=Generate the CAST statement around the column
+		3.4.	2=Generate the CAST statement around the non-index columns only (No CAST on index columns)
+		3.5.	3=Generate the CAST statement around the non-index columns only and generate a &quot;display&quot; column for each index column.  (No CAST on index columns)
+		3.6.	4=Generate the CAST statement around the non-index columns and non-primary key index columns only (No CAST on primary key index columns)
+		3.7.	5=Generate the CAST statement around the non-index columns and non-primary key index columns only and generate a &quot;display&quot; column for each primary key index column.  (No CAST on primary key index columns)
+	4.   CIS 6.1 has reached end of life and is no longer supported in this release
+
+	-----------------------------------------
+	05/12/2014 - Best Practices 8.1.2 features
+	-----------------------------------------
+	1.	Rebranding PS Assets to AS Assets
+		1.1.	Changed folder from /shared/PSAssets to /shared/ASAssets
+		1.2.	Requires Utilities_2014Q2 which uses /shared/ASAssets
+		1.3.	Fixed issues with upgrading from different versions of the Best Practices starting with 6.0.  
+				Provided a new repaired version of the Best Practices which use /shared/ASAssets instead of 
+				  /shared/PSAssets for the following Best Practices versions: 6.0, 6.6, 7.0, 7.1, 7.2, 7.3 and 8.0.  
+				Also provided a sample project for each of the versions named above.
+	2.	Removed common_policy as it was a left-over artifact from testing.
+	3.	Moved DataAbstractionSample to /ASAssets/DataAbstractionSample81.
+	4.	Removed SQL Server and LDAP sources
+		4.1.	Leave, file, XML, MySQL, Excel and Oracle (those have been there in the past)
+		4.2.	The SQL Server source brings in the sqljdbc4.jar by default and overwrites existing capabilities files.
+	5.	Changed from MySQL cache to the default file cache to make it easier from a startup configuration perspective.
+		5.1.	Provided instructions on how to create a relational database cache.  Any DB may be used.
+	6.	Added a call to re-introspect the Excel data source in the updateDatasourcePaths.
+		6.1.	Excel source in a UNIX environment must be re-introspected upon import.
+	7.	Fixed lab answer - Lab00-Answer_v8_1_2.car.
+
+	-----------------------------------------
+	04/01/2014 - Best Practices 8.1.1 features
+	-----------------------------------------
+	1.	Requires an upgrade of Utilities_2014Q101.car
+		1.1.	Fix getResourceLineageRecursive where a resource has a circular reference to itself.
+	2.	Import .car file options:
+		2.1.	Patch .car (BestPractices_v8_1_2014_02_21_patch_20140320.car) – use this to upgrade an existing 8.1 version.   Import with “overwrite” checked.
+		2.2.	Full .car (BestPractices_v8_1_1_2014_03_20.car) – use this to replace the existing BestPractices_v8_1_2014_02_21.car file from the previous distribution.  Import with “overwrite” checked.
+	3.	Provide an upgrade from 8.0 to 8.1
+	4.	Generate Datasource CSV throws an exception when there are foreign keys defined for a datasource table.
+	5.	Ability to Generate Datasource CSV file with generateMode=’G’ and layerType=’PM’ and different caseRule settings
+		5.1.	Datasource is being skipped.   Resolved the “WARNING” issue where it couldn’t find the data source.   This only happened when the folder being pointed to was of type “DATA_SOURCE”.  Resolved by getting resourceType of folder path.  Example of issue:
+			5.1.1.	 [10:35:29 26] generateDatasourceList : WARNING: The target container does not exist: path=/shared/PSAssets/BestPractices_v81/DataAbstractionSample/Physical/Metadata/File/testfile
+		5.2.	When generateMode=’G’ and the caseRule=C and 2 source columns Section and _Section are in the source and botha are reserved word so the need double quotes.    
+			5.2.1.	When caseRule=C both Columns will resolve to “Section” resulting in duplicate columns.  
+			5.2.2.	What happens with the above combo is that _Section is turned in to a duplicate column “Section” which is double quoted.  There is code that detects duplicate column and adds a sequential number to it.  It should have been Section1 but it was being generated as “Section”1 because Section is a reserved word and gets double quoted.   That scenario is resolved. 
+			5.2.3.	Additionally, the column that is generated ‘Section1’ may already exist so the code will make sure that a unique column is generated even when the generated column exists.
+	6.	The user will be required to manually modify CIS_HOME/conf/customjars/RepoUtils.properties and add the word ‘offset’ to the list with a pipe separator.   This will be resolved in the next relase of the PSAsset Utilities.
+
+	-----------------------------------------
+	02/21/2014 - Best Practices 8.1 features
+	-----------------------------------------
+	1.	Support for Utilities_2014Q1.car.   
+	2.	Migrated procedures to Utilities including cachedProjectResources and updateImpactedResources.
+
+	-----------------------------------------
+	12/05/2013 - Best Practices 8.0 features
+	-----------------------------------------
+	1.	Support for Utilities_2013Q402.car.   
+	2.	Modified Common Model Spreadsheet by adding columns: 
+		2.1.	Project Name – Provides the ability to handle unique entries across named projects, data sources, catalogs, schemas and resources
+		2.2.	Great Grand Parent Name – equates to the Composite data source name for an object.
+		2.3.	Grand Parent Name – equates to the catalog name for a physical data source object.
+	3.	Added a new column model spreadsheet “Common_Model_v3_file4_sample_lab.xlsx” which contains the sample mappings for the sample project “DataAbstractionSample” and the lab projects “lab00-lab10”.
+		3.1.	The other three files are defaulted to blank out of the box.
+	4.	Read and Cache from Excel spreadsheet
+		4.1.	Read directly from .xlsx instead of .csv file.  Provide a flag to read from .csv if necessary.
+		4.2.	Cache contents of .xlsx or .csv in mysql for faster access.
+	5.	Configure Starting Folders – modified generateConfigureStartingFolders to include data source name, catalog and schema in the group name.   This will uniquely identify the group within the project folder.  The name parts are separated by periods.  For example dsname.catalog.schema.
+		5.1.	Existing projects are upgraded to use the new group ID format.
+	6.	Generate Views Defaults
+		6.1.	“generateIndexes” - Changed default for the various generate…Views variable from 1 to 0. 
+			6.1.1.	This includes generateFormattingViews, generateLogicalViews, generateBusinessViews, generateClientViews, generateClientPublished, and generateCastViews
+			6.1.2.	Except for the generatePhysicalViews which needs to generate indexes specifically for use by generateCRUDOperations.
+		6.2.	“excludeDatasourcePathList” – Added the ability to inject a data source paths to exclude when retrieving resources for generating.
+		6.3.	“generateViewsWrapper” – changed paramers: 0=output cursor, 1=output table information, 2=output table + column information.  Default = 1.
+		6.4.	generateWithSourceColumn Default = 1. used when generateMode=&apos;R&apos;
+			6.4.1.	1=Generate the view with the source column (pass through)-logical status is UNCHANGED
+			6.4.2.	0=Do NOT generate the view with the source column (no pass through)-logical status is DROPPED	
+	7.	Generate CRUD Procedures
+		7.1.	Default requirement requires layerType=”CR” when groupIds are being used to generate CRUD procedures.  The configuration folders defined by the CR grouping must point to source views that do not have any derived columns.  Create, Read, Update, Delete does not work when there are derived columns in the views.
+		7.2.	The best practice for creating CRUD procedures are as follows:
+			7.2.1.	Generate physical views using generatePhysical()
+			7.2.2.	Configure CR source to point to the physical views.
+			7.2.3.	Configure CR target to point to the /Application/Services/CRUD folder
+			7.2.4.	Generate CRUD using generateCRUDOperations()
+
+	-----------------------------------------
+	08/28/2013 - Best Practices 7.3 features
+	-----------------------------------------
+	1.	Utilities_2013Q301.car.   
+		1.1		Deprecated use of Utilities and Best Practices with CIS 6.0 and lower since it has reached end-of-life as of August 15, 2013.
+	2.	Upgrade Project Changes
+		2.1.	Added the ability to automatically upgrade previous versions of the Best Practices starting at 1.0.  
+				All versions between 1.0 and 6.6 will be upgraded to copy of the existing project but in the format 
+				of the current version of the best practices.  The new copy will contain the latest best practices scripts.  
+				Additionally, a best effort is made to migrate the ConfigureStartingFolders() procedure which identifies the data source groups.
+		2.2.	Added a 7.2 to 7.3 script upgrade path.
+		2.3		Moved BestPractices_vXX folder to /shared/Utilities/BestPracices_vXX.
+	3.	General View Generation Changes
+		3.1.	generateDatasourceListCSV – Fixed issue with generating when there is a header.
+		3.2.	generateViews – Added printout of begin and end time and duration.  Improved console window output with only 
+				blank lines after each view grouping instead of every line.
+		3.3.	generateViewsLoop – Fix generateViewsLoop performance issue by only invoking updateImpactedResources when a 
+				view is created and not on the entire folder for each resource.
+	4.	Utility Changes
+		4.1.	Promoted several procedures to /shared/Utilities including: copyResourcesPrivileges, createAllFoldersPrivileges, createResourceCopy, and extractTextList.  
+		4.2.	Changed utility /repository/copyResources commit block to an exception block to resolve a commit error.
+		4.3.	Changed utility /repository/rebind/getRebindableResources and /repository/getResourceListRecursive to contain BEGIN INDEPENDENT TRANSACTION blocks 
+				around the procedures getting resources.  There were a lot of random runtime exceptions being thrown.
+		4.4.	Changed utility /repository/searchResources to allow resources with impactLevel=SYNTAX_ERROR to pass through as the source can and needs to be read 
+				for the best practices scripts.  Added impactLevel to the output so filtering can still be done with other programs.
+	5.	CRUD procedure generation changes
+		5.1.	For getFormatProcedure(), changed the defaults from formatString to return null if the column type is not found.  This prevents the issue where an 
+				unsupported type is accidently configured with string.  The procedures generateCRUD_RetrievePK() and generateCRUD_Update() will create a warning 
+				message in the log and console window.  An example warning is shown below:
+				########################################################################################################
+				# WARNING: NO formatType PROCEDURE FOUND FOR columnType=OTHER  columnName=MY_OTHER_COL
+				########################################################################################################
+		5.2.	For getIsEmptyProcedure(), changed the defaults from isEmptyString to return null if the column type is not found.  This prevents the issue where an 
+				unsupported type is accidently configured with string.  The procedure generateCRUD_isEmpty() will create a warning message in the log and console window.  
+				An example warning is shown below:
+				########################################################################################################
+				# WARNING: NO isEmptyType PROCEDURE FOUND FOR columnType=OTHER  columnName=MY_OTHER_COL
+				########################################################################################################
+	6.	Upgrading CRUD procedures prior to 7.2
+		6.1.	RetrievePK procedures – look for any impacted procedures.  You will need to modify any RetrievePK procedures containing CLOB or BLOB column types.  
+			6.1.1.	For CLOB column types, change the procedure formatString to formatClob.
+			6.1.2.	For BLOB column types, comment out or remove the line of code referring to the BLOB column.  There is no formatting for BLOB column types.
+		6.2.	Update procedures – you may need to modify any Update procedures containing CLOB or BLOB column types.  In general, most of the Best Practices 
+				versions have resolved any issues by providing a separate section of code for updating CLOB and BLOB.
+			6.2.1.	For both CLOB and BLOB, if there are any lines starting with “set updateClause = formatString(…” and are referring to CLOB or BLOB, comment 
+					out or remove the lines.
+		6.3.	isEmpty procedures – look for any impacted procedures.  You will need to modify any isEmpty procedures containing CLOB or BLOB column types.  
+			6.3.1.	For CLOB column types, change the procedure isEmptyString to isEmptyClob.
+			6.3.2.	For BLOB column types, change the procedure isEmptyString to isEmptyBlob.
+
+	-----------------------------------------
+	06/28/2013 - Best Practices 7.2 features
+	-----------------------------------------
+	1.  Utilities_2013Q204_60.car and Utilities_2013Q204_61+.car support
+	2.	Parallel Installation – this gives the user the ability to install Best Practices 7.2 in parallel with previous 
+		instances of the Best Practices so that it allows the developers to migrate projects only when they want to.  
+		All dependencies on custom functions has been eliminated in this release in favor if explicit paths to allow this capability.  
+		Additionally the defaultValues (/shared/BestPractices_v72/Procedures/defaultValues) contains a constant which specifies the 
+		root path of the Best Practices so that any dynamically scripted references use this parameter.
+		1.1.	Installation folder: /shared/BestPractices_v72
+
+	-----------------------------------------
+	05/15/2013 - Best Practices 7.1 features
+	-----------------------------------------
+	1.	Utilities_2013Q201_60.car and Utilities_2013Q201_61+.car support
+	2.	Added “UpgradeProject” which will automatically upgrade a project starting at 7.0 to 7.1.
+	3.	Added “logicalColumnType” to the output cursor for all of the generateViews method and its variation methods.
+	4.	Added “generatePublishedResource” which can generate a resource LINK or folder of resource LINKS to a Composite Database or Schema.
+	5.	Added parameters to each of the generate…View scripts for performing the following functionality:
+		5.1.	overwrite - allows user to decide whether they want to overwrite an existing view or not.
+			5.1.1.	0=&quot;FAIL_IF_EXISTS&quot;=do not overwrite the resource.  If the resource exists, raise an exception.
+			5.1.2.	1=&quot;SKIP_IF_EXISTS&quot;=skip the resource if it exists and continue processing
+			5.1.3.	2=&quot;OVERWRITE_IF_EXISTS&quot;=do overwrite the resource if it exists.
+		5.2.	copyAnnotation - allows user to decide whether they want to copy annotations or not form both resource and columns.
+			5.2.1.	0=false=do not copy the annotation from the target resource
+			5.2.2.	1=true=do copy the annotation from the target resource
+		5.3.	copyPrivilegeMode – flag indicating the mode in which to copy privileges.  Privileges are only copied from the parent when creating new resources including folders
+			5.3.1.	null (default) - do not set any privileges at all.
+			5.3.2.	0 - set mode to &quot;OVERWRITE_APPEND&quot; - merges and does not update privileges for users or groups not mentioned.
+			5.3.3.	1 - set the mode to &quot;SET_EXACTLY&quot; - makes privileges look exactly like those provided in the call.
+	6.	Fixed generateDatasourceList to output logicalColumnType when generateMode=’G’
+	7.	Fixed generateDatasourceList and generateDatasourceListCSV to output correct format when a physical column name is repeated via derived columns.  For example, if the Formatting view contained the column “id” and another column “id || ‘_text’ id2, the output would incorrectly list the physical name twice.  The result would be the spreadsheet gets generated incorrectly and then the generateFormattingViews cannot interpret the difference between a physical to logical mapping and a new derived column.
+	8.	Modified the signature of rebindAllResources to include rebindFromFolder.
+
+	-----------------------------------------
+	04/17/2013 - Best Practices 7.0 features
+	-----------------------------------------
+	1. Synchronized this release with Utilities_2013Q104_60.car and Utilities_2013Q104_61+.car
+	2. Added the following automation procedures:
+		a. generateProject() to automate the creation of a project.
+		b. renameProject() to rename a project and dynamically modify any views or procedures containing the project path in text.
+		c. generateConfigureStartingFolders() to auto-generate the ConfigureStartingFolders from data sources and transformations.
+	3. Complete overhaul of Excel spreadsheet.  
+		Modified columns and formulas in the spreadsheets Common_Model_v2_file[1-3].xls.
+	 	Spreadsheet Format:
+			Data Source				- The CIS Data Source Name
+			Parent Name				- The parent name of the Container (a.k.a. grandparent of the physical name)
+			Container Name			- The contain (a.k.a. parent) of the physical name)
+			Physical Name			- They physical resource name which may be a TABLE or COLUMN
+			Physical Type			- The physical or native type of the physical resource
+			Logical Name			- The logical name of the VIEW/TABLE or COLUMN
+			Logical Type			- The logical type
+			Logical Transformation	- The Composite transformation (excluding outer cast statements)
+			Logical Definition		- The logical description or annotation of the TABLE/VIEW or COLUMN
+
+	4. Modified ConfigureStartingFolders to remove &quot;sourceName&quot; from the result cursor
+		Simplified the configuration by allowing the source folder to point to any FOLDER/CONTAINER
+		or DATA_SOURCE at any level.  Therefore, the sourceName qualifier is no longer needed.
+		Previously, the generation scripts threw an error if the source folder pointed to the
+		actual data source instead of a FOLDER/CONTAINER.  No restrictions now.
+
+	5. Overhauled generateDatasourceList to generate a similar format of the spreadsheet.
+		It actually generates the same format except that it adds a &quot;Logical Path&quot; column 
+		that is not in the spreadsheet as the last column in the cursor.
+		SCOPE:  
+			1. Provides the ability to generate Formatting Views in order to export to the 
+				Common_Model_v2_file[1-3].xls spreadsheet.
+			2. Provides the ability to generate Physical Views or Physical Metadata Tables to the 
+				Common_Model_v2_file[1-3].xls spreadsheet in order to establish a baseline spreadsheet
+				which can then be modified to add logical names, types, transformations and definitions.
+			3. It will **NOT** generate Business Layer or Mapping Layer views with complex joins.  It is only
+				targeted at generating views containing simple one-table mappings such as those found in the
+				Formatting Layer and below.
+
+	6. Round-trip Synchronization - Added generateDatasourceListCSV which generates the exact format as the spreadsheet.
+		This allows for executing a round-trip between the Formatting Layer and the Spreadsheet.
+		This resolves two things.  
+		(1) A developer may update the Formatting Layer and not the spreadsheet.  Easy to synchronize the two.
+				The one manual step is the developer needs to copy columns A-I from the generated CSV back into
+				one of the Common_Model_v2_file[1-3].xls spreadsheets.  Exporting directly to .XLS format is not
+				in scope for the Best Practices scripts.
+		(2) Upgrading the Best Practices spreadsheet.  Allows user to updgrade and re-generate the new spreadsheet format
+				in order to re-synchronize with any changes to the spreadsheet format when the Best Practices version changes.
+		SCOPE:  See scope in #3 above.
+
+	-----------------------------------------
+	11/12/2012 - Best Practices 6.6 features
+	-----------------------------------------
+	1. Synchronized this release with Utilities_2012Q401 and Utilities_2012Q401_61+
+	2. Added examples of generating documentation as part of the Best Practices
+		Utilizes /shared/Utilities/documentation/documentationTrigger and /constants
+		When a project is created from the &quot;DataAbstraction_GENERIC_Template&quot;, the user will also have the ability to schedule the documentation generation.
+
+	-----------------------------------------
+	11/05/2012 - Best Practices 6.5 features
+	-----------------------------------------
+	1. Synchronized this release with Utilities_2012Q4 and Utilities_2012Q4_61+
+		Added resourceType parameter to the invocation of getResourceListRecursive() in several procedures.
+		Requires Utilities_2012Q4.car and Utilities_2012Q4_61+.car
+		1.1 generateViewsLoop(), generateCRUD_Operations(), generateDatasourceList(), rebindAllResources(), rebindGenerationScripts(), and displayResourceTree()
+
+	-----------------------------------------
+	10/01/2012 - Best Practices 6.4 features
+	-----------------------------------------
+	1. Added a new feature for generating views with CAST statements without relying on the ConfigureStartingFolders. 
+		This provides a more adhoc and flexible capability.
+		1.1. “generateCastViews” – interface method
+		1.2. “generateCastViews” – core procedure with all the logic
+		1.3. “generateViewsLoop – split out the original loop processing from generateViews so it can be used by generateCastViews
+		1.4. “generateViews” – split out the setup code from the loop processing code
+		1.5. “isDerivedPathMatch” – provided ability to match exactly or do fuzzy match
+		1.6. Modified other functions that invoke “isDerivedPathMatch” due to method signature change
+
+	-----------------------------------------
+	9/29/2012 - Best Practices 6.3 features
+	-----------------------------------------
+	1.	Fixed an issue where column names contain spaces or underscores either in the beginning or end of the column name.
+	1.1.	Code changes for generating physical views (removed TRIM statements):
+	1.1.1.	/shared/BestPractices/Procedures/generateName/parseWord
+	1.1.1.1.	Added use of RegexSplit function with -1
+	1.1.2.	/shared/BestPractices/Procedures/generateName/getNameGenerated
+
+	2.	Fixed an issue where column names contain spaces at the beginning or end of the column name when retrieving formatting view columns.
+	2.1.	Code changes for generating formatting views (removed TRIM statements):
+	2.1.1.	/shared/BestPractices/Procedures/retrieveName/getNameRetrieved
+
+	3.	Data source /File modifications
+	3.1.	Added a column to testfile.txt to test the new capabilities.
+	3.2.	Added Common_Model_file[1,2,3].xls to the File folder in order to test columns containing XML characters.
+
+	4.	Code changes for generating views using the “derivedFilterPath” so that it is not as rigid.  Allow for any part of the path to be present instead of an exact match.  The derivedFilterPath would contain any text that represents the path of the “source” resource starting after what is provided by the based folder path in ConfigureStartingFolders. The “derivedFilterPath” is applicable for all the generation scripts
+	4.1.	For example, if the ConfigureStartingFolders contains
+
+		set groupId = &apos;DELIMITED&apos;;
+		SET PM_FOLDER=physicalMetadataPath||&apos;/File&apos;;
+
+		Therefore the “sourceFolderPath” would resolve to 
+			/shared/BestPractices/DataAbstractionSample/L4_Physical_Layer/Physical_Metadata/File
+
+		The two data sources under /File include Common_Model and testfile.  Additionally, Common_Model contains three files which are 
+		Common_Model_file1.xls, Common_Model_file2.xls and Common_Model_file3.xls.
+
+		Therefore if the user sets “derivedFilterPath” = testfile, then only testfile is generated.
+
+		If the user sets “derivedFilterPath” = Common_Model then all three Common_Model_file[1,2,3].xls are generated.
+
+		If the user sets “derivedFilterPath” = Common_Model/Common_Model_file2 then only Common_Model_file2.xls is generated.
+
+	5.	Code changes for escaping column names containing XML characters:
+	5.1.	/shared/BestPractices/Procedures/getReservedWord
+	5.2.	Escape any XML characters in the column names like
+	5.2.1.	apostrophe 		(&apos;) 		&apos; 
+	5.2.2.	ampersand		(&amp;)		&amp;
+	5.2.3.	less than 		(&lt;) 		&lt;
+
+		Also requires a fix to the Utilities: /shared/Utilities/repository/updateResourcesSqlTable line 121
+		Before:  &lt;resource:sqlText&gt;&apos;||scripttext||&apos;&lt;/resource:sqlText&gt;
+		After:   &lt;resource:sqlText&gt;&apos;||CAST(XMLTEXT(scripttext) AS LONGVARCHAR)||&apos;&lt;/resource:sqlText&gt;
+
+	-----------------------------------------
+	8/6/2012 - Best Practices 6.2 features
+	-----------------------------------------
+	1. Fixed an issue where double quotes were not being put around physical column names containing spaces.
+	2. Fixed an issue where generated views with CAST statements that included data types with commas &quot;DECIMAL(12,2)&quot;
+	   forced the portion of the data type following the comma onto a separate line.
+	3. Fixed an issue where reserved words are applied to generation of CRUD methods.
+
+	-----------------------------------------
+	7/30/2012 - Best Practices 6.1 features
+	-----------------------------------------
+	1. Ability to control the generation of Indexes underlying data types when generateIndexes=0 or 1
+
+	-----------------------------------------
+	5/19/2012 - Best Practices 6.0 features
+	-----------------------------------------
+	1. Ability to generate the CAST statement from underlying data types when mode=&apos;G&apos; (Generate)
+	2. Ability to generate the CAST statement for generateDatasourceList
+	3. Ability to pass in a comma separated list of groupId filters for the ConfigurStartingFolder when generating any layer.
+	4. Ability to generate physical views from XSLT procedures in order to support XML data sources
+	5. Ability to search a resource tree &quot;searchResourceTree&quot; for the passed in resource path.
+	6. A wrapper for generatePhysicalViews so that developers can execute without hitting the Studio Fetch Row Size limit.
+	7. A wrapper for generateFormattingViews so that developers can execute without hitting the Studio Fetch Row Size limit.
+	8. A display procedure that returns the Best Practices current version.
+*/
+PROCEDURE &quot;_RELEASE_NOTES&quot;()BEGIN END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564768410645</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

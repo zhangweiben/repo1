@@ -1,0 +1,323 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="1_pqCreate_DABP_privilege_tables" path="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/DDL/SQLServer_LLE/1_pqCreate_DABP_privilege_tables" type="PROCEDURE" subtype="EXTERNAL_SQL_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="SchemaName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+      <attribute name="Customized" type="STRING">metadata.added;datatype.changed;direction.changed</attribute>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="CURSOR" type="TABLE" refId="1">
+        <element name="result">
+          <datatype name="CHAR" type="STRING" minLength="255" maxLength="255"/>
+        </element>
+      </datatype>
+      <attribute name="Customized" type="STRING">metadata.added;datatype.changed;direction.changed;name.changed</attribute>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DB_LLE_SS" type="DATA_SOURCE">
+    <datatype name="Tree" type="TREE" refId="1"></datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">&lt;version 2&gt;multipartseparator=;+;
+-- Create a SQL Server Database called CMPPRV
+-- Parameter 0: schemaName=dbo
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES_R01&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; DROP CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R01&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES_R02&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; DROP CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R02&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES_R03&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; DROP CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R03&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES_R04&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; DROP CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R04&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES_R05&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; DROP CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R05&quot;; ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS_R01&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; DROP CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R01&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS_R02&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; DROP CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R02&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS_R03&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; DROP CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R03&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS_R04&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; DROP CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R04&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS_R05&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; DROP CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R05&quot;; ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER_R01&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; DROP CONSTRAINT &quot;COMPOSITE_USER_R01&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER_R02&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; DROP CONSTRAINT &quot;COMPOSITE_USER_R02&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER_R03&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; DROP CONSTRAINT &quot;COMPOSITE_USER_R03&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER_R04&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; DROP CONSTRAINT &quot;COMPOSITE_USER_R04&quot;; ;
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER_R05&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; DROP CONSTRAINT &quot;COMPOSITE_USER_R05&quot;; ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;PROJECT_TYPE_R01&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;PROJECT_TYPE&quot; DROP CONSTRAINT &quot;PROJECT_TYPE_R01&quot;; ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;SUBPROJECT_TYPE_R01&quot;&apos;, N&apos;F&apos;) IS NOT NULL ALTER TABLE &quot;{0}&quot;.&quot;SUBPROJECT_TYPE&quot; DROP CONSTRAINT &quot;SUBPROJECT_TYPE_R01&quot;; ;
+
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot;; ;
+CREATE TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot;
+(
+  &quot;PRIVILEGE_ID&quot;          INTEGER IDENTITY(1,1) NOT NULL,
+  &quot;ORGANIZATION_NAME&quot;     VARCHAR(255)  NOT NULL,
+  &quot;PRIVILEGE_TYPE&quot;        VARCHAR(255)  NOT NULL,
+  &quot;PROJECT_NAME&quot;          VARCHAR(255)  NOT NULL,
+  &quot;SUBPROJECT_NAME&quot;       VARCHAR(255)  NOT NULL,
+  &quot;RESOURCE_PATH&quot;         VARCHAR(4000) NOT NULL,
+  &quot;RESOURCE_TYPE&quot;         VARCHAR(255)  NOT NULL,
+  &quot;RECURSE_DEPENDENCIES&quot;  VARCHAR(1),
+  &quot;RECURSE_DEPENDENTS&quot;    VARCHAR(1),
+  &quot;RECURSE_CHILD&quot;         VARCHAR(2)    NOT NULL,
+  &quot;REVOKE_ALL&quot;            VARCHAR(1)    NOT NULL,
+  &quot;NAME&quot;                  VARCHAR(255)  NOT NULL,
+  &quot;NAME_TYPE&quot;             VARCHAR(255)  NOT NULL,
+  &quot;DOMAIN_NAME&quot;           VARCHAR(255)  NOT NULL,
+  &quot;ENVIRONMENT_NAME&quot;      VARCHAR(255)  NOT NULL,
+  &quot;READ_ACCESS&quot;           VARCHAR(1),
+  &quot;WRITE_ACCESS&quot;          VARCHAR(1),
+  &quot;EXECUTE_ACCESS&quot;        VARCHAR(1),
+  &quot;SELECT_ACCESS&quot;         VARCHAR(1),
+  &quot;UPDATE_ACCESS&quot;         VARCHAR(1),
+  &quot;INSERT_ACCESS&quot;         VARCHAR(1),
+  &quot;DELETE_ACCESS&quot;         VARCHAR(1),
+  &quot;GRANT_ACCESS&quot;          VARCHAR(1),
+  &quot;INITIALIZE&quot;            VARCHAR(1),
+  &quot;OWNER_NAME&quot;            VARCHAR(255),
+  &quot;OWNER_DOMAIN&quot;          VARCHAR(255),
+  &quot;COMMENTS&quot;              VARCHAR(1024),
+  &quot;CREATEDBY&quot;             VARCHAR(50)    NOT NULL DEFAULT CURRENT_USER,
+  &quot;CREATEDDATE&quot;           DATETIME2(3)   NOT NULL DEFAULT GETDATE(),
+  &quot;UPDATEDBY&quot;             VARCHAR(50)    NOT NULL DEFAULT CURRENT_USER,
+  &quot;UPDATEDDATE&quot;           DATETIME2(3)   NOT NULL DEFAULT GETDATE(),
+  &quot;ISACTIVE&quot;              VARCHAR(1)     NOT NULL,
+     primary key (&quot;PRIVILEGE_ID&quot;)
+); ;
+
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot;; ;
+CREATE TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot;
+(
+  &quot;STUDIO_RIGHTS_ID&quot;      INTEGER IDENTITY(1,1) NOT NULL,
+  &quot;ORGANIZATION_NAME&quot;     VARCHAR(255) NOT NULL,
+  &quot;PROJECT_NAME&quot;          VARCHAR(255) NOT NULL,
+  &quot;SUBPROJECT_NAME&quot;       VARCHAR(255) NOT NULL,
+  &quot;GROUP_NAME&quot;            VARCHAR(255) NOT NULL,
+  &quot;GROUP_DESC&quot;            VARCHAR(255),
+  &quot;DOMAIN_NAME&quot;           VARCHAR(255) NOT NULL,
+  &quot;ENVIRONMENT_NAME&quot;      VARCHAR(255) NOT NULL,
+  &quot;ACCESS_FLAG&quot;           VARCHAR(1),
+  &quot;UNDO_LOCK&quot;             VARCHAR(1),
+  &quot;READ_ALL_CONFIG&quot;       VARCHAR(1),
+  &quot;MODIFY_ALL_CONFIG&quot;     VARCHAR(1),
+  &quot;READ_ALL_RESOURCES&quot;    VARCHAR(1),
+  &quot;MODIFY_ALL_RESOURCES&quot;  VARCHAR(1),
+  &quot;READ_ALL_STATUS&quot;       VARCHAR(1),
+  &quot;MODIFY_ALL_STATUS&quot;     VARCHAR(1),
+  &quot;READ_ALL_USER&quot;         VARCHAR(1),
+  &quot;MODIFY_ALL_USER&quot;       VARCHAR(1),
+  &quot;CREATEDBY&quot;             VARCHAR(50)  NOT NULL DEFAULT CURRENT_USER,
+  &quot;CREATEDDATE&quot;           DATETIME2(3) NOT NULL DEFAULT GETDATE(),
+  &quot;UPDATEDBY&quot;             VARCHAR(50)  NOT NULL DEFAULT CURRENT_USER,
+  &quot;UPDATEDDATE&quot;           DATETIME2(3) NOT NULL DEFAULT GETDATE(),
+  &quot;ISACTIVE&quot;              VARCHAR(1)   NOT NULL,
+     primary key (&quot;STUDIO_RIGHTS_ID&quot;)
+); ;
+
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;COMPOSITE_USER&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot;; ;
+CREATE TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot;
+(
+  &quot;USERID&quot;                INTEGER IDENTITY(1,1) NOT NULL,
+  &quot;ORGANIZATION_NAME&quot;     VARCHAR(255) NOT NULL,
+  &quot;PROJECT_NAME&quot;          VARCHAR(255) NOT NULL,
+  &quot;SUBPROJECT_NAME&quot;       VARCHAR(255) NOT NULL,
+  &quot;USER_NAME&quot;             VARCHAR(255) NOT NULL,
+  &quot;USER_DESC&quot;             VARCHAR(255),
+  &quot;DOMAIN_NAME&quot;           VARCHAR(255) NOT NULL,
+  &quot;ENVIRONMENT_NAME&quot;      VARCHAR(255) NOT NULL,
+  &quot;USER_PWD&quot;              VARCHAR(255),
+  &quot;FORCE_USER&quot;            VARCHAR(1),
+  &quot;GROUP_LIST&quot;            VARCHAR(2048),
+  &quot;USER_NAME_LOWERCASE&quot;   VARCHAR(255),
+  &quot;CREATEDBY&quot;             VARCHAR(50)  NOT NULL DEFAULT CURRENT_USER,
+  &quot;CREATEDDATE&quot;           DATETIME2(3) NOT NULL DEFAULT GETDATE(),
+  &quot;UPDATEDBY&quot;             VARCHAR(50)  NOT NULL DEFAULT CURRENT_USER,
+  &quot;UPDATEDDATE&quot;           DATETIME2(3) NOT NULL DEFAULT GETDATE(),
+  &quot;ISACTIVE&quot;              VARCHAR(1)   NOT NULL,
+     primary key (&quot;USERID&quot;)
+); ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;DOMAIN_TYPE&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;DOMAIN_TYPE&quot;; ;
+CREATE TABLE &quot;{0}&quot;.&quot;DOMAIN_TYPE&quot;
+(
+  &quot;DOMAIN_NAME&quot;       VARCHAR(255) NOT NULL,
+  &quot;ISACTIVE&quot;          VARCHAR(1),
+     primary key (&quot;DOMAIN_NAME&quot;)
+); ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;ENVIRONMENT_TYPE&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;ENVIRONMENT_TYPE&quot;; ;
+CREATE TABLE &quot;{0}&quot;.&quot;ENVIRONMENT_TYPE&quot;
+(
+  &quot;ENVIRONMENT_NAME&quot;  VARCHAR(255) NOT NULL,
+  &quot;ISACTIVE&quot;          VARCHAR(1),
+     primary key (&quot;ENVIRONMENT_NAME&quot;)
+); ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;ORGANIZATION_TYPE&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;ORGANIZATION_TYPE&quot;; ;
+CREATE TABLE &quot;{0}&quot;.&quot;ORGANIZATION_TYPE&quot;
+(
+  &quot;ORGANIZATION_NAME&quot;  VARCHAR(255) NOT NULL,
+  &quot;ISACTIVE&quot;           VARCHAR(1),
+     primary key (&quot;ORGANIZATION_NAME&quot;)
+); ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;PROJECT_TYPE&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;PROJECT_TYPE&quot;; ;
+CREATE TABLE &quot;{0}&quot;.&quot;PROJECT_TYPE&quot;
+(
+  &quot;PROJECT_NAME&quot;       VARCHAR(255) NOT NULL,
+  &quot;ORGANIZATION_NAME&quot;  VARCHAR(255) NOT NULL,
+  &quot;ISACTIVE&quot;           VARCHAR(1),
+     primary key (&quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;)
+); ;
+
+IF OBJECT_ID(N&apos;&quot;{0}&quot;.&quot;SUBPROJECT_TYPE&quot;&apos;, N&apos;U&apos;) IS NOT NULL DROP TABLE &quot;{0}&quot;.&quot;SUBPROJECT_TYPE&quot;; ;
+CREATE TABLE &quot;{0}&quot;.&quot;SUBPROJECT_TYPE&quot;
+(
+  &quot;SUBPROJECT_NAME&quot;    VARCHAR(255) NOT NULL,
+  &quot;PROJECT_NAME&quot;       VARCHAR(255) NOT NULL,
+  &quot;ORGANIZATION_NAME&quot;  VARCHAR(255) NOT NULL,
+  &quot;ISACTIVE&quot;           VARCHAR(1),
+     primary key (&quot;SUBPROJECT_NAME&quot;, &quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;)
+); ;
+
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R01&quot;
+  FOREIGN KEY (&quot;ORGANIZATION_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;ORGANIZATION_TYPE&quot; (&quot;ORGANIZATION_NAME&quot;)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R02&quot;
+  FOREIGN KEY (&quot;ENVIRONMENT_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;ENVIRONMENT_TYPE&quot; (&quot;ENVIRONMENT_NAME&quot;)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R03&quot;
+  FOREIGN KEY (&quot;DOMAIN_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;DOMAIN_TYPE&quot; (&quot;DOMAIN_NAME&quot;)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R04&quot;
+  FOREIGN KEY (&quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;PROJECT_TYPE&quot; (&quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_PRIVILEGES&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_PRIVILEGES_R05&quot;
+  FOREIGN KEY (&quot;SUBPROJECT_NAME&quot;, &quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;SUBPROJECT_TYPE&quot; (&quot;SUBPROJECT_NAME&quot;, &quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;)
+; ;
+
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R01&quot;
+  FOREIGN KEY (&quot;ORGANIZATION_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;ORGANIZATION_TYPE&quot; (&quot;ORGANIZATION_NAME&quot;)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R02&quot;
+  FOREIGN KEY (&quot;ENVIRONMENT_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;ENVIRONMENT_TYPE&quot; (&quot;ENVIRONMENT_NAME&quot;)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R03&quot;
+  FOREIGN KEY (&quot;DOMAIN_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;DOMAIN_TYPE&quot; (&quot;DOMAIN_NAME&quot;)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R04&quot;
+  FOREIGN KEY (&quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;PROJECT_TYPE&quot; (&quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_STUDIO_RIGHTS&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_STUDIO_RIGHTS_R05&quot;
+  FOREIGN KEY (&quot;SUBPROJECT_NAME&quot;, &quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;SUBPROJECT_TYPE&quot; (&quot;SUBPROJECT_NAME&quot;, &quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;)
+; ;
+
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; ADD
+  CONSTRAINT COMPOSITE_USER_R01 
+  FOREIGN KEY (&quot;DOMAIN_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;DOMAIN_TYPE&quot; (&quot;DOMAIN_NAME&quot;)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_USER_R02&quot;
+  FOREIGN KEY (&quot;ENVIRONMENT_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;ENVIRONMENT_TYPE&quot; (&quot;ENVIRONMENT_NAME&quot;)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_USER_R03&quot;
+  FOREIGN KEY (&quot;ORGANIZATION_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;ORGANIZATION_TYPE&quot; (&quot;ORGANIZATION_NAME&quot;)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_USER_R04&quot;
+  FOREIGN KEY (PROJECT_NAME, ORGANIZATION_NAME) 
+  REFERENCES &quot;{0}&quot;.&quot;PROJECT_TYPE&quot; (PROJECT_NAME, ORGANIZATION_NAME)
+; ;
+
+ALTER TABLE &quot;{0}&quot;.&quot;COMPOSITE_USER&quot; ADD
+  CONSTRAINT &quot;COMPOSITE_USER_R05&quot;
+  FOREIGN KEY (&quot;SUBPROJECT_NAME&quot;, &quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;SUBPROJECT_TYPE&quot; (&quot;SUBPROJECT_NAME&quot;, &quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;)
+; ;
+
+
+ALTER TABLE &quot;{0}&quot;.&quot;PROJECT_TYPE&quot; ADD
+  CONSTRAINT &quot;PROJECT_TYPE_R01&quot; 
+  FOREIGN KEY (&quot;ORGANIZATION_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;ORGANIZATION_TYPE&quot; (&quot;ORGANIZATION_NAME&quot;)
+; ;
+
+
+ALTER TABLE &quot;{0}&quot;.&quot;SUBPROJECT_TYPE&quot; ADD
+  CONSTRAINT &quot;SUBPROJECT_TYPE_R01&quot; 
+  FOREIGN KEY (&quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;) 
+  REFERENCES &quot;{0}&quot;.&quot;PROJECT_TYPE&quot; (&quot;PROJECT_NAME&quot;, &quot;ORGANIZATION_NAME&quot;)
+; ;
+
+select &apos;SUCCESS&apos; result; ;</attribute>
+  <attribute name="creationDate" type="LONG">1379679170655</attribute>
+  <attribute name="creatorUserDomain" type="STRING">composite</attribute>
+  <attribute name="creatorUserName" type="STRING">admin</attribute>
+  <attribute name="isSingleSelect" type="STRING">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1513829548381</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="p:0:Customized" type="STRING">metadata.added;datatype.changed;direction.changed</attribute>
+  <attribute name="p:1:Customized" type="STRING">metadata.added;datatype.changed;direction.changed;name.changed</attribute>
+  <attribute name="passThroughSource" type="STRING">/shared/ASAssets/BestPractices_v81/PrivilegeScripts/Metadata/Privileges_DB_LLE_SS</attribute>
+</metadata>

@@ -1,0 +1,158 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="findStringInList" path="/shared/ASAssets/Utilities/string/findStringInList" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0" isFunction="true">
+  <annotation>findStringInList:
+	Given two input strings, this function returns an integer value representing the starting 
+	position of the first string within the second string.  The third parameter indicates which direction
+	to begin searching.  When &apos;F&apos;, begin searching forward from the beginning of the second string.
+ 
+	Input:
+		searchString - The search string is what you are looking for.  If this value is null, then the output is null
+						A blank (&apos;&apos;) non-null string for the search string always produces 1 for an output.
+			Values: Any text value
+		stringToSearch - The string to search within for the search string. If this value is null, then the output is null
+			Values: Any text value
+		delimiter - The delimiter by which to split/parse the stringToSearch prior to searching
+	Output:
+		pos - position in the list starting at 1.   0 was not found
+
+	Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2012.1		12/07/2011		Mike Tinius			6.0.0			Created new
+	2018.100	03/02/2018		Mike Tinius			7.0.5			Replaced RegexSplit with extractDelimitedText
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="searchString" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="inStringToSearch" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="delimiter" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="pos" direction="OUT" nullable="true">
+      <datatype name="INTEGER" type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/string/extractDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseInputText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseOutput" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="trimText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="includeDelimiter" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="object">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* findStringInList:
+	Given two input strings, this function returns an integer value representing the starting 
+	position of the first string within the second string.  The third parameter indicates which direction
+	to begin searching.  When &apos;F&apos;, begin searching forward from the beginning of the second string.
+ 
+	Input:
+		searchString - The search string is what you are looking for.  If this value is null, then the output is null
+						A blank (&apos;&apos;) non-null string for the search string always produces 1 for an output.
+			Values: Any text value
+		stringToSearch - The string to search within for the search string. If this value is null, then the output is null
+			Values: Any text value
+		delimiter - The delimiter by which to split/parse the stringToSearch prior to searching
+	Output:
+		pos - position in the list starting at 1.   0 was not found
+
+	Exceptions:  none
+
+	Release:	Modified Date:	Modified By:		DV Version:		Reason:
+	2012.1		12/07/2011		Mike Tinius			6.0.0			Created new
+	2018.100	03/02/2018		Mike Tinius			7.0.5			Replaced RegexSplit with extractDelimitedText
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE findStringInList(
+	IN searchString		LONGVARCHAR,
+	IN inStringToSearch	LONGVARCHAR,
+	IN delimiter		VARCHAR,		-- delimiter to use to split
+	OUT pos				INTEGER	
+)
+BEGIN
+	DECLARE stringToSearch	LONGVARCHAR DEFAULT inStringToSearch;
+	DECLARE i				INTEGER DEFAULT 1;
+
+	set pos = 0;
+	splitLoop:
+	for r as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(stringToSearch,delimiter,0,0,0,1,0) do
+		IF (searchString = r.object) then
+			set pos = i;
+			leave splitLoop;
+		END IF;
+		set i = i + 1;
+	end for;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564692146197</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

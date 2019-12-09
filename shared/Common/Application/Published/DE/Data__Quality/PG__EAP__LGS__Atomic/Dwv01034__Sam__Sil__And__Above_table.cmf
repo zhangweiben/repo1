@@ -1,0 +1,152 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="Dwv01034_Sam_Sil_And_Above" path="/shared/Common/Application/Published/DE/Data_Quality/PG_EAP_LGS_Atomic/Dwv01034_Sam_Sil_And_Above" type="TABLE" subtype="SQL_TABLE" changeToken="0" tableType="VIEW">
+  <annotation>null</annotation>
+  <columns>
+    <column name="imc_key_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="imc_name" nullable="true">
+      <datatype type="STRING" maxLength="1080"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="aff_id" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cur_awd_awd_cd" nullable="true">
+      <datatype type="STRING" maxLength="9"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cur_awd_awd_desc" nullable="true">
+      <datatype type="STRING" maxLength="150"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="cur_awd_awd_rnk_no" nullable="true">
+      <datatype type="STRING" maxLength="90"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="prm_imc_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="prm_imc_name" nullable="true">
+      <datatype type="STRING" maxLength="1080"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="prm_aff_id" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+    <column name="top_los_type_key_no" nullable="true">
+      <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+      <annotation/>
+    </column>
+  </columns>
+  <indexes></indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <dependency target="/shared/Common/Physical/Formatting/PostgreSQL_EAP/LGS_Atomic/Dwv01034_Sam_Sil_And_Above" type="TABLE">
+    <datatype type="TABLE" refId="1">
+      <element name="imc_key_no">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="imc_no">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="imc_name">
+        <datatype type="STRING" maxLength="1080"/>
+      </element>
+      <element name="aff_id">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="cur_awd_awd_cd">
+        <datatype type="STRING" maxLength="9"/>
+      </element>
+      <element name="cur_awd_awd_desc">
+        <datatype type="STRING" maxLength="150"/>
+      </element>
+      <element name="cur_awd_awd_rnk_no">
+        <datatype type="STRING" maxLength="90"/>
+      </element>
+      <element name="prm_imc_no">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="prm_imc_name">
+        <datatype type="STRING" maxLength="1080"/>
+      </element>
+      <element name="prm_aff_id">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+      <element name="top_los_type_key_no">
+        <datatype type="DECIMAL" maxDigits="38" minFractionalDigits="10" maxFractionalDigits="10"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="SQL" type="STRING">SELECT 
+	CAST(Dwv01034_Sam_Sil_And_Above.imc_key_no AS NUMERIC(38,10)) AS imc_key_no,
+	CAST(Dwv01034_Sam_Sil_And_Above.imc_no AS NUMERIC(38,10)) AS imc_no,
+	CAST(Dwv01034_Sam_Sil_And_Above.imc_name AS VARCHAR(1080)) AS imc_name,
+	CAST(Dwv01034_Sam_Sil_And_Above.aff_id AS NUMERIC(38,10)) AS aff_id,
+	CAST(Dwv01034_Sam_Sil_And_Above.cur_awd_awd_cd AS VARCHAR(9)) AS cur_awd_awd_cd,
+	CAST(Dwv01034_Sam_Sil_And_Above.cur_awd_awd_desc AS VARCHAR(150)) AS cur_awd_awd_desc,
+	CAST(Dwv01034_Sam_Sil_And_Above.cur_awd_awd_rnk_no AS VARCHAR(90)) AS cur_awd_awd_rnk_no,
+	CAST(Dwv01034_Sam_Sil_And_Above.prm_imc_no AS NUMERIC(38,10)) AS prm_imc_no,
+	CAST(Dwv01034_Sam_Sil_And_Above.prm_imc_name AS VARCHAR(1080)) AS prm_imc_name,
+	CAST(Dwv01034_Sam_Sil_And_Above.prm_aff_id AS NUMERIC(38,10)) AS prm_aff_id,
+	CAST(Dwv01034_Sam_Sil_And_Above.top_los_type_key_no AS NUMERIC(38,10)) AS top_los_type_key_no 
+FROM
+	/shared/Common/Physical/Formatting/PostgreSQL_EAP/LGS_Atomic/Dwv01034_Sam_Sil_And_Above Dwv01034_Sam_Sil_And_Above</attribute>
+  <attribute name="creationDate" type="LONG">1569986648666</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1569987541239</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1569986648666</attribute>
+</metadata>

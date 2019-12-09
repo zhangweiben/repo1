@@ -1,0 +1,252 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="isDerivedPathMatch" path="/shared/ASAssets/BestPractices_v81/Procedures/archive/isDerivedPathMatch" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="exactMatch" direction="IN" nullable="true">
+      <datatype name="SMALLINT" type="INTEGER" minValue="-32768" maxValue="32767"/>
+    </parameter>
+    <parameter name="derivedFilterPath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="sourcepath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="resourcePath" direction="IN" nullable="true">
+      <datatype name="LONGVARCHAR" type="STRING" maxLength="2147483647"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="BIT" type="INTEGER" minValue="0" maxValue="1"/>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inputString" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="delimiter" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="occurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseInputText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="reverseOutput" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="trimText" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="includeDelimiter" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="object">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* isDerivedPathMatch:
+	-- Composite Best Practices --
+	Determine if the source path + derived path filter matches the resource path being processed.
+ 
+	Input:
+		debug - Y=debug, N=no debug
+		derivedFilterPath 
+			-- The path is derived by concatenating the partial filter path with the source path of the designated layer type.
+			-- The layerType and the groupId are used to filter the rows from the configureStartingFolders.  The source path is
+			--    defined in configureStartingFolders per the layerType and groupId combination.
+			--   e.g. layerType=CP and sourceFolderPath=/shared/BestPractices/DataAbstractionSample/L1_Mapping_Layer/Client_Views
+			--        The derivedFilterPath list=Orders_Closed,/Orders/Customers,Orders/Product
+			--        Even though there are several other views in the /Orders folder under the Client_Views only the ones specified
+			--	      will be generated to the Client_Published.  Views directly under the source path do not require any qualifying path except the view name.
+			--        Lastly, a leading &apos;/&apos; is not required but may be present if desired.
+			-- If null, generate views from all source folders as directed by the &quot;configure starting folders&quot; and the designated layer type.
+		sourcePath - The source path as configured in configureStartingFolders
+		resourcePath - The resource path being processed.
+	Output:
+		result	- the result of the comparison
+			1=match
+			0=no match
+
+	Exceptions:  throws an exception if the layerType is not in the approved list.
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	05/15/2012		Mike Tinius			5.2.0			Created new
+	10/30/2013		Mike Tinius			6.2.0			B.P. 8.0: Modified log message output.
+	03/02/2018		Mike Tinius			7.0.5			Replaced RegexSplit with extractDelimitedText
+	04/15/2019		Mike Tinius			7.0.8			B.P. 2019.200: Added scriptsPath for flexibility of the location of the _scripts folder.
+																	   Changed custom functions to explicit paths.
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+
+*/
+PROCEDURE isDerivedPathMatch(
+	IN debug				CHAR(1),
+	IN exactMatch			SMALLINT,
+		-- 0=fuzzy match - sourcePath + derivedFilterPath must simply be contained within resourcePath
+		-- 1=exact match - sourcePath + derivedFilterPath must match exactly in resourcePath
+	IN derivedFilterPath	LONGVARCHAR, 
+		-- The path is derived by concatenating the partial filter path with the source path of the designated layer type.
+		-- The layerType and the groupId are used to filter the rows from the configureStartingFolders.  The source path is
+		--    defined in configureStartingFolders per the layerType and groupId combination.
+		--   e.g. layerType=CP and sourceFolderPath=/shared/BestPractices/DataAbstractionSample/L1_Mapping_Layer/Client_Views
+		--        The derivedFilterPath list=Orders_Closed,/Orders/Customers,Orders/Product
+		--        Even though there are several other views in the /Orders folder under the Client_Views only the ones specified
+		--	      will be generated to the Client_Published.  Views directly under the source path do not require any qualifying path except the view name.
+		--        Lastly, a leading &apos;/&apos; is not required but may be present if desired.
+		-- If null, generate views from all source folders as directed by the &quot;configure starting folders&quot; and the designated layer type.
+	IN sourcepath			LONGVARCHAR,
+		-- The base source path as configured in &quot;configureStartingFolders&quot;
+	IN resourcePath			LONGVARCHAR,
+		-- The current resource path for the resource being processed
+	OUT result				BIT --the result of the comparison (1=match, 0=no match)
+)
+BEGIN
+	DECLARE moduleName		VARCHAR DEFAULT &apos; &apos;||&apos;isDerivedPathMatch&apos;;
+	DECLARE derivedPath		LONGVARCHAR;
+	DECLARE sourcepath_		LONGVARCHAR DEFAULT REPLACE(sourcepath,&apos;//&apos;,&apos;/&apos;);
+	DECLARE resourcePath_	LONGVARCHAR DEFAULT REPLACE(resourcePath,&apos;//&apos;,&apos;/&apos;);
+	DECLARE resultPath		LONGVARCHAR;
+	DECLARE pathPart		VARCHAR(4000);
+	DECLARE pos				INTEGER;
+/* ------------------------------------------------------------------------
+ *  Compare the resourcePath with the sourcePath concatenated with the derivedFilterPath instance
+ * ------------------------------------------------------------------------*/
+
+	-- Normalize the source path by removing any path part surrounding double quotes if they exist
+	if (sourcepath_ is not null and LENGTH(sourcepath_) &gt; 0 and POSITION(&apos;&quot;&apos; IN sourcepath_) &gt; 0) then
+		set resultPath = &apos;&apos;;
+		for r as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(sourcepath_,&apos;/&apos;,0,0,0,0,0) do
+			set pathPart = r.object;
+			if (LENGTH(pathPart) &gt; 0) then
+				--call print(&apos;pathPart=&apos;||pathPart);
+				if (POSITION(&apos;&quot;&apos; IN pathPart) = 1) then
+					set pathPart = SUBSTRING(pathPart,2,LENGTH(pathPart));
+				end if;
+				set pos = POSITION(&apos;&quot;&apos; IN pathPart);
+				--call print(&apos;&quot; pos=&apos;||pos||&apos;  LENGTH(pathPart)=&apos;||LENGTH(pathPart));
+				if (pos = LENGTH(pathPart)) then
+					set pathPart = SUBSTRING(pathPart,1,LENGTH(pathPart)-1);
+				end if;
+				set resultPath = resultPath || &apos;/&apos; || pathPart;
+			end if;
+		end for;
+		set sourcepath_ = resultPath;
+	end if;
+
+	set result = 1;
+	if (derivedFilterPath IS NOT NULL AND LENGTH(&apos;|&apos;||derivedFilterPath||&apos;|&apos;) &gt; 2) then
+		set result = 0;
+		derivedPathLoop:
+		for r as select * from /shared/ASAssets/Utilities/string/extractDelimitedText(derivedFilterPath,&apos;,&apos;,0,0,0,1,0) do
+			SET derivedPath = REPLACE(REPLACE(sourcepath_ || &apos;/&apos; || r.object,&apos;//&apos;,&apos;/&apos;),&apos;//&apos;,&apos;/&apos;);
+-- 2012-09-29: mtinius - modified to allow any part of the path to be present instead of an exact match.  Makes this more usable.
+			-- Exact Compare
+			if (exactMatch = 1 and derivedPath = resourcePath_) then
+				set result = 1;
+			end if;
+			-- Fuzzy Compare
+			if (exactMatch = 0 and POSITION(derivedPath IN resourcePath_) &gt; 0) then
+				set result = 1;
+			end if;
+			if (result = 1) then
+				if (exactMatch = 1) then
+					if (debug = &apos;Y&apos;) then
+						call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;   (MATCH) EXACT_COMPARE: [key:R=Resource Path,  D=Derived Path]&apos;);
+					end if;
+				else
+					if (debug = &apos;Y&apos;) then
+						call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;   (MATCH) FUZZY_COMPARE: [key:R=Resource Path,  D=Derived Path]&apos;);
+					end if;
+				end if;
+				if (debug = &apos;Y&apos;) then
+					call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;         R=&apos;||NVL(resourcePath_,&apos;null&apos;));
+					call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;         D=&apos;||NVL(derivedPath,&apos;null&apos;));
+				end if;
+				leave derivedPathLoop;
+			else
+				if (exactMatch = 1) then
+					if (debug = &apos;Y&apos;) then
+						call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;(NO MATCH) EXACT_COMPARE: [key:R=Resource Path,  D=Derived Path]&apos;);
+					end if;
+				else
+					if (debug = &apos;Y&apos;) then
+						call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;(NO MATCH) FUZZY_COMPARE: [key:R=Resource Path,  D=Derived Path]&apos;);
+					end if;
+				end if;
+				if (debug = &apos;Y&apos;) then
+					call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;         R=&apos;||NVL(resourcePath_,&apos;null&apos;));
+					call /shared/ASAssets/Utilities/log/logDebugMessage(moduleName,debug,&apos;         D=&apos;||NVL(derivedPath,&apos;null&apos;));
+				end if;
+			end if;
+		end for;
+	end if;
+END</attribute>
+  <attribute name="creationDate" type="LONG">0</attribute>
+  <attribute name="creatorUserDomain" type="STRING"/>
+  <attribute name="creatorUserName" type="STRING"/>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1560603906783</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+</metadata>

@@ -1,0 +1,735 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="dynamicFileRemove" path="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/dynamicFileRemove" type="PROCEDURE" subtype="SQL_SCRIPT_PROCEDURE" changeToken="0">
+  <annotation>dynamicFileRemove:
+
+	A script that manages removing files from the file system and published views associated with those files. 
+	Files are only permitted to be removed by the user who created them.
+
+ 	Input:
+		debug:					Y=debug on, N=debug off
+		inUserName:				The name of the user who is authorized to remove the file.	
+		inFileName:				The name of the file to be deleted.
+									Undocumented feature only to be used for the Web Upload Application Service Account.  DO NOT GIVE THIS INFORMATION TO USERS
+										Format: USERNAME[nbkid]nbkid-filename.ext
+												When the file name contains USERNAME[nbkid], it informs this procedure that the proxy user within the square brackets
+												is the actual owner of the file and overrides the environment username which is set when the service account invokes
+												this procedure.  This is required because this procedure verifies the actual user with the nbkid prefixed in front of
+												the filename.  If they are different it does not perform any action.   With a service account there has to be a way
+												in which the service account can inform this procedure who the actual user is.  Therefore the nbkid must match within
+												the square brackets and prefixed to the filename in order for an action to be taken.  The service account acquires the
+												actual username from its context before invoking this procedure.
+   	 	datasourcePath: 		Fully Qualified path to a Dynamic data source
+		publishedDatabase:		The name of the published databases
+
+	Output:
+		Cursor with columns:
+            status				- removal status message
+									&apos;FILE REMOVED.  &apos; + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+									&apos;UNABLE TO REMOVE FILE.  &apos;  + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+									&apos;FILE DOES NOT EXIST.  &apos; + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+									&apos;FILE NOT ASSOCIATED WITH USERNAME=&lt;username&gt;&apos;
+									&apos;FILE DOES NOT EXIST.  FILE NOT ASSOCIATED WITH USERNAME=&lt;username&gt;&apos;
+
+            fileName 			- file name from the file system
+            publishedTableName 	- name of the published file associated with the file 
+            publishedTablePath 	- SQL URL of the published table
+	    	publishedDatabase	- published database name
+            metadataTableName	- the CIS metadata datasource table name
+            metadataTablePath	- the CIS metadata datasource table path
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/10/2016		Mike Tinius			7.0.2			Created new for the purpose of removing files.
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.</annotation>
+  <parameters>
+    <parameter name="debug" direction="IN" nullable="true">
+      <datatype name="CHAR" type="STRING" minLength="1" maxLength="1"/>
+    </parameter>
+    <parameter name="inUsername" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="inFileName" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="datasourcePath" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+    </parameter>
+    <parameter name="publishedDatabase" direction="IN" nullable="true">
+      <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+    </parameter>
+    <parameter name="result" direction="OUT" nullable="true">
+      <datatype name="result" type="TABLE" refId="1">
+        <element name="status">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="fileName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="publishedTableName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="publishedTablePath">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+        <element name="publishedDatabase">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="metadataTableName">
+          <datatype name="VARCHAR" type="STRING" maxLength="255"/>
+        </element>
+        <element name="metadataTablePath">
+          <datatype name="VARCHAR" type="STRING" maxLength="4000"/>
+        </element>
+      </datatype>
+    </parameter>
+  </parameters>
+  <security>
+    <owner user="admin" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ"/>
+  </security>
+  <dependency target="/lib/resource/ResourceExists" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="path" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="type" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceType" type="STRING" maxLength="40"/>
+      </element>
+      <element name="version" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourceVersion" type="STRING" maxLength="255"/>
+      </element>
+      <element name="exists" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/Helper/deleteFile" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="fileName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="datasourcePath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="messageAppend" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="fileDeleted" direction="OUT">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="message" direction="OUT">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="EXECUTE_DDL_PACKAGE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="DATASOURCE_PATH" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="CATALOG_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="SCHEMA_NAME" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_SEQ" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DYNAMIC_FILE_QUEUE" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="TABLESPACE_FILEGROUP" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="PROCESS_WAIT_TIME_SECONDS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_EMAIL" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="DEFAULT_RETENTION_POLICY_DAYS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="CSV_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="EXCEL_SUPPORTED_FILE_EXTENSIONS" direction="OUT">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/file/FileProcessingCJP/existsFile" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="filePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="success" direction="OUT">
+        <datatype type="BOOLEAN"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/file/getFileSeparator" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="result" direction="OUT">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/generate/destroyDependentLineage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="destroyInitialResource" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="destroyEmptyParentFolder" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="fullResourcePath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="inDebug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="actionType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="resourceName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="resourcePath">
+            <datatype type="STRING" maxLength="4096"/>
+          </element>
+          <element name="resourceType">
+            <datatype type="STRING" maxLength="40"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="40"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactMessage">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/log/logDebugMessage" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="moduleName" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="moduleNameType" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="1"/>
+      </element>
+      <element name="messageText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inPath" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getBasicResourceCursor" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="fullResourcePath" direction="IN">
+        <datatype referenceDefinitionSet="/shared/ASAssets/Utilities/TypeDefinitions" referenceType="pathType" type="STRING" maxLength="4000"/>
+      </element>
+      <element name="resourceType" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="resourceCursor" direction="OUT">
+        <datatype type="TABLE" refId="2">
+          <element name="name">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="path">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="type">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="subtype">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="enabled">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="id">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="changeid">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="version">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="introspectState">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerDomain">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="ownerName">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactLevel">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="impactMessage">
+            <datatype type="STRING" maxLength="32768"/>
+          </element>
+          <element name="annotation">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="explicitlyDesigned">
+            <datatype type="INTEGER" minValue="0" maxValue="1"/>
+          </element>
+          <element name="tableType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+          <element name="sqlText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="scriptText">
+            <datatype type="STRING" maxLength="2147483647"/>
+          </element>
+          <element name="childCount">
+            <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+          </element>
+          <element name="dataSourceType">
+            <datatype type="STRING" maxLength="255"/>
+          </element>
+        </datatype>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/repository/getDataSourceRootPath" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="dsPath" direction="IN">
+        <datatype referenceDefinitionSet="/lib/resource/ResourceDefs" referenceType="ResourcePath" type="STRING" maxLength="4096"/>
+      </element>
+      <element name="debug" direction="IN">
+        <datatype type="STRING" minLength="1" maxLength="1"/>
+      </element>
+      <element name="fileRootPath" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/extractBiDelimitedText" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="inText" direction="IN">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+      <element name="searchTerm" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="openingDelim" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="closingDelim" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="inOccurrence" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inTrimText" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="inCaseSensitive" direction="IN">
+        <datatype type="INTEGER" minValue="-2147483648" maxValue="2147483647"/>
+      </element>
+      <element name="result" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <dependency target="/shared/ASAssets/Utilities/string/getConstantV2" type="PROCEDURE">
+    <datatype type="PROCEDURE" refId="1">
+      <element name="constantsPath" direction="IN">
+        <datatype type="STRING" maxLength="4000"/>
+      </element>
+      <element name="constantsName" direction="IN">
+        <datatype type="STRING" maxLength="255"/>
+      </element>
+      <element name="optionReturn" direction="IN">
+        <datatype type="INTEGER" minValue="-32768" maxValue="32767"/>
+      </element>
+      <element name="outValue" direction="OUT">
+        <datatype type="STRING" maxLength="2147483647"/>
+      </element>
+    </datatype>
+  </dependency>
+  <attribute name="Script" type="STRING">/* dynamicFileRemove:
+
+	A script that manages removing files from the file system and published views associated with those files. 
+	Files are only permitted to be removed by the user who created them.
+
+ 	Input:
+		debug:					Y=debug on, N=debug off
+		inUserName:				The name of the user who is authorized to remove the file.	
+		inFileName:				The name of the file to be deleted.
+									Undocumented feature only to be used for the Web Upload Application Service Account.  DO NOT GIVE THIS INFORMATION TO USERS
+										Format: USERNAME[nbkid]nbkid-filename.ext
+												When the file name contains USERNAME[nbkid], it informs this procedure that the proxy user within the square brackets
+												is the actual owner of the file and overrides the environment username which is set when the service account invokes
+												this procedure.  This is required because this procedure verifies the actual user with the nbkid prefixed in front of
+												the filename.  If they are different it does not perform any action.   With a service account there has to be a way
+												in which the service account can inform this procedure who the actual user is.  Therefore the nbkid must match within
+												the square brackets and prefixed to the filename in order for an action to be taken.  The service account acquires the
+												actual username from its context before invoking this procedure.
+   	 	datasourcePath: 		Fully Qualified path to a Dynamic data source
+		publishedDatabase:		The name of the published databases
+
+	Output:
+		Cursor with columns:
+            status				- removal status message
+									&apos;FILE REMOVED.  &apos; + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+									&apos;UNABLE TO REMOVE FILE.  &apos;  + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+									&apos;FILE DOES NOT EXIST.  &apos; + 1 of the following:
+											&apos;PUBLISHED VIEWS REMOVED&apos;
+											&apos;VIEWS NOT PUBLISHED&apos;
+									&apos;FILE NOT ASSOCIATED WITH USERNAME=&lt;username&gt;&apos;
+									&apos;FILE DOES NOT EXIST.  FILE NOT ASSOCIATED WITH USERNAME=&lt;username&gt;&apos;
+
+            fileName 			- file name from the file system
+            publishedTableName 	- name of the published file associated with the file 
+            publishedTablePath 	- SQL URL of the published table
+	    	publishedDatabase	- published database name
+            metadataTableName	- the CIS metadata datasource table name
+            metadataTablePath	- the CIS metadata datasource table path
+
+	Modified Date:	Modified By:		CSW Version:	Reason:
+	02/10/2016		Mike Tinius			7.0.2			Created new for the purpose of removing files.
+	02/20/2018		Mike Tinius			7.0.5			Adapted for Assets Data Abstraction Best Practices
+
+	(c) 2017 TIBCO Software Inc.  All rights reserved.
+	
+	Except as specified below, this software is licensed pursuant to the Eclipse Public License v. 1.0.
+	The details can be found in the file LICENSE.
+	
+	The following proprietary files are included as a convenience, and may not be used except pursuant
+	to valid license to Composite Information Server or TIBCO® Data Virtualization Server:
+	csadmin-XXXX.jar, csarchive-XXXX.jar, csbase-XXXX.jar, csclient-XXXX.jar, cscommon-XXXX.jar,
+	csext-XXXX.jar, csjdbc-XXXX.jar, csserverutil-XXXX.jar, csserver-XXXX.jar, cswebapi-XXXX.jar,
+	and customproc-XXXX.jar (where -XXXX is an optional version number).  Any included third party files
+	are licensed under the terms contained in their own accompanying LICENSE files, generally named .LICENSE.txt.
+	
+	This software is licensed AS-IS. Support for this software is not covered by standard maintenance agreements with TIBCO.
+	If you would like to obtain assistance with this software, such assistance may be obtained through a separate paid consulting
+	agreement with TIBCO.
+*/
+PROCEDURE dynamicFileRemove(
+	IN  debug					CHAR(1),
+	IN  inUsername				VARCHAR,
+	IN  inFileName				VARCHAR(4000),
+	IN	datasourcePath			VARCHAR(4000),
+	IN	publishedDatabase		VARCHAR,
+    OUT result PIPE (
+        status 				VARCHAR(4000),
+		fileName			VARCHAR(255),
+        publishedTableName 	VARCHAR(255), 
+        publishedTablePath 	VARCHAR(4000),
+		publishedDatabase	VARCHAR(255),
+		metadataTableName	VARCHAR(255),
+		metadataTablePath	VARCHAR(4000)
+        )
+)
+BEGIN
+	DECLARE moduleName			VARCHAR DEFAULT &apos;dynamicFileRemove&apos;;
+	DECLARE username			VARCHAR DEFAULT LOWER(inUsername);
+	DECLARE fileName			VARCHAR(4000) DEFAULT TRIM(inFileName);
+	DECLARE	globalConstantsPath	VARCHAR(4000) DEFAULT /shared/ASAssets/BestPractices_v81/DynamicFileFramework/constants.globalConstantsPath;
+	DECLARE dstype 				VARCHAR(255);
+	DECLARE fileType			VARCHAR(255);
+	DECLARE fileDeleted			TINYINT;
+	DECLARE fileUsername		VARCHAR(255);
+	DECLARE fileUsernameExists	BOOLEAN;		-- true=the username is prefixed to the file name.  false=No username prefixed to file.
+	DECLARE separator			VARCHAR;
+	DECLARE fileExists			BOOLEAN;
+	DECLARE fileRootPath		LONGVARCHAR;
+	DECLARE filePath			LONGVARCHAR;
+	DECLARE proxyUsername		VARCHAR(255);
+	DECLARE supportedFileExt	VARCHAR;
+	DECLARE fileExtension		VARCHAR;
+	DECLARE resourceType		VARCHAR;
+	DECLARE resExists			BOOLEAN;
+	DECLARE publishedTableName	VARCHAR;
+	DECLARE publishedTablePath	VARCHAR(4000);
+	DECLARE i					INTEGER;
+	DECLARE pos					INTEGER;
+	DECLARE msg					VARCHAR(4000);
+	DECLARE messageAppend		VARCHAR;
+	DECLARE publishedViewsRemoved SMALLINT;
+    DECLARE TYPE resultType		ROW (
+        status 				VARCHAR(4000),
+		fileName			VARCHAR(255),
+        publishedTableName 	VARCHAR(255), 
+        publishedTablePath 	VARCHAR(4000),
+		publishedDatabase	VARCHAR(255),
+		metadataTableName	VARCHAR(255),
+		metadataTablePath	VARCHAR(4000)
+        );
+	DECLARE resultRec		resultType;
+	DECLARE resultVect		VECTOR(resultType) DEFAULT VECTOR[];
+
+
+	IF (debug = &apos;Y&apos;) THEN
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;Entered &apos;||moduleName);
+	END IF;
+
+	-- The procedure is usable for File-Delimited and Microsoft Excel (non-ODBC) datasources only
+	-- Check if the datasource is supported
+	SELECT dataSourceType INTO dstype FROM /shared/ASAssets/Utilities/repository/getBasicResourceCursor(datasourcePath	, &apos;DATA_SOURCE&apos;);
+	IF (dstype = &apos;File-Delimited&apos;) OR (dstype = &apos;Microsoft Excel (non-ODBC)&apos;) THEN
+		IF (dstype = &apos;File-Delimited&apos;) THEN
+			SET fileType = &apos;CSV&apos;;
+			CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;CSV_SUPPORTED_FILE_EXTENSIONS&apos;, 1, supportedFileExt);
+			SET supportedFileExt = LOWER(supportedFileExt);
+			SET resourceType = &apos;TABLE&apos;;
+		ELSE
+			SET fileType = &apos;EXCEL&apos;;
+			CALL /shared/ASAssets/Utilities/string/getConstantV2(globalConstantsPath, &apos;EXCEL_SUPPORTED_FILE_EXTENSIONS&apos;, 1, supportedFileExt);
+			SET supportedFileExt = LOWER(supportedFileExt);
+			SET resourceType = &apos;CONTAINER&apos;;
+		END IF;
+		-- Get the file extension
+		IF (INSTR(fileName, &apos;.&apos;) &gt; 0) THEN
+			SET pos = INSTR(fileName, &apos;.&apos;, -1, 1);
+			IF (pos &gt; 0) THEN
+				SET fileExtension = SUBSTRING(fileName, pos+1);
+			END IF;
+		END IF;
+		SET fileExtension = &apos;.&apos;||LOWER(fileExtension);
+
+		IF (debug = &apos;Y&apos;) THEN
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INPUT: FILE_NAME=&apos;||fileName);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INPUT: CURRENT_USER_NAME=[&apos;||NVL(username,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INPUT: METADATA DS PATH=[&apos;||NVL(datasourcePath	,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;INPUT: publishedDatabase=[&apos;||NVL(publishedDatabase,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;EXTRACTED: SUPPORT FILE EXTENSIONS=[&apos;||NVL(supportedFileExt,&apos;null&apos;)||&apos;]&apos;);
+		END IF;
+
+		-- If the proxy username is not null then use the proxy username instead of the actual username.
+		-- The proxy username is controlled by the upload application and is passed in when the upload application invokes the dynamicFileCreate procedure.
+		-- This is the only mechanism by which to distinguish between the procedure being called by the user and by the upload application.
+		-- The upload application will insert the text USERNAME[username]username-filename.ext as part of the filename.
+		-- Extract the username proxy from the filename.  Format: USERNAME[username]username-filename.ext
+		CALL /shared/ASAssets/Utilities/string/extractBiDelimitedText(fileName,&apos;USERNAME&apos;,&apos;[&apos;,&apos;]&apos;,1,1,1,proxyUsername);
+		IF (proxyUsername IS NOT NULL) THEN
+			SET fileName = REPLACE(fileName, &apos;USERNAME[&apos;||proxyUsername||&apos;]&apos;, &apos;&apos;);
+			SET username = LOWER(proxyUsername);
+		END IF;
+		-- Get the file username
+		SET pos = INSTR(fileName, &apos;-&apos;);
+		IF (pos &gt; 0) THEN
+			SET fileUsername = SUBSTRING(fileName, 1, pos-1);
+			SET fileUsernameExists = true;
+		ELSE
+			SET fileUsername = &apos;admin&apos;;
+			SET fileUsernameExists = false;
+		END IF;
+
+		IF (debug = &apos;Y&apos;) THEN
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;EXTRACTED: FILE_USER_NAME=[&apos;||NVL(fileUsername,&apos;null&apos;)||&apos;]&apos;);
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;MODIFIED: FILE_NAME=&apos;||NVL(fileName,&apos;null&apos;));
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;MODIFIED: USER_NAME=&apos;||NVL(username,&apos;null&apos;));
+		END IF;
+
+		IF (fileName IS NOT NULL OR LENGTH(fileName) &gt; 0) THEN
+			IF (INSTR(supportedFileExt, fileExtension) &gt; 0) THEN
+				IF (username IS NOT NULL AND fileUsername IS NOT NULL) THEN
+					IF (username = fileUsername) THEN
+						SET publishedViewsRemoved = 0;
+						CALL /lib/resource/ResourceExists(datasourcePath	||&apos;/&apos;||fileName, resourceType, null, resExists);
+						IF (resExists) THEN
+							-- Destroy the CIS view lineage from metadata datasource to published view
+							SET i = 0;
+							FOR dl AS SELECT * FROM /shared/ASAssets/Utilities/generate/destroyDependentLineage(1, 1, datasourcePath||&apos;/&apos;||fileName, debug) DO
+								-- Only work with published rows or metadata rows.  Ignore the other rows.
+								IF ( (INSTR(dl.resourcePath, &apos;/services/databases/&apos;) = 1 AND dl.resourceType = &apos;LINK&apos;) or 
+									 (dl.subtype = &apos;EXCEL_NON_ODBC_POI&apos; or dl.subtype = &apos;DELIMITED_FILE_TABLE&apos;) ) THEN
+
+									-- Capture the published link name and path
+									IF (INSTR(dl.resourcePath, &apos;/services/databases/&apos;) = 1 AND dl.resourceType = &apos;LINK&apos;) THEN
+										SET publishedViewsRemoved = publishedViewsRemoved + 1;
+										SET resultRec.publishedTableName = dl.resourceName;
+										SET resultRec.publishedTablePath = dl.resourcePath;
+										SET resultRec.publishedDatabase = publishedDatabase;
+									END IF;
+
+									-- Capture the metadata table name and path
+									IF (dl.subtype = &apos;EXCEL_NON_ODBC_POI&apos; OR dl.subtype = &apos;DELIMITED_FILE_TABLE&apos;) THEN
+										SET resultRec.fileName = fileName;
+										SET resultRec.metadataTableName = dl.resourceName;
+										SET resultRec.metadataTablePath = dl.resourcePath;
+
+										-- Assumption: When the metadata record is reached, it is assumed that the resultRec now contains both the published and metadata paths
+										--		and is ready to be assigned to the vector.
+										SET resultVect = EXTEND(resultVect,1);
+										SET i = i + 1;
+										SET resultVect[i] = resultRec;
+										SET resultRec = null;
+									END IF;
+								END IF;
+							END FOR;
+						END IF;
+
+						IF (publishedViewsRemoved = 0) THEN
+							SET messageAppend = &apos;VIEWS NOT PUBLISHED&apos;;
+						ELSE
+							SET messageAppend = &apos;PUBLISHED VIEWS REMOVED&apos;;
+						END IF;
+
+						-- Delete the file
+						CALL /shared/ASAssets/BestPractices_v81/DynamicFileFramework/Helper/deleteFile(debug, fileName, datasourcePath, messageAppend, fileDeleted, msg);
+
+						-- Return the results
+						IF (publishedViewsRemoved &gt; 0) THEN
+							SET i = 1;
+							WHILE (i &lt;= CARDINALITY(resultVect)) DO
+								CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(resultVect[i].publishedTableName,null,publishedTableName);
+								SET publishedTablePath = REPLACE(REPLACE(resultVect[i].publishedTablePath, &apos;/services/databases/&apos;||publishedDatabase||&apos;/&apos;, &apos;&apos;),  &apos;/&apos;, &apos;.&apos;); 
+								CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(publishedTablePath,null,publishedTablePath);
+								INSERT INTO result VALUES (msg, fileName, publishedTableName, publishedTablePath, publishedDatabase, resultVect[i].metadataTableName, resultVect[i].metadataTablePath);
+								SET i = i + 1;
+							END WHILE;
+						ELSE
+							INSERT INTO result VALUES (msg, fileName, null, null, publishedDatabase, null, null);
+						END IF;
+					ELSE
+						SET msg = &apos;&apos;;
+						-- Mismatch between username and file username
+						CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(publishedTableName,null,publishedTableName);
+						CALL /shared/ASAssets/Utilities/repository/RepoUtils/applyReservedListToPath(publishedTablePath,null,publishedTablePath);
+
+						/********************************
+						 * Determine if the file exists
+						 ********************************/
+						-- Get the file separator
+						CALL /shared/ASAssets/Utilities/file/getFileSeparator(separator);
+						-- Get the actual file system path by determining if the root path is the actual path or a file system security token name
+						CALL /shared/ASAssets/Utilities/repository/getDataSourceRootPath(datasourcePath, debug, fileRootPath);
+						-- File root path is resolved so proceed
+						IF (fileRootPath IS NOT NULL) THEN
+							IF (separator IS NULL or LENGTH(separator) = 0) THEN
+								SET separator = &apos;/&apos;;
+							END IF;
+							SET filePath = fileRootPath||separator||fileName;
+							CALL /shared/ASAssets/Utilities/file/FileProcessingCJP/existsFile(filePath, fileExists);
+							IF (debug = &apos;Y&apos;) THEN
+								CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;fileExists=[&apos;||CAST(fileExists AS VARCHAR)||&apos;] filePath=[&apos;||filePath||&apos;]&apos;);
+							END IF;
+							IF (NOT fileExists) THEN
+								SET msg = &apos;FILE DOES NOT EXIST.  &apos;;
+							END IF;
+						END IF;
+
+						SET msg = msg || &apos;FILE NOT ASSOCIATED WITH USERNAME=&apos;||NVL(username,&apos;null&apos;);
+
+						INSERT INTO result VALUES (msg, fileName, publishedTableName, publishedTablePath, publishedDatabase, null, null);
+						IF (debug = &apos;Y&apos;) THEN
+							CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;FILE=[&apos;||fileName||&apos;] &apos;||msg);
+						END IF;
+					END IF;
+				END IF;
+			ELSE -- Invalid file extension. not supported like .xlb			
+				-- Delete the file but not the views
+				SET messageAppend = &apos;VIEWS NOT PUBLISHED&apos;;
+				CALL /shared/ASAssets/BestPractices_v81/DynamicFileFramework/Helper/deleteFile(debug, fileName, datasourcePath, messageAppend, fileDeleted, msg);
+				INSERT INTO result VALUES (msg, fileName, null, null, publishedDatabase, null, null);
+			END IF;
+		END IF;
+	ELSE
+		INSERT INTO result(status, fileName) VALUES (&apos;ERROR: Data source type not supported: &apos; || dstype, fileName);
+		IF (debug = &apos;Y&apos;) THEN
+			CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;ERROR: Data source type not supported: &apos; || dstype);
+		END IF;
+	END IF;
+
+	IF (debug = &apos;Y&apos;) THEN
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;: Exiting &apos;||moduleName);
+	END IF;
+EXCEPTION
+	ELSE
+		SET msg = SUBSTRING(&apos;ERROR: Failed to remove dynamic view: &apos; || CURRENT_EXCEPTION.TRACE, 1, 4000);
+		INSERT INTO result(status, fileName, publishedTableName, publishedTablePath, publishedDatabase, metadataTableName, metadataTablePath) 
+			VALUES (msg, fileName, null, null, publishedDatabase, null, null);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;: &apos;||msg);
+		CALL /shared/ASAssets/Utilities/log/logDebugMessage(moduleName, debug, &apos;: Exiting &apos;||moduleName);
+END</attribute>
+  <attribute name="creationDate" type="LONG">1455107294810</attribute>
+  <attribute name="creatorUserDomain" type="STRING">ldap_im</attribute>
+  <attribute name="creatorUserId" type="INTEGER">1505</attribute>
+  <attribute name="creatorUserName" type="STRING">zkxl6un</attribute>
+  <attribute name="explicitly.designed" type="BOOLEAN">false</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1564410273481</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">composite</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">1505</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">admin</attribute>
+  <attribute name="model" type="NULL"/>
+  <attribute name="native_only" type="STRING">false</attribute>
+  <attribute name="references" type="NULL"/>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1455107294810</attribute>
+</metadata>

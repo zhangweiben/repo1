@@ -1,0 +1,642 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<!-- salt:44831da2-fa57-48b1-b3e8-4297d727cb06 -->
+<metadata name="MSTB_CUSTOMER_MASTER" path="/shared/Common/Physical/Metadata/OnPremises/Oracle_5GPOS_Taiwan/POS_DISTRIBUTOR/MSTB_CUSTOMER_MASTER" type="TABLE" subtype="DATABASE_TABLE" changeToken="0" tableType="TABLE">
+  <columns>
+    <column name="ID" nullable="false">
+      <datatype name="BIGINT" extendedName="NUMBER(12,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-999999999999" maxValue="999999999999"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="REGION_CODE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(8)" subType="DATASOURCE_TYPE" type="STRING" maxLength="8"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="POS_CODE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(8)" subType="DATASOURCE_TYPE" type="STRING" maxLength="8"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="STAFF_NUMBER" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(16)" subType="DATASOURCE_TYPE" type="STRING" maxLength="16"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DISTRIBUTOR_NUMBER" nullable="true">
+      <datatype name="BIGINT" extendedName="NUMBER(12,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-999999999999" maxValue="999999999999"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DISTRIBUTOR_TYPE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(2)" subType="DATASOURCE_TYPE" type="STRING" maxLength="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DISTRIBUTOR_PIN_TYPE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(2)" subType="DATASOURCE_TYPE" type="STRING" maxLength="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DISTRIBUTOR_PIN_LEVEL" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(10)" subType="DATASOURCE_TYPE" type="STRING" maxLength="10"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DISTRIBUTOR_CLASS" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(2)" subType="DATASOURCE_TYPE" type="STRING" maxLength="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="ATTRIBUTIVE_SHOP_CODE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(8)" subType="DATASOURCE_TYPE" type="STRING" maxLength="8"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SIGN_UP_SHOP_CODE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(8)" subType="DATASOURCE_TYPE" type="STRING" maxLength="8"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="REPLACEMENT_CODE" nullable="true">
+      <datatype name="DOUBLE" extendedName="NUMBER" subType="DATASOURCE_TYPE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SPONSOR_NUMBER" nullable="true">
+      <datatype name="BIGINT" extendedName="NUMBER(12,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-999999999999" maxValue="999999999999"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SPONSOR_REGION_CODE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(8)" subType="DATASOURCE_TYPE" type="STRING" maxLength="8"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="INTERL_SPONSOR_NUMBER" nullable="true">
+      <datatype name="BIGINT" extendedName="NUMBER(12,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-999999999999" maxValue="999999999999"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="INTERL_SPONSOR_REGION_CODE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(8)" subType="DATASOURCE_TYPE" type="STRING" maxLength="8"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DD_NUMBER" nullable="true">
+      <datatype name="BIGINT" extendedName="NUMBER(12,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-999999999999" maxValue="999999999999"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="UP_LINER_GROUP_LEADER_NUMBER" nullable="true">
+      <datatype name="BIGINT" extendedName="NUMBER(12,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-999999999999" maxValue="999999999999"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="JOIN_DATE" nullable="true">
+      <datatype name="DATE" extendedName="DATE" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="EXPIRE_DATE" nullable="true">
+      <datatype name="DATE" extendedName="DATE" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="MASTER_NAME" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(200)" subType="DATASOURCE_TYPE" type="STRING" maxLength="200"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="MASTER_ENGLISH_NAME" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(100)" subType="DATASOURCE_TYPE" type="STRING" maxLength="100"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="MASTER_ID" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(100)" subType="DATASOURCE_TYPE" type="STRING" maxLength="100"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SPOUSE_NAME" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(200)" subType="DATASOURCE_TYPE" type="STRING" maxLength="200"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SPOUSE_ENGLISH_NAME" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(100)" subType="DATASOURCE_TYPE" type="STRING" maxLength="100"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SPOUSE_ID" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(100)" subType="DATASOURCE_TYPE" type="STRING" maxLength="100"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DISTRIBUTOR_STATUS" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(2)" subType="DATASOURCE_TYPE" type="STRING" maxLength="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="LANGUAGE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(10)" subType="DATASOURCE_TYPE" type="STRING" maxLength="10"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RSVST1" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(32)" subType="DATASOURCE_TYPE" type="STRING" maxLength="32"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RSVST2" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(32)" subType="DATASOURCE_TYPE" type="STRING" maxLength="32"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RSVST3" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(32)" subType="DATASOURCE_TYPE" type="STRING" maxLength="32"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RSVST4" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(64)" subType="DATASOURCE_TYPE" type="STRING" maxLength="64"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RSVST5" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(128)" subType="DATASOURCE_TYPE" type="STRING" maxLength="128"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RSVDC1" nullable="true">
+      <datatype name="DOUBLE" extendedName="NUMBER" subType="DATASOURCE_TYPE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RSVDC2" nullable="true">
+      <datatype name="DOUBLE" extendedName="NUMBER" subType="DATASOURCE_TYPE" type="FLOAT" minValue="2.2250738585072014E-308" maxValue="1.7976931348623157E308"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RSVDC3" nullable="true">
+      <datatype name="NUMBER" extendedName="NUMBER(14,2)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RSVDC4" nullable="true">
+      <datatype name="NUMBER" extendedName="NUMBER(14,2)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="RSVDC5" nullable="true">
+      <datatype name="NUMBER" extendedName="NUMBER(14,2)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TRANSFER_STATUS" nullable="true">
+      <datatype name="TINYINT" extendedName="NUMBER(1,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-9" maxValue="9"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CREATED_TIMESTAMP" nullable="true">
+      <datatype name="TIMESTAMP(6)" extendedName="TIMESTAMP(6)" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="MODIFIED_TIMESTAMP" nullable="true">
+      <datatype name="TIMESTAMP(6)" extendedName="TIMESTAMP(6)" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="MASTER_ID_TYPE" nullable="true">
+      <datatype name="TINYINT" extendedName="NUMBER(1,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-9" maxValue="9"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SPOUSE_ID_TYPE" nullable="true">
+      <datatype name="TINYINT" extendedName="NUMBER(1,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-9" maxValue="9"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="EFFECTIVE_DATE" nullable="true">
+      <datatype name="DATE" extendedName="DATE" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="APPROACH_CODE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(4)" subType="DATASOURCE_TYPE" type="STRING" maxLength="4"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SERVICE_NAME" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(300)" subType="DATASOURCE_TYPE" type="STRING" maxLength="300"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="EXPIRED_DATE_OLD" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(12)" subType="DATASOURCE_TYPE" type="STRING" maxLength="12"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="SOURCE_CHANNEL" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(8)" subType="DATASOURCE_TYPE" type="STRING" maxLength="8"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="WORK_ADDRESS" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(200)" subType="DATASOURCE_TYPE" type="STRING" maxLength="200"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="INTERNATIONAL_SPONSOR_NAME" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(200)" subType="DATASOURCE_TYPE" type="STRING" maxLength="200"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="NATIONALITY" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(64)" subType="DATASOURCE_TYPE" type="STRING" maxLength="64"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CORPORATION_NAME" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(200)" subType="DATASOURCE_TYPE" type="STRING" maxLength="200"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CORPORATION_ENGLISH_NAME" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(100)" subType="DATASOURCE_TYPE" type="STRING" maxLength="100"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CORPORATION_ID_TYPE" nullable="true">
+      <datatype name="TINYINT" extendedName="NUMBER(1,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-9" maxValue="9"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CORPORATION_ID" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(100)" subType="DATASOURCE_TYPE" type="STRING" maxLength="100"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DISTRIBUTOR_PASSWORD" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(32)" subType="DATASOURCE_TYPE" type="STRING" maxLength="32"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="CORPORATION_RACE_CODE" nullable="true">
+      <datatype name="CHAR" extendedName="CHAR(1)" subType="DATASOURCE_TYPE" type="STRING" minLength="1" maxLength="1"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DISTRIBUTOR_IDENTI_CODE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(32)" subType="DATASOURCE_TYPE" type="STRING" maxLength="32"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TEMP_JOIN_NUMBER" nullable="true">
+      <datatype name="BIGINT" extendedName="NUMBER(12,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-999999999999" maxValue="999999999999"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TEMP_TOTAL_PURCHASE" nullable="true">
+      <datatype name="NUMBER" extendedName="NUMBER(14,2)" subType="DATASOURCE_TYPE" type="DECIMAL" maxDigits="14" maxFractionalDigits="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TEMP_DIST_STATUS" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(2)" subType="DATASOURCE_TYPE" type="STRING" maxLength="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TEMP_JOIN_DATE" nullable="true">
+      <datatype name="TIMESTAMP(6)" extendedName="TIMESTAMP(6)" subType="DATASOURCE_TYPE" type="DATETIME"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TEMPJOIN_ORDERTYPE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(10)" subType="DATASOURCE_TYPE" type="STRING" maxLength="10"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TEMPJOIN_NAMEFLAG" nullable="true">
+      <datatype name="TINYINT" extendedName="NUMBER(2,0)" subType="DATASOURCE_TYPE" type="INTEGER" minValue="-99" maxValue="99"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="DISTRIBUTOR_PASSWORD_ENCRYPT" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(200)" subType="DATASOURCE_TYPE" type="STRING" maxLength="200"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="PREF_TYPE" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(16)" subType="DATASOURCE_TYPE" type="STRING" maxLength="16"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+    <column name="TEMPCUST_PAYMENT_STATUS" nullable="true">
+      <datatype name="VARCHAR2" extendedName="VARCHAR2(2)" subType="DATASOURCE_TYPE" type="STRING" maxLength="2"/>
+      <attribute name="mandatory" type="BOOLEAN">false</attribute>
+      <security>
+        <owner user="nobody" domain="composite"/>
+      </security>
+    </column>
+  </columns>
+  <indexes>
+    <index name="IDX_CUSTMASTER_EXPDATE" type="OTHER" unique="false">
+      <indexColumn name="EXPIRE_DATE" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="IND_CUSMST_CORPOR_ID" type="OTHER" unique="false">
+      <indexColumn name="CORPORATION_ID" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="PK_MSTB_CUSTOMER_MASTER" type="PRIMARY_KEY" unique="true">
+      <indexColumn name="ID" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="IND_CUSMST_MASTER_ID" type="OTHER" unique="false">
+      <indexColumn name="MASTER_ID" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="IND_CUSMST_SPOUSE_ID" type="OTHER" unique="false">
+      <indexColumn name="SPOUSE_ID" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="IND_CUSTMST_JOIN_DATE" type="OTHER" unique="false">
+      <indexColumn name="JOIN_DATE" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="IND_DD_DSTCLA_DSTSTA_REGCDE" type="OTHER" unique="false">
+      <indexColumn name="DD_NUMBER" sortOrder="ASCENDING"/>
+      <indexColumn name="DISTRIBUTOR_CLASS" sortOrder="ASCENDING"/>
+      <indexColumn name="REGION_CODE" sortOrder="ASCENDING"/>
+      <indexColumn name="DISTRIBUTOR_STATUS" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="IND_CUSTMST_SPONSOR_NUMBER" type="OTHER" unique="false">
+      <indexColumn name="SPONSOR_NUMBER" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="IND_CUSTMST_DD_NUMBER" type="OTHER" unique="false">
+      <indexColumn name="DD_NUMBER" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="I_CUSTMST_MASTERNAME" type="OTHER" unique="false">
+      <indexColumn name="MASTER_NAME" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="I_CUSTMST_SPOUSENAME" type="OTHER" unique="false">
+      <indexColumn name="SPOUSE_NAME" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="I_CUSTMST_MASTERENGNAME" type="OTHER" unique="false">
+      <indexColumn name="MASTER_ENGLISH_NAME" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="I_CUSTMST_SPOUSEENGNAME" type="OTHER" unique="false">
+      <indexColumn name="SPOUSE_ENGLISH_NAME" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="IDX_DSTMST_DSTNUM_REG" type="OTHER" unique="true">
+      <indexColumn name="DISTRIBUTOR_NUMBER" sortOrder="ASCENDING"/>
+      <indexColumn name="REGION_CODE" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="IND_CUSMST_TSPOUSE_ID" type="OTHER" unique="false">
+      <indexColumn name="SYS_NC00050$" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+    <index name="IND_CUSMST_TMASTER_ID" type="OTHER" unique="false">
+      <indexColumn name="SYS_NC00051$" sortOrder="ASCENDING"/>
+      <attribute name="indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+    </index>
+  </indexes>
+  <foreignKeys></foreignKeys>
+  <security>
+    <owner user="nobody" domain="composite"/>
+    <privilege group="all" domain="composite" privileges="READ SELECT"/>
+  </security>
+  <attribute name="c:0:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:10:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:11:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:12:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:13:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:14:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:15:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:16:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:17:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:18:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:19:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:1:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:20:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:21:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:22:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:23:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:24:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:25:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:26:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:27:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:28:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:29:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:2:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:30:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:31:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:32:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:33:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:34:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:35:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:36:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:37:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:38:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:39:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:3:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:40:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:41:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:42:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:43:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:44:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:45:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:46:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:47:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:48:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:49:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:4:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:50:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:51:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:52:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:53:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:54:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:55:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:56:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:57:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:58:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:59:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:5:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:60:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:61:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:62:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:63:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:64:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:65:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:66:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:6:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:7:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:8:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="c:9:mandatory" type="BOOLEAN">false</attribute>
+  <attribute name="creationDate" type="LONG">1568998203227</attribute>
+  <attribute name="creatorUserDomain" type="STRING">na</attribute>
+  <attribute name="creatorUserId" type="INTEGER">30109</attribute>
+  <attribute name="creatorUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="i:0:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:10:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:11:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:12:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:13:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:14:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:15:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:1:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:2:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:3:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:4:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:5:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:6:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:7:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:8:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="i:9:indexSchema" type="STRING">POS_DISTRIBUTOR</attribute>
+  <attribute name="lastModifiedDate" type="LONG">1568998203227</attribute>
+  <attribute name="lastModifiedUserDomain" type="STRING">na</attribute>
+  <attribute name="lastModifiedUserId" type="INTEGER">30109</attribute>
+  <attribute name="lastModifiedUserName" type="STRING">aiuhmb0</attribute>
+  <attribute name="resourceModifiedDateOnSourceCISSite" type="LONG">1568998203227</attribute>
+</metadata>
